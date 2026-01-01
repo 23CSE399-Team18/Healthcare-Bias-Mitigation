@@ -1,9 +1,7 @@
-# Local data and environments
+# Local software, credentials and publication workspaces
 .publication/
 .claude/
 .codex/
-.env
-.env.*
 .venv/
 venv/
 Heart_correct/
@@ -11,16 +9,28 @@ resp_physionet/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-**/raw/
-**/data/
+.env
+.env.*
+!.env.example
+# Credentialed ICU datasets: publish code and approved aggregates only
+/respiratory/raw/
+/hospital/raw/
+/respiratory/preprocessed/*_preprocessed.csv
+/respiratory/preprocessed/*_feature_space.csv
+/respiratory/preprocessed/sample10*
+/hospital/preprocessed/*_preprocessed.csv
 **/models/
 **/*.pt
+**/*.pth
 **/*.joblib
-**/*_preprocessed.csv
-**/*_feature_space.csv
-**/*predictions*.csv
-**/sample10_trace.json
-**/sample10_complete_details.csv
-**/latent_scatter.json
-**/plots/
-output/
+**/*.pkl
+/latent/data/
+/latent/latent_scatter.json
+**/inprocessed/*predictions*.csv
+/respiratory/plots_comparison/S10_*
+/website/plots/respiratory/plots_comparison/S10_*
+# Oversized public originals are restored from the committed lossless gzip copies
+/heart/raw/source/LLCP2022.XPT
+/heart/preprocessed/heart_train_preprocessed.csv
+/heart/preprocessed/heart_train_feature_space.csv
+*.crdownload
