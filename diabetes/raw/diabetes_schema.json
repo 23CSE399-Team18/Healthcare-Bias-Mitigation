@@ -1,0 +1,76 @@
+{
+  "column_convention": {
+    "meta_*": "identifiers, survey weights/design, domain and split-group columns; never model inputs",
+    "sens_*": "harmonised fairness attributes for evaluation; not inputs by default",
+    "target": "binary outcome",
+    "other": "candidate predictors (categorical = text columns, encode inside your pipeline)"
+  },
+  "harmonised_groups": {
+    "sens_age_group": [
+      "18-39",
+      "40-64",
+      "65-79",
+      "80+"
+    ],
+    "sens_race_ethnicity": [
+      "White",
+      "Black",
+      "Hispanic",
+      "Other"
+    ],
+    "sens_sex": [
+      "Male",
+      "Female"
+    ]
+  },
+  "diabetes": {
+    "file": "diabetes_raw.csv",
+    "source": "CDC NHANES Aug 2021-Aug 2023 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Cycle=2021-2023",
+    "rows": 7876,
+    "positive": 1073,
+    "positive_rate": 0.1362,
+    "target_meaning": "Doctor ever told you have diabetes (DIQ010; pregnancy-only excluded by wording); self-reported history",
+    "numeric_features": [
+      "age",
+      "male",
+      "education",
+      "income_poverty_ratio",
+      "bmi",
+      "waist_cm"
+    ],
+    "categorical_features": [
+      "smoking_status"
+    ],
+    "sensitive_attributes": [
+      "sens_sex",
+      "sens_age_group",
+      "sens_race_ethnicity",
+      "sens_race_detail"
+    ],
+    "meta_columns_never_inputs": [
+      "meta_record_id",
+      "meta_survey_weight_interview",
+      "meta_survey_weight_exam",
+      "meta_strata",
+      "meta_psu",
+      "meta_examined"
+    ],
+    "source_columns_excluded": {
+      "DIQ010": "label source",
+      "LBXGH, LBXGLU": "HbA1c/glucose are diagnostic criteria; kept only in diabetes_biomarkers_adults.csv",
+      "DMDEDUC2, SMQ020, SMQ040": "raw sources of education/smoking_status",
+      "BMXWT, BMXHT": "redundant with bmi",
+      "RIDEXPRG": "pregnancy status, restricted ages; not a baseline feature",
+      "RIDRETH3": "fairness attribute only (sens_race_*)"
+    },
+    "feature_missing_rate": {
+      "age": 0.0,
+      "male": 0.0,
+      "education": 0.0462,
+      "income_poverty_ratio": 0.1704,
+      "bmi": 0.2364,
+      "waist_cm": 0.2627,
+      "smoking_status": 0.0037
+    }
+  }
+}
