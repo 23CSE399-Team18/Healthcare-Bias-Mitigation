@@ -1,0 +1,63 @@
+{
+  "source_component_rows": {
+    "DEMO_L": 11933,
+    "DIQ_L": 11744,
+    "BMX_L": 8860,
+    "SMQ_L": 9015,
+    "GHB_L": 7199,
+    "GLU_L": 3996
+  },
+  "all_participants": 11933,
+  "adults_18_plus": 8153,
+  "binary_cohort_rows": 7876,
+  "class_counts": {
+    "no_diabetes": 6803,
+    "diagnosed_diabetes": 1073
+  },
+  "excluded_rows": 4057,
+  "exclusion_reasons": {
+    "under_18": 3780,
+    "borderline_diabetes": 272,
+    "diabetes_answer_missing_or_unavailable": 3,
+    "unknown_diabetes_answer": 2
+  },
+  "baseline_missing_counts": {
+    "SEQN": 0,
+    "RIDAGEYR": 0,
+    "RIAGENDR": 0,
+    "RIDRETH3": 0,
+    "DMDEDUC2": 353,
+    "INDFMPIR": 1342,
+    "BMXBMI": 1862,
+    "BMXWAIST": 2069,
+    "BMXWT": 1849,
+    "BMXHT": 1835,
+    "SMQ020": 15,
+    "SMQ040": 4773,
+    "WTINT2YR": 0,
+    "WTMEC2YR": 0,
+    "SDMVSTRA": 0,
+    "SDMVPSU": 0,
+    "RIDSTATR": 0,
+    "RIDEXPRG": 6399,
+    "DIQ010": 0,
+    "education_level": 364,
+    "smoking_status": 29,
+    "diabetes_diagnosed": 0
+  },
+  "biomarker_adult_rows": 8153,
+  "adult_hba1c_observed": 6002,
+  "adult_fasting_glucose_observed": 3329,
+  "unique_participants": true,
+  "target_definition": "age >=18; DIQ010=1 maps to1, DIQ010=2 maps to0; other answers excluded",
+  "baseline_predictors": [
+    "RIDAGEYR",
+    "RIAGENDR",
+    "RIDRETH3",
+    "education_level",
+    "INDFMPIR",
+    "BMXBMI",
+    "BMXWAIST",
+    "smoking_status"
+  ]
+}
