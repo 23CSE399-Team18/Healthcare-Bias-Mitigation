@@ -1,0 +1,42 @@
+[
+  {
+    "path": "diabetes_all_participants_label_audit.csv",
+    "bytes": 2002690,
+    "sha256": "4c2721d8ab642406add9c41f047f025b4e0b0d670ca82687e1a7ba8e795976fd"
+  },
+  {
+    "path": "diabetes_excluded_audit.csv",
+    "bytes": 671919,
+    "sha256": "a55c5ad92ed2f6750dfa0b88583daddf07d5bc9ff01cf7769ef3528960a523ec"
+  },
+  {
+    "path": "diabetes_baseline_raw.csv",
+    "bytes": 885464,
+    "sha256": "42b111a79e577064b811e578924805b240323a2d327b4d4201f4c1fe9fc6f675"
+  },
+  {
+    "path": "diabetes_biomarkers_adults.csv",
+    "bytes": 827683,
+    "sha256": "65b1b1ed7dbace3697fff6c1f9b9fd122b7faa40952fe292b58b949d310aeffd"
+  },
+  {
+    "path": "cohort_flow.csv",
+    "bytes": 137,
+    "sha256": "81a74c73dcaf61fe285330bb0fa59cd3d70af78fe3e3804f88c938ecc90ec6f8"
+  },
+  {
+    "path": "data_dictionary.csv",
+    "bytes": 3022,
+    "sha256": "d427b4a7f9fe86fca5f59698debf217fad5c171531206b11a37dbd97de8b106f"
+  },
+  {
+    "path": "cohort_summary.json",
+    "bytes": 1459,
+    "sha256": "0ed06dfb3d68b9f1458890fc14795d1e7e2365c5e03ab2435fb7f709ed38bb88"
+  },
+  {
+    "path": "validation.json",
+    "bytes": 241,
+    "sha256": "661ed86debc69644a96d6c6e8174b8ac8878192d999e0e89ab100d4fb68845ce"
+  }
+]
