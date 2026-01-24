@@ -1,0 +1,11 @@
+.venv/
+venv/
+node_modules/
+__pycache__/
+.env
+.env.*
+*.pt
+*.pth
+*.joblib
+*.pkl
+*.parquet
