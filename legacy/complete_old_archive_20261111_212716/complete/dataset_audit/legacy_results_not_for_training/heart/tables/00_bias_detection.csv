@@ -1,0 +1,9 @@
+Bias,Detected in raw data,Evidence
+Missing Data Bias,present,"missing cells (%): 5.415; respondents with >= 1 missing feature (%): 51.875; features > 5% missing: 19; most incomplete: Income (21.4%); missingness predictable (AUC, not MCAR): Income 0.76; TetanusLast10Tdap 0.83; PneumoVaxEver 0.90; HIVTesting 0.90; ChestScan 0.90; CovidPos 0.99"
+Class Imbalance Bias,present,"heart disease: 39,751; no heart disease: 400,360; imbalance ratio: 10.072; minority share (%): 9.032"
+Outlier Bias,present,"impossible values: 369; impossible by variable: HeightInMeters 13, WeightInKilograms 36, BMI 164, SleepHours 86, DrinksPerWeek 52, Children 18; records with robust |z| > 4.5 (%): 0.985"
+Feature Scale Bias,present,max/min SD ratio: 199.841; largest SD: WeightInKilograms (21.47); smallest SD: HeightInMeters (0.107); features with |skew| > 1 (%): 62.500
+Demographic Bias,present,"groups breaking a rule: Sex=Female, RaceEthnicity=Black, RaceEthnicity=Other race, RaceEthnicity=Hispanic; worst DI (min/privileged): 0.442; worst |EOD| (TPR gap): 0.158"
+Duplicate Bias,absent,columns compared: 313; identical raw records: 0; duplicate respondent IDs (_STATE + SEQNO): 0; identical analysis records (44 decoded features): 114; identical analysis records (%): 0.026
+Data Noise Bias,present,"contradiction: male reporting pregnancy-only diabetes: 23; contradiction: non-drinker with drinks per week > 0: 0; contradiction: drinker with 0 drinks per week: 1,150; weights (lb) ending in 0 or 5 (%): 75.864; weight heaping ratio: 3.793; heights (ft-in) at whole feet (%): 10.130"
+Encoding / Domain Bias,present,"raw cells holding a code / unit code: 1,763,424; raw columns affected: 41; scales stored out of order: 4; region classifier AUC (macro): 0.585; smallest MMD permutation p: 0.010"
