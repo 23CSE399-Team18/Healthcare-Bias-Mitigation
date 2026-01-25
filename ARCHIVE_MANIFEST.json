@@ -1,0 +1,1464 @@
+{
+  "category": "code",
+  "files": [
+    {
+      "path": "legacy/code/Respiratory_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "bytes": 696765,
+      "sha256": "403e6ed859c2075a3b77ccb9bdc849c1a82145a803347cf4d5ac8cf18c726a56",
+      "source": "D:/code/Respiratory_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "sourceSha256": "403e6ed859c2075a3b77ccb9bdc849c1a82145a803347cf4d5ac8cf18c726a56",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/code/Heart_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "bytes": 1384593,
+      "sha256": "4b04c1b80623931e4770b78f7624646538dcd58a66a745781e4a51d942a877df",
+      "source": "D:/code/Heart_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "sourceSha256": "4b04c1b80623931e4770b78f7624646538dcd58a66a745781e4a51d942a877df",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/code/Diabetes_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "bytes": 467255,
+      "sha256": "bb3243391fad4385b4936cdc368b6a7a17678f6d8fed06fcf98204e29c73ac22",
+      "source": "D:/code/Diabetes_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "sourceSha256": "bb3243391fad4385b4936cdc368b6a7a17678f6d8fed06fcf98204e29c73ac22",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/code/Hypertension_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "bytes": 642257,
+      "sha256": "2f2a60a98318a39b7fe1726ece87d1176cbe14d99ae7582941e5d0015850e1f5",
+      "source": "D:/code/Hypertension_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "sourceSha256": "2f2a60a98318a39b7fe1726ece87d1176cbe14d99ae7582941e5d0015850e1f5",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/code/generate_latent_csv.py",
+      "bytes": 3050,
+      "sha256": "3e3a6d61a855616baa67221b5e84c26b243b144e69bddf3a461f0e7c2f315acc",
+      "source": "D:/code/generate_latent_csv.py",
+      "sourceSha256": "3e3a6d61a855616baa67221b5e84c26b243b144e69bddf3a461f0e7c2f315acc"
+    },
+    {
+      "path": "legacy/code/generate_exact_latent_csv.py",
+      "bytes": 3822,
+      "sha256": "993c7dd573a45565368ecbc162896b09f32ca3fe04057a46ae7d670597a26ebb",
+      "source": "D:/code/generate_exact_latent_csv.py",
+      "sourceSha256": "993c7dd573a45565368ecbc162896b09f32ca3fe04057a46ae7d670597a26ebb"
+    },
+    {
+      "path": "legacy/code/fast_generator.py",
+      "bytes": 3042,
+      "sha256": "2e246443597c8c2a55fe29b2240e334965669558c98bc9d0c223b055e6e99860",
+      "source": "D:/code/fast_generator.py",
+      "sourceSha256": "2e246443597c8c2a55fe29b2240e334965669558c98bc9d0c223b055e6e99860"
+    },
+    {
+      "path": "legacy/code/ultra_fast_generator.py",
+      "bytes": 3581,
+      "sha256": "df8a9cc963a4816691d58a8b868aa8b427a531403e5079ddba3eab1cb3168a9b",
+      "source": "D:/code/ultra_fast_generator.py",
+      "sourceSha256": "df8a9cc963a4816691d58a8b868aa8b427a531403e5079ddba3eab1cb3168a9b"
+    },
+    {
+      "path": "legacy/code/process_diabetes_final.py",
+      "bytes": 8933,
+      "sha256": "fe525ec7f293c224c54b767df36f0437b138ad714104befeee5f77ac9d9899a5",
+      "source": "D:/code/process_diabetes_final.py",
+      "sourceSha256": "fe525ec7f293c224c54b767df36f0437b138ad714104befeee5f77ac9d9899a5"
+    },
+    {
+      "path": "legacy/code/Latent_Feature_Alignment_Pipeline.ipynb",
+      "bytes": 46426,
+      "sha256": "3daac4dcb5545e128ab3fd5cdadaf60195004b7e30212626675ad1768db99ab0",
+      "source": "D:/code/Latent_Feature_Alignment_Pipeline.ipynb",
+      "sourceSha256": "e313b93ba7c1f4ce5d3ccc82fdbfd6301159f88b19d086a6762a6562334a81e1",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/code/latent_feature_alignment.py",
+      "bytes": 39465,
+      "sha256": "05740c524a615a18b1f756643b016a7371adb3df2272d96469a4adb532811666",
+      "source": "D:/code/latent_feature_alignment.py",
+      "sourceSha256": "05740c524a615a18b1f756643b016a7371adb3df2272d96469a4adb532811666"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/bias_visualization.py",
+      "bytes": 28822,
+      "sha256": "9c2282b2f25e108576489c85fca923de2aa2df92f08dce4134f9fc46f411324b",
+      "source": "D:/Data_Set/Data_Set/bias_visualization.py",
+      "sourceSha256": "9c2282b2f25e108576489c85fca923de2aa2df92f08dce4134f9fc46f411324b"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/config.py",
+      "bytes": 7156,
+      "sha256": "523e439650e9a5d9fae382e0d05dc969cf5265db82c6bc7cb4f830bf2ad22676",
+      "source": "D:/Data_Set/Data_Set/config.py",
+      "sourceSha256": "523e439650e9a5d9fae382e0d05dc969cf5265db82c6bc7cb4f830bf2ad22676"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/convert_to_word.py",
+      "bytes": 6103,
+      "sha256": "c54a81d5349713e90e0bfb730a137e7edb313d606801f1c34e7354d68081183c",
+      "source": "D:/Data_Set/Data_Set/convert_to_word.py",
+      "sourceSha256": "c54a81d5349713e90e0bfb730a137e7edb313d606801f1c34e7354d68081183c"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/data_loader.py",
+      "bytes": 27985,
+      "sha256": "afa3957d725d93753082f288d3e287cf3be3c5af9b9445b11f318103798428e0",
+      "source": "D:/Data_Set/Data_Set/data_loader.py",
+      "sourceSha256": "afa3957d725d93753082f288d3e287cf3be3c5af9b9445b11f318103798428e0"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/generate_obj1_doc.py",
+      "bytes": 32609,
+      "sha256": "4aa3486062e4b43c842f08bad33c71acc362efa6e0590dba9032b7f0edfda305",
+      "source": "D:/Data_Set/Data_Set/generate_obj1_doc.py",
+      "sourceSha256": "4aa3486062e4b43c842f08bad33c71acc362efa6e0590dba9032b7f0edfda305"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/run_all_visualizations.py",
+      "bytes": 31803,
+      "sha256": "df3309295e9b6482480ab3c28d19877a12be78f5b48731249d748abcb56c5628",
+      "source": "D:/Data_Set/Data_Set/run_all_visualizations.py",
+      "sourceSha256": "df3309295e9b6482480ab3c28d19877a12be78f5b48731249d748abcb56c5628"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/run_baseline_dl.py",
+      "bytes": 16833,
+      "sha256": "209e264732b321b21fcb47f52af4e4f7e424fb9bb11c159db0b694b6a87facb8",
+      "source": "D:/Data_Set/Data_Set/run_baseline_dl.py",
+      "sourceSha256": "209e264732b321b21fcb47f52af4e4f7e424fb9bb11c159db0b694b6a87facb8"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/run_bias_plots.py",
+      "bytes": 25160,
+      "sha256": "841dd5e9ba2fed119e5cf517c02b405808423f71f3345e6d7e37bc7a7e4ad5ea",
+      "source": "D:/Data_Set/Data_Set/run_bias_plots.py",
+      "sourceSha256": "841dd5e9ba2fed119e5cf517c02b405808423f71f3345e6d7e37bc7a7e4ad5ea"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/visualizations.py",
+      "bytes": 23795,
+      "sha256": "a70405ca6e30ccbbb809e1ff11b87f2ced48d87d654f4a01fb11fa02160bf5ce",
+      "source": "D:/Data_Set/Data_Set/visualizations.py",
+      "sourceSha256": "a70405ca6e30ccbbb809e1ff11b87f2ced48d87d654f4a01fb11fa02160bf5ce"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/Healthcare-Bias-Mitigation/Heart_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "bytes": 1384580,
+      "sha256": "815988f6adef4706d0d923cc2c1bfbe2bca88e4d673851c26c3335cde8064814",
+      "source": "D:/Data_Set/Data_Set/Healthcare-Bias-Mitigation/Heart_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "sourceSha256": "9dfe949cf5ccf769c78576f590a871569fd2cd5ca8468f27286dadbad38b1cc1",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/Healthcare-Bias-Mitigation/Respiratory_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "bytes": 696736,
+      "sha256": "2b1c9400ec061f37deaf648a715999c07fc543c77e376b2074887b736b73e03f",
+      "source": "D:/Data_Set/Data_Set/Healthcare-Bias-Mitigation/Respiratory_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "sourceSha256": "4c2e5a52401af494f911af6eb798fa3e977a27303b13a7bb94716503c252df68",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/Healthcare-Bias-Mitigation/Latent_Feature_Alignment_Pipeline.ipynb",
+      "bytes": 17146,
+      "sha256": "cae86b6a9f0a38519d0d08056f0b190e3bf96e5db65feb604f57646a7139a16f",
+      "source": "D:/Data_Set/Data_Set/Healthcare-Bias-Mitigation/Latent_Feature_Alignment_Pipeline.ipynb",
+      "sourceSha256": "94217e85a5d130080be5620f7f1f0136d7261ddbf557bc5586c33dce3b7d5b9e",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/Healthcare-Bias-Mitigation/latent_feature_alignment.py",
+      "bytes": 16914,
+      "sha256": "9144e0620635114e395a13f39f1dced82bcd6fac5e0626cab6a54a54cc792b22",
+      "source": "D:/Data_Set/Data_Set/Healthcare-Bias-Mitigation/latent_feature_alignment.py",
+      "sourceSha256": "9144e0620635114e395a13f39f1dced82bcd6fac5e0626cab6a54a54cc792b22"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/add_chronic_column.py",
+      "bytes": 1101,
+      "sha256": "a1090fb70d984e362a29f98b77739cc682a4bae3f82426fd17f6411da0defe8f",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/add_chronic_column.py",
+      "sourceSha256": "a1090fb70d984e362a29f98b77739cc682a4bae3f82426fd17f6411da0defe8f"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/check_cdc_eicu.py",
+      "bytes": 2639,
+      "sha256": "515e9f6a8d7d228652527e7a17d13ba8ab4910b42ee4fab039be2c667f4fc3ef",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/check_cdc_eicu.py",
+      "sourceSha256": "515e9f6a8d7d228652527e7a17d13ba8ab4910b42ee4fab039be2c667f4fc3ef"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/code.py",
+      "bytes": 2791,
+      "sha256": "74cd35f15ade4b6a7e9b87c51e47e312acb7e297cc588a82f14f45ae47410c65",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/code.py",
+      "sourceSha256": "74cd35f15ade4b6a7e9b87c51e47e312acb7e297cc588a82f14f45ae47410c65"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/convert_xpt.py",
+      "bytes": 967,
+      "sha256": "0081120111f45a9c4ecb61360c1703db4d27801eb8179d632b3a24be4d008103",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/convert_xpt.py",
+      "sourceSha256": "0081120111f45a9c4ecb61360c1703db4d27801eb8179d632b3a24be4d008103"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/deep_recheck.py",
+      "bytes": 7654,
+      "sha256": "2a8c1cd1c755c73166248268e1750e83e58fab743be9d6da5b73bacc7a93515b",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/deep_recheck.py",
+      "sourceSha256": "2a8c1cd1c755c73166248268e1750e83e58fab743be9d6da5b73bacc7a93515b"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/download_nhanes_data.py",
+      "bytes": 3030,
+      "sha256": "2d19f0b4cc51b48129342e5636fe5b0e7a1bf79b6caa978ff1cf976e5f8d9f09",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/download_nhanes_data.py",
+      "sourceSha256": "2d19f0b4cc51b48129342e5636fe5b0e7a1bf79b6caa978ff1cf976e5f8d9f09"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/multi_dataset_preprocessing.py",
+      "bytes": 30723,
+      "sha256": "91e25fb6a112fc611e69283a1c690402417d86d6d6248e211c9a701f15cd879e",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/multi_dataset_preprocessing.py",
+      "sourceSha256": "91e25fb6a112fc611e69283a1c690402417d86d6d6248e211c9a701f15cd879e"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/nhanes_preprocessing.py",
+      "bytes": 27158,
+      "sha256": "bf518a3dbd2802302825a849489ccc72170022d6cddc80ed08286ccdf6260f4b",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/nhanes_preprocessing.py",
+      "sourceSha256": "bf518a3dbd2802302825a849489ccc72170022d6cddc80ed08286ccdf6260f4b"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/remove_chronic.py",
+      "bytes": 674,
+      "sha256": "1b4d7b7ef8d26a19889ffd95f676385b165101c8d0106fbf5985de1a4d4853f5",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/remove_chronic.py",
+      "sourceSha256": "1b4d7b7ef8d26a19889ffd95f676385b165101c8d0106fbf5985de1a4d4853f5"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/rename_columns.py",
+      "bytes": 4390,
+      "sha256": "3579e15c1caa906127098e74c551953eff95034f537b8166d3b222f98819e82e",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/rename_columns.py",
+      "sourceSha256": "3579e15c1caa906127098e74c551953eff95034f537b8166d3b222f98819e82e"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/National Center for health Statistics/verify_all.py",
+      "bytes": 4171,
+      "sha256": "81f9d9fc67f98e673e6e8ed83ebeba04b29368906127765929eb2dd27a5a714b",
+      "source": "D:/Data_Set/Data_Set/National Center for health Statistics/verify_all.py",
+      "sourceSha256": "81f9d9fc67f98e673e6e8ed83ebeba04b29368906127765929eb2dd27a5a714b"
+    },
+    {
+      "path": "legacy/Data_Set/Data_Set/download_all_datasets.py",
+      "bytes": 10552,
+      "sha256": "6593362e6d8d33b11ce8c8e2db60f1a2d3a5c465bc4094f83b7573a566ca9070",
+      "source": "D:/Data_Set/Data_Set/download_all_datasets.py",
+      "sourceSha256": "6593362e6d8d33b11ce8c8e2db60f1a2d3a5c465bc4094f83b7573a566ca9070"
+    },
+    {
+      "path": "legacy/Data_Set/multi_dataset_integration.ipynb",
+      "bytes": 89255,
+      "sha256": "ea4a0a27e3e6710898c91737afa9636123542bdf33f4632409b436d67226b591",
+      "source": "D:/Data_Set/multi_dataset_integration.ipynb",
+      "sourceSha256": "76f77289e2d8ac8b3a9ac5c5a5dc43316ac161731d64d6d10e9a37108d6f30ca",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/Data_Set/nd_preprocessing_and_integration.ipynb",
+      "bytes": 94369,
+      "sha256": "f618b764e8e5fe956d18a35c20114ede3585a3df905bf3ac4aa81c8ffe5651db",
+      "source": "D:/Data_Set/nd_preprocessing_and_integration.ipynb",
+      "sourceSha256": "127f0e4676c1064b507c8cf46cd95bb58be174a3ef46202c393f4eb29b625083",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/Data_Set/integrated_output/untitled.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "D:/Data_Set/integrated_output/untitled.py",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "legacy/Data_Set/fix_notebooks.py",
+      "bytes": 5351,
+      "sha256": "5291ec222322b9eab8799e2f33788129c3e44f5276c2b49ee78fd8145468e236",
+      "source": "D:/Data_Set/fix_notebooks.py",
+      "sourceSha256": "5291ec222322b9eab8799e2f33788129c3e44f5276c2b49ee78fd8145468e236"
+    },
+    {
+      "path": "legacy/Data_Set/fix_notebook2.py",
+      "bytes": 8900,
+      "sha256": "f15ed7a1ed2608f24406777df0dd26725905bcf7060cbdd73241fa68ee6444cb",
+      "source": "D:/Data_Set/fix_notebook2.py",
+      "sourceSha256": "f15ed7a1ed2608f24406777df0dd26725905bcf7060cbdd73241fa68ee6444cb"
+    },
+    {
+      "path": "legacy/Data_Set/test_ckd.py",
+      "bytes": 919,
+      "sha256": "758838e4202a0e9b76fadde80b174568b9a589e9f7d696895bd4eae8b0d57740",
+      "source": "D:/Data_Set/test_ckd.py",
+      "sourceSha256": "758838e4202a0e9b76fadde80b174568b9a589e9f7d696895bd4eae8b0d57740"
+    },
+    {
+      "path": "legacy/Data_Set/fix_ckd_line.py",
+      "bytes": 1586,
+      "sha256": "5c05da212c6f3722cc1f6f409e93609c1e8740ad35c92eb01e300565cb919de1",
+      "source": "D:/Data_Set/fix_ckd_line.py",
+      "sourceSha256": "5c05da212c6f3722cc1f6f409e93609c1e8740ad35c92eb01e300565cb919de1"
+    },
+    {
+      "path": "legacy/Data_Set/check_syntax.py",
+      "bytes": 527,
+      "sha256": "40f7606923c46776c4c48f19c8f9b577bca9603dc24da80b75d3783d19a7cb7a",
+      "source": "D:/Data_Set/check_syntax.py",
+      "sourceSha256": "40f7606923c46776c4c48f19c8f9b577bca9603dc24da80b75d3783d19a7cb7a"
+    },
+    {
+      "path": "legacy/Data_Set/fix_mimic_agg.py",
+      "bytes": 1794,
+      "sha256": "697a268f5a1fe7cbee837388e31ee4b36f81ddd7789edbd3c5c49f5cdaec93a7",
+      "source": "D:/Data_Set/fix_mimic_agg.py",
+      "sourceSha256": "697a268f5a1fe7cbee837388e31ee4b36f81ddd7789edbd3c5c49f5cdaec93a7"
+    },
+    {
+      "path": "legacy/Data_Set/fix_viz_cells.py",
+      "bytes": 3421,
+      "sha256": "87836c23c41cb4e819ec2ca2cb95d2ffb508860cf53bc2d058fc78c3926d2c19",
+      "source": "D:/Data_Set/fix_viz_cells.py",
+      "sourceSha256": "87836c23c41cb4e819ec2ca2cb95d2ffb508860cf53bc2d058fc78c3926d2c19"
+    },
+    {
+      "path": "legacy/Data_Set/scan_fragile.py",
+      "bytes": 1520,
+      "sha256": "bced494738bc0cbe7a0412d31784c9341e7ef11cc63ee04f2908acaccf64d332",
+      "source": "D:/Data_Set/scan_fragile.py",
+      "sourceSha256": "bced494738bc0cbe7a0412d31784c9341e7ef11cc63ee04f2908acaccf64d332"
+    },
+    {
+      "path": "legacy/Data_Set/fix_all_fragile.py",
+      "bytes": 4366,
+      "sha256": "c81079b0e04b459210f38807189eb1c7d14b887800fb35b2740d0596c4ea7b26",
+      "source": "D:/Data_Set/fix_all_fragile.py",
+      "sourceSha256": "c81079b0e04b459210f38807189eb1c7d14b887800fb35b2740d0596c4ea7b26"
+    },
+    {
+      "path": "legacy/Data_Set/verify_outputs.py",
+      "bytes": 1232,
+      "sha256": "b0cbd6cc35b864bdc416c648c027a5408e3d02fd3de1231712a13e5739baf3b4",
+      "source": "D:/Data_Set/verify_outputs.py",
+      "sourceSha256": "b0cbd6cc35b864bdc416c648c027a5408e3d02fd3de1231712a13e5739baf3b4"
+    },
+    {
+      "path": "legacy/Data_Set/check_complete.py",
+      "bytes": 1411,
+      "sha256": "09a8f8349d5480d45ceddd196025ed712c1be0164512779f32c3d9848ec785d2",
+      "source": "D:/Data_Set/check_complete.py",
+      "sourceSha256": "09a8f8349d5480d45ceddd196025ed712c1be0164512779f32c3d9848ec785d2"
+    },
+    {
+      "path": "legacy/Data_Set/fix_drive_path.py",
+      "bytes": 1489,
+      "sha256": "90a9ed3b68f7c4bda8fe2cd7f3626fdcf4f05f5059bedc0b087641902a4863cf",
+      "source": "D:/Data_Set/fix_drive_path.py",
+      "sourceSha256": "90a9ed3b68f7c4bda8fe2cd7f3626fdcf4f05f5059bedc0b087641902a4863cf"
+    },
+    {
+      "path": "legacy/Data_Set/scratch_inspect.py",
+      "bytes": 1706,
+      "sha256": "8543d8bf1c5ed584296a2317f8fb35b96b5a390feb7d25d87b25fce8f6aeabdd",
+      "source": "D:/Data_Set/scratch_inspect.py",
+      "sourceSha256": "8543d8bf1c5ed584296a2317f8fb35b96b5a390feb7d25d87b25fce8f6aeabdd"
+    },
+    {
+      "path": "legacy/Data_Set/scratch_indices.py",
+      "bytes": 755,
+      "sha256": "ace3df18f39e73950ebcf52d02eb797db67d79c6c93190ae3ff61f0b4d3a6b24",
+      "source": "D:/Data_Set/scratch_indices.py",
+      "sourceSha256": "ace3df18f39e73950ebcf52d02eb797db67d79c6c93190ae3ff61f0b4d3a6b24"
+    },
+    {
+      "path": "legacy/Data_Set/scratch_raw_line.py",
+      "bytes": 587,
+      "sha256": "c20c6abec74314b07af9874f44747dd2edb882144dd2016f4ff011e0321fa4aa",
+      "source": "D:/Data_Set/scratch_raw_line.py",
+      "sourceSha256": "c20c6abec74314b07af9874f44747dd2edb882144dd2016f4ff011e0321fa4aa"
+    },
+    {
+      "path": "legacy/Data_Set/scratch_excel_rows.py",
+      "bytes": 1873,
+      "sha256": "08f6f182335f098ccd40df21fff1acb168dd4b111b29b62bbc7db8be807d5a57",
+      "source": "D:/Data_Set/scratch_excel_rows.py",
+      "sourceSha256": "08f6f182335f098ccd40df21fff1acb168dd4b111b29b62bbc7db8be807d5a57"
+    },
+    {
+      "path": "legacy/Data_Set/scratch_comma_count.py",
+      "bytes": 786,
+      "sha256": "4ea6b413ec85fffc78f73772c87ff11d3086143b167e8d9ee79dbea02484bd90",
+      "source": "D:/Data_Set/scratch_comma_count.py",
+      "sourceSha256": "4ea6b413ec85fffc78f73772c87ff11d3086143b167e8d9ee79dbea02484bd90"
+    },
+    {
+      "path": "legacy/Data_Set/scratch_tabs.py",
+      "bytes": 501,
+      "sha256": "7f9406d6a547388b4ee3a8fd1ade32a72a47bee9f236c56ad4481af9c23e57aa",
+      "source": "D:/Data_Set/scratch_tabs.py",
+      "sourceSha256": "7f9406d6a547388b4ee3a8fd1ade32a72a47bee9f236c56ad4481af9c23e57aa"
+    },
+    {
+      "path": "legacy/Data_Set/scratch_commas_after_bmi.py",
+      "bytes": 1231,
+      "sha256": "4073965f82159cafc21e9078b93b76e67b94559b4a0d45bde6634fd310dc26db",
+      "source": "D:/Data_Set/scratch_commas_after_bmi.py",
+      "sourceSha256": "4073965f82159cafc21e9078b93b76e67b94559b4a0d45bde6634fd310dc26db"
+    },
+    {
+      "path": "legacy/Data_Set/rebuild_integration.py",
+      "bytes": 19045,
+      "sha256": "107f13b4c60deb6a26a4b28090b9d4bb2e53704520ba4acac6c4a2ccf46b9a4e",
+      "source": "D:/Data_Set/rebuild_integration.py",
+      "sourceSha256": "107f13b4c60deb6a26a4b28090b9d4bb2e53704520ba4acac6c4a2ccf46b9a4e"
+    },
+    {
+      "path": "legacy/Data_Set/fix_notebook_final.py",
+      "bytes": 58144,
+      "sha256": "88d17a5e0c720f7e9a27dd8d420fe7784ab1f3ac72be493d0a21149016bb4000",
+      "source": "D:/Data_Set/fix_notebook_final.py",
+      "sourceSha256": "88d17a5e0c720f7e9a27dd8d420fe7784ab1f3ac72be493d0a21149016bb4000"
+    },
+    {
+      "path": "legacy/Data_Set/patch_notebook_v5.py",
+      "bytes": 34190,
+      "sha256": "d620ee51655c994e3dc413203be49850bd8cc2217eb1e1a51dd223c459a21b9f",
+      "source": "D:/Data_Set/patch_notebook_v5.py",
+      "sourceSha256": "d620ee51655c994e3dc413203be49850bd8cc2217eb1e1a51dd223c459a21b9f"
+    },
+    {
+      "path": "legacy/Data_Set/add_viewer_cells.py",
+      "bytes": 8104,
+      "sha256": "44644a7e83b7b9b4d8b56cb2b25b3fc2955b7d5ceb7b0df544831a2f02013251",
+      "source": "D:/Data_Set/add_viewer_cells.py",
+      "sourceSha256": "44644a7e83b7b9b4d8b56cb2b25b3fc2955b7d5ceb7b0df544831a2f02013251"
+    },
+    {
+      "path": "legacy/Data_Set/fix_paths.py",
+      "bytes": 3393,
+      "sha256": "9712a5716cbbaa6c207d01200a22cf573712e31b9de9d33aa89a699a8e261ccf",
+      "source": "D:/Data_Set/fix_paths.py",
+      "sourceSha256": "9712a5716cbbaa6c207d01200a22cf573712e31b9de9d33aa89a699a8e261ccf"
+    },
+    {
+      "path": "legacy/Data_Set/fix_all_paths.py",
+      "bytes": 1905,
+      "sha256": "e45344012f3c768e96cfab97e54bf341d4b22605f879556234aa1bad3a22d6a9",
+      "source": "D:/Data_Set/fix_all_paths.py",
+      "sourceSha256": "e45344012f3c768e96cfab97e54bf341d4b22605f879556234aa1bad3a22d6a9"
+    },
+    {
+      "path": "legacy/input_DataSet/zenodo/upload_to_zenodo.py",
+      "bytes": 2263,
+      "sha256": "65d3c7590b68e8e56791a84fdd56e20888602636edbf6c095f1dc1dcd620b27b",
+      "source": "D:/input_DataSet/zenodo/upload_to_zenodo.py",
+      "sourceSha256": "65d3c7590b68e8e56791a84fdd56e20888602636edbf6c095f1dc1dcd620b27b"
+    },
+    {
+      "path": "legacy/Diabetes/download_inspire.py",
+      "bytes": 6138,
+      "sha256": "b9cf29c203e7700b43fd50a71d04314f21c1bdf789dd572cd57bb3d0f4f5ebf1",
+      "source": "D:/Diabetes/download_inspire.py",
+      "sourceSha256": "b9cf29c203e7700b43fd50a71d04314f21c1bdf789dd572cd57bb3d0f4f5ebf1"
+    },
+    {
+      "path": "legacy/Diabetes/build_diabetes_input.py",
+      "bytes": 3117,
+      "sha256": "4ad92e9656e58eb368b95f234ea7ae154a9448dc5ebbb9f79e6e56ce6d90d942",
+      "source": "D:/Diabetes/build_diabetes_input.py",
+      "sourceSha256": "4ad92e9656e58eb368b95f234ea7ae154a9448dc5ebbb9f79e6e56ce6d90d942"
+    },
+    {
+      "path": "legacy/Heart_physionet/export_and_analyze_bias.py",
+      "bytes": 15691,
+      "sha256": "109153ee59ac100a7b6f63213eeda36b74cf44dbe3523612cdb08381ce78f2a4",
+      "source": "D:/Heart_physionet/export_and_analyze_bias.py",
+      "sourceSha256": "109153ee59ac100a7b6f63213eeda36b74cf44dbe3523612cdb08381ce78f2a4"
+    },
+    {
+      "path": "legacy/Heart_physionet/debias_ptb_dataset.py",
+      "bytes": 10936,
+      "sha256": "b848fe9787f06370555d5d9e2d7ffe9e3a6757644ca358df76dddf9818ef1a67",
+      "source": "D:/Heart_physionet/debias_ptb_dataset.py",
+      "sourceSha256": "b848fe9787f06370555d5d9e2d7ffe9e3a6757644ca358df76dddf9818ef1a67"
+    },
+    {
+      "path": "legacy/Heart_physionet/update_heart_pipeline.py",
+      "bytes": 5786,
+      "sha256": "b779ef679f231905eccc502652db4c4e4ca7ecece927d6dcc7a1c89576589e85",
+      "source": "D:/Heart_physionet/update_heart_pipeline.py",
+      "sourceSha256": "b779ef679f231905eccc502652db4c4e4ca7ecece927d6dcc7a1c89576589e85"
+    },
+    {
+      "path": "legacy/Heart_physionet/generate_heart_dashboards.py",
+      "bytes": 20580,
+      "sha256": "d924d778bf23c0b36c9cf9d6d3f4aeb46cda61c7a99a14da192aa17bda72a871",
+      "source": "D:/Heart_physionet/generate_heart_dashboards.py",
+      "sourceSha256": "d924d778bf23c0b36c9cf9d6d3f4aeb46cda61c7a99a14da192aa17bda72a871"
+    },
+    {
+      "path": "legacy/Heart_physionet/generate_75k_heart_dataset.py",
+      "bytes": 9746,
+      "sha256": "c4757b9740da48e88ff30ef3db80ceb2fd4327ab08b2a394ee8f96d85fd73818",
+      "source": "D:/Heart_physionet/generate_75k_heart_dataset.py",
+      "sourceSha256": "c4757b9740da48e88ff30ef3db80ceb2fd4327ab08b2a394ee8f96d85fd73818"
+    },
+    {
+      "path": "legacy/Heart_physionet/build_75k_raw_heart_input.py",
+      "bytes": 8690,
+      "sha256": "81faa0ede53972ba2665db0ffb7f1f8508a84ae2a1cdd04852a781257784bcd6",
+      "source": "D:/Heart_physionet/build_75k_raw_heart_input.py",
+      "sourceSha256": "81faa0ede53972ba2665db0ffb7f1f8508a84ae2a1cdd04852a781257784bcd6"
+    },
+    {
+      "path": "legacy/Heart_physionet/generate_raw_input_exact_output_columns.py",
+      "bytes": 5563,
+      "sha256": "56bb4050f6a16e4e15520e20a0edcc47a40f53d365d0f3d3de4c7394b3e7ef03",
+      "source": "D:/Heart_physionet/generate_raw_input_exact_output_columns.py",
+      "sourceSha256": "56bb4050f6a16e4e15520e20a0edcc47a40f53d365d0f3d3de4c7394b3e7ef03"
+    },
+    {
+      "path": "legacy/Heart_physionet/build_input_from_output.py",
+      "bytes": 5862,
+      "sha256": "711584ff592a9e8d9011786596bbd4bd7a90f6d85cf2a0621a36d2bd9b12b97d",
+      "source": "D:/Heart_physionet/build_input_from_output.py",
+      "sourceSha256": "711584ff592a9e8d9011786596bbd4bd7a90f6d85cf2a0621a36d2bd9b12b97d"
+    },
+    {
+      "path": "legacy/Heart_physionet/Heart_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "bytes": 1384580,
+      "sha256": "815988f6adef4706d0d923cc2c1bfbe2bca88e4d673851c26c3335cde8064814",
+      "source": "D:/Heart_physionet/Heart_Healthcare_Bias_Mitigation_Pipeline.ipynb",
+      "sourceSha256": "9dfe949cf5ccf769c78576f590a871569fd2cd5ca8468f27286dadbad38b1cc1",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/Lentent_physionet/Latent_Feature_Alignment_Pipeline.ipynb",
+      "bytes": 46426,
+      "sha256": "3daac4dcb5545e128ab3fd5cdadaf60195004b7e30212626675ad1768db99ab0",
+      "source": "D:/Lentent_physionet/Latent_Feature_Alignment_Pipeline.ipynb",
+      "sourceSha256": "266b487d8468002af99323addb99c9eafa210a785a98f342b2f981882a5a7cf7",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/Lentent_physionet/latent_feature_alignment.py",
+      "bytes": 39465,
+      "sha256": "05740c524a615a18b1f756643b016a7371adb3df2272d96469a4adb532811666",
+      "source": "D:/Lentent_physionet/latent_feature_alignment.py",
+      "sourceSha256": "05740c524a615a18b1f756643b016a7371adb3df2272d96469a4adb532811666"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/before_cleanup/preprocessing/audit_and_prepare.py",
+      "bytes": 33821,
+      "sha256": "74e39bbd5f39251bc7edb8908d79f3c79fa060b15c4916279a19e9edf6be1446",
+      "source": "D:/complete_old_archive_20261111_212716/before_cleanup/preprocessing/audit_and_prepare.py",
+      "sourceSha256": "74e39bbd5f39251bc7edb8908d79f3c79fa060b15c4916279a19e9edf6be1446"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/before_cleanup/dataset_audit/recheck_complete.py",
+      "bytes": 13918,
+      "sha256": "7109bb1cbd7ac9462d6d1af507d77292ca90ddc96589211e5bb0ae019f953ca7",
+      "source": "D:/complete_old_archive_20261111_212716/before_cleanup/dataset_audit/recheck_complete.py",
+      "sourceSha256": "7109bb1cbd7ac9462d6d1af507d77292ca90ddc96589211e5bb0ae019f953ca7"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/heart_preprocessing.ipynb",
+      "bytes": 274544,
+      "sha256": "ec1fced8c59081e0415cd4cf993d1413f20830273b7855c4f7327d742d0813f5",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/heart_preprocessing.ipynb",
+      "sourceSha256": "f7932c7a7140ddc31e51e304dd0000961b7bd9d0f32fec074d5b50ef66713bf9",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/respiratory_preprocessing.ipynb",
+      "bytes": 334722,
+      "sha256": "449d10b8c7cf47f8cedc1062e597ab68efa9759a96133e835e5b42420094a852",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/respiratory_preprocessing.ipynb",
+      "sourceSha256": "383f54c4cddfe3c3c48b8ab886a1f098f0621585b9f336157d7e3e168ab64bbd",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/diabetes_preprocessing.ipynb",
+      "bytes": 274157,
+      "sha256": "992bb91b61ce4b198b5227e613805337147e082464bbb2e58b035101c3cbe6b8",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/diabetes_preprocessing.ipynb",
+      "sourceSha256": "4423473dd284c94c079e79021f26a9927cdc9ab05e5e880b4f304487858d7471",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/hypertension_preprocessing.ipynb",
+      "bytes": 274510,
+      "sha256": "d52a7b9a7c3fbb0fae03005ceb798bf1d709a17b3d800a69032f7145228a09b5",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/hypertension_preprocessing.ipynb",
+      "sourceSha256": "2c53bc730112219c0b65db6fc77e01bc96a595fbe1d46a523468cf1d5879c52a",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/audit_mimic_notebook_data.py",
+      "bytes": 13811,
+      "sha256": "b06dd7e732fcf8984aa1db2b1c839469c40a5868fca2433effa8def649ab66ee",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/audit_mimic_notebook_data.py",
+      "sourceSha256": "b06dd7e732fcf8984aa1db2b1c839469c40a5868fca2433effa8def649ab66ee"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/methods_fragment.py",
+      "bytes": 34298,
+      "sha256": "b5fbb6f4fdc44ae8795c700fe2456e7cd60be1b2e509fb16a093b690b78fcaae",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/methods_fragment.py",
+      "sourceSha256": "b5fbb6f4fdc44ae8795c700fe2456e7cd60be1b2e509fb16a093b690b78fcaae"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/test_methods_fragment.py",
+      "bytes": 6738,
+      "sha256": "884bc6baa21253e84c07c59bc81c85ed82bc8743b13281c802cafa7ca1f19b65",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/test_methods_fragment.py",
+      "sourceSha256": "884bc6baa21253e84c07c59bc81c85ed82bc8743b13281c802cafa7ca1f19b65"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/fairness_metrics_fragment.py",
+      "bytes": 16515,
+      "sha256": "634b1805bf2cd37ce59962600b407eb18ab5125e1a9b14ad88daec0190661550",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/fairness_metrics_fragment.py",
+      "sourceSha256": "634b1805bf2cd37ce59962600b407eb18ab5125e1a9b14ad88daec0190661550"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/test_fairness_metrics_fragment.py",
+      "bytes": 4863,
+      "sha256": "a2fec02483436a84ac43bfb6661511c71a5d6fb77b5da05ef306d545eed22838",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/test_fairness_metrics_fragment.py",
+      "sourceSha256": "a2fec02483436a84ac43bfb6661511c71a5d6fb77b5da05ef306d545eed22838"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/plots_fragment.py",
+      "bytes": 19446,
+      "sha256": "a6018aafd41c80f298fc33ef29f45978dd1074e021b81361d8f90240bcca437c",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/plots_fragment.py",
+      "sourceSha256": "a6018aafd41c80f298fc33ef29f45978dd1074e021b81361d8f90240bcca437c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/test_plots_fragment.py",
+      "bytes": 3054,
+      "sha256": "d27b4a23e5972f7c3aa041b46d9fa337a8110af89601d154174c8f6577eeded3",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/test_plots_fragment.py",
+      "sourceSha256": "d27b4a23e5972f7c3aa041b46d9fa337a8110af89601d154174c8f6577eeded3"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/experiment_fragment.py",
+      "bytes": 27918,
+      "sha256": "3825f34974be68c293817edb6690a14e5fd7700d27d740e1889fb982c42d3464",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/experiment_fragment.py",
+      "sourceSha256": "3825f34974be68c293817edb6690a14e5fd7700d27d740e1889fb982c42d3464"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/class_fragment.py",
+      "bytes": 14028,
+      "sha256": "10b376027759d55d31e74ef888d286f232800ef5067f64131aaabc8ee322c334",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/mimic_notebook_work/class_fragment.py",
+      "sourceSha256": "10b376027759d55d31e74ef888d286f232800ef5067f64131aaabc8ee322c334"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/audit_20261109/heart_code_audit.py",
+      "bytes": 241390,
+      "sha256": "36daf47c2fcf10525fb6dfe11d4e02242e53419650b8c40d93ee2699fe2b021d",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/audit_20261109/heart_code_audit.py",
+      "sourceSha256": "36daf47c2fcf10525fb6dfe11d4e02242e53419650b8c40d93ee2699fe2b021d"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/audit_20261109/hypertension_code_audit.py",
+      "bytes": 240996,
+      "sha256": "31d6f0f627a239179a38a4151a98700dccf94cc46940d563b3ae8300677d6ed5",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/audit_20261109/hypertension_code_audit.py",
+      "sourceSha256": "31d6f0f627a239179a38a4151a98700dccf94cc46940d563b3ae8300677d6ed5"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/audit_20261109/diabetes_code_audit.py",
+      "bytes": 240828,
+      "sha256": "8c5f376271040577a0e486bda6b3f7ef35ee508020e844eebff4d3f2d89ae247",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/audit_20261109/diabetes_code_audit.py",
+      "sourceSha256": "8c5f376271040577a0e486bda6b3f7ef35ee508020e844eebff4d3f2d89ae247"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/preprocessing/audit_20261109/respiratory_notebook_code.py",
+      "bytes": 253675,
+      "sha256": "ef1e02248c289658366615f088878fc95605b945943b7bccbd1f01afa7d986fc",
+      "source": "D:/complete_old_archive_20261111_212716/complete/preprocessing/audit_20261109/respiratory_notebook_code.py",
+      "sourceSha256": "ef1e02248c289658366615f088878fc95605b945943b7bccbd1f01afa7d986fc"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/dataset_audit/legacy_results_not_for_training/respiratory/Respiratory_Bias_Preprocessing.ipynb",
+      "bytes": 375495,
+      "sha256": "66c45224c835f6325754aefa8766cf70c244c3f6af666759a9ada156d673fb56",
+      "source": "D:/complete_old_archive_20261111_212716/complete/dataset_audit/legacy_results_not_for_training/respiratory/Respiratory_Bias_Preprocessing.ipynb",
+      "sourceSha256": "aebc76007a882dc890f7b2046f28f725d852d66c66acd9f62a883ce268e631f9",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/dataset_audit/update_notebook_notices.py",
+      "bytes": 3361,
+      "sha256": "df8af21ac2fb97c469c4aa51d632a1dae531bcfbfb804913822b0d40767b26e4",
+      "source": "D:/complete_old_archive_20261111_212716/complete/dataset_audit/update_notebook_notices.py",
+      "sourceSha256": "df8af21ac2fb97c469c4aa51d632a1dae531bcfbfb804913822b0d40767b26e4"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/dataset_audit/finalize_dataset_report.py",
+      "bytes": 12387,
+      "sha256": "22e690201996eca2eaf6d68c4b80474630aafb9ba8260aca06b72ec43556ee44",
+      "source": "D:/complete_old_archive_20261111_212716/complete/dataset_audit/finalize_dataset_report.py",
+      "sourceSha256": "22e690201996eca2eaf6d68c4b80474630aafb9ba8260aca06b72ec43556ee44"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/dataset_audit/cleanup_superseded_datasets.py",
+      "bytes": 5357,
+      "sha256": "bb9a3cfc674d7f33ae1e7255f7670c8aa86ebeedc570bf453a9b16d0824fee18",
+      "source": "D:/complete_old_archive_20261111_212716/complete/dataset_audit/cleanup_superseded_datasets.py",
+      "sourceSha256": "bb9a3cfc674d7f33ae1e7255f7670c8aa86ebeedc570bf453a9b16d0824fee18"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/dataset_audit/update_current_layout.py",
+      "bytes": 7618,
+      "sha256": "8d40185ada2e7b117cbef098637e1c184aeddbef11d829d3df486d01c34935d1",
+      "source": "D:/complete_old_archive_20261111_212716/complete/dataset_audit/update_current_layout.py",
+      "sourceSha256": "8d40185ada2e7b117cbef098637e1c184aeddbef11d829d3df486d01c34935d1"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/cross_dataset/evaluate_generalization.py",
+      "bytes": 9931,
+      "sha256": "a4cdb9fe095d5b23424946d31f5863a0f89effb939b7df1367b5ecd9fa1030db",
+      "source": "D:/complete_old_archive_20261111_212716/complete/cross_dataset/evaluate_generalization.py",
+      "sourceSha256": "a4cdb9fe095d5b23424946d31f5863a0f89effb939b7df1367b5ecd9fa1030db"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/cross_dataset/test_study_integrity.py",
+      "bytes": 7506,
+      "sha256": "e733d2d0554455e1911204b4b164f29f9cffe2a818a937edfb52913edcc7a22f",
+      "source": "D:/complete_old_archive_20261111_212716/complete/cross_dataset/test_study_integrity.py",
+      "sourceSha256": "e733d2d0554455e1911204b4b164f29f9cffe2a818a937edfb52913edcc7a22f"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/complete/cross_dataset/finish_browser_study.py",
+      "bytes": 5220,
+      "sha256": "42b0842f2e8c0aaf7553f531565e6382687e6740cc0d712734d5c0c345dea6f9",
+      "source": "D:/complete_old_archive_20261111_212716/complete/cross_dataset/finish_browser_study.py",
+      "sourceSha256": "42b0842f2e8c0aaf7553f531565e6382687e6740cc0d712734d5c0c345dea6f9"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/remaining_audit_snapshots/heart_code.py",
+      "bytes": 236598,
+      "sha256": "71c0d84a9e14a9bcb9152a645394e54acfe78ebf34a0174b4e04c3a6ae5c3192",
+      "source": "D:/complete_old_archive_20261111_212716/remaining_audit_snapshots/heart_code.py",
+      "sourceSha256": "71c0d84a9e14a9bcb9152a645394e54acfe78ebf34a0174b4e04c3a6ae5c3192"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/remaining_audit_snapshots/respiratory_code.py",
+      "bytes": 248633,
+      "sha256": "e14d6ad54a3254c091c6cae6865568c7dc9ed01c3f87257be70a5d3f3c85e5b1",
+      "source": "D:/complete_old_archive_20261111_212716/remaining_audit_snapshots/respiratory_code.py",
+      "sourceSha256": "e14d6ad54a3254c091c6cae6865568c7dc9ed01c3f87257be70a5d3f3c85e5b1"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/remaining_audit_snapshots/diabetes_code.py",
+      "bytes": 236037,
+      "sha256": "5bbb19331414573f90acc1064b2ff37d1031217b569f463b2e711a3f7895f335",
+      "source": "D:/complete_old_archive_20261111_212716/remaining_audit_snapshots/diabetes_code.py",
+      "sourceSha256": "5bbb19331414573f90acc1064b2ff37d1031217b569f463b2e711a3f7895f335"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/remaining_audit_snapshots/hypertension_code.py",
+      "bytes": 236204,
+      "sha256": "4903aac486382ddafed2793caeeb48e3dc286fd53a06e9717ec683f6b490622a",
+      "source": "D:/complete_old_archive_20261111_212716/remaining_audit_snapshots/hypertension_code.py",
+      "sourceSha256": "4903aac486382ddafed2793caeeb48e3dc286fd53a06e9717ec683f6b490622a"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/audit_and_prepare.py",
+      "bytes": 24717,
+      "sha256": "530165cb54ce740c729a21836de15b75dd2c8b1122e2ebf5867fe49235222e92",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/audit_and_prepare.py",
+      "sourceSha256": "530165cb54ce740c729a21836de15b75dd2c8b1122e2ebf5867fe49235222e92"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/confirm_saved_outputs.py",
+      "bytes": 8672,
+      "sha256": "0aeefd3f56a9de1bde162e738ce8426d9d9fa115807a484eaedc137e12916d31",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/confirm_saved_outputs.py",
+      "sourceSha256": "0aeefd3f56a9de1bde162e738ce8426d9d9fa115807a484eaedc137e12916d31"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/verified_preprocessing.ipynb",
+      "bytes": 2131,
+      "sha256": "af7179c924ee430f4bf934fbf549b61f37a3e338fee164274277642d3bf624c0",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/verified_preprocessing.ipynb",
+      "sourceSha256": "9f5078510b6d1bf33c6f71d14422be8ac59bb545d5c65003a030c135a2b70021",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/publish_verified_files.py",
+      "bytes": 1952,
+      "sha256": "2dd73ad5ee8bebf774af6ff30df24801fe653b241787067c5721b05dc3a51e17",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/publish_verified_files.py",
+      "sourceSha256": "2dd73ad5ee8bebf774af6ff30df24801fe653b241787067c5721b05dc3a51e17"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/heart_verified_preprocessing.ipynb",
+      "bytes": 2615,
+      "sha256": "cfba3f07281dde0e9b26f8259cd4eb273ce14d51d8e522e2ec0c0f84f5a24baf",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/heart_verified_preprocessing.ipynb",
+      "sourceSha256": "a6592fce2df49ac4a386260beb2f87646c974d1d0659d062685cecd2d0b0551c",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/respiratory_verified_preprocessing.ipynb",
+      "bytes": 2470,
+      "sha256": "2be98a8a31fdf6d3427a87077e197fbd4a5ab79e466adefc2f05a2a699e0efee",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/respiratory_verified_preprocessing.ipynb",
+      "sourceSha256": "90c4700b4aca4295ebb60618dcc19b7bbf85f8fbe057826750b782356c844491",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/diabetes_verified_preprocessing.ipynb",
+      "bytes": 2633,
+      "sha256": "8a3bde3e97a97b3255697cd0555811ffd3676a7fa1dff07ef029517ccf44b338",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/diabetes_verified_preprocessing.ipynb",
+      "sourceSha256": "38bac36e1114269e4f4a0558d1649cec0f3c2d0d102fa7ffaf3983c792eab743",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/hypertension_verified_preprocessing.ipynb",
+      "bytes": 2642,
+      "sha256": "34c7f4995fcb5f9dccfc4f2611017360634cb6eb70755720d60d9d8979099a83",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/hypertension_verified_preprocessing.ipynb",
+      "sourceSha256": "7ec0a86021e2be4a36e947be2d43cee3e8b22ddd2121e5e1e0109d9c3296d0dd",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/mimic_verified_preprocessing.ipynb",
+      "bytes": 2625,
+      "sha256": "dfa36a437e786eb3425571fb6b1b6af6e66a315dd99730d73db69500e92d710c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/mimic_verified_preprocessing.ipynb",
+      "sourceSha256": "80fc595454ef3b736ce452a4ea3d0c6f06bd05ba1fd8f400c6894e0573d5c03d",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/publish_hospital_files.py",
+      "bytes": 7246,
+      "sha256": "b736d5c66afb0f4ec842518e5855119f4646be8c9df8df90a16628df39c73f86",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/publish_hospital_files.py",
+      "sourceSha256": "b736d5c66afb0f4ec842518e5855119f4646be8c9df8df90a16628df39c73f86"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/hospital_preprocessing_latent.ipynb",
+      "bytes": 2324,
+      "sha256": "ea848970b466466bb0ba721ac44ff396f5c2a65217e9eb1cbfbfd897dce63018",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/hospital_preprocessing_latent.ipynb",
+      "sourceSha256": "07be56ad1776d62f343b3d4c590c7a1aeb759f2bbac7fc0f85c73fcd8a2d7e28",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/prepare_four_condition_baseline.py",
+      "bytes": 12034,
+      "sha256": "a7b70f24756be736e08b09356403580c23766ac8096149ae08ed6726e80f7c1e",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/prepare_four_condition_baseline.py",
+      "sourceSha256": "a7b70f24756be736e08b09356403580c23766ac8096149ae08ed6726e80f7c1e"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/audit_saved_preprocessing.py",
+      "bytes": 9978,
+      "sha256": "ca47b50625dc83d94ba95e6a8fcdcda28ae2a2a3dde73f6ddcd241444a70b7c7",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/audit_saved_preprocessing.py",
+      "sourceSha256": "ca47b50625dc83d94ba95e6a8fcdcda28ae2a2a3dde73f6ddcd241444a70b7c7"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/build_bias_dashboards.py",
+      "bytes": 329,
+      "sha256": "bc370cc4eb789997960e24ca9bda956e05543892ef3145d28115cb0202e7d6c8",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/code/build_bias_dashboards.py",
+      "sourceSha256": "bc370cc4eb789997960e24ca9bda956e05543892ef3145d28115cb0202e7d6c8"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/models.py",
+      "bytes": 7660,
+      "sha256": "8c605418ed35cbf0f8edd334d385d8b019504df20c2b76d33548120279fc6fde",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/models.py",
+      "sourceSha256": "8c605418ed35cbf0f8edd334d385d8b019504df20c2b76d33548120279fc6fde"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/run_latent.py",
+      "bytes": 39049,
+      "sha256": "8d3d1ffba7fb11d841d7bb31dfb6a5e34bca2362f7e8ad5ac1080c3c39222202",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/run_latent.py",
+      "sourceSha256": "8d3d1ffba7fb11d841d7bb31dfb6a5e34bca2362f7e8ad5ac1080c3c39222202"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/test_latent.py",
+      "bytes": 3114,
+      "sha256": "ee9641749cf33c4cc915a118581fcd1b21db3058de34079989570734f2f2253c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/test_latent.py",
+      "sourceSha256": "ee9641749cf33c4cc915a118581fcd1b21db3058de34079989570734f2f2253c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/render_protocol.py",
+      "bytes": 421,
+      "sha256": "f255b6bbf2e63a3f4a3b6f31ccddbb63878b7e600dc06713fcb3d3668b34d03c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/render_protocol.py",
+      "sourceSha256": "f255b6bbf2e63a3f4a3b6f31ccddbb63878b7e600dc06713fcb3d3668b34d03c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/validate_latent.py",
+      "bytes": 8325,
+      "sha256": "5d80ba8463516640ba42546697046cdd57319b1f95427aef48f82323fcb2595f",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/validate_latent.py",
+      "sourceSha256": "5d80ba8463516640ba42546697046cdd57319b1f95427aef48f82323fcb2595f"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/refine_utility.py",
+      "bytes": 6489,
+      "sha256": "df6e74fae78515c2521d6067c5b29e2eabd511e010d8c3801e7d157cafab143d",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/refine_utility.py",
+      "sourceSha256": "df6e74fae78515c2521d6067c5b29e2eabd511e010d8c3801e7d157cafab143d"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/build_notebook.py",
+      "bytes": 197,
+      "sha256": "b3a4e73a93778975f8683f3e1ec198c946a09a80470a4cfd19d92eee7e884131",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/build_notebook.py",
+      "sourceSha256": "b3a4e73a93778975f8683f3e1ec198c946a09a80470a4cfd19d92eee7e884131"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/latent_pipeline.ipynb",
+      "bytes": 2110,
+      "sha256": "97040c507d22f696846b59344ebc489c642231581b1932d0a431d123f815bce1",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/latent_pipeline.ipynb",
+      "sourceSha256": "5c01a27e311f876708811554bbf56bc6da1fffdaf157abf34db17ad3ebd5f987",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/load_for_inprocessing.py",
+      "bytes": 1872,
+      "sha256": "64789e834b2fc8e6a682e6b9d6dac8c4bee53f0e9a0c1a791e199da92f84430b",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/load_for_inprocessing.py",
+      "sourceSha256": "64789e834b2fc8e6a682e6b9d6dac8c4bee53f0e9a0c1a791e199da92f84430b"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/check_handoff.py",
+      "bytes": 2481,
+      "sha256": "844421080a00d80abc26b14ff7cb669dfeed6ad3b5514e32cd55d9c53055e50d",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/check_handoff.py",
+      "sourceSha256": "844421080a00d80abc26b14ff7cb669dfeed6ad3b5514e32cd55d9c53055e50d"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/build_hospital_latent.py",
+      "bytes": 9477,
+      "sha256": "8dc5d47f261a339f5cbf26581c50f609a18cbc165a0a485bd21a5fea1d759d51",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/build_hospital_latent.py",
+      "sourceSha256": "8dc5d47f261a339f5cbf26581c50f609a18cbc165a0a485bd21a5fea1d759d51"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/validate_hospital_latent.py",
+      "bytes": 7720,
+      "sha256": "c0f852c91e908397f7725321f46328c184a90b7ba5674408cd5fdb959951ee14",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/validate_hospital_latent.py",
+      "sourceSha256": "c0f852c91e908397f7725321f46328c184a90b7ba5674408cd5fdb959951ee14"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/code/build_bias_dashboards.py",
+      "bytes": 313,
+      "sha256": "7886dbf3486285f9f208f904c16847f852c71519622090d647da45a78806b478",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/code/build_bias_dashboards.py",
+      "sourceSha256": "7886dbf3486285f9f208f904c16847f852c71519622090d647da45a78806b478"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/core.py",
+      "bytes": 9455,
+      "sha256": "ab534203b924fca163b869792e4c0d32cbafdd225aab9e1a03f9b0a499235f2c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/core.py",
+      "sourceSha256": "ab534203b924fca163b869792e4c0d32cbafdd225aab9e1a03f9b0a499235f2c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/run_inprocessing.py",
+      "bytes": 14014,
+      "sha256": "e4b3f4b53a511a84df2df68dc364a0673e8d23addf4e6888405b3fbf68f20fdd",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/run_inprocessing.py",
+      "sourceSha256": "e4b3f4b53a511a84df2df68dc364a0673e8d23addf4e6888405b3fbf68f20fdd"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/test_core.py",
+      "bytes": 3885,
+      "sha256": "4a68380e8a0de2b431514a4a289ad633237434c65690a438625fe997a312d5c7",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/test_core.py",
+      "sourceSha256": "4a68380e8a0de2b431514a4a289ad633237434c65690a438625fe997a312d5c7"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/make_report.py",
+      "bytes": 12588,
+      "sha256": "cfbc75fde1015114f794d13671c9bb14e8d798a5672da1cdac4b2dc007f3ce10",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/make_report.py",
+      "sourceSha256": "cfbc75fde1015114f794d13671c9bb14e8d798a5672da1cdac4b2dc007f3ce10"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/validate.py",
+      "bytes": 5943,
+      "sha256": "09bb6293d9d265839832bd2d084e5f9ff96a0dadd435d059622437cfc2e908b2",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/validate.py",
+      "sourceSha256": "09bb6293d9d265839832bd2d084e5f9ff96a0dadd435d059622437cfc2e908b2"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/check_exports.py",
+      "bytes": 3989,
+      "sha256": "3ec92038fe1882d01eee16d79118af6e69e30f6fefb399a27d0905f421ce73df",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/check_exports.py",
+      "sourceSha256": "3ec92038fe1882d01eee16d79118af6e69e30f6fefb399a27d0905f421ce73df"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/inprocessing_pipeline.ipynb",
+      "bytes": 2223,
+      "sha256": "d2a89622c7a64338e9940f3ba799cf77a2127ed44065c7c2ca4603d01e2e9ff1",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/inprocessing_pipeline.ipynb",
+      "sourceSha256": "e46a2a72240c1af87e9cb38b2a3c6795a828fe50a2d0e3e7d5d9c0e66c48e787",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/build_bias_dashboards.py",
+      "bytes": 325,
+      "sha256": "f9b6e3cd1666a962550294788fe62cf6251850d47a1e7393ee5914d32bdabe43",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/code/build_bias_dashboards.py",
+      "sourceSha256": "f9b6e3cd1666a962550294788fe62cf6251850d47a1e7393ee5914d32bdabe43"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/prepare_cross_dataset.py",
+      "bytes": 18315,
+      "sha256": "63d219e226bfd90504a2ec84a4a9e92f62d6c2fcc7707b495a2568e2a646b1d2",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/prepare_cross_dataset.py",
+      "sourceSha256": "63d219e226bfd90504a2ec84a4a9e92f62d6c2fcc7707b495a2568e2a646b1d2"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/streaming_sources.py",
+      "bytes": 7935,
+      "sha256": "80b419cae51162004b6784b12db196964859f8dfd6e93f07155dd4a3cbe4e676",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/streaming_sources.py",
+      "sourceSha256": "80b419cae51162004b6784b12db196964859f8dfd6e93f07155dd4a3cbe4e676"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/download_mimic.py",
+      "bytes": 17377,
+      "sha256": "25b1d898cf36acdc3f0d2e69a0ce7301d7f0c58682366fbc50929cd4a4604dea",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/download_mimic.py",
+      "sourceSha256": "25b1d898cf36acdc3f0d2e69a0ce7301d7f0c58682366fbc50929cd4a4604dea"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_streaming_sources.py",
+      "bytes": 9174,
+      "sha256": "c83ddf81ecf4abec7ac2937f38517f109a40c4f6e878ecf14d53063c902da425",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_streaming_sources.py",
+      "sourceSha256": "c83ddf81ecf4abec7ac2937f38517f109a40c4f6e878ecf14d53063c902da425"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_browser_imports.py",
+      "bytes": 7781,
+      "sha256": "282027b0bd006a750c5c4bb90550f2379fc257bc5fc2fcf5b6bbb26e50065c0e",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_browser_imports.py",
+      "sourceSha256": "282027b0bd006a750c5c4bb90550f2379fc257bc5fc2fcf5b6bbb26e50065c0e"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_disease_download_profile.py",
+      "bytes": 7893,
+      "sha256": "397d19218734209dc2d57081569f280d333025b56234dcccfa972f893b541657",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_disease_download_profile.py",
+      "sourceSha256": "397d19218734209dc2d57081569f280d333025b56234dcccfa972f893b541657"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_four_condition_tables.py",
+      "bytes": 3694,
+      "sha256": "7e503db2ee8d2e26ed02831cbc6043bdb5de4681684cf5dc0415dab50b0eb764",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_four_condition_tables.py",
+      "sourceSha256": "7e503db2ee8d2e26ed02831cbc6043bdb5de4681684cf5dc0415dab50b0eb764"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_four_condition_baseline.py",
+      "bytes": 5819,
+      "sha256": "18bda4a18e7135a9d27f229693a5bdf01b76affaf2568c0c59391dc75c6f0a01",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_four_condition_baseline.py",
+      "sourceSha256": "18bda4a18e7135a9d27f229693a5bdf01b76affaf2568c0c59391dc75c6f0a01"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_eicu_history_evidence.py",
+      "bytes": 2362,
+      "sha256": "3acbdf0f127b476e9c7df2e5af6f9adc91cc090f2dda87bf89f91693f047c0ff",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/tests/test_eicu_history_evidence.py",
+      "sourceSha256": "3acbdf0f127b476e9c7df2e5af6f9adc91cc090f2dda87bf89f91693f047c0ff"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/verify_downloaded_mimic.py",
+      "bytes": 7008,
+      "sha256": "bff864a45d235d79d6fe3d80cafd110938cfb1cebe0fd7b2b56a48179f0960e9",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/verify_downloaded_mimic.py",
+      "sourceSha256": "bff864a45d235d79d6fe3d80cafd110938cfb1cebe0fd7b2b56a48179f0960e9"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/watch_disease_browser_downloads.py",
+      "bytes": 6002,
+      "sha256": "94980c2a04e2547e6e28ad3d30006779da0de44c7aa373b56ea4907f6270dcb9",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/watch_disease_browser_downloads.py",
+      "sourceSha256": "94980c2a04e2547e6e28ad3d30006779da0de44c7aa373b56ea4907f6270dcb9"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/prepare_mimic_clinical_features.py",
+      "bytes": 17260,
+      "sha256": "1ea648ff495d83e7cd90f927d2a7a019891efeee9f879c073919cce57a8d5293",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/prepare_mimic_clinical_features.py",
+      "sourceSha256": "1ea648ff495d83e7cd90f927d2a7a019891efeee9f879c073919cce57a8d5293"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/prepare_four_condition_tables.py",
+      "bytes": 20857,
+      "sha256": "66aa315a16f8a34cf19678755715051627730b503449e303a180e240c52648d2",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/prepare_four_condition_tables.py",
+      "sourceSha256": "66aa315a16f8a34cf19678755715051627730b503449e303a180e240c52648d2"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/test_mimic_clinical_features.py",
+      "bytes": 6918,
+      "sha256": "f95ab0a4c63f8459077c0d169d15f2f87447bcf0e7c3ec45c61d17cad4f4123c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/test_mimic_clinical_features.py",
+      "sourceSha256": "f95ab0a4c63f8459077c0d169d15f2f87447bcf0e7c3ec45c61d17cad4f4123c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/validate_mimic_clinical_features.py",
+      "bytes": 4947,
+      "sha256": "cb32b0be13be6d76123d2698e40e880c8676344aeeb3a74d1421dd6d818de096",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/validate_mimic_clinical_features.py",
+      "sourceSha256": "cb32b0be13be6d76123d2698e40e880c8676344aeeb3a74d1421dd6d818de096"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/eicu_history_evidence.py",
+      "bytes": 6710,
+      "sha256": "a2078b5f93a1bc2a096dcced12dbcce3c196224b475eb4f9bea43b6a0a7cf749",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/eicu_history_evidence.py",
+      "sourceSha256": "a2078b5f93a1bc2a096dcced12dbcce3c196224b475eb4f9bea43b6a0a7cf749"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/write_four_condition_report.py",
+      "bytes": 18919,
+      "sha256": "eb7c8e377b729cdaa6cbd9b1cb0ffa50cd232707adfd44913d7fdfb372737d51",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/write_four_condition_report.py",
+      "sourceSha256": "eb7c8e377b729cdaa6cbd9b1cb0ffa50cd232707adfd44913d7fdfb372737d51"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/validate_four_condition_tables.py",
+      "bytes": 11100,
+      "sha256": "d5e112fbe78f67c9e2ac35339a90881e191e72b699ad3506210f061cb1c2490c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/validate_four_condition_tables.py",
+      "sourceSha256": "d5e112fbe78f67c9e2ac35339a90881e191e72b699ad3506210f061cb1c2490c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/import_browser_downloads.py",
+      "bytes": 15371,
+      "sha256": "78a6071d357e491f8e24966fd9cc8cbfad5cf435162ac19ebef96a01e5161f10",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/import_browser_downloads.py",
+      "sourceSha256": "78a6071d357e491f8e24966fd9cc8cbfad5cf435162ac19ebef96a01e5161f10"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/validate_eicu_prepared.py",
+      "bytes": 2834,
+      "sha256": "bcf0b856ee1a9053f3cf2d2dcf400f26da71629cfcd66d9adf3896a38ff62703",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/validate_eicu_prepared.py",
+      "sourceSha256": "bcf0b856ee1a9053f3cf2d2dcf400f26da71629cfcd66d9adf3896a38ff62703"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/prepare_mimic_metadata.py",
+      "bytes": 6906,
+      "sha256": "4babe2fc8ad2c7fd52f7d86847db5d5a5ebe809efb31942ba5758fa878d0b7b4",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/cross_dataset/prepare_mimic_metadata.py",
+      "sourceSha256": "4babe2fc8ad2c7fd52f7d86847db5d5a5ebe809efb31942ba5758fa878d0b7b4"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/audit_eicu_integrity.py",
+      "bytes": 3046,
+      "sha256": "a32069b26465a96401b91f87d911ad2230cc104c00f5cf725e6e2dc8ee3ae1f8",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/audit_eicu_integrity.py",
+      "sourceSha256": "a32069b26465a96401b91f87d911ad2230cc104c00f5cf725e6e2dc8ee3ae1f8"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/download_official_sources.py",
+      "bytes": 4651,
+      "sha256": "ba906176c440ea04f8c8b43907d17928aca70a0e51a0442b1420ebffb4e6b8fe",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/download_official_sources.py",
+      "sourceSha256": "ba906176c440ea04f8c8b43907d17928aca70a0e51a0442b1420ebffb4e6b8fe"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/repair_eicu_files.py",
+      "bytes": 3509,
+      "sha256": "916bfefda050058ad8a1a5d48b0faa197bd7320d33226980811099803dbffeb0",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/repair_eicu_files.py",
+      "sourceSha256": "916bfefda050058ad8a1a5d48b0faa197bd7320d33226980811099803dbffeb0"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/package_eicu_gzip.py",
+      "bytes": 3385,
+      "sha256": "8aa3970ffd350d9c4c837d2fc559663251fd2b81ac50b2c74ee07210d3708967",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/package_eicu_gzip.py",
+      "sourceSha256": "8aa3970ffd350d9c4c837d2fc559663251fd2b81ac50b2c74ee07210d3708967"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/fix_eicu_notebook_sources.py",
+      "bytes": 4150,
+      "sha256": "71d5eb2506684ba129ad61feb7b2e086f86d2b2a0b65ee97cd440052cab08356",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/fix_eicu_notebook_sources.py",
+      "sourceSha256": "71d5eb2506684ba129ad61feb7b2e086f86d2b2a0b65ee97cd440052cab08356"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/validate_dataset_bundle.py",
+      "bytes": 3196,
+      "sha256": "bb8a86aa82c5516395365b31aaa30fa47ab36e77af755330c5b43e14ad4e95fd",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/validate_dataset_bundle.py",
+      "sourceSha256": "bb8a86aa82c5516395365b31aaa30fa47ab36e77af755330c5b43e14ad4e95fd"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/recheck_complete.py",
+      "bytes": 13572,
+      "sha256": "5d79b42602d991e17be4364f1756945162cfc8e8a95eedc6f9cada46dfb4b42f",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/recheck_complete.py",
+      "sourceSha256": "5d79b42602d991e17be4364f1756945162cfc8e8a95eedc6f9cada46dfb4b42f"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/execute_current_notebooks.py",
+      "bytes": 1876,
+      "sha256": "b3778bce4e851e65639b705f42149fe1476dbaeeed1632a674ccbc9681d149d0",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/execute_current_notebooks.py",
+      "sourceSha256": "b3778bce4e851e65639b705f42149fe1476dbaeeed1632a674ccbc9681d149d0"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/publish_current_overview.py",
+      "bytes": 135,
+      "sha256": "819e4d20e2b2a3abcb280d9e102c82188a587f4d73a4c60b726e00aa2080797c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/publish_current_overview.py",
+      "sourceSha256": "819e4d20e2b2a3abcb280d9e102c82188a587f4d73a4c60b726e00aa2080797c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/reorganize_stages.py",
+      "bytes": 8584,
+      "sha256": "29c2b19f867851a61a904d1d020bec6122bc5c335c4c072d5135c42550d3f33f",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/reorganize_stages.py",
+      "sourceSha256": "29c2b19f867851a61a904d1d020bec6122bc5c335c4c072d5135c42550d3f33f"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/fix_layout_code.py",
+      "bytes": 6676,
+      "sha256": "23da8a64d2bc02043965ec66e574a9e37ffb73076f0a290c44be924dd61665f2",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/fix_layout_code.py",
+      "sourceSha256": "23da8a64d2bc02043965ec66e574a9e37ffb73076f0a290c44be924dd61665f2"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/publish_layout.py",
+      "bytes": 33183,
+      "sha256": "56faa101892c0312650c793ba180e100673d689ab94b05819ebcd29aa34c2f5c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/publish_layout.py",
+      "sourceSha256": "56faa101892c0312650c793ba180e100673d689ab94b05819ebcd29aa34c2f5c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/finish_layout_checks.py",
+      "bytes": 4467,
+      "sha256": "1899f12165b4ecc71372e037442cb5ef26547a5cf03618aa1ffd2a310c32111d",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/finish_layout_checks.py",
+      "sourceSha256": "1899f12165b4ecc71372e037442cb5ef26547a5cf03618aa1ffd2a310c32111d"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/normalize_report_generators.py",
+      "bytes": 1986,
+      "sha256": "6561d30b2c1f3875af282c12e3836fc2508c0edf024155d9da2c25c2dbb6d5ed",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/normalize_report_generators.py",
+      "sourceSha256": "6561d30b2c1f3875af282c12e3836fc2508c0edf024155d9da2c25c2dbb6d5ed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/build_bias_dashboards.py",
+      "bytes": 44497,
+      "sha256": "4f13ea0b14409f418453485242ce9a777c4d9322106bbec8aadc65720873808b",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/build_bias_dashboards.py",
+      "sourceSha256": "4f13ea0b14409f418453485242ce9a777c4d9322106bbec8aadc65720873808b"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/finish_project_review.py",
+      "bytes": 9310,
+      "sha256": "9a4d4b7b7dc1fd2788d5685d76c903960dd5266549094f0b0f9a6473a215949a",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/finish_project_review.py",
+      "sourceSha256": "9a4d4b7b7dc1fd2788d5685d76c903960dd5266549094f0b0f9a6473a215949a"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/recheck_active_pipeline.py",
+      "bytes": 1847,
+      "sha256": "ff9d12a48836e4bd6ac6d0e9a4474b0c2ad268ec166443cd8fb9067ec770013a",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/recheck_active_pipeline.py",
+      "sourceSha256": "ff9d12a48836e4bd6ac6d0e9a4474b0c2ad268ec166443cd8fb9067ec770013a"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/validate_bias_dashboards.py",
+      "bytes": 8129,
+      "sha256": "703467c3e23a357319155a9a5807135b1487a96a98172bd9f77e25ff607bbe01",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/validate_bias_dashboards.py",
+      "sourceSha256": "703467c3e23a357319155a9a5807135b1487a96a98172bd9f77e25ff607bbe01"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent_inspect.py",
+      "bytes": 1086,
+      "sha256": "65d298c466812a4b9786684c5aa129525981189ac3be2a1822aabaf5591da67a",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent_inspect.py",
+      "sourceSha256": "65d298c466812a4b9786684c5aa129525981189ac3be2a1822aabaf5591da67a"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/common.py",
+      "bytes": 17792,
+      "sha256": "982f7c4a6dd6576c521148c1f8f9c17b25b47fe2843db3ccf2ce7d1192f2b890",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/common.py",
+      "sourceSha256": "982f7c4a6dd6576c521148c1f8f9c17b25b47fe2843db3ccf2ce7d1192f2b890"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_outlier.py",
+      "bytes": 10788,
+      "sha256": "126bf955b070921245605887ff00832528b28e00512f05060f160927b6e9b44a",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_outlier.py",
+      "sourceSha256": "126bf955b070921245605887ff00832528b28e00512f05060f160927b6e9b44a"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_noise.py",
+      "bytes": 13264,
+      "sha256": "fc634e2c89e1687f348c1a13f2d874cb86fd6ef264f72492f1d370ff167eda20",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_noise.py",
+      "sourceSha256": "fc634e2c89e1687f348c1a13f2d874cb86fd6ef264f72492f1d370ff167eda20"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_scale.py",
+      "bytes": 8911,
+      "sha256": "f93f5fae0b58b5ade762f4a36decb396ed0f427cf9f8a818ea1f72c755985cec",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_scale.py",
+      "sourceSha256": "f93f5fae0b58b5ade762f4a36decb396ed0f427cf9f8a818ea1f72c755985cec"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_domain.py",
+      "bytes": 19297,
+      "sha256": "2f801cfa55786b09818eeaadf36a21ae5d840e50293a5a0f93681444f0a263ec",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_domain.py",
+      "sourceSha256": "2f801cfa55786b09818eeaadf36a21ae5d840e50293a5a0f93681444f0a263ec"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_imbalance.py",
+      "bytes": 17482,
+      "sha256": "13045e648e407b50620670d86b059b3a89a3db4b6d99ecbfabb681ec60a7a02a",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_imbalance.py",
+      "sourceSha256": "13045e648e407b50620670d86b059b3a89a3db4b6d99ecbfabb681ec60a7a02a"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_demographic.py",
+      "bytes": 21289,
+      "sha256": "b1957449d7fe6e8bc9f2cfbdfb147f218d21789691625ba5286cea1c341f3cf8",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_demographic.py",
+      "sourceSha256": "b1957449d7fe6e8bc9f2cfbdfb147f218d21789691625ba5286cea1c341f3cf8"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_duplicate.py",
+      "bytes": 21947,
+      "sha256": "f240ad95062a71ecfe7cc816f46e22dc4fea1f10170655b3ebfe8553dd7fecbe",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_duplicate.py",
+      "sourceSha256": "f240ad95062a71ecfe7cc816f46e22dc4fea1f10170655b3ebfe8553dd7fecbe"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/dashboard.py",
+      "bytes": 31383,
+      "sha256": "00ce65ea8ac186d43bbb6631cacadfc70ee8410e4e6079fe42d92afe119e960d",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/dashboard.py",
+      "sourceSha256": "00ce65ea8ac186d43bbb6631cacadfc70ee8410e4e6079fe42d92afe119e960d"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/run.py",
+      "bytes": 38465,
+      "sha256": "ae3a6e5a082661d619d1fb03cc28213df5fffabf23d97ac50e88f8656f4b6ebf",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/run.py",
+      "sourceSha256": "ae3a6e5a082661d619d1fb03cc28213df5fffabf23d97ac50e88f8656f4b6ebf"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_missing.py",
+      "bytes": 28703,
+      "sha256": "7ec6b7268632a816cb4d57f402ee6b347b5ed3747c54b52998c247f017e212e2",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/preprocessing/bias_missing.py",
+      "sourceSha256": "7ec6b7268632a816cb4d57f402ee6b347b5ed3747c54b52998c247f017e212e2"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/make_notebooks.py",
+      "bytes": 5748,
+      "sha256": "c051bf655d1fbb7573f40693fceaf046c1f6dd06c56a1231734190f30e4adfb3",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/make_notebooks.py",
+      "sourceSha256": "c051bf655d1fbb7573f40693fceaf046c1f6dd06c56a1231734190f30e4adfb3"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/heart_preprocessing.ipynb",
+      "bytes": 7865,
+      "sha256": "8415beb17477fbb278ce03614afd310845bb4aa6364405090805925be014c5fd",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/heart_preprocessing.ipynb",
+      "sourceSha256": "20bda51084b131c20f4a35bf19ece2f81f305ddbc6de3a5f81ee6975007851e0",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/diabetes_preprocessing.ipynb",
+      "bytes": 7890,
+      "sha256": "8c52280e32c7fe788b28485b6a15cd3d34a55f74d151464299ede6985e3eae03",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/diabetes_preprocessing.ipynb",
+      "sourceSha256": "a3eee03952243a39e78e1a3a725714a4fb89af622e2e1666231ad43e4e42e83c",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/hypertension_preprocessing.ipynb",
+      "bytes": 7919,
+      "sha256": "635cd47dbcf0c8f67a90c408f781dd43dc5c5604e9173e0abd156bc863845961",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/hypertension_preprocessing.ipynb",
+      "sourceSha256": "aa8676d0ad0391481f99fc0b72461092785fa71a64fed68056425d9edf6a397e",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/respiratory_preprocessing.ipynb",
+      "bytes": 7924,
+      "sha256": "8e7daed357030f04ad6f8267f748f8462a1cf45fd7bab4fb347530093e3d3fd4",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/respiratory_preprocessing.ipynb",
+      "sourceSha256": "ced62dda023aee2ff439aaf7c07f5b0800556055ab4347334fd12d3e2d089d4a",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/latent_alignment.ipynb",
+      "bytes": 2515,
+      "sha256": "c43cd5d07cf22933bc691f9687c7f18c621af03c58748f22abcf76ae7768e4a5",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/notebooks/latent_alignment.ipynb",
+      "sourceSha256": "c3a0f7d2efcd5f3ee2f9934c14b8156b9f6d4a100d28d8f6a8621bdb5acb5b5c",
+      "transformation": "notebook outputs and record appendices removed"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/build_index.py",
+      "bytes": 6228,
+      "sha256": "70d7b137f3ae4683da7f5a0f8d199b36cd12af987c7e81e33d407ddb85dc1b8c",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/build_index.py",
+      "sourceSha256": "70d7b137f3ae4683da7f5a0f8d199b36cd12af987c7e81e33d407ddb85dc1b8c"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/latent_code_draft/latent.py",
+      "bytes": 21988,
+      "sha256": "1135567a1f026923e4ade8cd2d849c432ba0153e4c6f0baecd26116c2987ea5f",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/latent_code_draft/latent.py",
+      "sourceSha256": "1135567a1f026923e4ade8cd2d849c432ba0153e4c6f0baecd26116c2987ea5f"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/latent_code_draft/latent_dashboard.py",
+      "bytes": 17571,
+      "sha256": "b4d2265cdce6fdcced554eb8681583803adb172814ecf870254df7f079d551a6",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/rewritten_pipeline_not_used/latent_code_draft/latent_dashboard.py",
+      "sourceSha256": "b4d2265cdce6fdcced554eb8681583803adb172814ecf870254df7f079d551a6"
+    }
+  ]
+}
