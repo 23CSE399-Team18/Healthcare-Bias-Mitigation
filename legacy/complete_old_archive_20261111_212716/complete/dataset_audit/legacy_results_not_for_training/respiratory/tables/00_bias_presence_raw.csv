@@ -1,0 +1,9 @@
+Bias,Detected in raw data,Evidence,Decision rule
+Missing Data Bias,present,19.5% of feature cells missing; 64 of 101 features >5% missing; 64 features with non-random (MAR/MNAR) missingness,>=1 feature with >5% missing AND missingness not MCAR (predictable with AUC>0.6 or outcome-associated p<0.01)
+Class Imbalance Bias,present,mortality 13.9%; imbalance ratio 6.18 : 1; normalised class entropy 0.582,imbalance ratio (majority/minority) > 1.5
+Outlier Bias,present,"104,195 physiologically impossible measurements; 78.0% of stays with a robust |z| > 4.5 value","any physiologically impossible measurement, or >1% of stays with a robust |z| > 4.5"
+Feature Scale Bias,present,"max/min feature SD ratio 170,598; (rc_tidal_volume_set_mean vs ph_max); 66% of features with |skew| > 1",max/min feature SD > 10 or >25% of features |skew| > 1
+Demographic Bias,present,ethnicity=NaN (missing code) (DI 0.62); out-of-fold AUC 0.850,"a group (n>=100) with disparate impact outside [0.8, 1.25] or |SPD|>0.1 (out-of-fold model, prevalence-matched threshold)"
+Duplicate Bias,present,"19.0% of ICU stays are repeat stays; of 5,152 patients; 15,781 exact duplicate source records",">1% redundant records at record, patient or feature level"
+Data Noise Bias,present,vital-series residual variance ratio 0.17; artefact-spike rate 0.20%; 56 labels contradict the ICU death record,vital-series residual variance ratio > 0.1 or spike rate > 0.5%; label noise if outcome sources disagree
+Encoding / Domain Bias,present,"217,366 inconsistently encoded records; region classifier AUC 0.926; MMD p < 0.01 in 5 of 5 regions","any inconsistent encoding, or region-classifier AUC > 0.6, or MMD p < 0.01"
