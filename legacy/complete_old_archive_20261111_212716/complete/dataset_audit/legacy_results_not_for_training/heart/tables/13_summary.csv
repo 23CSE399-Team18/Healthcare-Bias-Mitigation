@@ -1,0 +1,9 @@
+Bias,Detected in raw data,Present at its step,Best method (benchmark),Applied,Key indicator,Dashboard
+Missing Data Bias,present,present,HyperImpute,yes,missing feature cells (%): 5.41 → 0,07_dashboard_missing.html
+Class Imbalance Bias,present,present,Class-Balanced Focal Loss,yes,imbalance ratio of the training data (effective): 10.1 → 1.46,12_dashboard_imbalance.html
+Outlier Bias,present,present,LOF (+ plausibility limits),yes,impossible values: 369 → 0; records with robust |z| > 4.5 (%): 0.985 → 0.923,08_dashboard_outliers_multivariate.html
+Feature Scale Bias,present,present,PowerTransform (Yeo-Johnson),yes,max/min SD ratio of the numeric block: 200 → 1.01; numeric features with |skew| > 1 (%): 62.5 → 100,09_dashboard_scale.html
+Demographic Bias,present,present,Optimal Transport,yes,"worst |EOD| (TPR gap), benchmark: 0.143 → 0.124; worst |1 - DI|, benchmark: 0.562 → 0.331",11_dashboard_demographic.html
+Duplicate Bias,absent,absent,GNN entity resolution,no,identical raw records: 0 → 0,04_dashboard_duplicates.html
+Data Noise Bias,present,present,Robust Loss Functions,yes,logical contradictions: 1.17e+03 → 0,06_dashboard_noise.html
+Encoding / Domain Bias,present,present,codebook decoding + IRM,yes,raw cells holding a code: 1.76e+06 → 0; region classifier AUC: 0.581 → 0.555,10_dashboard_domain.html
