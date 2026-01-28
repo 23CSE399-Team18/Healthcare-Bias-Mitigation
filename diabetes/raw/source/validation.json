@@ -1,0 +1,8 @@
+{
+  "one_row_per_participant": true,
+  "all_adults": true,
+  "binary_labels_only": true,
+  "cohort_and_exclusions_partition_source": true,
+  "no_biomarkers_in_baseline": true,
+  "no_insulin_or_diabetes_medications_in_baseline": true
+}
