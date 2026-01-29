@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "checked_utc": "2026-11-11T07:12:32.044637+00:00",
+  "datasets": {
+    "diabetes": {
+      "passed": true,
+      "methods": {
+        "PCA": {
+          "passed": true,
+          "finite_aligned_arrays_all_splits": true,
+          "saved_encoder_reproduces_sampled_rows": true,
+          "metric_recomputation_passed": true,
+          "test_scoring_performed": false
+        },
+        "MV_DAE": {
+          "passed": true,
+          "finite_aligned_arrays_all_splits": true,
+          "saved_encoder_reproduces_sampled_rows": true,
+          "metric_recomputation_passed": true,
+          "test_scoring_performed": false
+        },
+        "DGCCA": {
+          "passed": true,
+          "finite_aligned_arrays_all_splits": true,
+          "saved_encoder_reproduces_sampled_rows": true,
+          "metric_recomputation_passed": true,
+          "test_scoring_performed": false
+        },
+        "SAINT": {
+          "passed": true,
+          "finite_aligned_arrays_all_splits": true,
+          "saved_encoder_reproduces_sampled_rows": true,
+          "metric_recomputation_passed": true,
+          "test_scoring_performed": false
+        }
+      },
+      "selected": "PCA",
+      "all_metadata_and_labels_preserved": true,
+      "disjoint_records": true,
+      "disjoint_patients": null,
+      "complete_csv_handoff_passed": true
+    }
+  }
+}
