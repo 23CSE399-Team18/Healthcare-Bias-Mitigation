@@ -1,0 +1,528 @@
+{
+  "category": "websites",
+  "files": [
+    {
+      "path": "legacy/code/styles.css",
+      "bytes": 13841,
+      "sha256": "551b84b1c065c733b5225442ac536a43fb7f208acc23002a505c71e04654ba3d",
+      "source": "D:/code/styles.css",
+      "sourceSha256": "551b84b1c065c733b5225442ac536a43fb7f208acc23002a505c71e04654ba3d"
+    },
+    {
+      "path": "legacy/code/app.js",
+      "bytes": 4636,
+      "sha256": "c9d55b59362ab67a3bc2f97df5314f5307dfcf78c320bd6dd94e9cdc4b732363",
+      "source": "D:/code/app.js",
+      "sourceSha256": "f4d28aa0ce8ebc9a172fd5a4bbf364d0bde2dc46387087448b905b43aeb8bdbc"
+    },
+    {
+      "path": "legacy/code/index.html",
+      "bytes": 16734,
+      "sha256": "70d7b393ef2da9c5996673ae084ad9ba7322ae5fd6a40b4b7e0b4934315ab35c",
+      "source": "D:/code/index.html",
+      "sourceSha256": "4d5131a7e0df95fb7ca584658d402390b99b070ac6868f0c9c0d6cb4aebdf985",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/plots/assets/plotly.min.js",
+      "bytes": 4851380,
+      "sha256": "bfef1b19595437cdf80e197725d801157a9e75e84a6b0f6cb1bad8576ad47103",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/plots/assets/plotly.min.js",
+      "sourceSha256": "bfef1b19595437cdf80e197725d801157a9e75e84a6b0f6cb1bad8576ad47103"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/plots/assets/bias-dashboard.js",
+      "bytes": 8746,
+      "sha256": "ae3b3a4ee8d4e38088101771080b08aa85e349466415a787428f2051cdb3d326",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/plots/assets/bias-dashboard.js",
+      "sourceSha256": "ae3b3a4ee8d4e38088101771080b08aa85e349466415a787428f2051cdb3d326"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/plots/assets/bias-dashboard.css",
+      "bytes": 2739,
+      "sha256": "f324f2fb37dfe9dfd49957f0a9b9e1ed0cfed299edbacf083d0db13f3a0b1b51",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/preprocessing/plots/assets/bias-dashboard.css",
+      "sourceSha256": "f324f2fb37dfe9dfd49957f0a9b9e1ed0cfed299edbacf083d0db13f3a0b1b51"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/plots/assets/plotly.min.js",
+      "bytes": 4851380,
+      "sha256": "bfef1b19595437cdf80e197725d801157a9e75e84a6b0f6cb1bad8576ad47103",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/plots/assets/plotly.min.js",
+      "sourceSha256": "bfef1b19595437cdf80e197725d801157a9e75e84a6b0f6cb1bad8576ad47103"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/plots/assets/bias-dashboard.js",
+      "bytes": 8746,
+      "sha256": "ae3b3a4ee8d4e38088101771080b08aa85e349466415a787428f2051cdb3d326",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/plots/assets/bias-dashboard.js",
+      "sourceSha256": "ae3b3a4ee8d4e38088101771080b08aa85e349466415a787428f2051cdb3d326"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/latent/plots/assets/bias-dashboard.css",
+      "bytes": 2739,
+      "sha256": "f324f2fb37dfe9dfd49957f0a9b9e1ed0cfed299edbacf083d0db13f3a0b1b51",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/latent/plots/assets/bias-dashboard.css",
+      "sourceSha256": "f324f2fb37dfe9dfd49957f0a9b9e1ed0cfed299edbacf083d0db13f3a0b1b51"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/plots/assets/plotly.min.js",
+      "bytes": 4851380,
+      "sha256": "bfef1b19595437cdf80e197725d801157a9e75e84a6b0f6cb1bad8576ad47103",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/plots/assets/plotly.min.js",
+      "sourceSha256": "bfef1b19595437cdf80e197725d801157a9e75e84a6b0f6cb1bad8576ad47103"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/plots/assets/bias-dashboard.js",
+      "bytes": 8746,
+      "sha256": "ae3b3a4ee8d4e38088101771080b08aa85e349466415a787428f2051cdb3d326",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/plots/assets/bias-dashboard.js",
+      "sourceSha256": "ae3b3a4ee8d4e38088101771080b08aa85e349466415a787428f2051cdb3d326"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/plots/assets/bias-dashboard.css",
+      "bytes": 2739,
+      "sha256": "f324f2fb37dfe9dfd49957f0a9b9e1ed0cfed299edbacf083d0db13f3a0b1b51",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/inprocessing/plots/assets/bias-dashboard.css",
+      "sourceSha256": "f324f2fb37dfe9dfd49957f0a9b9e1ed0cfed299edbacf083d0db13f3a0b1b51"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/dashboard_assets/bias-dashboard.css",
+      "bytes": 2738,
+      "sha256": "38435686da33714b2b24c09c8e6f0dd9972cded2ea7951505343ee31851e31ea",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/dashboard_assets/bias-dashboard.css",
+      "sourceSha256": "38435686da33714b2b24c09c8e6f0dd9972cded2ea7951505343ee31851e31ea"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/dashboard_assets/bias-dashboard.js",
+      "bytes": 8672,
+      "sha256": "0aa03781c1230f14cdc52ed6ec45715b5640cb134fab7d84fc4eabc75f4b7fbf",
+      "source": "D:/complete_old_archive_20261111_212716/superseded_20261112/dataset_audit/dashboard_assets/bias-dashboard.js",
+      "sourceSha256": "0aa03781c1230f14cdc52ed6ec45715b5640cb134fab7d84fc4eabc75f4b7fbf"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/cardiac_class_imbalance_dashboard__1_.html",
+      "bytes": 33145,
+      "sha256": "dc3b95a0fc5328ee2fc4199d72ba89fc6179db96d9214cef10457a9f9e2de92c",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/cardiac_class_imbalance_dashboard__1_.html",
+      "sourceSha256": "96d01a0c426f27bf66731d574b26f2231b683bf2a4a8b22fcbda1baf2168e9cd",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/data_noise_bias_dashboard.html",
+      "bytes": 35831,
+      "sha256": "1e718b7944a1859f0a5d763d342e08f115645e0f97f2d74b9c8e637a644d5f6d",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/data_noise_bias_dashboard.html",
+      "sourceSha256": "f63098844a19bec0858339acb6bc777a5a4fe19004702b558ffbb16edf7bca27",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/demographic_bias_dashboard__3_.html",
+      "bytes": 33622,
+      "sha256": "0ef6061d45db2bf333b18d60bb61a37c9ea6002ed689bd4a7845d1bc5e0c6e60",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/demographic_bias_dashboard__3_.html",
+      "sourceSha256": "2a5b9e1c2adacd50e7d65454eb41237f3b539cb838a2de7c2abaf600ce76dd96",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/duplicate_bias_dashboard__4_.html",
+      "bytes": 34402,
+      "sha256": "a25fd10a7b2cc95575985abbd41d614b37a7cab4dc7151487d874d6bd261f53a",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/duplicate_bias_dashboard__4_.html",
+      "sourceSha256": "7e88797bc1cc9dc388be56d1d066a3df4003d1e285e174bd6ddf09c9cddedfa6",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/encoding_domain_bias_dashboard__1_.html",
+      "bytes": 35970,
+      "sha256": "828fcd08be147070eb251c1ee533e38a7daa8467c77004c80a9ea766e1bb0cc1",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/encoding_domain_bias_dashboard__1_.html",
+      "sourceSha256": "8b2fc6273bbff7b6efa6727a2cf03b6373154804de9c55f37af06fe67b97e262",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/feature_scale_bias_dashboard__1_.html",
+      "bytes": 34380,
+      "sha256": "83b106ac04cc47b0ed36b57a694ca2ef0075209c5e20e084a2dd0a0edb3f7df9",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/feature_scale_bias_dashboard__1_.html",
+      "sourceSha256": "98e20237ac7d3f9803b5413071503e17d2eebaac10d2187b366153a713a5251f",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/missing_data_bias_dashboard (1).html",
+      "bytes": 36332,
+      "sha256": "d8fbb0f9a067b525617c96b27607c11a6f05e216541cbb00ba022dcbfbb794b3",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/missing_data_bias_dashboard (1).html",
+      "sourceSha256": "cfa2672766148d33afa2ba78c6d283d9e3d3be3ab23eb919de09358be3921bb4",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/outlier_bias_dashboard__1_.html",
+      "bytes": 34310,
+      "sha256": "96a9cbc7fece7d9268118972d53722c6bb2958d0ccf96b7882743c08796a1b6e",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/outlier_bias_dashboard__1_.html",
+      "sourceSha256": "ea5b58de1cb8845c143624576888b08ccc9c7724d8a526b6789de6e7a56dd47a",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/duplicate_bias_dashboard.html",
+      "bytes": 44585,
+      "sha256": "a78cd7c669a9e28b5996d3bb9150e0932c2ae0a41515008f0604d7ed88e5af2e",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/duplicate_bias_dashboard.html",
+      "sourceSha256": "db42a3fd239d95d9b42cb70e97d8900689c3fd0a6654e9ad55587b399a306518",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/outlier_bias_dashboard.html",
+      "bytes": 39345,
+      "sha256": "5583e2f035cc0fb84bcfc063b488b04b00771da0ba420df0126ce45e40999eff",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/outlier_bias_dashboard.html",
+      "sourceSha256": "28b93d4bc8a7fbcc76ddc70b9571aa59f3206ff482f52003683e38f87168222f",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/missing_value_bias_dashboard.html",
+      "bytes": 27293,
+      "sha256": "c38f2c7697e6475386e410dd850ca7f67633fe2947dc391e35be3924a8ca6fbc",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/missing_value_bias_dashboard.html",
+      "sourceSha256": "b07872e49098b9922667d308ee320b0de47e487fdb22f3e59a383e8dad36ed30",
+      "redactedFields": [
+        "before",
+        "after",
+        "missingMask"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/demographic_bias_dashboard.html",
+      "bytes": 68434,
+      "sha256": "933e4d4d6efde3056f1c580a6f1affcd67c2a1dee61e2ea3c6b732e2ef728add",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/demographic_bias_dashboard.html",
+      "sourceSha256": "5bc640c4615d563fb953c6b081067aa034fe31aa0d41913218339ba6b3b5659d",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/class_imbalance_bias_dashboard.html",
+      "bytes": 58898,
+      "sha256": "637b3fecc0d74d9456c3c1b880caf81c5aad3fc49de5a5a2a762d37609fdb82e",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/heart/class_imbalance_bias_dashboard.html",
+      "sourceSha256": "b76e4a36f1b9651361170f33e7a646af3edd1d043c03f014ba4d1ae492ad5a75",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/feature_scale_bias_dashboard.html",
+      "bytes": 47538,
+      "sha256": "f6eb57036312914dcf2cbfe031e61b3863d73385ffe1c6e016a9d162c1b0d1da",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/feature_scale_bias_dashboard.html",
+      "sourceSha256": "bfadd96ac729a0221afe7fa1b5d70fff0f0f358957686bc9e8725e32ab0ec7f5",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/duplicate_bias_dashboard.html",
+      "bytes": 28879,
+      "sha256": "6856920b91f623687341a95fdc247b5a51e17c2a58458fcd3159c18f7a7e46b2",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/duplicate_bias_dashboard.html",
+      "sourceSha256": "5d9668cfe47736bd7ab2a98e6a534216da80e84adf4b6fe35d76788069ef26ae",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/missing_bias_dashboard.html",
+      "bytes": 25693,
+      "sha256": "53de67ea4c55c378cd012115f7a37098e4c2965d469dc448393095e39afb5eac",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/missing_bias_dashboard.html",
+      "sourceSha256": "f9b3d20d85d03a99b8d991669ad43fc1f07e3afd2ce30410c200b98f848f4c19",
+      "redactedFields": [
+        "before",
+        "after",
+        "missingMask"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/outlier_bias_dashboard.html",
+      "bytes": 27930,
+      "sha256": "9a88c21d83c7ccd717666288ef8624c1e184fd4dbc14d4f1e8a7a2fd34273b5c",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/outlier_bias_dashboard.html",
+      "sourceSha256": "3d707eadec8b7ccda2b9c2ae07c0e756d0b909e5b2e4c1e55ed8f0dffbb8a7da",
+      "redactedFields": [
+        "values"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/class_imbalance_bias_dashboard.html",
+      "bytes": 30463,
+      "sha256": "c8f65e49fb2d4efa3f9b412a8f2cf2a6b397746fc1eab84df161211131360a3c",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/class_imbalance_bias_dashboard.html",
+      "sourceSha256": "fc9447aead899f5768f045ff9def6c90563b02e404556f8f953fcf034b193a94",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/demographic_bias_dashboard.html",
+      "bytes": 29235,
+      "sha256": "589b00e8582b3ef59b237afdf0fed18c1606716798b56e872bf620944574a7a2",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/demographic_bias_dashboard.html",
+      "sourceSha256": "9ee3da13ed65304a8e59112d158c7e1bca4e439f8082c868e9908434709436c7",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/encoding_domain_bias_dashboard.html",
+      "bytes": 33174,
+      "sha256": "de944a7683eb13ab86c691631e31f8f831bd3b740b41d504122c09837ae9ea62",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/encoding_domain_bias_dashboard.html",
+      "sourceSha256": "af3caa6748093473ec48c3b3a92c5ff9e4fc6c5dbceee8010e94e96235025869",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/noise_bias_dashboard.html",
+      "bytes": 27785,
+      "sha256": "b2d65eb74e5fc118a15c7e80c743b11a4750cfb183b7a36b0c97e5daa5b0583f",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/diabetes/noise_bias_dashboard.html",
+      "sourceSha256": "d3e3a652de5c9f926e2945693f3422d9cd6455c98d110bc47a0d62ed16db023e",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/Class_Imbalance_Bias_Dashboard (4).html",
+      "bytes": 79784,
+      "sha256": "583b8ea56b787d81783a308779968b5e0cec5a049cfe00230a70d7753a7e0c32",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/Class_Imbalance_Bias_Dashboard (4).html",
+      "sourceSha256": "90801ddc32538b73409e5002d371922448fbe67836444abbfcc8ac425a922101",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/demographic_bias_dashboard (6).html",
+      "bytes": 48546,
+      "sha256": "52d54379cbbfc000370ae0a7dbb17310c17c7f8df12c022bdb0a9aa61daae144",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/demographic_bias_dashboard (6).html",
+      "sourceSha256": "8d79ace4aa0d315a289920958787b8b12d859011480764ff2a846735d5aedb7a",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/duplicate_bias_dashboard (5).html",
+      "bytes": 28200,
+      "sha256": "7e4a8c87511134cd78163ca3cfb0bc9fbc2307cd7ccfc6b03aac4605dbb673e0",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/duplicate_bias_dashboard (5).html",
+      "sourceSha256": "3819ba5d253be3da6cecbe3a56fce8cb1e6343903d79f19762143ef466563387",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/encoding_domain_bias_dashboard (1).html",
+      "bytes": 28342,
+      "sha256": "048fba38db6fcbe866f2d33c7a73f639106a6f93cd6b40e03ba5e7cb20cb246d",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/encoding_domain_bias_dashboard (1).html",
+      "sourceSha256": "445a9a16b6783cc0f487cf391d315478c71f444ddb57c7bbe9109f91f2ef0191",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/Feature_Scale_Bias_Dashboard (5).html",
+      "bytes": 80657,
+      "sha256": "b84e16c51a0a5b30a13ecbccf3ab68f70bdc488504ca7b7ef9370d27fadba2f0",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/Feature_Scale_Bias_Dashboard (5).html",
+      "sourceSha256": "6568561470817bf6c1681a1dca1adc0c4a742f3591a1aecd9f501884abac4862",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/Missing_Bias_Dashboard (2).html",
+      "bytes": 79697,
+      "sha256": "ef2b8ab00199902a92b0b3442cea8ce34d4f445362b3e875ec7751dd735718c5",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/Missing_Bias_Dashboard (2).html",
+      "sourceSha256": "612a0539842cd98499d6bc79b09e4040a0650de7b0e367d40d164668f2f7e7f8",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/noise_bias_dashboard (4).html",
+      "bytes": 49315,
+      "sha256": "0655b67a68af7ecf219a9e8f65758e66aae865061eae7ed83b7fcc22a5a8b7ad",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/noise_bias_dashboard (4).html",
+      "sourceSha256": "683e1331b31fa17f42f804311b11df447aedf191e9cd54ccb7091f9079e5f9ea",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/Outlier_Bias_Dashboard (7).html",
+      "bytes": 56158,
+      "sha256": "0c6a6a1f0ac164bffb572ccd0971feafd75da04e16340f54d908d75721207c38",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/hypertension/Outlier_Bias_Dashboard (7).html",
+      "sourceSha256": "b2d66f962e6818da0450e1c95c90edf5c1d0efc2941a763f75b7a2cbada504a8",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/demographic_bias_dashboard__5_.html",
+      "bytes": 28584,
+      "sha256": "e8e52b49136b174de173d0211fb2ed2516f134b06a586430012392c8d4c9e052",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/demographic_bias_dashboard__5_.html",
+      "sourceSha256": "945fe0d61765024ba8dbc87f5adf7ad66e88a0b15c6c9b1801abba9909c45049",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/encoding domain.html",
+      "bytes": 31074,
+      "sha256": "49bd5c7c8019eec94e89d8c2e89785c229e7f4b761ad0e04b007b865f04f1794",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/encoding domain.html",
+      "sourceSha256": "84a0aed5469ffcc60219931be74efa05728bc07e7aeb194dd816843de478d999",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/feature_scale_bias_dashboard__4_.html",
+      "bytes": 28489,
+      "sha256": "8d83b020603572dbae229d4ee2ea74805acddb43af9464ceb0e477d18d56fa36",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/feature_scale_bias_dashboard__4_.html",
+      "sourceSha256": "22438bb1fb7f6481cf6d09ab9f06e2bcd30478f5e3369249030f574d96d67cc4",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/icu_class_imbalance_bias_dashboard (2).html",
+      "bytes": 32488,
+      "sha256": "53f40a9547dc331acf6917cfaeda3b9cf06fab6713c0ee479efbb8cf5d10e827",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/icu_class_imbalance_bias_dashboard (2).html",
+      "sourceSha256": "b1618ac58b7a260aacde2d0ddbfb91dfbe19fe6793fa3c6d062ec6602b4aee21",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/icu_duplicate_bias_dashboard_fixed (1).html",
+      "bytes": 28649,
+      "sha256": "88c46d670cd63db924aa993389c66164a6ee949104c9fd8106a450af844819ab",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/icu_duplicate_bias_dashboard_fixed (1).html",
+      "sourceSha256": "4841d2a809c342d6ff4b44cd3941a2ae231b00315b4c5459b9bf14d232a0756c",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/icu_noise_bias_dashboard (1).html",
+      "bytes": 28941,
+      "sha256": "b854b84e4d38eaac56a6347f04b1cf5fa33ddaab66045479810758f41a414f2a",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/icu_noise_bias_dashboard (1).html",
+      "sourceSha256": "9f0d4a1d3ec7c8227950ccd90eeb05cc76150b9c9de819b706abea2af2ac3f5c",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/outlier_detection_treatment_dashboard__2_.html",
+      "bytes": 32973,
+      "sha256": "439e19e2ce594ccee27ea89aa8f5b8434f12ecb66633810a1e0ecaca286f8316",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/outlier_detection_treatment_dashboard__2_.html",
+      "sourceSha256": "9e931a61a89298eb7ba926edc2cfdc310e7db99febc319ae7c361d9d301ddfdf",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/respiratory_missing_data_bias_dashboard (3).html",
+      "bytes": 31798,
+      "sha256": "017a1fd49937169091c4ceb54af352f2e975b5b5ea66f10229d08a747ca67659",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/respiratory/respiratory_missing_data_bias_dashboard (3).html",
+      "sourceSha256": "5823a7ecffd657cbf5821ce38c6a7e0deca233537cf3e6dbe7a8881f3cb816ea",
+      "redactedFields": [
+        "before",
+        "after"
+      ]
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/plots/latent_alignment_benchmark_dgcca.png",
+      "bytes": 1358026,
+      "sha256": "41445449718d02243e6463d0fa166ca581ea29106ba5503b7abc03ae167ba45b",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/plots/latent_alignment_benchmark_dgcca.png",
+      "sourceSha256": "41445449718d02243e6463d0fa166ca581ea29106ba5503b7abc03ae167ba45b"
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/index.html",
+      "bytes": 55026,
+      "sha256": "4e2513ae4acd86632332b9e7e5d5006c86a131971587333d943e9c70808df8aa",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/index.html",
+      "sourceSha256": "4426d01ecee33a2a02679c3d75725d5cd86f929125f013026a4188c439c22062",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/complete_old_archive_20261111_212716/website_before_20261112/latent_alignment_benchmark_dgcca.png",
+      "bytes": 1358026,
+      "sha256": "41445449718d02243e6463d0fa166ca581ea29106ba5503b7abc03ae167ba45b",
+      "source": "D:/complete_old_archive_20261111_212716/website_before_20261112/latent_alignment_benchmark_dgcca.png",
+      "sourceSha256": "41445449718d02243e6463d0fa166ca581ea29106ba5503b7abc03ae167ba45b"
+    },
+    {
+      "path": "legacy/Team-18/index.html",
+      "bytes": 55026,
+      "sha256": "4e2513ae4acd86632332b9e7e5d5006c86a131971587333d943e9c70808df8aa",
+      "source": "D:/Team-18/index.html",
+      "sourceSha256": "4426d01ecee33a2a02679c3d75725d5cd86f929125f013026a4188c439c22062",
+      "redactedFields": []
+    },
+    {
+      "path": "legacy/code/latent_alignment_benchmark_dgcca.png",
+      "bytes": 1358026,
+      "sha256": "41445449718d02243e6463d0fa166ca581ea29106ba5503b7abc03ae167ba45b",
+      "source": "D:/code/latent_alignment_benchmark_dgcca.png",
+      "sourceSha256": "41445449718d02243e6463d0fa166ca581ea29106ba5503b7abc03ae167ba45b",
+      "review": "Historical comparison figure visually inspected"
+    },
+    {
+      "path": "legacy/Team-18/latent_alignment_benchmark_dgcca.png",
+      "bytes": 1358026,
+      "sha256": "41445449718d02243e6463d0fa166ca581ea29106ba5503b7abc03ae167ba45b",
+      "source": "D:/Team-18/latent_alignment_benchmark_dgcca.png",
+      "sourceSha256": "41445449718d02243e6463d0fa166ca581ea29106ba5503b7abc03ae167ba45b",
+      "review": "Historical comparison figure visually inspected"
+    }
+  ]
+}
