@@ -1,0 +1,9 @@
+Bias,Detected (raw),Present at its step,Methods compared,Selected (lowest mean rank),Applied
+Missing Data Bias,yes,yes,"HyperImpute, CSDI, MIP-VAE",HyperImpute,yes
+Class Imbalance Bias,yes,yes,"TabDDPM, CTGAN, Class-Balanced Focal Loss, Deep SMOTE",Class-Balanced Focal Loss,yes
+Outlier Bias,yes,yes,"ECOD, Deep SVDD, EBM (+ physiological limits for impossible values)",EBM,yes
+Feature Scale Bias,yes,yes,"SNN (SELU), FT-Transformer, PowerTransform (Yeo-Johnson)",PowerTransform (Yeo-Johnson),yes
+Demographic Bias,yes,yes,"Adversarial Debiasing, DiCE counterfactual recourse, Fairness-Aware Contrastive Learning",Fairness-Aware Contrastive Learning,yes
+Duplicate Bias,yes,yes,"Ditto, GNN entity resolution, LSH (+ exact record de-duplication)",GNN entity resolution,yes
+Data Noise Bias,yes,yes,"Confident Learning (Cleanlab), Robust Loss Functions, Diffusion Denoising Model",Robust Loss Functions,yes
+Encoding / Domain Bias,yes,yes,"IRM, OTDA, Domain Generalization Transformer (+ rule-based encoding harmonisation)",IRM,yes
