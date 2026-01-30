@@ -1,0 +1,91 @@
+{
+  "column_convention": {
+    "meta_*": "identifiers, survey weights/design, domain and split-group columns; never model inputs",
+    "sens_*": "harmonised fairness attributes for evaluation; not inputs by default",
+    "target": "binary outcome",
+    "other": "candidate predictors (categorical = text columns, encode inside your pipeline)"
+  },
+  "harmonised_groups": {
+    "sens_age_group": [
+      "18-39",
+      "40-64",
+      "65-79",
+      "80+"
+    ],
+    "sens_race_ethnicity": [
+      "White",
+      "Black",
+      "Hispanic",
+      "Other"
+    ],
+    "sens_sex": [
+      "Male",
+      "Female"
+    ]
+  },
+  "heart": {
+    "file": "heart_raw.csv",
+    "source": "CDC BRFSS 2022 https://www.cdc.gov/brfss/annual_data/annual_2022.html",
+    "rows": 440111,
+    "positive": 39751,
+    "positive_rate": 0.0903,
+    "target_meaning": "Ever told had heart attack (MI) or angina/coronary heart disease (_MICHD); self-reported history",
+    "numeric_features": [
+      "age",
+      "male",
+      "bmi",
+      "any_exercise_30d",
+      "sleep_hours",
+      "general_health",
+      "poor_physical_health_days",
+      "poor_mental_health_days",
+      "education",
+      "income_category",
+      "cost_barrier_12m",
+      "checkup_recency",
+      "alcohol_days_30d",
+      "drinks_per_occasion"
+    ],
+    "categorical_features": [
+      "smoking_status",
+      "diabetes_status"
+    ],
+    "sensitive_attributes": [
+      "sens_sex",
+      "sens_age_group",
+      "sens_race_ethnicity",
+      "sens_race_detail"
+    ],
+    "meta_columns_never_inputs": [
+      "meta_record_id",
+      "meta_domain_state",
+      "meta_survey_weight",
+      "meta_strata",
+      "meta_psu"
+    ],
+    "source_columns_excluded": {
+      "_MICHD, CVDINFR4, CVDCRHD4": "label sources",
+      "SMOKE100, SMOKDAY2": "already summarised in smoking_status (_SMOKER3); SMOKDAY2 is a structural skip",
+      "_BMI5CAT": "redundant with bmi",
+      "_RACEGR4": "fairness attribute only (sens_race_*)"
+    },
+    "feature_missing_rate": {
+      "age": 0.0,
+      "male": 0.0,
+      "bmi": 0.1087,
+      "smoking_status": 0.079,
+      "any_exercise_30d": 0.0022,
+      "sleep_hours": 0.0116,
+      "general_health": 0.0024,
+      "poor_physical_health_days": 0.0237,
+      "poor_mental_health_days": 0.0197,
+      "diabetes_status": 0.0018,
+      "education": 0.0049,
+      "income_category": 0.2139,
+      "cost_barrier_12m": 0.0032,
+      "checkup_recency": 0.0125,
+      "alcohol_days_30d": 0.1039,
+      "drinks_per_occasion": 0.1109
+    }
+  }
+}
