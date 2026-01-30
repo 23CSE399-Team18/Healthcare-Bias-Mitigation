@@ -1,0 +1,16 @@
+{
+  "imports_passed": [
+    "matplotlib",
+    "seaborn",
+    "fairlearn",
+    "imblearn",
+    "pyod",
+    "cleanlab",
+    "torch",
+    "ctgan",
+    "hyperimpute"
+  ],
+  "torch_version": "2.6.0+cu124",
+  "cuda_available": true,
+  "cuda_device": "NVIDIA GeForce RTX 3050 Laptop GPU"
+}
