@@ -1,0 +1,27 @@
+column,role,notes
+_STATE,survey metadata / not predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+SEQNO,survey metadata / not predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+_PSU,survey metadata / not predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+_STSTR,survey metadata / not predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+_LLCPWT,survey metadata / not predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+SEXVAR,fairness attribute / possible predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+_AGE80,fairness attribute / possible predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+_RACEGR4,fairness attribute / possible predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+_BMI5,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+_BMI5CAT,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+SMOKE100,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+SMOKDAY2,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+_SMOKER3,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+EXERANY2,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+SLEPTIM1,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+GENHLTH,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+PHYSHLTH,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+MENTHLTH,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+DIABETE4,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+EDUCA,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+INCOME3,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+MEDCOST1,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+CHECKUP1,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+ALCDAY4,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+AVEDRNK3,candidate predictor,Raw CDC codes; consult BRFSS 2022 codebook. _BMI5 is BMI x100; _AGE80 top-coded at80.
+HeartDisease,target,Ever reported myocardial infarction OR angina/coronary heart disease
