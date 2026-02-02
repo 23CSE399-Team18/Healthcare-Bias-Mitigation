@@ -1,0 +1,269 @@
+{
+  "dataset": "heart",
+  "title": "Heart disease — CDC BRFSS 2022",
+  "source_file": "D:\\complete\\model_ready\\heart_model_ready.csv",
+  "seed": 42,
+  "fast_mode": false,
+  "train_rows": 567718,
+  "test_rows": 88023,
+  "validation_rows": 35209,
+  "final_predictors": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "f9",
+    "f10",
+    "f11",
+    "f12",
+    "f13",
+    "f14",
+    "f15",
+    "f16",
+    "f17",
+    "f18",
+    "f19",
+    "f20",
+    "f21",
+    "f22",
+    "f23",
+    "f24",
+    "f25",
+    "f26",
+    "f27",
+    "f28",
+    "f29",
+    "f30",
+    "f31",
+    "f32"
+  ],
+  "schema": {
+    "f1": {
+      "type": "cont"
+    },
+    "f2": {
+      "type": "cont"
+    },
+    "f3": {
+      "type": "cont"
+    },
+    "f4": {
+      "type": "cont"
+    },
+    "f5": {
+      "type": "cont"
+    },
+    "f6": {
+      "type": "cont"
+    },
+    "f7": {
+      "type": "cont"
+    },
+    "f8": {
+      "type": "cont"
+    },
+    "f9": {
+      "type": "cont"
+    },
+    "f10": {
+      "type": "cont"
+    },
+    "f11": {
+      "type": "cont"
+    },
+    "f12": {
+      "type": "cont"
+    },
+    "f13": {
+      "type": "cont"
+    },
+    "f14": {
+      "type": "cont"
+    },
+    "f15": {
+      "type": "cont"
+    },
+    "f16": {
+      "type": "cont"
+    },
+    "f17": {
+      "type": "cont"
+    },
+    "f18": {
+      "type": "cont"
+    },
+    "f19": {
+      "type": "cont"
+    },
+    "f20": {
+      "type": "cont"
+    },
+    "f21": {
+      "type": "cont"
+    },
+    "f22": {
+      "type": "cont"
+    },
+    "f23": {
+      "type": "cont"
+    },
+    "f24": {
+      "type": "cont"
+    },
+    "f25": {
+      "type": "cont"
+    },
+    "f26": {
+      "type": "cont"
+    },
+    "f27": {
+      "type": "cont"
+    },
+    "f28": {
+      "type": "cont"
+    },
+    "f29": {
+      "type": "cont"
+    },
+    "f30": {
+      "type": "cont"
+    },
+    "f31": {
+      "type": "cont"
+    },
+    "f32": {
+      "type": "cont"
+    }
+  },
+  "biases": {
+    "Duplicate": {
+      "detected": false,
+      "statistic": "exact duplicate records (all columns except record ID)",
+      "before": 0,
+      "after": 0,
+      "selected": "—",
+      "best_traditional": "—",
+      "methods_compared": 0
+    },
+    "Missing data": {
+      "detected": true,
+      "statistic": "share of missing predictor cells",
+      "before": 0.04367794962746033,
+      "after": 0,
+      "selected": "MIP-VAE",
+      "best_traditional": "GMM",
+      "methods_compared": 8
+    },
+    "Outlier": {
+      "detected": true,
+      "statistic": "rows beyond skew-adjusted extreme fences",
+      "before": 0.01160064251654417,
+      "after": 0.004303917906278037,
+      "selected": "EBM",
+      "best_traditional": "One-Class SVM",
+      "methods_compared": 6
+    },
+    "Data noise": {
+      "detected": true,
+      "statistic": "Confident-Learning label-issue rate",
+      "before": 0.027244311197530038,
+      "after": 0.029403475509380543,
+      "selected": "Robust loss (GCE)",
+      "best_traditional": "Denoising autoencoder",
+      "methods_compared": 7
+    },
+    "Feature scale": {
+      "detected": true,
+      "statistic": "max/min predictor SD ratio; max |skewness|",
+      "before": "21.7; 2.39",
+      "after": "1.0; 2.39",
+      "selected": "SNN (SELU)",
+      "best_traditional": "Quantile transform",
+      "methods_compared": 6
+    },
+    "Encoding / domain": {
+      "detected": false,
+      "statistic": "one-vs-rest domain-classifier AUC; AUROC drop on held-out domains",
+      "before": "0.554; -0.012",
+      "after": "0.554; -0.012",
+      "selected": "—",
+      "best_traditional": "—",
+      "methods_compared": 0
+    },
+    "Class imbalance": {
+      "detected": true,
+      "statistic": "imbalance ratio (majority/minority)",
+      "before": 10.001021738364514,
+      "after": 1,
+      "selected": "TabDDPM",
+      "best_traditional": "Borderline-SMOTE",
+      "methods_compared": 8
+    },
+    "Demographic": {
+      "detected": true,
+      "statistic": "min DI of outcome rate; max EOD of baseline model (protected attributes)",
+      "before": "0.64; 0.182",
+      "after": "SPD 0.146; EOD 0.157",
+      "selected": "Adversarial debiasing",
+      "best_traditional": "Optimal Transport",
+      "methods_compared": 6
+    }
+  },
+  "timings_seconds": {
+    "raw detection": 33.3,
+    "missing:GMM": 4.6,
+    "missing:Random Forest": 22.8,
+    "missing:GAIN": 22.7,
+    "missing:MICE": 10.6,
+    "missing:KNN": 22.1,
+    "missing:HyperImpute": 33.1,
+    "missing:CSDI": 86.1,
+    "missing:MIP-VAE": 5.4,
+    "missing:apply MIP-VAE": 54.6,
+    "outlier:Isolation Forest": 6,
+    "outlier:LOF": 8.4,
+    "outlier:One-Class SVM": 4.8,
+    "outlier:ECOD": 3.8,
+    "outlier:Deep SVDD": 13.9,
+    "outlier:EBM": 30.3,
+    "outlier:apply EBM": 3,
+    "noise:CL on full training split": 13.4,
+    "noise:Denoising autoencoder": 1.7,
+    "noise:Wavelet denoising": 0.1,
+    "noise:Median filter": 0.1,
+    "noise:Savitzky–Golay": 0.1,
+    "noise:Confident Learning (Cleanlab)": 0,
+    "noise:Robust loss (GCE)": 3.4,
+    "noise:Diffusion denoising": 6.6,
+    "noise:apply Robust loss (GCE)": 50.5,
+    "noise:CL after": 13.6,
+    "scale:Quantile transform": 1.4,
+    "scale:Min-Max scaler": 1.2,
+    "scale:Robust scaler": 1.2,
+    "scale:SNN (SELU)": 1.2,
+    "scale:FT-Transformer": 11.9,
+    "scale:PowerTransform (Yeo-Johnson)": 1.6,
+    "imbalance:SMOTE": 3,
+    "imbalance:ADASYN": 3.2,
+    "imbalance:Borderline-SMOTE": 3.1,
+    "imbalance:NearMiss": 0.7,
+    "imbalance:TabDDPM": 13.9,
+    "imbalance:CTGAN": 68.1,
+    "imbalance:Class-Balanced Focal Loss": 2.2,
+    "imbalance:DeepSMOTE": 21.9,
+    "imbalance:apply TabDDPM": 28.9,
+    "demographic:baseline": 19.8,
+    "demographic:Optimal Transport": 48.9,
+    "demographic:FairSMOTE": 20.6,
+    "demographic:Reweighting": 18.3,
+    "demographic:Adversarial debiasing": 27.5,
+    "demographic:Counterfactual recourse (DiCE)": 28.8,
+    "demographic:Fair contrastive learning": 33.8,
+    "demographic:apply Adversarial debiasing": 9.1
+  },
+  "column_rule": "inputs = every column except meta_*, sens_* and target; use meta_sample_weight as sample weight"
+}
