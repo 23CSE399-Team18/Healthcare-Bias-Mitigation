@@ -1,0 +1,9 @@
+bias,detected,statistic,before,after,methods compared,selected method (modern),best traditional (comparison only)
+Duplicate,no,exact duplicate records (all columns except record ID),0,0,0,—,—
+Missing data,YES,share of missing predictor cells,0.1589,0.0000,8,HyperImpute,MICE
+Outlier,YES,rows beyond skew-adjusted extreme fences,0.4516,0.4353,6,EBM,LOF
+Data noise,YES,Confident-Learning label-issue rate; monitor spike rate,0.0650; spikes 0.0075,0.0631; spikes 0.0075,7,labels: Confident Learning (Cleanlab); signals: —,labels: Wavelet denoising; signals: —
+Feature scale,YES,max/min predictor SD ratio; max |skewness|,17034.1; 28.36,1.0; 28.36,6,SNN (SELU),Quantile transform
+Encoding / domain,YES,one-vs-rest domain-classifier AUC; AUROC drop on held-out domains,0.969; +0.014,0.908; +0.000,6,OT domain adaptation,Autoencoder (domain-conditional)
+Class imbalance,YES,imbalance ratio (majority/minority),6.6685,1.0000,8,TabDDPM,SMOTE
+Demographic,YES,min DI of outcome rate; max EOD of baseline model (protected attributes),0.79; 0.126,SPD 0.073; EOD 0.060,6,Fair contrastive learning,Reweighting
