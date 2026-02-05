@@ -1,0 +1,277 @@
+{
+  "dataset": "respiratory",
+  "title": "Respiratory ICU mortality — eICU-CRD v2.0",
+  "source_file": "D:\\complete\\model_ready\\respiratory_model_ready.csv",
+  "seed": 42,
+  "fast_mode": false,
+  "train_rows": 34516,
+  "test_rows": 5731,
+  "validation_rows": 2323,
+  "final_predictors": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "f9",
+    "f10",
+    "f11",
+    "f12",
+    "f13",
+    "f14",
+    "f15",
+    "f16",
+    "f17",
+    "f18",
+    "f19",
+    "f20",
+    "f21",
+    "f22",
+    "f23",
+    "f24",
+    "f25",
+    "f26",
+    "f27",
+    "f28",
+    "f29",
+    "f30",
+    "f31",
+    "f32"
+  ],
+  "schema": {
+    "f1": {
+      "type": "cont"
+    },
+    "f2": {
+      "type": "cont"
+    },
+    "f3": {
+      "type": "cont"
+    },
+    "f4": {
+      "type": "cont"
+    },
+    "f5": {
+      "type": "cont"
+    },
+    "f6": {
+      "type": "cont"
+    },
+    "f7": {
+      "type": "cont"
+    },
+    "f8": {
+      "type": "cont"
+    },
+    "f9": {
+      "type": "cont"
+    },
+    "f10": {
+      "type": "cont"
+    },
+    "f11": {
+      "type": "cont"
+    },
+    "f12": {
+      "type": "cont"
+    },
+    "f13": {
+      "type": "cont"
+    },
+    "f14": {
+      "type": "cont"
+    },
+    "f15": {
+      "type": "cont"
+    },
+    "f16": {
+      "type": "cont"
+    },
+    "f17": {
+      "type": "cont"
+    },
+    "f18": {
+      "type": "cont"
+    },
+    "f19": {
+      "type": "cont"
+    },
+    "f20": {
+      "type": "cont"
+    },
+    "f21": {
+      "type": "cont"
+    },
+    "f22": {
+      "type": "cont"
+    },
+    "f23": {
+      "type": "cont"
+    },
+    "f24": {
+      "type": "cont"
+    },
+    "f25": {
+      "type": "cont"
+    },
+    "f26": {
+      "type": "cont"
+    },
+    "f27": {
+      "type": "cont"
+    },
+    "f28": {
+      "type": "cont"
+    },
+    "f29": {
+      "type": "cont"
+    },
+    "f30": {
+      "type": "cont"
+    },
+    "f31": {
+      "type": "cont"
+    },
+    "f32": {
+      "type": "cont"
+    }
+  },
+  "biases": {
+    "Duplicate": {
+      "detected": false,
+      "statistic": "exact duplicate records (all columns except record ID)",
+      "before": 0,
+      "after": 0,
+      "selected": "—",
+      "best_traditional": "—",
+      "methods_compared": 0
+    },
+    "Missing data": {
+      "detected": true,
+      "statistic": "share of missing predictor cells",
+      "before": 0.15893360422868397,
+      "after": 0,
+      "selected": "HyperImpute",
+      "best_traditional": "MICE",
+      "methods_compared": 8
+    },
+    "Outlier": {
+      "detected": true,
+      "statistic": "rows beyond skew-adjusted extreme fences",
+      "before": 0.4516066961708678,
+      "after": 0.43528069827415194,
+      "selected": "EBM",
+      "best_traditional": "LOF",
+      "methods_compared": 6
+    },
+    "Data noise": {
+      "detected": true,
+      "statistic": "Confident-Learning label-issue rate; monitor spike rate",
+      "before": "0.0650; spikes 0.0075",
+      "after": "0.0631; spikes 0.0075",
+      "selected": "labels: Confident Learning (Cleanlab); signals: —",
+      "best_traditional": "labels: Wavelet denoising; signals: —",
+      "methods_compared": 7
+    },
+    "Feature scale": {
+      "detected": true,
+      "statistic": "max/min predictor SD ratio; max |skewness|",
+      "before": "17034.1; 28.36",
+      "after": "1.0; 28.36",
+      "selected": "SNN (SELU)",
+      "best_traditional": "Quantile transform",
+      "methods_compared": 6
+    },
+    "Encoding / domain": {
+      "detected": true,
+      "statistic": "one-vs-rest domain-classifier AUC; AUROC drop on held-out domains",
+      "before": "0.969; +0.014",
+      "after": "0.908; +0.000",
+      "selected": "OT domain adaptation",
+      "best_traditional": "Autoencoder (domain-conditional)",
+      "methods_compared": 6
+    },
+    "Class imbalance": {
+      "detected": true,
+      "statistic": "imbalance ratio (majority/minority)",
+      "before": 6.668469860896445,
+      "after": 1,
+      "selected": "TabDDPM",
+      "best_traditional": "SMOTE",
+      "methods_compared": 8
+    },
+    "Demographic": {
+      "detected": true,
+      "statistic": "min DI of outcome rate; max EOD of baseline model (protected attributes)",
+      "before": "0.79; 0.126",
+      "after": "SPD 0.073; EOD 0.060",
+      "selected": "Fair contrastive learning",
+      "best_traditional": "Reweighting",
+      "methods_compared": 6
+    }
+  },
+  "timings_seconds": {
+    "raw detection": 95.1,
+    "missing:GMM": 3.1,
+    "missing:Random Forest": 85.8,
+    "missing:GAIN": 25.5,
+    "missing:MICE": 109.6,
+    "missing:KNN": 202.1,
+    "missing:HyperImpute": 185.4,
+    "missing:CSDI": 607.3,
+    "missing:MIP-VAE": 7,
+    "missing:apply HyperImpute": 333.5,
+    "outlier:Isolation Forest": 6.8,
+    "outlier:LOF": 10.8,
+    "outlier:One-Class SVM": 7.1,
+    "outlier:ECOD": 12.3,
+    "outlier:Deep SVDD": 9.9,
+    "outlier:EBM": 129.6,
+    "outlier:apply EBM": 23.5,
+    "noise:CL on full training split": 11.5,
+    "noise:Denoising autoencoder": 1.9,
+    "noise:Wavelet denoising": 0.4,
+    "noise:Median filter": 0.3,
+    "noise:Savitzky–Golay": 0.4,
+    "noise:Confident Learning (Cleanlab)": 0.2,
+    "noise:Robust loss (GCE)": 3.6,
+    "noise:Diffusion denoising": 6.7,
+    "noise:apply Confident Learning (Cleanlab)": 0.1,
+    "noise:CL after": 13.1,
+    "noise-ts:load": 88.6,
+    "scale:Quantile transform": 1.6,
+    "scale:Min-Max scaler": 1.1,
+    "scale:Robust scaler": 1.2,
+    "scale:SNN (SELU)": 1.3,
+    "scale:FT-Transformer": 32.6,
+    "scale:PowerTransform (Yeo-Johnson)": 2.5,
+    "domain:DANN": 9.9,
+    "domain:CORAL": 10.8,
+    "domain:Autoencoder (domain-conditional)": 9.9,
+    "domain:IRM": 18.6,
+    "domain:OT domain adaptation": 37.2,
+    "domain:Domain-generalisation transformer": 165.9,
+    "domain:apply OT domain adaptation": 29.8,
+    "imbalance:SMOTE": 1.4,
+    "imbalance:ADASYN": 1.4,
+    "imbalance:Borderline-SMOTE": 1.3,
+    "imbalance:NearMiss": 0.5,
+    "imbalance:TabDDPM": 10.2,
+    "imbalance:CTGAN": 197.7,
+    "imbalance:Class-Balanced Focal Loss": 0.9,
+    "imbalance:DeepSMOTE": 8,
+    "imbalance:apply TabDDPM": 9.9,
+    "demographic:baseline": 114.5,
+    "demographic:Optimal Transport": 519.9,
+    "demographic:FairSMOTE": 110.8,
+    "demographic:Reweighting": 110.2,
+    "demographic:Adversarial debiasing": 120.2,
+    "demographic:Counterfactual recourse (DiCE)": 136.3,
+    "demographic:Fair contrastive learning": 120.9,
+    "demographic:apply Fair contrastive learning": 6.6
+  },
+  "column_rule": "inputs = every column except meta_*, sens_* and target; use meta_sample_weight as sample weight"
+}
