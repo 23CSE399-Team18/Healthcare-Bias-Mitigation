@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "independent_source_membership_check": true,
+  "rows": 131232,
+  "patients": 103341,
+  "hospitals": 207,
+  "deaths": 11977,
+  "unknown_age_not_mapped_to_topcode": true,
+  "no_outcome_or_future_columns_in_explicit_predictors": true,
+  "temperature_missing_and_excluded_from_baseline": 117502,
+  "feature_csv_sha256": "b905a39189609c6f90f6a5257e423d4c1dbf7889b81770534154c0bf4a09d5ca",
+  "mimic_evaluation_pending": true
+}
