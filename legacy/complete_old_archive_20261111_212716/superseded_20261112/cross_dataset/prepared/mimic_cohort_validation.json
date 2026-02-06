@@ -1,0 +1,129 @@
+{
+  "passed": true,
+  "source": "MIMIC-IV v3.1 metadata only",
+  "sources": {
+    "patients": {
+      "relative_name": "hosp/patients.csv.gz",
+      "rows": 364627,
+      "sha256": "4c7507de7ecad8c5ba7647ea4d26018e88ff6672c5fc22ab59c2a5697d687cdd",
+      "publisher_sha256": "4c7507de7ecad8c5ba7647ea4d26018e88ff6672c5fc22ab59c2a5697d687cdd",
+      "stored_bytes_rehashed": true,
+      "acquisition": "verified official browser download"
+    },
+    "admissions": {
+      "relative_name": "hosp/admissions.csv.gz",
+      "rows": 546028,
+      "sha256": "a9584ed88e9ed664a2f66f86a5cf9fd175c8bb0af50e3b6115598b19e978384e",
+      "publisher_sha256": "a9584ed88e9ed664a2f66f86a5cf9fd175c8bb0af50e3b6115598b19e978384e",
+      "stored_bytes_rehashed": true,
+      "acquisition": "verified official browser download"
+    },
+    "icustays": {
+      "relative_name": "icu/icustays.csv.gz",
+      "rows": 94458,
+      "sha256": "3c590ed37f1fb7a77a128f2f6961f836001512ba81adcd0dfeced2702f96bc5f",
+      "publisher_sha256": "3c590ed37f1fb7a77a128f2f6961f836001512ba81adcd0dfeced2702f96bc5f",
+      "stored_bytes_rehashed": true,
+      "acquisition": "verified official browser download"
+    },
+    "d_items": {
+      "relative_name": "icu/d_items.csv.gz",
+      "rows": 4095,
+      "sha256": "7f223a9570da9c02bd12f281b398cb4951d5a560a51836540f357bc247366b7f",
+      "publisher_sha256": "7f223a9570da9c02bd12f281b398cb4951d5a560a51836540f357bc247366b7f",
+      "stored_bytes_rehashed": true,
+      "acquisition": "verified official browser download"
+    }
+  },
+  "source_icu_stays": 94458,
+  "linked_icu_stays": 94458,
+  "rows": 74009,
+  "patients": 53945,
+  "hospitals": 1,
+  "positive": 8621,
+  "negative": 65388,
+  "cohort_flow": [
+    {
+      "stage": "ICU_stays_linked_to_admission_and_patient",
+      "rows": 94458
+    },
+    {
+      "stage": "known_adult_and_identifiers",
+      "rows": 94458
+    },
+    {
+      "stage": "known_hospital_outcome",
+      "rows": 94458
+    },
+    {
+      "stage": "alive_and_still_in_icu_and_hospital_after_24h",
+      "rows": 74009
+    }
+  ],
+  "source_item_label_and_unit_checks": [
+    {
+      "itemid": 220045,
+      "source_label": "Heart Rate",
+      "source_unit": "bpm",
+      "mapped_concept": "heart_rate",
+      "in_common_baseline": true,
+      "unit_conversion": "identity",
+      "label_and_unit_match": true
+    },
+    {
+      "itemid": 220210,
+      "source_label": "Respiratory Rate",
+      "source_unit": "insp/min",
+      "mapped_concept": "resp_rate",
+      "in_common_baseline": true,
+      "unit_conversion": "identity",
+      "label_and_unit_match": true
+    },
+    {
+      "itemid": 224690,
+      "source_label": "Respiratory Rate (Total)",
+      "source_unit": "insp/min",
+      "mapped_concept": "resp_rate",
+      "in_common_baseline": true,
+      "unit_conversion": "identity",
+      "label_and_unit_match": true
+    },
+    {
+      "itemid": 220277,
+      "source_label": "O2 saturation pulseoxymetry",
+      "source_unit": "%",
+      "mapped_concept": "spo2",
+      "in_common_baseline": true,
+      "unit_conversion": "identity",
+      "label_and_unit_match": true
+    },
+    {
+      "itemid": 223761,
+      "source_label": "Temperature Fahrenheit",
+      "source_unit": "°F",
+      "mapped_concept": "temperature",
+      "in_common_baseline": false,
+      "unit_conversion": "(F - 32) / 1.8",
+      "label_and_unit_match": true
+    },
+    {
+      "itemid": 223762,
+      "source_label": "Temperature Celsius",
+      "source_unit": "°C",
+      "mapped_concept": "temperature",
+      "in_common_baseline": false,
+      "unit_conversion": "identity",
+      "label_and_unit_match": true
+    }
+  ],
+  "unique_stay_ids": true,
+  "independent_source_eligibility_and_label_check": true,
+  "known_adult_age_required": true,
+  "prediction_landmark_hours": 24,
+  "outcome": "Subsequent in-hospital mortality among eligible adult ICU stays alive at24h",
+  "clinical_features_extracted": false,
+  "mimic_feature_table_prepared": false,
+  "evaluation_completed": false,
+  "manifest_sha256": "abb44dc3db7fd38c961a0222c794492f3d159751d82034a27109457c0f3076d6",
+  "next_required_source": "icu/chartevents.csv.gz, completed and publisher-checksum verified"
+}
