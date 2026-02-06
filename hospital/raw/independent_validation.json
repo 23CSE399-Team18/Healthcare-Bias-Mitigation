@@ -1,0 +1,240 @@
+{
+  "passed": true,
+  "started_utc": "2026-11-09T16:01:52.777093+00:00",
+  "validation": "Actual exports, source-linked labels, independently recomputed history union and split eligibility",
+  "models_trained": false,
+  "sources": {
+    "mimic": {
+      "eligible_clinical_stays": 74009,
+      "excluded_no_documented_diagnoses": 19,
+      "source_labels_sha256": "fd3646367b0301631eb45a2bc2484a3821ff34f1cedcdf10d1ef3b8bb2af93c1",
+      "conditions": {
+        "heart": {
+          "rows": 73990,
+          "positive": 26632,
+          "not_documented": 47358,
+          "sha256": "968374f37b509be4ff9b8ea4429787b4e552ed7c59ab30a257d0a3f72ce0bd86",
+          "source_labels_match": true,
+          "split_targets": {
+            "test": {
+              "count": 10932,
+              "sum": 3860
+            },
+            "train": {
+              "count": 52229,
+              "sum": 18792
+            },
+            "validation": {
+              "count": 10829,
+              "sum": 3980
+            }
+          }
+        },
+        "respiratory": {
+          "rows": 73990,
+          "positive": 43428,
+          "not_documented": 30562,
+          "sha256": "e4f7b27461e9e83fc9ac8525ed1f02d8aef83e87b9a02a7e9e9132872f0a7bd5",
+          "source_labels_match": true,
+          "split_targets": {
+            "test": {
+              "count": 10932,
+              "sum": 6408
+            },
+            "train": {
+              "count": 52229,
+              "sum": 30768
+            },
+            "validation": {
+              "count": 10829,
+              "sum": 6252
+            }
+          }
+        },
+        "diabetes": {
+          "rows": 73990,
+          "positive": 23580,
+          "not_documented": 50410,
+          "sha256": "6865790e8a8b45c92733078bc3c5f0749ce888ad5b0ac449add18f44c9862b78",
+          "source_labels_match": true,
+          "split_targets": {
+            "test": {
+              "count": 10932,
+              "sum": 3417
+            },
+            "train": {
+              "count": 52229,
+              "sum": 16659
+            },
+            "validation": {
+              "count": 10829,
+              "sum": 3504
+            }
+          }
+        },
+        "hypertension": {
+          "rows": 73990,
+          "positive": 48297,
+          "not_documented": 25693,
+          "sha256": "5c8728b0f33d17cf9f4c303360dcd6d2f20165dc56ccfead5d4af39eaf831001",
+          "source_labels_match": true,
+          "split_targets": {
+            "test": {
+              "count": 10932,
+              "sum": 7071
+            },
+            "train": {
+              "count": 52229,
+              "sum": 34124
+            },
+            "validation": {
+              "count": 10829,
+              "sum": 7102
+            }
+          }
+        }
+      },
+      "rows": 73990,
+      "patients": 53931,
+      "hospitals": 1,
+      "same_features_metadata_and_rows_all_four_conditions": true,
+      "exact_documented_population_and_split_purge": true,
+      "no_patient_split_overlap": true,
+      "no_hospital_split_overlap": false,
+      "shared_predictors": [
+        "heart_rate_mean",
+        "heart_rate_min",
+        "heart_rate_max",
+        "resp_rate_mean",
+        "resp_rate_min",
+        "resp_rate_max",
+        "spo2_mean",
+        "spo2_min",
+        "spo2_max",
+        "age_group",
+        "sex"
+      ],
+      "source_measurements_preserved": true,
+      "labels_or_outcomes_in_predictors": false
+    },
+    "eicu": {
+      "eligible_clinical_stays": 131232,
+      "diagnosis_documented_before_purge": 111974,
+      "excluded_no_documented_diagnoses": 19258,
+      "cross_partition_patients_purged": 935,
+      "cross_partition_stays_purged": 2596,
+      "history_source_recomputed_from_verified_gzip": true,
+      "history_source_sha256": "c8d05cd14ce2f0730750354b8dcd395905ad6a958be4f42b45cbeac02e0aaf84",
+      "source_labels_sha256": "1ef35eb9545f993c5c74aa6ba711ffddc9b0742bb37752843dddbd8023f0cca9",
+      "conditions": {
+        "heart": {
+          "rows": 109378,
+          "positive": 19791,
+          "not_documented": 89587,
+          "sha256": "0c4b3256aa5b3243778489c53180a092345801ba272c083c1094592f0cc64fb3",
+          "source_labels_match": true,
+          "split_targets": {
+            "test": {
+              "count": 8454,
+              "sum": 1289
+            },
+            "train": {
+              "count": 80606,
+              "sum": 14232
+            },
+            "validation": {
+              "count": 20318,
+              "sum": 4270
+            }
+          }
+        },
+        "respiratory": {
+          "rows": 109378,
+          "positive": 53639,
+          "not_documented": 55739,
+          "sha256": "ec02fff7b6719283b35b092122fbde7fee946213ca0763d04e53190f7e79278d",
+          "source_labels_match": true,
+          "split_targets": {
+            "test": {
+              "count": 8454,
+              "sum": 4065
+            },
+            "train": {
+              "count": 80606,
+              "sum": 39717
+            },
+            "validation": {
+              "count": 20318,
+              "sum": 9857
+            }
+          }
+        },
+        "diabetes": {
+          "rows": 109378,
+          "positive": 33882,
+          "not_documented": 75496,
+          "sha256": "7f90db1518cbfd85700162051584543bad8fa48e0e50e2b5a7c54a87b59d7d53",
+          "source_labels_match": true,
+          "split_targets": {
+            "test": {
+              "count": 8454,
+              "sum": 2635
+            },
+            "train": {
+              "count": 80606,
+              "sum": 24732
+            },
+            "validation": {
+              "count": 20318,
+              "sum": 6515
+            }
+          }
+        },
+        "hypertension": {
+          "rows": 109378,
+          "positive": 62817,
+          "not_documented": 46561,
+          "sha256": "c041ab76cc3bdd0cae33b3bf8eea733ebe416ceaee05b1bb9b14128cb8d21b5e",
+          "source_labels_match": true,
+          "split_targets": {
+            "test": {
+              "count": 8454,
+              "sum": 4675
+            },
+            "train": {
+              "count": 80606,
+              "sum": 46606
+            },
+            "validation": {
+              "count": 20318,
+              "sum": 11536
+            }
+          }
+        }
+      },
+      "rows": 109378,
+      "patients": 88955,
+      "hospitals": 206,
+      "same_features_metadata_and_rows_all_four_conditions": true,
+      "exact_documented_population_and_split_purge": true,
+      "no_patient_split_overlap": true,
+      "no_hospital_split_overlap": true,
+      "shared_predictors": [
+        "heart_rate_mean",
+        "heart_rate_min",
+        "heart_rate_max",
+        "resp_rate_mean",
+        "resp_rate_min",
+        "resp_rate_max",
+        "spo2_mean",
+        "spo2_min",
+        "spo2_max",
+        "age_group",
+        "sex"
+      ],
+      "source_measurements_preserved": true,
+      "labels_or_outcomes_in_predictors": false
+    }
+  },
+  "completed_utc": "2026-11-09T16:02:03.602893+00:00"
+}
