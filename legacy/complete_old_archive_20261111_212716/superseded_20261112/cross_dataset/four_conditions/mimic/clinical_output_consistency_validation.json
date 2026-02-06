@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "check_type": "Derived output consistency plus patient/admission joins against original ICU table",
+  "not_a_second_independent_measurement_extraction": true,
+  "rows": 74009,
+  "patients": 53945,
+  "hospitals": 1,
+  "unique_stay_ids": true,
+  "explicit_predictor_schema_matched": true,
+  "no_label_or_discharge_or_identifier_predictors": true,
+  "patient_admission_keys_match_original_icustays": true,
+  "observed_hours_match_feature_missingness": true,
+  "unit_converted_features_inside_bounds": true,
+  "hourly_min_mean_max_ordering": true,
+  "full_chartevents_gzip_crc_verified": true,
+  "baseline_numeric_predictors": 9,
+  "baseline_categorical_predictors": 2,
+  "optional_mimic_only_numeric_predictors": 21
+}
