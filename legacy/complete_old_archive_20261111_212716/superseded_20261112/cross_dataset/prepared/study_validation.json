@@ -1,0 +1,14 @@
+{
+  "scientific_fixture_tests_passed": 9,
+  "scientific_fixture_tests_failed": 0,
+  "all_study_python_files_compile": true,
+  "eicu_independent_validation_passed": true,
+  "mimic_metadata_independent_validation_passed": true,
+  "mimic_cohort_rows": 74009,
+  "mimic_patient_count": 53945,
+  "mimic_deaths": 8621,
+  "mimic_vital_item_labels_and_units_verified": 6,
+  "mimic_clinical_features_prepared": false,
+  "mimic_real_results_generated": false,
+  "production_status_unchanged_by_metadata_audit": true
+}
