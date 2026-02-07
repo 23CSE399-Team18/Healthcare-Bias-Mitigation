@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Disease Latent Feature Extraction & Cross-Dataset Alignment Dashboard</title>
+    <meta name="description" content="Cross-dataset alignment dashboard showcasing DGCCA, SAINT, and MV-DAE architectures across Heart, Diabetes, Hypertension, and Respiratory cohorts.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body><div style="padding:12px;background:#fff4cc;color:#332b19;font:14px sans-serif">Historical archive, not the current project. Individual-record examples are omitted from this public copy. Reproduce record-based plots locally using authorized data.</div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="brand-logo">
+                <div class="brand-icon">⚡</div>
+                LatentAlign AI
+            </a>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#benchmark-visual">Benchmark Plot</a></li>
+                <li><a href="#model-comparison">Model Comparison</a></li>
+                <li><a href="#cohort-breakdown">Cohort Metrics</a></li>
+                <li><a href="#data-explorer">Data Matrix</a></li>
+            </ul>
+            <div class="nav-status">
+                <div class="status-dot"></div>
+                Pipeline: Code 0 (Active)
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Hero Header -->
+        <section class="hero" id="overview">
+            <div class="badge-tag">
+                <span>🔬 Healthcare Latent Feature Alignment & Cross-Dataset Integration</span>
+            </div>
+            <h1>Multi-Disease Latent Representation & Cross-Dataset Alignment Engine</h1>
+            <p>
+                Unified canonical representation learning framework aligning 4 heterogeneous clinical cohorts 
+                (Heart Disease, Diabetes, Hypertension, and Respiratory Disease) into a shared domain-invariant latent manifold 
+                using Deep Generalized Canonical Correlation Analysis (DGCCA).
+            </p>
+
+            <!-- Key Metric Cards -->
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="label">Total Unified Cohort</div>
+                    <div class="value">60,000</div>
+                    <div class="subtext">Aligned Patient Records (4 x 15k)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Cross-Dataset CKA</div>
+                    <div class="value" style="color:#38f9d7;">0.884</div>
+                    <div class="subtext">High Representation Similarity (DGCCA)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Clinical Macro-F1</div>
+                    <div class="value" style="color:#00f2fe;">0.892</div>
+                    <div class="subtext">Downstream Diagnostic Fidelity</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Domain Invariance ARI</div>
+                    <div class="value" style="color:#f39c12;">0.186</div>
+                    <div class="subtext">Optimal Dataset Shift Suppression</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benchmark Visualization Showcase Section -->
+        <section class="section-block" id="benchmark-visual">
+            <div class="section-header">
+                <div>
+                    <h2>Empirical Benchmarking & Latent Manifold Projection</h2>
+                    <p>Comparison of representation learning methods and DGCCA t-SNE 2D embedding space.</p>
+                </div>
+            </div>
+
+            <div class="visual-showcase-card">
+                <div class="visual-top-bar">
+                    <div class="visual-title-area">
+                        <h3>Figure 1: Cross-Dataset Latent Feature Alignment Benchmark (`latent_alignment_benchmark_dgcca.png`)</h3>
+                        <p>Panel 1: Quantitative Evaluation (CKA, Macro-F1, Silhouette) | Panel 2: DGCCA t-SNE Manifold Distribution</p>
+                    </div>
+                    <div class="visual-actions">
+                        <button class="btn btn-outline" id="viewHighResBtn">🔍 Lightbox View</button>
+                    </div>
+                </div>
+
+                <!-- Featured Benchmark Image Display -->
+                <div class="plot-display-wrapper" id="plotDisplayWrapper">
+                    <img src="latent_alignment_benchmark_dgcca.png" alt="DGCCA Latent Alignment Benchmark Bar Chart and t-SNE Manifold Plot" id="benchmarkPlotImg">
+                    <div class="zoom-overlay">
+                        Click image to expand high-resolution lightbox view
+                    </div>
+                </div>
+
+                <!-- Plot Annotations -->
+                <div class="plot-annotations-grid">
+                    <div class="annotation-card">
+                        <h4>📊 Panel 1: Quantitative Baseline Benchmarking</h4>
+                        <p>
+                            DGCCA achieves superior cross-dataset canonical alignment with a CKA score of <strong>0.884</strong> (compared to SAINT at 0.806 and MV-DAE at 0.752), while preserving clinical diagnostic fidelity (Macro-F1 <strong>0.892</strong>).
+                        </p>
+                    </div>
+                    <div class="annotation-card">
+                        <h4>🌌 Panel 2: DGCCA Latent Manifold Projection (t-SNE)</h4>
+                        <p>
+                            2D t-SNE visualization demonstrates seamless continuous overlapping latent manifold structure across Heart Disease (Red), Diabetes (Blue), Hypertension (Yellow), and Respiratory Disease (Green) cohorts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Performance Comparison Table -->
+        <section class="section-block" id="model-comparison">
+            <div class="section-header">
+                <div>
+                    <h2>Model Architecture Benchmark Suite</h2>
+                    <p>Empirical evaluation comparing DGCCA, SAINT Transformer, and MV-DAE.</p>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Latent Extraction Method</th>
+                            <th>Cross-Dataset Alignment (CKA ↑)</th>
+                            <th>Clinical Preservation (Macro-F1 ↑)</th>
+                            <th>Latent Structure (Silhouette ↑)</th>
+                            <th>Domain Invariance (NMI ↓)</th>
+                            <th>Domain Invariance (ARI ↓)</th>
+                            <th>Decision Rationale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight-row">
+                            <td>
+                                <strong>DGCCA (Deep Generalized CCA)</strong>
+                                <span class="badge-best" style="margin-left:8px;">OPTIMAL</span>
+                            </td>
+                            <td><strong style="color:#38f9d7;">0.884</strong></td>
+                            <td><strong style="color:#00f2fe;">0.892</strong></td>
+                            <td><strong style="color:#00f2fe;">0.741</strong></td>
+                            <td>0.204</td>
+                            <td>0.186</td>
+                            <td><strong>OPTIMAL CHOICE:</strong> Maximizes shared cross-domain canonical correlation with top clinical preservation.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>SAINT (Self-Attention Transformer)</strong>
+                                <span class="badge-baseline" style="margin-left:8px;">TRANSFORMER</span>
+                            </td>
+                            <td>0.806</td>
+                            <td>0.852</td>
+                            <td>0.662</td>
+                            <td>0.384</td>
+                            <td>0.352</td>
+                            <td>Strong inter-sample self-attention, but lacks multi-view canonical correlation constraint.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>MV-DAE (Multi-View Denoising AE)</strong>
+                                <span class="badge-baseline" style="margin-left:8px;">AUTOENCODER</span>
+                            </td>
+                            <td>0.752</td>
+                            <td>0.818</td>
+                            <td>0.598</td>
+                            <td>0.442</td>
+                            <td>0.418</td>
+                            <td>Joint view reconstruction retains higher view noise and sub-optimal domain shifts.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Clinical Cohort Statistics Breakdown -->
+        <section class="section-block" id="cohort-breakdown">
+            <div class="section-header">
+                <div>
+                    <h2>Ingested Multi-Disease Clinical Cohorts</h2>
+                    <p>Overview of the 4 clinical datasets aligned into the unified 60,000-patient matrix.</p>
+                </div>
+            </div>
+
+            <div class="cohort-grid">
+                <div class="cohort-card">
+                    <div class="cohort-header">
+                        <span class="cohort-name heart-theme">❤️ Heart Disease</span>
+                        <span class="cohort-count">15,000 Aligned</span>
+                    </div>
+                    <ul class="cohort-stats-list">
+                        <li><span>Age (Mean ± SD):</span> <span class="val">58.4 ± 8.9 yrs</span></li>
+                        <li><span>Male Proportion:</span> <span class="val">68.2%</span></li>
+                        <li><span>Systolic BP:</span> <span class="val">132.5 ± 14.2 mmHg</span></li>
+                        <li><span>Diastolic BP:</span> <span class="val">82.0 ± 8.6 mmHg</span></li>
+                        <li><span>Mean BMI:</span> <span class="val">26.5 ± 3.8 kg/m²</span></li>
+                    </ul>
+                </div>
+
+                <div class="cohort-card">
+                    <div class="cohort-header">
+                        <span class="cohort-name diabetes-theme">🩸 Diabetes</span>
+                        <span class="cohort-count">15,000 Aligned</span>
+                    </div>
+                    <ul class="cohort-stats-list">
+                        <li><span>Age (Mean ± SD):</span> <span class="val">54.0 ± 11.2 yrs</span></li>
+                        <li><span>Male Proportion:</span> <span class="val">54.8%</span></li>
+                        <li><span>Systolic BP:</span> <span class="val">128.0 ± 12.8 mmHg</span></li>
+                        <li><span>Diastolic BP:</span> <span class="val">80.0 ± 7.9 mmHg</span></li>
+                        <li><span>Mean BMI:</span> <span class="val">28.2 ± 4.5 kg/m²</span></li>
+                    </ul>
+                </div>
+
+                <div class="cohort-card">
+                    <div class="cohort-header">
+                        <span class="cohort-name hypertension-theme">🫀 Hypertension</span>
+                        <span class="cohort-count">15,000 Aligned</span>
+                    </div>
+                    <ul class="cohort-stats-list">
+                        <li><span>Age (Mean ± SD):</span> <span class="val">62.0 ± 9.8 yrs</span></li>
+                        <li><span>Male Proportion:</span> <span class="val">51.4%</span></li>
+                        <li><span>Systolic BP:</span> <span class="val">145.0 ± 16.4 mmHg</span></li>
+                        <li><span>Diastolic BP:</span> <span class="val">92.0 ± 10.2 mmHg</span></li>
+                        <li><span>Mean BMI:</span> <span class="val">29.1 ± 4.9 kg/m²</span></li>
+                    </ul>
+                </div>
+
+                <div class="cohort-card">
+                    <div class="cohort-header">
+                        <span class="cohort-name respiratory-theme">🫁 Respiratory</span>
+                        <span class="cohort-count">15,000 Aligned</span>
+                    </div>
+                    <ul class="cohort-stats-list">
+                        <li><span>Age (Mean ± SD):</span> <span class="val">64.0 ± 12.1 yrs</span></li>
+                        <li><span>Male Proportion:</span> <span class="val">49.2%</span></li>
+                        <li><span>Systolic BP:</span> <span class="val">124.0 ± 11.5 mmHg</span></li>
+                        <li><span>Diastolic BP:</span> <span class="val">76.0 ± 7.2 mmHg</span></li>
+                        <li><span>Mean BMI:</span> <span class="val">25.8 ± 4.2 kg/m²</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Interactive Aligned Data Matrix Explorer -->
+        <section class="section-block" id="data-explorer">
+            <div class="section-header">
+                <div>
+                    <h2>Aligned Latent Matrix Explorer</h2>
+                    <p>Live preview of 6D latent representations mapped with clinical features (`multi_disease_latent_aligned_cohort.csv`).</p>
+                </div>
+                <button class="btn btn-primary" onclick="downloadAlignedCSV()">📥 Download Dataset (CSV)</button>
+            </div>
+
+            <div class="explorer-controls">
+                <input type="text" class="search-input" id="tableSearchInput" placeholder="Filter records by age, sex, disease name...">
+                <select class="select-filter" id="cohortFilterSelect">
+                    <option value="ALL">All Clinical Cohorts (4)</option>
+                    <option value="Heart Disease">Heart Disease Cohort</option>
+                    <option value="Diabetes">Diabetes Cohort</option>
+                    <option value="Hypertension">Hypertension Cohort</option>
+                    <option value="Respiratory Disease">Respiratory Disease Cohort</option>
+                </select>
+            </div>
+
+            <div class="table-card">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Record ID</th>
+                            <th>Disease Cohort</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Blood Pressure (SBP/DBP)</th>
+                            <th>BMI</th>
+                            <th>Risk Score</th>
+                            <th>Latent Dim 1</th>
+                            <th>Latent Dim 2</th>
+                            <th>Latent Dim 3</th>
+                            <th>Latent Dim 4</th>
+                            <th>Latent Dim 5</th>
+                            <th>Latent Dim 6</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matrixTbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal Lightbox Overlay -->
+    <div class="modal-overlay" id="lightboxModal">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+            <img src="latent_alignment_benchmark_dgcca.png" alt="High-Resolution DGCCA Alignment Plot">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Multi-Disease Latent Feature Alignment & Cross-Dataset Pipeline &copy; 2026. Built with PyTorch, Scikit-Learn & DGCCA.</p>
+            <p style="margin-top:8px;">Artifacts Location: <code>D:\output\latent_alignment_benchmark_dgcca.png</code></p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
