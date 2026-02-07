@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "cohorts": [
+    {
+      "path": "Heart_correct/dataset_verified/heart_2022_baseline_raw.csv",
+      "rows": 440111,
+      "positive": 39751,
+      "negative": 400360,
+      "unique_source_ids": true,
+      "binary_labels": true
+    },
+    {
+      "path": "diabetes_correct/diabetes_baseline_raw.csv",
+      "rows": 7876,
+      "positive": 1073,
+      "negative": 6803,
+      "unique_source_ids": true,
+      "binary_labels": true
+    },
+    {
+      "path": "hypertension_correct/nhis2023/derived/hypertension_nhis2023_raw_cohort.csv",
+      "rows": 29471,
+      "positive": 11094,
+      "negative": 18377,
+      "unique_source_ids": true,
+      "binary_labels": true
+    },
+    {
+      "path": "resp_physionet/resp/dataset_verified/respiratory_cohort_24h_landmark.csv",
+      "rows": 29126,
+      "positive": 3983,
+      "negative": 25143,
+      "unique_source_ids": true,
+      "binary_labels": true
+    }
+  ],
+  "source_paths_exist": true,
+  "target_aliases_excluded_from_explicit_predictor_lists": true,
+  "eicu_canonical_gzip_tables": 30,
+  "eicu_sources_fit_fat32": true,
+  "scope": "Dataset handoff integrity; no model evaluation or fairness guarantee"
+}
