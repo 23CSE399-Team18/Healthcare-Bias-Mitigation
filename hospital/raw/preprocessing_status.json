@@ -1,0 +1,277 @@
+{
+  "completed": true,
+  "completed_utc": "2026-11-09T15:58:35.563229+00:00",
+  "task": "Four retrospective recorded-diagnosis classification tasks",
+  "sources": {
+    "mimic": {
+      "source": "mimic",
+      "rows": 73990,
+      "patients": 53931,
+      "hospitals": 1,
+      "split_audit": {
+        "method": "Stable patient-group 70/15/15 hash split; one hospital only",
+        "purged_rows": 0,
+        "excluded_no_valid_diagnosis_documentation": 19
+      },
+      "split_rows": {
+        "train": 52229,
+        "test": 10932,
+        "validation": 10829
+      },
+      "conditions": {
+        "heart": {
+          "label": "Recorded ischemic heart disease",
+          "positive": 26632,
+          "not_documented": 47358,
+          "path": "cross_dataset\\four_conditions\\mimic\\heart_model_ready.csv",
+          "sha256": "968374f37b509be4ff9b8ea4429787b4e552ed7c59ab30a257d0a3f72ce0bd86",
+          "split_counts": {
+            "test": {
+              "count": 10932,
+              "sum": 3860
+            },
+            "train": {
+              "count": 52229,
+              "sum": 18792
+            },
+            "validation": {
+              "count": 10829,
+              "sum": 3980
+            }
+          }
+        },
+        "respiratory": {
+          "label": "Recorded respiratory-system disease",
+          "positive": 43428,
+          "not_documented": 30562,
+          "path": "cross_dataset\\four_conditions\\mimic\\respiratory_model_ready.csv",
+          "sha256": "e4f7b27461e9e83fc9ac8525ed1f02d8aef83e87b9a02a7e9e9132872f0a7bd5",
+          "split_counts": {
+            "test": {
+              "count": 10932,
+              "sum": 6408
+            },
+            "train": {
+              "count": 52229,
+              "sum": 30768
+            },
+            "validation": {
+              "count": 10829,
+              "sum": 6252
+            }
+          }
+        },
+        "diabetes": {
+          "label": "Recorded non-gestational diabetes",
+          "positive": 23580,
+          "not_documented": 50410,
+          "path": "cross_dataset\\four_conditions\\mimic\\diabetes_model_ready.csv",
+          "sha256": "6865790e8a8b45c92733078bc3c5f0749ce888ad5b0ac449add18f44c9862b78",
+          "split_counts": {
+            "test": {
+              "count": 10932,
+              "sum": 3417
+            },
+            "train": {
+              "count": 52229,
+              "sum": 16659
+            },
+            "validation": {
+              "count": 10829,
+              "sum": 3504
+            }
+          }
+        },
+        "hypertension": {
+          "label": "Recorded systemic hypertension",
+          "positive": 48297,
+          "not_documented": 25693,
+          "path": "cross_dataset\\four_conditions\\mimic\\hypertension_model_ready.csv",
+          "sha256": "5c8728b0f33d17cf9f4c303360dcd6d2f20165dc56ccfead5d4af39eaf831001",
+          "split_counts": {
+            "test": {
+              "count": 10932,
+              "sum": 7071
+            },
+            "train": {
+              "count": 52229,
+              "sum": 34124
+            },
+            "validation": {
+              "count": 10829,
+              "sum": 7102
+            }
+          }
+        }
+      },
+      "no_patient_overlap": true,
+      "no_hospital_overlap": false,
+      "baseline_predictors": [
+        "heart_rate_mean",
+        "heart_rate_min",
+        "heart_rate_max",
+        "resp_rate_mean",
+        "resp_rate_min",
+        "resp_rate_max",
+        "spo2_mean",
+        "spo2_min",
+        "spo2_max",
+        "age_group",
+        "sex"
+      ],
+      "missing_predictors": {
+        "heart_rate_mean": 81,
+        "heart_rate_min": 81,
+        "heart_rate_max": 81,
+        "resp_rate_mean": 199,
+        "resp_rate_min": 199,
+        "resp_rate_max": 199,
+        "spo2_mean": 100,
+        "spo2_min": 100,
+        "spo2_max": 100,
+        "age_group": 0,
+        "sex": 0
+      },
+      "no_preprocessing_fit_or_model_training": true
+    },
+    "eicu": {
+      "source": "eicu",
+      "rows": 109378,
+      "patients": 88955,
+      "hospitals": 206,
+      "split_audit": {
+        "method": "Whole-hospital 70/15/15 hash split; purge patients crossing partitions",
+        "purged_patients": 935,
+        "purged_rows": 2596,
+        "excluded_no_parseable_diagnosis_documentation": 19258,
+        "feature_source": "D:\\complete\\cross_dataset\\prepared\\eicu_24h_features.csv",
+        "feature_source_sha256": "b905a39189609c6f90f6a5257e423d4c1dbf7889b81770534154c0bf4a09d5ca"
+      },
+      "split_rows": {
+        "train": 80606,
+        "validation": 20318,
+        "test": 8454
+      },
+      "conditions": {
+        "heart": {
+          "label": "Recorded ischemic heart disease",
+          "positive": 19791,
+          "not_documented": 89587,
+          "path": "cross_dataset\\four_conditions\\eicu\\heart_model_ready.csv",
+          "sha256": "0c4b3256aa5b3243778489c53180a092345801ba272c083c1094592f0cc64fb3",
+          "split_counts": {
+            "test": {
+              "count": 8454,
+              "sum": 1289
+            },
+            "train": {
+              "count": 80606,
+              "sum": 14232
+            },
+            "validation": {
+              "count": 20318,
+              "sum": 4270
+            }
+          }
+        },
+        "respiratory": {
+          "label": "Recorded respiratory-system disease",
+          "positive": 53639,
+          "not_documented": 55739,
+          "path": "cross_dataset\\four_conditions\\eicu\\respiratory_model_ready.csv",
+          "sha256": "ec02fff7b6719283b35b092122fbde7fee946213ca0763d04e53190f7e79278d",
+          "split_counts": {
+            "test": {
+              "count": 8454,
+              "sum": 4065
+            },
+            "train": {
+              "count": 80606,
+              "sum": 39717
+            },
+            "validation": {
+              "count": 20318,
+              "sum": 9857
+            }
+          }
+        },
+        "diabetes": {
+          "label": "Recorded non-gestational diabetes",
+          "positive": 33882,
+          "not_documented": 75496,
+          "path": "cross_dataset\\four_conditions\\eicu\\diabetes_model_ready.csv",
+          "sha256": "7f90db1518cbfd85700162051584543bad8fa48e0e50e2b5a7c54a87b59d7d53",
+          "split_counts": {
+            "test": {
+              "count": 8454,
+              "sum": 2635
+            },
+            "train": {
+              "count": 80606,
+              "sum": 24732
+            },
+            "validation": {
+              "count": 20318,
+              "sum": 6515
+            }
+          }
+        },
+        "hypertension": {
+          "label": "Recorded systemic hypertension",
+          "positive": 62817,
+          "not_documented": 46561,
+          "path": "cross_dataset\\four_conditions\\eicu\\hypertension_model_ready.csv",
+          "sha256": "c041ab76cc3bdd0cae33b3bf8eea733ebe416ceaee05b1bb9b14128cb8d21b5e",
+          "split_counts": {
+            "test": {
+              "count": 8454,
+              "sum": 4675
+            },
+            "train": {
+              "count": 80606,
+              "sum": 46606
+            },
+            "validation": {
+              "count": 20318,
+              "sum": 11536
+            }
+          }
+        }
+      },
+      "no_patient_overlap": true,
+      "no_hospital_overlap": true,
+      "baseline_predictors": [
+        "heart_rate_mean",
+        "heart_rate_min",
+        "heart_rate_max",
+        "resp_rate_mean",
+        "resp_rate_min",
+        "resp_rate_max",
+        "spo2_mean",
+        "spo2_min",
+        "spo2_max",
+        "age_group",
+        "sex"
+      ],
+      "missing_predictors": {
+        "heart_rate_mean": 1513,
+        "heart_rate_min": 1513,
+        "heart_rate_max": 1513,
+        "resp_rate_mean": 9327,
+        "resp_rate_min": 9327,
+        "resp_rate_max": 9327,
+        "spo2_mean": 2408,
+        "spo2_min": 2408,
+        "spo2_max": 2408,
+        "age_group": 0,
+        "sex": 0
+      },
+      "no_preprocessing_fit_or_model_training": true
+    }
+  },
+  "cross_hospital_evaluation_completed": false,
+  "fully_equivalent_clinical_label_ascertainment": false,
+  "baseline_transformations_fitted": true,
+  "baseline_fit_partition": "Source training rows only; no labels used",
+  "baseline_artifacts": "../../preprocessing/outputs/cross_dataset_baseline/baseline_preprocessing_status.json"
+}
