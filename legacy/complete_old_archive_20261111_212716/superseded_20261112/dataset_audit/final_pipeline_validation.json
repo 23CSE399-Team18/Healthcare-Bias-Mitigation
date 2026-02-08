@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "checks": [
+    "preprocessing/outputs/audit_current/confirmation.json",
+    "latent/outputs/validation.json",
+    "latent/outputs/hospital/independent_validation.json",
+    "preprocessing/outputs/hospital_baseline/export_validation.json",
+    "inprocessing/outputs/validation.json",
+    "inprocessing/outputs/export_validation.json",
+    "dataset_audit/notebook_execution_preprocessing.json",
+    "dataset_audit/notebook_execution_inprocessing.json"
+  ],
+  "inprocessing_tasks": 12,
+  "fitted_candidates_including_references": 191,
+  "prediction_csvs": 20,
+  "comparison_figures": 32,
+  "navigation_links_valid": true
+}
