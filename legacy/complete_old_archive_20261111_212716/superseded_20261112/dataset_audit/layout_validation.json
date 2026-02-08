@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "moved_data_model_prediction_plot_files_hash_unchanged": 192,
+  "all_frozen_selection_records_unchanged": true,
+  "python_files_parsed": 26,
+  "executed_notebooks": 9,
+  "plot_images_valid": 49,
+  "html_pages_checked": 214,
+  "local_links_checked": 1740,
+  "broken_links": [],
+  "passed_pipeline_reports": [
+    "preprocessing/outputs/audit_current/confirmation.json",
+    "preprocessing/outputs/audit_current/mimic_audit.json",
+    "latent/outputs/validation.json",
+    "latent/outputs/hospital/independent_validation.json",
+    "inprocessing/outputs/validation.json",
+    "inprocessing/outputs/export_validation.json",
+    "dataset_audit/notebook_execution_all.json"
+  ],
+  "browser_visual_review": "Not completed: Computer Use stopped because the current browser URL could not be verified. Local HTML structure, tab wiring and links were checked."
+}
