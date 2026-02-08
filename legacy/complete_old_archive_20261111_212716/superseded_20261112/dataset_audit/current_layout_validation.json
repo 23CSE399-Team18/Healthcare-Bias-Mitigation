@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "archive_root": "D:\\complete_old_archive_20261111_212716",
+  "archived_files": 539,
+  "all_archived_source_paths_absent": true,
+  "all_archive_destinations_exist": true,
+  "selected_latent_csv_hashes_unchanged": 15,
+  "current_preprocessing_confirmation_passed": true,
+  "current_latent_handoff_passed": true,
+  "current_notebooks": [
+    "preprocessing/code/verified_preprocessing.ipynb",
+    "latent/code/latent_pipeline.ipynb"
+  ]
+}
