@@ -1,0 +1,212 @@
+{
+  "passed": true,
+  "checked_utc": "2026-11-11T17:36:13.022262+00:00",
+  "scope": "supplemental review of current and historical artifacts",
+  "dataset_files_modified": false,
+  "latent_encoders_retrained": false,
+  "test_predictions_computed": false,
+  "sklearn_runtime": "1.8.0",
+  "prerequisite_reports": {
+    "preprocessing/outputs/audit_current/confirmation.json": "73b85b440b56382db6caacd03736cb60456067178c39cb02380bbfd6e72332c4",
+    "latent/outputs/validation.json": "a0280a636acaf8fb8ca5c240296e272459ed75404a68476acb0dd2fd80c60ea0",
+    "preprocessing/outputs/audit_current/mimic_audit.json": "1f458c1e43059ef8a4e90a13eba6e32eb5318cbe3ecfb9fa597d4fe41d99356d"
+  },
+  "historical": "Moved outside the current project; see dataset_audit/archive_manifest.json",
+  "mimic_plot": {
+    "passed": true,
+    "counts_missingness_scaling_histogram_and_four_label_rates_recomputed": true
+  },
+  "latent_metrics": {
+    "heart": {
+      "passed": true,
+      "candidates": 4,
+      "task_metric_rows": 4,
+      "uncompressed_reference_refit_matches": true,
+      "auroc_average_precision_domain_nmi_ari_match": true,
+      "comparison_csv_matches": true,
+      "test_predictions_computed": false
+    },
+    "respiratory": {
+      "passed": true,
+      "candidates": 5,
+      "task_metric_rows": 5,
+      "uncompressed_reference_refit_matches": true,
+      "auroc_average_precision_domain_nmi_ari_match": true,
+      "comparison_csv_matches": true,
+      "test_predictions_computed": false
+    },
+    "diabetes": {
+      "passed": true,
+      "candidates": 4,
+      "task_metric_rows": 4,
+      "uncompressed_reference_refit_matches": true,
+      "auroc_average_precision_domain_nmi_ari_match": true,
+      "comparison_csv_matches": true,
+      "test_predictions_computed": false
+    },
+    "hypertension": {
+      "passed": true,
+      "candidates": 4,
+      "task_metric_rows": 4,
+      "uncompressed_reference_refit_matches": true,
+      "auroc_average_precision_domain_nmi_ari_match": true,
+      "comparison_csv_matches": true,
+      "test_predictions_computed": false
+    },
+    "mimic": {
+      "passed": true,
+      "candidates": 7,
+      "task_metric_rows": 28,
+      "uncompressed_reference_refit_matches": true,
+      "auroc_average_precision_domain_nmi_ari_match": true,
+      "comparison_csv_matches": true,
+      "test_predictions_computed": false
+    }
+  },
+  "cross_source_diagnostics": {
+    "PCA": {
+      "passed": true,
+      "group_cka_independently_recomputed": true,
+      "pooled_nmi_ari_and_permutation_reference_match": true
+    },
+    "MV_DAE": {
+      "passed": true,
+      "group_cka_independently_recomputed": true,
+      "pooled_nmi_ari_and_permutation_reference_match": true
+    },
+    "DGCCA": {
+      "passed": true,
+      "group_cka_independently_recomputed": true,
+      "pooled_nmi_ari_and_permutation_reference_match": true
+    },
+    "SAINT": {
+      "passed": true,
+      "group_cka_independently_recomputed": true,
+      "pooled_nmi_ari_and_permutation_reference_match": true
+    }
+  },
+  "notebooks_and_plots": {
+    "notebooks": {
+      "preprocessing\\code\\diabetes_verified_preprocessing.ipynb": {
+        "syntax_and_saved_errors_passed": true,
+        "sha256": "38bac36e1114269e4f4a0558d1649cec0f3c2d0d102fa7ffaf3983c792eab743",
+        "historical_training_reexecuted": false
+      },
+      "preprocessing\\code\\heart_verified_preprocessing.ipynb": {
+        "syntax_and_saved_errors_passed": true,
+        "sha256": "a6592fce2df49ac4a386260beb2f87646c974d1d0659d062685cecd2d0b0551c",
+        "historical_training_reexecuted": false
+      },
+      "preprocessing\\code\\hospital_preprocessing_latent.ipynb": {
+        "syntax_and_saved_errors_passed": true,
+        "sha256": "07be56ad1776d62f343b3d4c590c7a1aeb759f2bbac7fc0f85c73fcd8a2d7e28",
+        "historical_training_reexecuted": false
+      },
+      "preprocessing\\code\\hypertension_verified_preprocessing.ipynb": {
+        "syntax_and_saved_errors_passed": true,
+        "sha256": "7ec0a86021e2be4a36e947be2d43cee3e8b22ddd2121e5e1e0109d9c3296d0dd",
+        "historical_training_reexecuted": false
+      },
+      "preprocessing\\code\\mimic_verified_preprocessing.ipynb": {
+        "syntax_and_saved_errors_passed": true,
+        "sha256": "80fc595454ef3b736ce452a4ea3d0c6f06bd05ba1fd8f400c6894e0573d5c03d",
+        "historical_training_reexecuted": false
+      },
+      "preprocessing\\code\\respiratory_verified_preprocessing.ipynb": {
+        "syntax_and_saved_errors_passed": true,
+        "sha256": "90c4700b4aca4295ebb60618dcc19b7bbf85f8fbe057826750b782356c844491",
+        "historical_training_reexecuted": false
+      },
+      "preprocessing\\code\\verified_preprocessing.ipynb": {
+        "syntax_and_saved_errors_passed": true,
+        "sha256": "9f5078510b6d1bf33c6f71d14422be8ac59bb545d5c65003a030c135a2b70021",
+        "historical_training_reexecuted": false
+      },
+      "latent\\code\\latent_pipeline.ipynb": {
+        "syntax_and_saved_errors_passed": true,
+        "sha256": "5c01a27e311f876708811554bbf56bc6da1fffdaf157abf34db17ad3ebd5f987",
+        "historical_training_reexecuted": false
+      }
+    },
+    "images": {
+      "preprocessing\\plots\\baseline\\heart\\preprocessing_checks.png": {
+        "size": [
+          2567,
+          1367
+        ],
+        "sha256": "be6dcd7c8fc9de03d4d562302e257dc898389f7db376676db9507716bf707a72"
+      },
+      "preprocessing\\plots\\baseline\\respiratory\\preprocessing_checks.png": {
+        "size": [
+          2567,
+          1367
+        ],
+        "sha256": "0e9b083a7d6b57eb4f5ba22b80153295f049df17f861f125ce806b72b62bb472"
+      },
+      "preprocessing\\plots\\baseline\\diabetes\\preprocessing_checks.png": {
+        "size": [
+          2567,
+          1367
+        ],
+        "sha256": "2b1bcdcde942aafe76ac9ccb07f03acd3504908743a423f3ab35c847ef29d123"
+      },
+      "preprocessing\\plots\\baseline\\hypertension\\preprocessing_checks.png": {
+        "size": [
+          2567,
+          1367
+        ],
+        "sha256": "9da84cf66a01e3d30c2e5a2687bd45f78176494808458b036cd3c0468c9f8791"
+      },
+      "preprocessing\\plots\\baseline\\mimic\\preprocessing_checks.png": {
+        "size": [
+          2567,
+          1367
+        ],
+        "sha256": "193ce1363a21ac5a96e1978cd99956ae7618540e7cdfb94d4384884f4f4a1517"
+      },
+      "latent\\plots\\heart\\comparison.png": {
+        "size": [
+          1696,
+          1136
+        ],
+        "sha256": "ad69b085053c077ba3784ef66081aa9d1f53f228e21063d8a79533e01cecad6e"
+      },
+      "latent\\plots\\respiratory\\comparison.png": {
+        "size": [
+          1696,
+          1136
+        ],
+        "sha256": "15e7950488082bf6a1e904d760672322e89fcbd2a6b28fd82c77266862180367"
+      },
+      "latent\\plots\\diabetes\\comparison.png": {
+        "size": [
+          1696,
+          1136
+        ],
+        "sha256": "7156f733c81cae52fabd1633e4521f110d8045fbe87f1bfe0bb14d4fd6867d9d"
+      },
+      "latent\\plots\\hypertension\\comparison.png": {
+        "size": [
+          1696,
+          1136
+        ],
+        "sha256": "c91a44a2390ee281778f5d3dbd758e6a65076917bb5873e87e958888803f763c"
+      },
+      "latent\\plots\\mimic\\comparison.png": {
+        "size": [
+          1696,
+          1136
+        ],
+        "sha256": "dfaee307cd5a53a1f0432ebdc4d2aef3c6027debab4821e7df0de90d37f71e5b"
+      },
+      "latent\\plots\\group_alignment.png": {
+        "size": [
+          2390,
+          678
+        ],
+        "sha256": "c4ef10866e8745f85cb383528f168dc2b9d1018a1195d4f43084d013ca27d117"
+      }
+    },
+    "html_links_checked": 21
+  }
+}
