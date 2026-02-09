@@ -1,0 +1,28 @@
+{
+  "mode": "four_condition_sources_verified_and_preprocessed",
+  "recorded_utc": "2026-11-09T16:05:39.705089+00:00",
+  "requested_applications": [
+    "heart",
+    "respiratory",
+    "diabetes",
+    "hypertension"
+  ],
+  "raw_records_synthetic": false,
+  "new_cohort_construction_authorized_to_continue": true,
+  "authorization": "User requested preprocessing if source checks passed; delegated respiratory study outcome choice",
+  "mimic_nine_sources_sha256_and_crc_verified": true,
+  "preprocessing_complete": true,
+  "baseline_transformations_fitted_on_source_train_only": true,
+  "prediction_models_trained": 0,
+  "cross_hospital_evaluation_completed": false,
+  "clinically_equivalent_label_ascertainment_verified": false,
+  "background_mortality_runner_still_stopped": true,
+  "current_report": "cross_dataset/four_conditions/README.md",
+  "important_limitations": [
+    "Recorded diagnoses, not confirmed disease absence or onset",
+    "MIMIC hospital coding and eICU ICU/history ascertainment differ",
+    "MIMIC is one institution",
+    "Original respiratory mortality task is separate",
+    "Public eICU identities cannot prove institution non-overlap with MIMIC"
+  ]
+}
