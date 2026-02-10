@@ -1,0 +1,908 @@
+{
+  "stage": "inprocessing",
+  "dataset": "diabetes / diabetes",
+  "title": "Cross-hospital generalization risk",
+  "kind": "cross_hospital",
+  "states": {
+    "test": {
+      "FairERM_softEO": {
+        "rows": 1182,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "FairERM_softEO",
+        "before": {
+          "label": "Not applicable",
+          "value": 0.022870093402092784,
+          "limit": 0.05,
+          "rule": "AUROC drop from source validation >0.05 OR supported hospital Brier range >0.05"
+        },
+        "after": {
+          "label": "Not applicable",
+          "value": 0.023368558767883907,
+          "limit": 0.05,
+          "rule": "AUROC drop from source validation >0.05 OR supported hospital Brier range >0.05"
+        },
+        "panels": [
+          {
+            "title": "Domain Brier scores (supported domains)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [],
+                "y": [],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [],
+                "y": [],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Brier"
+                },
+                "automargin": true
+              },
+              "height": 360
+            }
+          },
+          {
+            "title": "Source validation and holdout AUROC",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "validation",
+                  "test"
+                ],
+                "y": [
+                  0.7106138107416881,
+                  0.6877437173395953
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "validation",
+                  "test"
+                ],
+                "y": [
+                  0.7102301790281329,
+                  0.686861620260249
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "AUROC"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Domain support and group errors",
+            "table": []
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6013857379361089,
+                  0.6877437173395953,
+                  0.2608695652173913
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.5981398304867569,
+                  0.686861620260249,
+                  0.2546583850931677
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "auroc",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM"
+                ],
+                "y": [
+                  0.686861620260249,
+                  0.6877437173395953
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "auroc"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.47500000000000014,
+          "comparison": 0.47500000000000014
+        }
+      },
+      "ERM": {
+        "rows": 1182,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "ERM",
+        "before": {
+          "label": "Not applicable",
+          "value": 0.022870093402092784,
+          "limit": 0.05,
+          "rule": "AUROC drop from source validation >0.05 OR supported hospital Brier range >0.05"
+        },
+        "after": {
+          "label": "Not applicable",
+          "value": 0.022870093402092784,
+          "limit": 0.05,
+          "rule": "AUROC drop from source validation >0.05 OR supported hospital Brier range >0.05"
+        },
+        "panels": [
+          {
+            "title": "Domain Brier scores (supported domains)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [],
+                "y": [],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [],
+                "y": [],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Brier"
+                },
+                "automargin": true
+              },
+              "height": 360
+            }
+          },
+          {
+            "title": "Source validation and holdout AUROC",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "validation",
+                  "test"
+                ],
+                "y": [
+                  0.7106138107416881,
+                  0.6877437173395953
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "validation",
+                  "test"
+                ],
+                "y": [
+                  0.7106138107416881,
+                  0.6877437173395953
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "AUROC"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Domain support and group errors",
+            "table": []
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6013857379361089,
+                  0.6877437173395953,
+                  0.2608695652173913
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6013857379361089,
+                  0.6877437173395953,
+                  0.2608695652173913
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "auroc",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM"
+                ],
+                "y": [
+                  0.686861620260249,
+                  0.6877437173395953
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "auroc"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.47500000000000014,
+          "comparison": 0.47500000000000014
+        }
+      }
+    },
+    "validation": {
+      "FairERM_softEO": {
+        "rows": 1181,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "FairERM_softEO",
+        "before": {
+          "label": "Not applicable",
+          "value": 0,
+          "limit": 0.05,
+          "rule": "AUROC drop from source validation >0.05 OR supported hospital Brier range >0.05"
+        },
+        "after": {
+          "label": "Not applicable",
+          "value": 0,
+          "limit": 0.05,
+          "rule": "AUROC drop from source validation >0.05 OR supported hospital Brier range >0.05"
+        },
+        "panels": [
+          {
+            "title": "Domain Brier scores (supported domains)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [],
+                "y": [],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [],
+                "y": [],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Brier"
+                },
+                "automargin": true
+              },
+              "height": 360
+            }
+          },
+          {
+            "title": "Source validation and holdout AUROC",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "validation",
+                  "test"
+                ],
+                "y": [
+                  0.7106138107416881,
+                  0.6877437173395953
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "validation",
+                  "test"
+                ],
+                "y": [
+                  0.7102301790281329,
+                  0.686861620260249
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "AUROC"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Domain support and group errors",
+            "table": []
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6086109998757232,
+                  0.7106138107416881,
+                  0.2670807453416149
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6094312997255625,
+                  0.7102301790281329,
+                  0.2670807453416149
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "auroc",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM"
+                ],
+                "y": [
+                  0.7102301790281329,
+                  0.7106138107416881
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "auroc"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.47500000000000014,
+          "comparison": 0.47500000000000014
+        }
+      },
+      "ERM": {
+        "rows": 1181,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "ERM",
+        "before": {
+          "label": "Not applicable",
+          "value": 0,
+          "limit": 0.05,
+          "rule": "AUROC drop from source validation >0.05 OR supported hospital Brier range >0.05"
+        },
+        "after": {
+          "label": "Not applicable",
+          "value": 0,
+          "limit": 0.05,
+          "rule": "AUROC drop from source validation >0.05 OR supported hospital Brier range >0.05"
+        },
+        "panels": [
+          {
+            "title": "Domain Brier scores (supported domains)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [],
+                "y": [],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [],
+                "y": [],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Brier"
+                },
+                "automargin": true
+              },
+              "height": 360
+            }
+          },
+          {
+            "title": "Source validation and holdout AUROC",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "validation",
+                  "test"
+                ],
+                "y": [
+                  0.7106138107416881,
+                  0.6877437173395953
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "validation",
+                  "test"
+                ],
+                "y": [
+                  0.7106138107416881,
+                  0.6877437173395953
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "AUROC"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Domain support and group errors",
+            "table": []
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6086109998757232,
+                  0.7106138107416881,
+                  0.2670807453416149
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6086109998757232,
+                  0.7106138107416881,
+                  0.2670807453416149
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "auroc",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM"
+                ],
+                "y": [
+                  0.7102301790281329,
+                  0.7106138107416881
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "auroc"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.47500000000000014,
+          "comparison": 0.47500000000000014
+        }
+      }
+    }
+  },
+  "default_split": "test",
+  "methods": {
+    "FairERM_softEO": "FairERM_softEO (frozen project selection)",
+    "ERM": "ERM"
+  },
+  "default_method": "FairERM_softEO",
+  "protocol": "Before = ERM baseline; after = chosen saved comparison model. Test/external results do not select a new winner.",
+  "selection_sha256": "b5b42c2f121da709d6fe56ae2c4323b40d537799eb99d5558bf2141f2642a548"
+}
