@@ -1,0 +1,124 @@
+{
+  "column_convention": {
+    "meta_*": "identifiers, survey weights/design, domain and split-group columns; never model inputs",
+    "sens_*": "harmonised fairness attributes for evaluation; not inputs by default",
+    "target": "binary outcome",
+    "other": "candidate predictors (categorical = text columns, encode inside your pipeline)"
+  },
+  "harmonised_groups": {
+    "sens_age_group": [
+      "18-39",
+      "40-64",
+      "65-79",
+      "80+"
+    ],
+    "sens_race_ethnicity": [
+      "White",
+      "Black",
+      "Hispanic",
+      "Other"
+    ],
+    "sens_sex": [
+      "Male",
+      "Female"
+    ]
+  },
+  "hypertension": {
+    "file": "hypertension_raw.csv",
+    "source": "CDC NHIS 2023 Sample Adult https://www.cdc.gov/nchs/nhis/documentation/2023-nhis.html",
+    "rows": 29471,
+    "positive": 11094,
+    "positive_rate": 0.3764,
+    "target_meaning": "Ever told by a doctor/health professional of hypertension (HYPEV_A); self-reported history",
+    "numeric_features": [
+      "age",
+      "male",
+      "education",
+      "bmi_category",
+      "weight_lb",
+      "height_in",
+      "general_health",
+      "high_cholesterol_ever",
+      "diabetes_ever",
+      "prediabetes_ever",
+      "coronary_heart_disease_ever",
+      "heart_attack_ever",
+      "angina_ever",
+      "stroke_ever",
+      "copd_ever",
+      "asthma_ever",
+      "arthritis_ever",
+      "cancer_ever",
+      "depression_ever",
+      "anxiety_ever",
+      "phq2_positive",
+      "gad2_positive",
+      "us_born",
+      "worked_last_week",
+      "income_poverty_ratio",
+      "uninsured",
+      "food_insecurity",
+      "usual_place_of_care",
+      "urbanicity"
+    ],
+    "categorical_features": [
+      "smoking_status",
+      "ecig_status",
+      "marital_status"
+    ],
+    "sensitive_attributes": [
+      "sens_sex",
+      "sens_age_group",
+      "sens_race_ethnicity",
+      "sens_race_detail"
+    ],
+    "meta_columns_never_inputs": [
+      "meta_record_id",
+      "meta_domain_region",
+      "meta_survey_weight",
+      "meta_strata",
+      "meta_psu"
+    ],
+    "source_columns_excluded": {
+      "HYPEV_A": "label source",
+      "HYP12M_A, HYPDIF_A, HYPMED_A": "asked only of people with hypertension (label leakage)",
+      "BPLAST_A, LASTDR_A": "care-contact timing strongly driven by a known diagnosis",
+      "RATCAT_A": "redundant with income_poverty_ratio",
+      "HISPALLP_A": "fairness attribute only (sens_race_*)"
+    },
+    "feature_missing_rate": {
+      "age": 0.002,
+      "male": 0.0002,
+      "education": 0.0048,
+      "bmi_category": 0.0209,
+      "weight_lb": 0.0837,
+      "height_in": 0.0702,
+      "smoking_status": 0.0348,
+      "ecig_status": 0.0341,
+      "general_health": 0.0006,
+      "high_cholesterol_ever": 0.0019,
+      "diabetes_ever": 0.0005,
+      "prediabetes_ever": 0.0011,
+      "coronary_heart_disease_ever": 0.0023,
+      "heart_attack_ever": 0.0006,
+      "angina_ever": 0.0019,
+      "stroke_ever": 0.0006,
+      "copd_ever": 0.0009,
+      "asthma_ever": 0.0005,
+      "arthritis_ever": 0.0009,
+      "cancer_ever": 0.0007,
+      "depression_ever": 0.001,
+      "anxiety_ever": 0.0013,
+      "phq2_positive": 0.0299,
+      "gad2_positive": 0.03,
+      "us_born": 0.0414,
+      "worked_last_week": 0.0425,
+      "marital_status": 0.0414,
+      "income_poverty_ratio": 0.0,
+      "uninsured": 0.0028,
+      "food_insecurity": 0.0459,
+      "usual_place_of_care": 0.0072,
+      "urbanicity": 0.0
+    }
+  }
+}
