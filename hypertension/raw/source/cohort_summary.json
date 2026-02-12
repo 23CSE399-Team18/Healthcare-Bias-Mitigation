@@ -1,0 +1,54 @@
+{
+  "source": "CDC NHIS2023 sample adult public use",
+  "source_records": 29522,
+  "retained_records": 29471,
+  "hypertension_positive": 11094,
+  "hypertension_negative": 18377,
+  "excluded_unknown_labels": 51,
+  "raw_label_counts": {
+    "2": 18377,
+    "1": 11094,
+    "7": 35,
+    "9": 16
+  },
+  "retained_with_unknown_exact_age": 59,
+  "raw_csv_bytes": 29427128,
+  "raw_csv_sha256": "441f2bc17761cb1c755b24c1af551e34b91e084da4cce8d78888a688b1acc5ab",
+  "missing_after_documented_sentinel_recode": {
+    "HHX": 0,
+    "SRVY_YR": 0,
+    "WTFA_A": 0,
+    "PSTRAT": 0,
+    "PPSU": 0,
+    "REGION": 0,
+    "URBRRL": 0,
+    "AGEP_A": 59,
+    "SEX_A": 6,
+    "HISPALLP_A": 0,
+    "RACEALLP_A": 1595,
+    "HISP_A": 0,
+    "EDUCP_A": 141,
+    "BMICAT_A": 616,
+    "SMKCIGST_A": 1023,
+    "HYPEV_A": 0,
+    "hypertension": 0
+  },
+  "candidate_baseline_predictors": [
+    "AGEP_A",
+    "SEX_A",
+    "EDUCP_A",
+    "BMICAT_A",
+    "SMKCIGST_A"
+  ],
+  "prohibited_predictor_families": [
+    "HYPEV_A",
+    "hypertension",
+    "HYPDIF_A",
+    "HYP12M_A",
+    "HYPMED_A",
+    "BPLAST_A",
+    "all identifiers and survey design fields"
+  ],
+  "target": "Self-reported lifetime clinician-diagnosed hypertension; not measured BP or future incident hypertension",
+  "processing": "Source missing codes converted to null; no imputation, resampling, scaling, model fitting, or test selection"
+}
