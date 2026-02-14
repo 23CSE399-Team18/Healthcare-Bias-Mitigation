@@ -1,0 +1,18 @@
+column,role,description
+HHX,identifier,Random household ID; group splits by HHX if ever combining adult and child or repeated household records
+SRVY_YR,metadata,NHIS survey year
+WTFA_A,survey_weight,Final annual sample-adult survey weight; do not use as predictor
+PSTRAT,survey_design,Public-use pseudo-stratum; do not use as predictor
+PPSU,survey_design,Public-use pseudo-PSU; do not use as predictor
+REGION,domain_metadata,1 Northeast; 2 Midwest; 3 South; 4 West; optional region-held-out evaluation domain
+URBRRL,domain_metadata,1 large central metro; 2 large fringe metro; 3 medium/small metro; 4 nonmetro
+AGEP_A,candidate_predictor_and_fairness,"Age years: 18-84,85 means85+; 97/98/99 become missing"
+SEX_A,candidate_predictor_and_fairness,"Reported sex:1 male,2 female;7/8/9 become missing"
+HISPALLP_A,fairness_metadata,Race/ethnicity recode:1 Hispanic;2 NH White;3 NH Black;4 NH Asian;5 NH AIAN;6 NH AIAN+other;7 other;includes CDC-imputed race/ethnicity
+RACEALLP_A,fairness_metadata,Race groups:1 White;2 Black;3 Asian;4 AIAN;5 AIAN+other;6 other/multiple;7/8/9 become missing;includes source imputation
+HISP_A,fairness_metadata,"Hispanic ethnicity:1 yes,2 no;7/8/9 become missing;includes source imputation"
+EDUCP_A,candidate_predictor,Education:0-10 per source codebook;97/98/99 become missing
+BMICAT_A,candidate_predictor,1 underweight;2 healthy weight;3 overweight;4 obese;9 becomes missing;CDC category uses internal untruncated height/weight
+SMKCIGST_A,candidate_predictor,1 daily;2 some-day;3 former;4 never;5 smoker with unknown current status;9 becomes missing
+HYPEV_A,label_source_exclude_from_predictors,"Ever told by health professional of hypertension:1 yes,2 no;7 refused,8 not ascertained,9 unknown"
+hypertension,target,1 when HYPEV_A=1;0 when HYPEV_A=2
