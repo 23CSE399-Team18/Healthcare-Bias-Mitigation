@@ -1,0 +1,6132 @@
+{
+  "stage": "inprocessing",
+  "dataset": "respiratory_hospital / respiratory",
+  "title": "Predictive miscalibration",
+  "kind": "miscalibration",
+  "states": {
+    "test": {
+      "FairERM_softEO": {
+        "rows": 2301,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "FairERM_softEO",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.019306323557288903,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.024419033764869615,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.047629434409806624,
+                  0.14413439883249002,
+                  0.2440755950177417,
+                  0.3457116426287831,
+                  0.44049654873934657,
+                  0.501911997795105
+                ],
+                "y": [
+                  0.029950083194675542,
+                  0.1467116357504216,
+                  0.27124183006535946,
+                  0.36363636363636365,
+                  0.6181818181818182,
+                  1
+                ],
+                "customdata": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "FairERM_softEO",
+                "x": [
+                  0.04948385383195454,
+                  0.14405125751502895,
+                  0.241618004079689,
+                  0.34112283438444135,
+                  0.43579816584493597,
+                  0.5029169321060181
+                ],
+                "y": [
+                  0.029069767441860465,
+                  0.15955766192733017,
+                  0.2647058823529412,
+                  0.36428571428571427,
+                  0.6666666666666666,
+                  1
+                ],
+                "customdata": [
+                  1204,
+                  633,
+                  272,
+                  140,
+                  51,
+                  1
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09483157377829154,
+                  0.019306323557288903
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09506253289450897,
+                  0.024419033764869615
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1204,
+                  633,
+                  272,
+                  140,
+                  51,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  508,
+                  500,
+                  343,
+                  221,
+                  159,
+                  93,
+                  73,
+                  46,
+                  32,
+                  19,
+                  9,
+                  4,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  10,
+                  20,
+                  27,
+                  44,
+                  43,
+                  34,
+                  28,
+                  27,
+                  21,
+                  15,
+                  17,
+                  7,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6516176413181043,
+                  0.8021736846208339,
+                  0.4897959183673469
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6554608337508502,
+                  0.801682207511804,
+                  0.46598639455782315
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.024419033764869615,
+                  0.019306323557288903,
+                  0.020321853563660223,
+                  0.020467243592227694,
+                  0.1697275577463543,
+                  0.018477966484244587
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      },
+      "ERM": {
+        "rows": 2301,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "ERM",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.019306323557288903,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.019306323557288903,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.047629434409806624,
+                  0.14413439883249002,
+                  0.2440755950177417,
+                  0.3457116426287831,
+                  0.44049654873934657,
+                  0.501911997795105
+                ],
+                "y": [
+                  0.029950083194675542,
+                  0.1467116357504216,
+                  0.27124183006535946,
+                  0.36363636363636365,
+                  0.6181818181818182,
+                  1
+                ],
+                "customdata": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM",
+                "x": [
+                  0.047629434409806624,
+                  0.14413439883249002,
+                  0.2440755950177417,
+                  0.3457116426287831,
+                  0.44049654873934657,
+                  0.501911997795105
+                ],
+                "y": [
+                  0.029950083194675542,
+                  0.1467116357504216,
+                  0.27124183006535946,
+                  0.36363636363636365,
+                  0.6181818181818182,
+                  1
+                ],
+                "customdata": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09483157377829154,
+                  0.019306323557288903
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09483157377829154,
+                  0.019306323557288903
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  539,
+                  469,
+                  325,
+                  219,
+                  148,
+                  106,
+                  76,
+                  43,
+                  46,
+                  21,
+                  11,
+                  4,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  12,
+                  17,
+                  24,
+                  42,
+                  37,
+                  37,
+                  31,
+                  29,
+                  18,
+                  16,
+                  22,
+                  7,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6516176413181043,
+                  0.8021736846208339,
+                  0.4897959183673469
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6516176413181043,
+                  0.8021736846208339,
+                  0.4897959183673469
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.024419033764869615,
+                  0.019306323557288903,
+                  0.020321853563660223,
+                  0.020467243592227694,
+                  0.1697275577463543,
+                  0.018477966484244587
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      },
+      "AvUC_deterministic": {
+        "rows": 2301,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "AvUC_deterministic",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.019306323557288903,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.020321853563660223,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.047629434409806624,
+                  0.14413439883249002,
+                  0.2440755950177417,
+                  0.3457116426287831,
+                  0.44049654873934657,
+                  0.501911997795105
+                ],
+                "y": [
+                  0.029950083194675542,
+                  0.1467116357504216,
+                  0.27124183006535946,
+                  0.36363636363636365,
+                  0.6181818181818182,
+                  1
+                ],
+                "customdata": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "AvUC_deterministic",
+                "x": [
+                  0.047446464544078394,
+                  0.14386727118352116,
+                  0.24389440596103668,
+                  0.3450795317725312,
+                  0.4396481319115712,
+                  0.5017783939838409
+                ],
+                "y": [
+                  0.03052805280528053,
+                  0.15100671140939598,
+                  0.26666666666666666,
+                  0.37410071942446044,
+                  0.6346153846153846,
+                  1
+                ],
+                "customdata": [
+                  1212,
+                  596,
+                  300,
+                  139,
+                  52,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09483157377829154,
+                  0.019306323557288903
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "AvUC_deterministic",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.0948766641051462,
+                  0.020321853563660223
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "AvUC_deterministic",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1212,
+                  596,
+                  300,
+                  139,
+                  52,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  544,
+                  479,
+                  323,
+                  219,
+                  143,
+                  107,
+                  74,
+                  43,
+                  43,
+                  17,
+                  11,
+                  4,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  12,
+                  17,
+                  25,
+                  42,
+                  40,
+                  35,
+                  34,
+                  25,
+                  18,
+                  15,
+                  22,
+                  7,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6516176413181043,
+                  0.8021736846208339,
+                  0.4897959183673469
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "AvUC_deterministic",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6564300814570614,
+                  0.8021008104288053,
+                  0.4897959183673469
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.024419033764869615,
+                  0.019306323557288903,
+                  0.020321853563660223,
+                  0.020467243592227694,
+                  0.1697275577463543,
+                  0.018477966484244587
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      },
+      "CRL_history": {
+        "rows": 2301,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "CRL_history",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.019306323557288903,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.020467243592227694,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.047629434409806624,
+                  0.14413439883249002,
+                  0.2440755950177417,
+                  0.3457116426287831,
+                  0.44049654873934657,
+                  0.501911997795105
+                ],
+                "y": [
+                  0.029950083194675542,
+                  0.1467116357504216,
+                  0.27124183006535946,
+                  0.36363636363636365,
+                  0.6181818181818182,
+                  1
+                ],
+                "customdata": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "CRL_history",
+                "x": [
+                  0.047993493968782594,
+                  0.14387750220103343,
+                  0.24298954795070943,
+                  0.34357372687218035,
+                  0.4392187331082686,
+                  0.5024282932281494
+                ],
+                "y": [
+                  0.03005008347245409,
+                  0.14754098360655737,
+                  0.2684563758389262,
+                  0.375886524822695,
+                  0.6415094339622641,
+                  1
+                ],
+                "customdata": [
+                  1198,
+                  610,
+                  298,
+                  141,
+                  53,
+                  1
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09483157377829154,
+                  0.019306323557288903
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "CRL_history",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09486565696198634,
+                  0.020467243592227694
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "CRL_history",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1198,
+                  610,
+                  298,
+                  141,
+                  53,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  528,
+                  476,
+                  337,
+                  220,
+                  144,
+                  110,
+                  79,
+                  39,
+                  43,
+                  17,
+                  11,
+                  3,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  12,
+                  16,
+                  24,
+                  43,
+                  39,
+                  36,
+                  35,
+                  25,
+                  20,
+                  15,
+                  21,
+                  7,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6516176413181043,
+                  0.8021736846208339,
+                  0.4897959183673469
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "CRL_history",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6552270686587808,
+                  0.8021008104288052,
+                  0.48299319727891155
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.024419033764869615,
+                  0.019306323557288903,
+                  0.020321853563660223,
+                  0.020467243592227694,
+                  0.1697275577463543,
+                  0.018477966484244587
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      },
+      "UWG_Brier": {
+        "rows": 2301,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "UWG_Brier",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.019306323557288903,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.1697275577463543,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.047629434409806624,
+                  0.14413439883249002,
+                  0.2440755950177417,
+                  0.3457116426287831,
+                  0.44049654873934657,
+                  0.501911997795105
+                ],
+                "y": [
+                  0.029950083194675542,
+                  0.1467116357504216,
+                  0.27124183006535946,
+                  0.36363636363636365,
+                  0.6181818181818182,
+                  1
+                ],
+                "customdata": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "UWG_Brier",
+                "x": [
+                  0.08307723347739927,
+                  0.16097164198482802,
+                  0.25055589065469547,
+                  0.3457060151697953,
+                  0.44152766835449064,
+                  0.5112005483429387
+                ],
+                "y": [
+                  0,
+                  0.022935779816513763,
+                  0.037241379310344824,
+                  0.16862170087976538,
+                  0.31412103746397696,
+                  0.6226415094339622
+                ],
+                "customdata": [
+                  58,
+                  436,
+                  725,
+                  682,
+                  347,
+                  53
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09483157377829154,
+                  0.019306323557288903
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "UWG_Brier",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.12428343924291685,
+                  0.1697275577463543
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "UWG_Brier",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  58,
+                  436,
+                  725,
+                  682,
+                  347,
+                  53,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  1,
+                  23,
+                  91,
+                  165,
+                  256,
+                  283,
+                  311,
+                  283,
+                  240,
+                  162,
+                  111,
+                  61,
+                  20,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  0,
+                  0,
+                  0,
+                  3,
+                  9,
+                  7,
+                  14,
+                  35,
+                  48,
+                  60,
+                  47,
+                  38,
+                  33,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6516176413181043,
+                  0.8021736846208339,
+                  0.4897959183673469
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "UWG_Brier",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6521544515204163,
+                  0.8032379867741817,
+                  0.48299319727891155
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.024419033764869615,
+                  0.019306323557288903,
+                  0.020321853563660223,
+                  0.020467243592227694,
+                  0.1697275577463543,
+                  0.018477966484244587
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.4000000000000001
+        }
+      },
+      "Brier_regularized": {
+        "rows": 2301,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "Brier_regularized",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.019306323557288903,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.018477966484244587,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.047629434409806624,
+                  0.14413439883249002,
+                  0.2440755950177417,
+                  0.3457116426287831,
+                  0.44049654873934657,
+                  0.501911997795105
+                ],
+                "y": [
+                  0.029950083194675542,
+                  0.1467116357504216,
+                  0.27124183006535946,
+                  0.36363636363636365,
+                  0.6181818181818182,
+                  1
+                ],
+                "customdata": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "Brier_regularized",
+                "x": [
+                  0.04965716516729524,
+                  0.14378831419199944,
+                  0.24339651819318533,
+                  0.345314916016327,
+                  0.4399970902336968,
+                  0.5024886131286621
+                ],
+                "y": [
+                  0.03017241379310345,
+                  0.14170692431561996,
+                  0.259375,
+                  0.3611111111111111,
+                  0.6296296296296297,
+                  1
+                ],
+                "customdata": [
+                  1160,
+                  621,
+                  320,
+                  144,
+                  54,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09483157377829154,
+                  0.019306323557288903
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Brier_regularized",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.09487982964131363,
+                  0.018477966484244587
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1202,
+                  593,
+                  306,
+                  143,
+                  55,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Brier_regularized",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  1160,
+                  621,
+                  320,
+                  144,
+                  54,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  487,
+                  473,
+                  338,
+                  237,
+                  159,
+                  106,
+                  80,
+                  45,
+                  49,
+                  18,
+                  11,
+                  4,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  12,
+                  15,
+                  23,
+                  41,
+                  35,
+                  40,
+                  33,
+                  30,
+                  20,
+                  14,
+                  22,
+                  7,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6516176413181043,
+                  0.8021736846208339,
+                  0.4897959183673469
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Brier_regularized",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6554131054131054,
+                  0.8021126736693681,
+                  0.4965986394557823
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.024419033764869615,
+                  0.019306323557288903,
+                  0.020321853563660223,
+                  0.020467243592227694,
+                  0.1697275577463543,
+                  0.018477966484244587
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      }
+    },
+    "validation": {
+      "FairERM_softEO": {
+        "rows": 4909,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "FairERM_softEO",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.018823829594459083,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.020348192634045643,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.04617691142503442,
+                  0.144799871304324,
+                  0.24322543410336622,
+                  0.34172892923708315,
+                  0.4350008559458464,
+                  0.5026016235351562
+                ],
+                "y": [
+                  0.05483625285605483,
+                  0.16027088036117382,
+                  0.26424870466321243,
+                  0.4111111111111111,
+                  0.6116504854368932,
+                  0.5
+                ],
+                "customdata": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "FairERM_softEO",
+                "x": [
+                  0.048506636906718005,
+                  0.14521712474278267,
+                  0.24214051080786664,
+                  0.34149838722389164,
+                  0.4361716788262129,
+                  0.5019191205501556
+                ],
+                "y": [
+                  0.05388093443858327,
+                  0.16335540838852097,
+                  0.2753623188405797,
+                  0.4312977099236641,
+                  0.675,
+                  0.5
+                ],
+                "customdata": [
+                  2654,
+                  1359,
+                  552,
+                  262,
+                  80,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10555827131134898,
+                  0.018823829594459083
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10581640961624592,
+                  0.020348192634045643
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2654,
+                  1359,
+                  552,
+                  262,
+                  80,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  1168,
+                  1011,
+                  665,
+                  497,
+                  351,
+                  203,
+                  138,
+                  87,
+                  58,
+                  27,
+                  12,
+                  6,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  31,
+                  76,
+                  105,
+                  83,
+                  90,
+                  75,
+                  45,
+                  61,
+                  38,
+                  45,
+                  21,
+                  14,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6476143091942415,
+                  0.7641606530634816,
+                  0.4218978102189781
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "FairERM_softEO",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.646980887795832,
+                  0.762045350862641,
+                  0.4029197080291971
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.020348192634045643,
+                  0.018823829594459083,
+                  0.020536318192764785,
+                  0.019728742015543123,
+                  0.1534583827148289,
+                  0.016264713120603767
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      },
+      "ERM": {
+        "rows": 4909,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "ERM",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.018823829594459083,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.018823829594459083,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.04617691142503442,
+                  0.144799871304324,
+                  0.24322543410336622,
+                  0.34172892923708315,
+                  0.4350008559458464,
+                  0.5026016235351562
+                ],
+                "y": [
+                  0.05483625285605483,
+                  0.16027088036117382,
+                  0.26424870466321243,
+                  0.4111111111111111,
+                  0.6116504854368932,
+                  0.5
+                ],
+                "customdata": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM",
+                "x": [
+                  0.04617691142503442,
+                  0.144799871304324,
+                  0.24322543410336622,
+                  0.34172892923708315,
+                  0.4350008559458464,
+                  0.5026016235351562
+                ],
+                "y": [
+                  0.05483625285605483,
+                  0.16027088036117382,
+                  0.26424870466321243,
+                  0.4111111111111111,
+                  0.6116504854368932,
+                  0.5
+                ],
+                "customdata": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10555827131134898,
+                  0.018823829594459083
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10555827131134898,
+                  0.018823829594459083
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  1240,
+                  949,
+                  650,
+                  467,
+                  346,
+                  209,
+                  141,
+                  95,
+                  72,
+                  30,
+                  15,
+                  9,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  35,
+                  70,
+                  102,
+                  80,
+                  88,
+                  64,
+                  59,
+                  56,
+                  43,
+                  44,
+                  28,
+                  15,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6476143091942415,
+                  0.7641606530634816,
+                  0.4218978102189781
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "ERM",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6476143091942415,
+                  0.7641606530634816,
+                  0.4218978102189781
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.020348192634045643,
+                  0.018823829594459083,
+                  0.020536318192764785,
+                  0.019728742015543123,
+                  0.1534583827148289,
+                  0.016264713120603767
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      },
+      "AvUC_deterministic": {
+        "rows": 4909,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "AvUC_deterministic",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.018823829594459083,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.020536318192764785,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.04617691142503442,
+                  0.144799871304324,
+                  0.24322543410336622,
+                  0.34172892923708315,
+                  0.4350008559458464,
+                  0.5026016235351562
+                ],
+                "y": [
+                  0.05483625285605483,
+                  0.16027088036117382,
+                  0.26424870466321243,
+                  0.4111111111111111,
+                  0.6116504854368932,
+                  0.5
+                ],
+                "customdata": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "AvUC_deterministic",
+                "x": [
+                  0.04600484840411288,
+                  0.14448589837196807,
+                  0.24251084184284075,
+                  0.34105992784900385,
+                  0.4359017361117446,
+                  0.5011741518974304
+                ],
+                "y": [
+                  0.056916698077647945,
+                  0.1595184349134688,
+                  0.26654740608228983,
+                  0.40875912408759124,
+                  0.6521739130434783,
+                  0.5
+                ],
+                "customdata": [
+                  2653,
+                  1329,
+                  559,
+                  274,
+                  92,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10555827131134898,
+                  0.018823829594459083
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "AvUC_deterministic",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10569372805811014,
+                  0.020536318192764785
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "AvUC_deterministic",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2653,
+                  1329,
+                  559,
+                  274,
+                  92,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  1257,
+                  953,
+                  655,
+                  471,
+                  328,
+                  208,
+                  141,
+                  90,
+                  70,
+                  27,
+                  15,
+                  8,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  35,
+                  71,
+                  111,
+                  78,
+                  80,
+                  71,
+                  58,
+                  54,
+                  44,
+                  42,
+                  26,
+                  14,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6476143091942415,
+                  0.7641606530634816,
+                  0.4218978102189781
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "AvUC_deterministic",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6461932341998555,
+                  0.763654853738111,
+                  0.4116788321167883
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.020348192634045643,
+                  0.018823829594459083,
+                  0.020536318192764785,
+                  0.019728742015543123,
+                  0.1534583827148289,
+                  0.016264713120603767
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      },
+      "CRL_history": {
+        "rows": 4909,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "CRL_history",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.018823829594459083,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.019728742015543123,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.04617691142503442,
+                  0.144799871304324,
+                  0.24322543410336622,
+                  0.34172892923708315,
+                  0.4350008559458464,
+                  0.5026016235351562
+                ],
+                "y": [
+                  0.05483625285605483,
+                  0.16027088036117382,
+                  0.26424870466321243,
+                  0.4111111111111111,
+                  0.6116504854368932,
+                  0.5
+                ],
+                "customdata": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "CRL_history",
+                "x": [
+                  0.04654077704432776,
+                  0.1441985022298618,
+                  0.2423342237852409,
+                  0.3427661796765668,
+                  0.4392297882132414,
+                  0.5010761320590973
+                ],
+                "y": [
+                  0.05532239603204884,
+                  0.15855457227138642,
+                  0.272887323943662,
+                  0.425,
+                  0.6097560975609756,
+                  0.5
+                ],
+                "customdata": [
+                  2621,
+                  1356,
+                  568,
+                  280,
+                  82,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10555827131134898,
+                  0.018823829594459083
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "CRL_history",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10565799199188398,
+                  0.019728742015543123
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "CRL_history",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2621,
+                  1356,
+                  568,
+                  280,
+                  82,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  1207,
+                  988,
+                  654,
+                  481,
+                  330,
+                  216,
+                  137,
+                  96,
+                  64,
+                  28,
+                  15,
+                  7,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  35,
+                  68,
+                  107,
+                  76,
+                  92,
+                  67,
+                  56,
+                  62,
+                  37,
+                  44,
+                  27,
+                  13,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6476143091942415,
+                  0.7641606530634816,
+                  0.4218978102189781
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "CRL_history",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6457851892256855,
+                  0.7638143524662685,
+                  0.4116788321167883
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.020348192634045643,
+                  0.018823829594459083,
+                  0.020536318192764785,
+                  0.019728742015543123,
+                  0.1534583827148289,
+                  0.016264713120603767
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      },
+      "UWG_Brier": {
+        "rows": 4909,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "UWG_Brier",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.018823829594459083,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.1534583827148289,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.04617691142503442,
+                  0.144799871304324,
+                  0.24322543410336622,
+                  0.34172892923708315,
+                  0.4350008559458464,
+                  0.5026016235351562
+                ],
+                "y": [
+                  0.05483625285605483,
+                  0.16027088036117382,
+                  0.26424870466321243,
+                  0.4111111111111111,
+                  0.6116504854368932,
+                  0.5
+                ],
+                "customdata": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "UWG_Brier",
+                "x": [
+                  0.08008537880352719,
+                  0.15848824140662676,
+                  0.2503517026053316,
+                  0.3467144192154728,
+                  0.44239118252650345,
+                  0.513201242685318
+                ],
+                "y": [
+                  0.007194244604316547,
+                  0.02465166130760986,
+                  0.07677664974619289,
+                  0.16417910447761194,
+                  0.3493635077793494,
+                  0.6375
+                ],
+                "customdata": [
+                  139,
+                  933,
+                  1576,
+                  1474,
+                  707,
+                  80
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10555827131134898,
+                  0.018823829594459083
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "UWG_Brier",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.12909724632041544,
+                  0.1534583827148289
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "UWG_Brier",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  139,
+                  933,
+                  1576,
+                  1474,
+                  707,
+                  80,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  2,
+                  65,
+                  201,
+                  377,
+                  542,
+                  609,
+                  581,
+                  599,
+                  526,
+                  357,
+                  217,
+                  119,
+                  29,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  0,
+                  0,
+                  5,
+                  8,
+                  16,
+                  40,
+                  55,
+                  95,
+                  103,
+                  111,
+                  108,
+                  93,
+                  51,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6476143091942415,
+                  0.7641606530634816,
+                  0.4218978102189781
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "UWG_Brier",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6499654221235895,
+                  0.7694315416943154,
+                  0.43503649635036495
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.020348192634045643,
+                  0.018823829594459083,
+                  0.020536318192764785,
+                  0.019728742015543123,
+                  0.1534583827148289,
+                  0.016264713120603767
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.4000000000000001
+        }
+      },
+      "Brier_regularized": {
+        "rows": 4909,
+        "numeric_features": null,
+        "input_features": null,
+        "before_label": "ERM baseline",
+        "after_label": "Brier_regularized",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.018823829594459083,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.016264713120603767,
+          "limit": 0.05,
+          "rule": "10-bin ECE >0.05 (all rows)"
+        },
+        "panels": [
+          {
+            "title": "Reliability curve (hover for bin counts)",
+            "data": [
+              {
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Perfect calibration",
+                "x": [
+                  0,
+                  1
+                ],
+                "y": [
+                  0,
+                  1
+                ],
+                "line": {
+                  "dash": "dash",
+                  "color": "#777"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "ERM baseline",
+                "x": [
+                  0.04617691142503442,
+                  0.144799871304324,
+                  0.24322543410336622,
+                  0.34172892923708315,
+                  0.4350008559458464,
+                  0.5026016235351562
+                ],
+                "y": [
+                  0.05483625285605483,
+                  0.16027088036117382,
+                  0.26424870466321243,
+                  0.4111111111111111,
+                  0.6116504854368932,
+                  0.5
+                ],
+                "customdata": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#77ade0"
+                }
+              },
+              {
+                "type": "scatter",
+                "mode": "lines+markers",
+                "name": "Brier_regularized",
+                "x": [
+                  0.04783145112168314,
+                  0.14455635486968926,
+                  0.24297448872518138,
+                  0.3424955932660536,
+                  0.4361997604370117,
+                  0.5025042295455933
+                ],
+                "y": [
+                  0.053107789142407553,
+                  0.15642857142857142,
+                  0.2638655462184874,
+                  0.4072727272727273,
+                  0.6421052631578947,
+                  0.5
+                ],
+                "customdata": [
+                  2542,
+                  1400,
+                  595,
+                  275,
+                  95,
+                  2
+                ],
+                "hovertemplate": "p=%{x:.3f}<br>observed=%{y:.3f}<br>bin n=%{customdata}<extra>%{fullData.name}</extra>",
+                "line": {
+                  "color": "#83b657"
+                }
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "Mean probability"
+              },
+              "yaxis": {
+                "title": "Observed event rate"
+              },
+              "height": 380
+            }
+          },
+          {
+            "title": "Calibration errors",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10555827131134898,
+                  0.018823829594459083
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Brier_regularized",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Brier",
+                  "ECE (10 bins)"
+                ],
+                "y": [
+                  0.10562178207097135,
+                  0.016264713120603767
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Error"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Reliability-bin support",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2626,
+                  1329,
+                  579,
+                  270,
+                  103,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Brier_regularized",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "0.0-0.1",
+                  "0.1-0.2",
+                  "0.2-0.3",
+                  "0.3-0.4",
+                  "0.4-0.5",
+                  "0.5-0.6",
+                  "0.6-0.7",
+                  "0.7-0.8",
+                  "0.8-0.9",
+                  "0.9-1.0"
+                ],
+                "y": [
+                  2542,
+                  1400,
+                  595,
+                  275,
+                  95,
+                  2,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Comparison-model probabilities by actual outcome",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Outcome 0",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  1115,
+                  1012,
+                  669,
+                  481,
+                  361,
+                  224,
+                  144,
+                  93,
+                  73,
+                  28,
+                  15,
+                  8,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Outcome 1",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.020833333333333332,
+                  0.0625,
+                  0.10416666666666666,
+                  0.14583333333333331,
+                  0.1875,
+                  0.22916666666666666,
+                  0.2708333333333333,
+                  0.3125,
+                  0.35416666666666663,
+                  0.3958333333333333,
+                  0.4375,
+                  0.47916666666666663,
+                  0.5208333333333333,
+                  0.5625,
+                  0.6041666666666666,
+                  0.6458333333333333,
+                  0.6875,
+                  0.7291666666666666,
+                  0.7708333333333333,
+                  0.8125,
+                  0.8541666666666666,
+                  0.8958333333333333,
+                  0.9375,
+                  0.9791666666666666
+                ],
+                "y": [
+                  29,
+                  70,
+                  102,
+                  86,
+                  78,
+                  78,
+                  54,
+                  59,
+                  44,
+                  40,
+                  30,
+                  14,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Predictive utility tradeoffs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ERM baseline",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6476143091942415,
+                  0.7641606530634816,
+                  0.4218978102189781
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Brier_regularized",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "Macro-F1",
+                  "AUROC",
+                  "Positive recall"
+                ],
+                "y": [
+                  0.6437737889689132,
+                  0.7625359433753595,
+                  0.42043795620437957
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Family methods on this partition (descriptive)",
+            "data": [
+              {
+                "type": "bar",
+                "name": "ece_10_bins",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "FairERM_softEO",
+                  "ERM",
+                  "AvUC_deterministic",
+                  "CRL_history",
+                  "UWG_Brier",
+                  "Brier_regularized"
+                ],
+                "y": [
+                  0.020348192634045643,
+                  0.018823829594459083,
+                  0.020536318192764785,
+                  0.019728742015543123,
+                  0.1534583827148289,
+                  0.016264713120603767
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "ece_10_bins"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "The default is the original overall validation-selected model. Changing this dropdown only changes the display, not the saved model selection. Methods are documented adaptations. Unweighted estimates; unsupported groups excluded from disparity comparisons.",
+        "thresholds": {
+          "ERM": 0.22500000000000003,
+          "comparison": 0.22500000000000003
+        }
+      }
+    }
+  },
+  "default_split": "test",
+  "methods": {
+    "FairERM_softEO": "FairERM_softEO (frozen project selection)",
+    "ERM": "ERM",
+    "AvUC_deterministic": "AvUC_deterministic",
+    "CRL_history": "CRL_history",
+    "UWG_Brier": "UWG_Brier",
+    "Brier_regularized": "Brier_regularized"
+  },
+  "default_method": "FairERM_softEO",
+  "protocol": "Before = ERM baseline; after = chosen saved comparison model. Test/external results do not select a new winner.",
+  "selection_sha256": "8301256787fa32f06261358970475223bd09105bcbd62c8a1acdb31190f251a0"
+}
