@@ -1,0 +1,26 @@
+[
+  {
+    "file": "raw\\adult23csv.zip",
+    "url": "https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Datasets/NHIS/2023/adult23csv.zip",
+    "bytes": 4780657,
+    "sha256": "e6f0918e683e1d756e4298470737b4c99777e8a90ea9ee7488544b917f058585"
+  },
+  {
+    "file": "documentation\\adult-codebook.pdf",
+    "url": "https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHIS/2023/adult-codebook.pdf",
+    "bytes": 2218147,
+    "sha256": "0afacb59330f1714363db9cee6ee24dbd2a4e9a1edffbb66f8ee9c10b8ba969d"
+  },
+  {
+    "file": "documentation\\adult-summary.pdf",
+    "url": "https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHIS/2023/adult-summary.pdf",
+    "bytes": 365390,
+    "sha256": "1fa0b8f36865e2f9fbddca131a2c156f1b8563b92b2113ac577310d8c0118936"
+  },
+  {
+    "file": "documentation\\srvydesc-508.pdf",
+    "url": "https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHIS/2023/srvydesc-508.pdf",
+    "bytes": 4167884,
+    "sha256": "def9a6b8de30fa3af457deb7e2225a34b29d4b4d56e4725ea840cbe2c5696b9f"
+  }
+]
