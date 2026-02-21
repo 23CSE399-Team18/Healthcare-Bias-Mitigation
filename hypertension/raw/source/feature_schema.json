@@ -1,0 +1,30 @@
+{
+  "target": "hypertension",
+  "candidate_baseline_predictors": [
+    "AGEP_A",
+    "SEX_A",
+    "EDUCP_A",
+    "BMICAT_A",
+    "SMKCIGST_A"
+  ],
+  "fairness_attributes": [
+    "AGEP_A",
+    "SEX_A",
+    "HISPALLP_A"
+  ],
+  "identifier_columns": [
+    "HHX"
+  ],
+  "survey_design_columns": [
+    "WTFA_A",
+    "PSTRAT",
+    "PPSU"
+  ],
+  "domain_metadata": [
+    "REGION",
+    "URBRRL"
+  ],
+  "label_source_exclude_from_predictors": [
+    "HYPEV_A"
+  ]
+}
