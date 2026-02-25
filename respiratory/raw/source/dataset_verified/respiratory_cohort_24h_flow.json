@@ -1,0 +1,88 @@
+{
+  "source": "eICU-CRD v2.0",
+  "source_page": "https://physionet.org/content/eicu-crd/2.0/",
+  "task": "Subsequent in-hospital mortality at a 24-hour ICU landmark in adult respiratory ICU patients",
+  "landmark_minutes": 1440,
+  "eligibility": "Known adult age; valid identifiers; respiratory APACHE admission diagnosis entered <=1440 min (admissionDx timestamp) or Primary pulmonary diagnosis recorded <=1440 min; known Alive/Expired hospital outcome; ICU and hospital dischargeoffset strictly >1440 min",
+  "age_topcode": ">89 retained with marker; 90 is a grouping surrogate, not exact age",
+  "flow": [
+    {
+      "stage": "all_icu_stays",
+      "retained_stays": 200859,
+      "excluded_from_previous": 0
+    },
+    {
+      "stage": "valid_identifiers_and_known_hospital",
+      "retained_stays": 200859,
+      "excluded_from_previous": 0
+    },
+    {
+      "stage": "respiratory_evidence_available_by24h",
+      "retained_stays": 37814,
+      "excluded_from_previous": 163045
+    },
+    {
+      "stage": "known_age_at_least18",
+      "retained_stays": 37772,
+      "excluded_from_previous": 42
+    },
+    {
+      "stage": "known_hospital_outcome_alive_or_expired",
+      "retained_stays": 37377,
+      "excluded_from_previous": 395
+    },
+    {
+      "stage": "still_in_icu_after24h",
+      "retained_stays": 28849,
+      "excluded_from_previous": 8528
+    },
+    {
+      "stage": "still_in_hospital_after24h",
+      "retained_stays": 28842,
+      "excluded_from_previous": 7
+    }
+  ],
+  "diagnosis_flow": {
+    "all_diagnosis_rows": 2710672,
+    "primary_pulmonary_rows_any_time": 86145,
+    "primary_pulmonary_rows_at_or_before24h": 40879,
+    "apache_respiratory_dx_not_entered_by24h_stays": 533
+  },
+  "final": {
+    "stays": 28842,
+    "patients": 24091,
+    "hospitals": 200,
+    "hospital_deaths": 3931,
+    "hospital_survivors": 24911,
+    "topcoded_age_stays": 1034,
+    "apache_route_stays": 24910,
+    "pulmonary_primary_route_stays": 17575
+  },
+  "sources": {
+    "patient": {
+      "path": "D:\\complete\\resp_physionet\\resp\\official_verified\\patient.csv.gz",
+      "sha256": "2acf25f75144c5fc8a2a5b68c6741edac2dc7ca51021127f73e12f7428dc392b",
+      "checksum_verified_against_canonical_manifest": true
+    },
+    "hospital": {
+      "path": "D:\\complete\\resp_physionet\\resp\\official_verified\\hospital.csv.gz",
+      "sha256": "16684f45680921fb263fdd057ac9217093a9e81fc663228480e0d6a4665390a6",
+      "checksum_verified_against_canonical_manifest": true
+    },
+    "diagnosis": {
+      "path": "D:\\complete\\resp_physionet\\resp\\official_verified\\diagnosis.csv.gz",
+      "sha256": "1bc15709cfe9b376ef1da8b1ea47f61993e3d7dcc942f7c1eccbf162e5f2e0c8",
+      "checksum_verified_against_canonical_manifest": true
+    },
+    "admissionDx": {
+      "path": "D:\\complete\\resp_physionet\\resp\\official_verified\\admissionDx.csv.gz",
+      "sha256": "f0018aa323eff5f3bfdfdc3286ff2304288bcfde122b3986fc6f8ea6dcc3ee5e",
+      "checksum_verified_against_canonical_manifest": true
+    }
+  },
+  "cohort_manifest_sha256": "1c58f9b84a7e71edb033d37da85d7f8edbc44ee9441b94d1063833afe6cbd71c",
+  "no_features_extracted": true,
+  "no_model_training": true,
+  "split_status": "Not yet split. Retain repeated stays; group by uniquepid and hold out hospitalid for appropriate evaluations. Do not remove different patients by feature similarity.",
+  "scope": "Cohort membership and target only; demographics are auditing metadata. No future diagnostic text, APACHE final predictions, outcomes or lengths of stay are predictor columns. This does not harmonize MIMIC/eICU or validate a prediction model."
+}
