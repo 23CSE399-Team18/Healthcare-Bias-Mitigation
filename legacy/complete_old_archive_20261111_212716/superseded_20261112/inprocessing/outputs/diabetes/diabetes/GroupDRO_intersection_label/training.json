@@ -1,0 +1,46 @@
+{
+  "method": "GroupDRO_intersection_label",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 5513,
+      "training_objective": 0.7351002130105364,
+      "validation_log_loss": 0.7221340662823816
+    },
+    {
+      "epoch": 2,
+      "training_rows": 5513,
+      "training_objective": 0.7120191935249147,
+      "validation_log_loss": 0.6999530498364213
+    },
+    {
+      "epoch": 3,
+      "training_rows": 5513,
+      "training_objective": 0.6909808266645072,
+      "validation_log_loss": 0.6788995004545996
+    },
+    {
+      "epoch": 4,
+      "training_rows": 5513,
+      "training_objective": 0.6703980591235307,
+      "validation_log_loss": 0.6573536736076873
+    },
+    {
+      "epoch": 5,
+      "training_rows": 5513,
+      "training_objective": 0.6485196134258306,
+      "validation_log_loss": 0.6341602856453076
+    },
+    {
+      "epoch": 6,
+      "training_rows": 5513,
+      "training_objective": 0.6245655147042872,
+      "validation_log_loss": 0.6093541454064861
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 5513,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
