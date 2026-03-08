@@ -1,0 +1,57 @@
+2026-11-12 14:30:21 start diabetes (FAST=False)
+14:30:30 [raw detection] 8.7s
+14:30:31 [duplicate:Exact duplicate removal] 0.4s
+14:30:32 [duplicate:Fuzzy matching] 1.3s
+14:30:34 [duplicate:GBER (graph-based ER)] 2.0s
+14:55:41 [duplicate:Ditto (transformer matcher)] 1506.9s
+14:56:17 [duplicate:GNN entity resolution] 35.8s
+14:56:24 [duplicate:LSH (MinHash)] 7.3s
+14:56:25 SELECTED Ditto (transformer matcher) | best traditional GBER (graph-based ER)
+15:24:30 [duplicate:apply] 1685.9s
+15:24:36 [missing:GMM] 1.3s
+15:24:45 [missing:Random Forest] 9.9s
+15:25:20 [missing:GAIN] 35.0s
+15:25:24 [missing:MICE] 4.0s
+15:25:28 [missing:KNN] 3.7s
+15:26:27 [missing:HyperImpute] 59.1s
+15:30:41 [missing:CSDI] 253.4s
+15:30:46 [missing:MIP-VAE] 5.0s
+15:30:46 SELECTED MIP-VAE | best traditional MICE
+15:30:51 [missing:apply MIP-VAE] 5.1s
+15:31:08 [noise:CL on full training split] 6.7s
+15:31:16 [noise:Denoising autoencoder] 1.3s
+15:31:16 [noise:Wavelet denoising] 0.0s
+15:31:16 [noise:Median filter] 0.0s
+15:31:16 [noise:Savitzky–Golay] 0.0s
+15:31:16 [noise:Confident Learning (Cleanlab)] 0.0s
+15:31:19 [noise:Robust loss (GCE)] 2.3s
+15:32:04 [noise:Diffusion denoising] 45.8s
+15:32:04 SELECTED Robust loss (GCE) | best traditional Denoising autoencoder
+15:32:07 [noise:apply Robust loss (GCE)] 2.6s
+15:32:16 [noise:CL after] 9.1s
+15:32:17 [scale:Quantile transform] 0.6s
+15:32:18 [scale:Min-Max scaler] 0.5s
+15:32:18 [scale:Robust scaler] 0.5s
+15:32:19 [scale:SNN (SELU)] 0.5s
+15:32:29 [scale:FT-Transformer] 10.0s
+15:32:30 [scale:PowerTransform (Yeo-Johnson)] 0.7s
+15:32:30 SELECTED PowerTransform (Yeo-Johnson) | best traditional Min-Max scaler
+15:32:34 [imbalance:SMOTE] 2.1s
+15:32:35 [imbalance:ADASYN] 1.1s
+15:32:36 [imbalance:Borderline-SMOTE] 0.8s
+15:32:36 [imbalance:NearMiss] 0.3s
+15:33:46 [imbalance:TabDDPM] 69.8s
+15:34:25 [imbalance:CTGAN] 38.9s
+15:34:26 [imbalance:Class-Balanced Focal Loss] 0.6s
+15:34:32 [imbalance:DeepSMOTE] 6.1s
+15:34:32 SELECTED TabDDPM | best traditional Borderline-SMOTE
+15:35:42 [imbalance:apply TabDDPM] 69.8s
+15:36:11 [demographic:baseline] 17.1s
+15:37:09 [demographic:Optimal Transport] 58.2s
+15:37:23 [demographic:FairSMOTE] 14.3s
+15:37:35 [demographic:Reweighting] 11.4s
+15:38:03 [demographic:Adversarial debiasing] 28.4s
+15:38:37 [demographic:Counterfactual recourse (DiCE)] 34.1s
+15:39:31 [demographic:Fair contrastive learning] 53.9s
+15:39:31 SELECTED Adversarial debiasing | best traditional Optimal Transport
+15:39:45 [demographic:apply Adversarial debiasing] 13.8s
