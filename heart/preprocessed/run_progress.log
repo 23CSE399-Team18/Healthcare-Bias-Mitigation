@@ -1,0 +1,57 @@
+2026-11-12 14:25:48 start heart (FAST=False)
+14:26:44 [raw detection] 53.1s
+14:27:12 [missing:GMM] 15.2s
+14:28:49 [missing:Random Forest] 96.7s
+14:29:34 [missing:GAIN] 45.4s
+14:29:58 [missing:MICE] 24.0s
+14:30:50 [missing:KNN] 52.0s
+14:33:37 [missing:HyperImpute] 167.1s
+14:48:04 [missing:CSDI] 867.1s
+14:48:27 [missing:MIP-VAE] 23.0s
+14:48:28 SELECTED HyperImpute | best traditional GMM
+15:38:24 [missing:apply HyperImpute] 2995.5s
+15:38:56 [outlier:Isolation Forest] 18.3s
+15:39:31 [outlier:LOF] 34.2s
+15:39:45 [outlier:One-Class SVM] 14.6s
+15:39:58 [outlier:ECOD] 12.6s
+15:40:33 [outlier:Deep SVDD] 35.5s
+15:41:24 [outlier:EBM] 51.0s
+15:41:24 SELECTED EBM | best traditional One-Class SVM
+15:41:34 [outlier:apply EBM] 9.1s
+15:42:33 [noise:CL on full training split] 43.8s
+15:42:46 [noise:Denoising autoencoder] 4.2s
+15:42:46 [noise:Wavelet denoising] 0.1s
+15:42:46 [noise:Median filter] 0.2s
+15:42:46 [noise:Savitzky–Golay] 0.1s
+15:42:46 [noise:Confident Learning (Cleanlab)] 0.1s
+15:42:54 [noise:Robust loss (GCE)] 7.4s
+15:43:47 [noise:Diffusion denoising] 53.0s
+15:43:47 SELECTED Robust loss (GCE) | best traditional Denoising autoencoder
+15:45:45 [noise:apply Robust loss (GCE)] 118.2s
+15:46:30 [noise:CL after] 44.5s
+15:46:37 [scale:Quantile transform] 3.3s
+15:46:40 [scale:Min-Max scaler] 2.8s
+15:46:43 [scale:Robust scaler] 3.2s
+15:46:47 [scale:SNN (SELU)] 3.8s
+15:49:49 [scale:FT-Transformer] 182.2s
+15:49:54 [scale:PowerTransform (Yeo-Johnson)] 4.9s
+15:49:54 SELECTED PowerTransform (Yeo-Johnson) | best traditional Min-Max scaler
+15:52:23 [imbalance:SMOTE] 6.5s
+15:52:30 [imbalance:ADASYN] 6.9s
+15:52:36 [imbalance:Borderline-SMOTE] 6.3s
+15:52:38 [imbalance:NearMiss] 1.5s
+15:54:10 [imbalance:TabDDPM] 92.2s
+15:56:57 [imbalance:CTGAN] 166.9s
+15:57:00 [imbalance:Class-Balanced Focal Loss] 3.7s
+15:57:43 [imbalance:DeepSMOTE] 42.1s
+15:57:43 SELECTED TabDDPM | best traditional Borderline-SMOTE
+16:02:09 [imbalance:apply TabDDPM] 266.5s
+16:03:15 [demographic:baseline] 33.4s
+16:04:50 [demographic:Optimal Transport] 94.4s
+16:05:31 [demographic:FairSMOTE] 41.7s
+16:05:57 [demographic:Reweighting] 25.3s
+16:06:29 [demographic:Adversarial debiasing] 32.5s
+16:07:05 [demographic:Counterfactual recourse (DiCE)] 36.0s
+16:07:58 [demographic:Fair contrastive learning] 53.2s
+16:07:58 SELECTED Adversarial debiasing | best traditional Optimal Transport
+16:08:28 [demographic:apply Adversarial debiasing] 29.3s
