@@ -1,0 +1,47 @@
+2026-11-12 14:25:48 start hypertension (FAST=False)
+14:26:04 [raw detection] 15.6s
+14:26:21 [missing:GMM] 15.2s
+14:31:08 [missing:Random Forest] 287.6s
+14:31:51 [missing:GAIN] 42.4s
+14:33:59 [missing:MICE] 128.4s
+14:36:24 [missing:KNN] 144.6s
+14:39:24 [missing:HyperImpute] 179.7s
+15:11:14 [missing:CSDI] 1910.0s
+15:11:40 [missing:MIP-VAE] 26.4s
+15:11:41 SELECTED HyperImpute | best traditional KNN
+15:19:07 [missing:apply HyperImpute] 446.1s
+15:19:44 [noise:CL on full training split] 16.7s
+15:20:10 [noise:Denoising autoencoder] 8.1s
+15:20:10 [noise:Wavelet denoising] 0.4s
+15:20:10 [noise:Median filter] 0.3s
+15:20:11 [noise:Savitzky–Golay] 0.4s
+15:20:11 [noise:Confident Learning (Cleanlab)] 0.2s
+15:20:22 [noise:Robust loss (GCE)] 11.1s
+15:21:29 [noise:Diffusion denoising] 67.3s
+15:21:29 SELECTED Confident Learning (Cleanlab) | best traditional Denoising autoencoder
+15:21:30 [noise:apply Confident Learning (Cleanlab)] 0.2s
+15:21:45 [noise:CL after] 15.3s
+15:21:48 [scale:Quantile transform] 1.8s
+15:21:50 [scale:Min-Max scaler] 1.7s
+15:21:51 [scale:Robust scaler] 1.7s
+15:21:53 [scale:SNN (SELU)] 1.9s
+15:24:45 [scale:FT-Transformer] 171.8s
+15:24:47 [scale:PowerTransform (Yeo-Johnson)] 2.0s
+15:24:47 SELECTED PowerTransform (Yeo-Johnson) | best traditional Robust scaler
+15:25:36 [domain:DANN] 24.2s
+15:25:45 [domain:CORAL] 8.6s
+15:25:57 [domain:Autoencoder (domain-conditional)] 11.8s
+15:26:22 [domain:IRM] 25.7s
+15:27:24 [domain:OT domain adaptation] 61.6s
+15:39:32 [domain:Domain-generalisation transformer] 728.4s
+15:39:32 SELECTED Domain-generalisation transformer | best traditional CORAL
+15:50:30 [domain:apply Domain-generalisation transformer] 657.9s
+15:51:48 [demographic:baseline] 45.3s
+15:58:15 [demographic:Optimal Transport] 386.9s
+15:59:04 [demographic:FairSMOTE] 49.2s
+15:59:53 [demographic:Reweighting] 49.6s
+16:01:05 [demographic:Adversarial debiasing] 71.7s
+16:02:40 [demographic:Counterfactual recourse (DiCE)] 94.8s
+16:03:44 [demographic:Fair contrastive learning] 63.7s
+16:03:44 SELECTED Counterfactual recourse (DiCE) | best traditional Optimal Transport
+16:04:29 [demographic:apply Counterfactual recourse (DiCE)] 45.1s
