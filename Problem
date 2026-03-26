@@ -1,0 +1,4 @@
+Healthcare AI models trained on real-world clinical data often exhibit uneven predictive
+reliability across patient groups, resulting in unfair and unsafe clinical decision support.
+Existing solutions typically address these issues at isolated stages of the learning pipeline,
+limiting robustness for high-risk patient outcomes
