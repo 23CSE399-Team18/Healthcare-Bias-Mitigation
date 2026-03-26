@@ -1,0 +1,46 @@
+{
+  "method": "VREx",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 80606,
+      "training_objective": 0.6745418597252065,
+      "validation_log_loss": 0.6558126480404235
+    },
+    {
+      "epoch": 2,
+      "training_rows": 80606,
+      "training_objective": 0.670578252691532,
+      "validation_log_loss": 0.657767143325275
+    },
+    {
+      "epoch": 3,
+      "training_rows": 80606,
+      "training_objective": 0.669100448922141,
+      "validation_log_loss": 0.6531634777196708
+    },
+    {
+      "epoch": 4,
+      "training_rows": 80606,
+      "training_objective": 0.6693526040344407,
+      "validation_log_loss": 0.6556634253960976
+    },
+    {
+      "epoch": 5,
+      "training_rows": 80606,
+      "training_objective": 0.6689386390484382,
+      "validation_log_loss": 0.6505537750726021
+    },
+    {
+      "epoch": 6,
+      "training_rows": 80606,
+      "training_objective": 0.669053671076242,
+      "validation_log_loss": 0.6521759360028092
+    }
+  ],
+  "chosen_epoch": 5,
+  "training_rows": 80606,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
