@@ -1,0 +1,154 @@
+======================================================================
+ BASELINE DEEP LEARNING — MLP (Multi-Layer Perceptron)
+ Framework: PyTorch | Architecture: 128→64→32→1
+ Datasets: Heart Disease | Breast Cancer | NHANES
+======================================================================
+
+======================================================================
+ DATASET 1: UCI HEART DISEASE 
+ Deep Learning Baseline — MLP (PyTorch)
+======================================================================
+  Loaded: 346 rows × 15 cols
+  Target: Heart_Disease
+  Positive: 182.0/346 (52.6%)
+
+  Training MLP: 13 features, 276 train / 70 test samples
+  Epochs: 60, LR: 0.001, Batch: 64
+    Epoch  10/60 — Loss: 0.4056
+    Epoch  20/60 — Loss: 0.3037
+    Epoch  30/60 — Loss: 0.2498
+    Epoch  40/60 — Loss: 0.2444
+    Epoch  50/60 — Loss: 0.2078
+    Epoch  60/60 — Loss: 0.2001
+
+  ── Heart Disease — OVERALL RESULTS ──
+  Accuracy : 0.8000  (80.0%)
+  F1-Score : 0.8158
+  AUROC    : 0.8837
+
+  Confusion Matrix:
+    TN=  25  FP=   8
+    FN=   6  TP=  31
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+    Negative       0.81      0.76      0.78        33
+    Positive       0.79      0.84      0.82        37
+
+    accuracy                           0.80        70
+   macro avg       0.80      0.80      0.80        70
+weighted avg       0.80      0.80      0.80        70
+
+
+  ── Heart Disease — FAIRNESS AUDIT by sex ──
+  Group                         N     Acc      F1   AUROC     TPR     FPR
+  ----------------------------------------------------------------------
+  Male                         43   0.721   0.760   0.815   0.826   0.400
+  Female                       27   0.926   0.923   0.973   0.857   0.000
+
+======================================================================
+ DATASET 2: BREAST CANCER COIMBRA
+ Deep Learning Baseline — MLP (PyTorch)
+======================================================================
+  Loaded: 116 rows × 12 cols
+  Target: Cancer_Risk
+  Positive: 64/116 (55.2%)
+
+  Training MLP: 10 features, 92 train / 24 test samples
+  Epochs: 80, LR: 0.0005, Batch: 64
+    Epoch  10/80 — Loss: 0.6588
+    Epoch  20/80 — Loss: 0.5996
+    Epoch  30/80 — Loss: 0.5897
+    Epoch  40/80 — Loss: 0.5758
+    Epoch  50/80 — Loss: 0.5172
+    Epoch  60/80 — Loss: 0.5069
+    Epoch  70/80 — Loss: 0.4963
+    Epoch  80/80 — Loss: 0.4874
+
+  ── Breast Cancer — OVERALL RESULTS ──
+  Accuracy : 0.7500  (75.0%)
+  F1-Score : 0.7500
+  AUROC    : 0.8112
+
+  Confusion Matrix:
+    TN=   9  FP=   2
+    FN=   4  TP=   9
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+    Negative       0.69      0.82      0.75        11
+    Positive       0.82      0.69      0.75        13
+
+    accuracy                           0.75        24
+   macro avg       0.76      0.76      0.75        24
+weighted avg       0.76      0.75      0.75        24
+
+
+  ── Breast Cancer — FAIRNESS AUDIT by Age_Group ──
+  Group                         N     Acc      F1   AUROC     TPR     FPR
+  ----------------------------------------------------------------------
+  Younger (<median)            14   0.786   0.800   0.844   0.667   0.000
+  Older (>=median)             10   0.700   0.667   0.792   0.750   0.333
+
+======================================================================
+ DATASET 3: NHANES 2021-2023
+ Deep Learning Baseline — MLP (PyTorch)
+======================================================================
+  Loaded: 14444 rows × 104 cols
+  Target: Diabetes_Risk
+  Positive: 3348/14444 (23.2%)
+  Using 97 numeric features
+
+  Training MLP: 97 features, 11555 train / 2889 test samples
+  Epochs: 50, LR: 0.001, Batch: 64
+    Epoch  10/50 — Loss: 0.0304
+    Epoch  20/50 — Loss: 0.0183
+    Epoch  30/50 — Loss: 0.0097
+    Epoch  40/50 — Loss: 0.0090
+    Epoch  50/50 — Loss: 0.0041
+
+  ── NHANES (Diabetes) — OVERALL RESULTS ──
+  Accuracy : 0.9913  (99.1%)
+  F1-Score : 0.9815
+  AUROC    : 0.9996
+
+  Confusion Matrix:
+    TN=2202  FP=  17
+    FN=   8  TP= 662
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+    Negative       1.00      0.99      0.99      2219
+    Positive       0.97      0.99      0.98       670
+
+    accuracy                           0.99      2889
+   macro avg       0.99      0.99      0.99      2889
+weighted avg       0.99      0.99      0.99      2889
+
+
+  ── NHANES (Diabetes) — FAIRNESS AUDIT by Gender ──
+  Group                         N     Acc      F1   AUROC     TPR     FPR
+  ----------------------------------------------------------------------
+  Male                       1338   0.989   0.977   1.000   0.988   0.011
+  Female                     1551   0.994   0.985   1.000   0.988   0.005
+
+  ── NHANES (Diabetes) — FAIRNESS AUDIT by Ethnicity_With_Asian ──
+  Group                         N     Acc      F1   AUROC     TPR     FPR
+  ----------------------------------------------------------------------
+  Non-Hispanic White         1263   0.991   0.955   1.000   0.967   0.006
+  Non-Hispanic Black          331   0.988   0.938   0.998   0.938   0.007
+  Mexican American            225   0.987   0.936   1.000   1.000   0.015
+  Non-Hispanic Asian          144   0.993   0.952   1.000   1.000   0.007
+
+======================================================================
+ BASELINE DL COMPLETE — ALL 3 DATASETS
+======================================================================
+  Model: MLP (128→64→32→1) with BatchNorm + Dropout
+  Purpose: Establish baseline DL performance before applying
+           fairness-constrained training (Obj 2: AD, CFReg)
+  Next:    Compare these baselines with XGBoost and
+           fairness-mitigated DL models
+======================================================================
