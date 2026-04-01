@@ -1,0 +1,46 @@
+{
+  "method": "CRL_history",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 80606,
+      "training_objective": 0.5906463876927494,
+      "validation_log_loss": 0.5341858802970428
+    },
+    {
+      "epoch": 2,
+      "training_rows": 80606,
+      "training_objective": 0.4691894219289497,
+      "validation_log_loss": 0.49909332859928596
+    },
+    {
+      "epoch": 3,
+      "training_rows": 80606,
+      "training_objective": 0.45233528227692865,
+      "validation_log_loss": 0.49221337517361063
+    },
+    {
+      "epoch": 4,
+      "training_rows": 80606,
+      "training_objective": 0.450055168574523,
+      "validation_log_loss": 0.4913306725137307
+    },
+    {
+      "epoch": 5,
+      "training_rows": 80606,
+      "training_objective": 0.4492523012183616,
+      "validation_log_loss": 0.4910221285734059
+    },
+    {
+      "epoch": 6,
+      "training_rows": 80606,
+      "training_objective": 0.44871238731505025,
+      "validation_log_loss": 0.4898635904745513
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 80606,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
