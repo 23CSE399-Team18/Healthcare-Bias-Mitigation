@@ -1,0 +1,42 @@
+[07:55:09 +   23.1s] loaded heart: 32 features, train 551,950, diabetes: 32 features, train 9,112, hypertension: 32 features, train 18,569, respiratory: 32 features, train 33,874, hospital: 25 features, train 80,606
+[07:55:15 +   28.7s] PCA (no alignment): CKA 0.742 F1 0.615 silhouette 0.033 NMI 0.153 ARI 0.038 (6s)
+[07:55:33 +   46.2s]   MV-DAE: step 250/3000 train 0.3951 validation 0.4677
+[07:55:48 +   61.2s]   MV-DAE: step 500/3000 train 0.3159 validation 0.4129
+[07:56:04 +   77.6s]   MV-DAE: step 750/3000 train 0.3019 validation 0.4041
+[07:56:22 +   95.3s]   MV-DAE: step 1000/3000 train 0.2892 validation 0.3946
+[07:56:45 +  118.8s]   MV-DAE: step 1250/3000 train 0.2760 validation 0.3871
+[07:57:24 +  157.3s]   MV-DAE: step 1500/3000 train 0.3053 validation 0.3809
+[07:57:59 +  192.3s]   MV-DAE: step 1750/3000 train 0.3006 validation 0.3799
+[07:58:32 +  225.9s]   MV-DAE: step 2000/3000 train 0.2951 validation 0.3836
+[07:59:04 +  257.7s]   MV-DAE: step 2250/3000 train 0.2832 validation 0.3841
+[07:59:36 +  289.8s]   MV-DAE: step 2500/3000 train 0.2617 validation 0.3833
+[08:00:08 +  322.1s]   MV-DAE: step 2750/3000 train 0.2844 validation 0.3797
+[08:00:39 +  353.0s]   MV-DAE: step 3000/3000 train 0.2712 validation 0.3791
+[08:00:47 +  361.1s] MV-DAE: CKA 0.637 F1 0.617 silhouette 0.114 NMI 0.090 ARI 0.043 (332s)
+[08:01:16 +  389.9s]   DGCCA: step 250/3000 train -0.3519 validation -0.3050
+[08:01:43 +  416.7s]   DGCCA: step 500/3000 train -0.4096 validation -0.3653
+[08:02:10 +  443.5s]   DGCCA: step 750/3000 train -0.4499 validation -0.3869
+[08:02:37 +  470.3s]   DGCCA: step 1000/3000 train -0.4579 validation -0.3862
+[08:03:03 +  496.8s]   DGCCA: step 1250/3000 train -0.4643 validation -0.3942
+[08:03:29 +  522.9s]   DGCCA: step 1500/3000 train -0.4686 validation -0.3920
+[08:03:55 +  548.8s]   DGCCA: step 1750/3000 train -0.5074 validation -0.4058
+[08:04:21 +  574.7s]   DGCCA: step 2000/3000 train -0.5175 validation -0.4079
+[08:04:47 +  600.6s]   DGCCA: step 2250/3000 train -0.4930 validation -0.4171
+[08:05:13 +  626.4s]   DGCCA: step 2500/3000 train -0.5107 validation -0.4035
+[08:05:36 +  649.4s]   DGCCA: step 2750/3000 train -0.5220 validation -0.4103
+[08:05:44 +  658.0s]   DGCCA: step 3000/3000 train -0.5815 validation -0.4039
+[08:06:15 +  689.1s] DGCCA: CKA 0.614 F1 0.602 silhouette 0.084 NMI 0.076 ARI 0.044 (328s)
+[08:10:40 +  953.3s]   SAINT: step 250/3000 train 4.5000 validation 4.5794
+[08:15:04 + 1217.3s]   SAINT: step 500/3000 train 4.4009 validation 4.5139
+[08:19:29 + 1483.0s]   SAINT: step 750/3000 train 4.4054 validation 4.4729
+[08:23:50 + 1743.8s]   SAINT: step 1000/3000 train 4.3437 validation 4.4429
+[08:27:53 + 1986.2s]   SAINT: step 1250/3000 train 4.3291 validation 4.4302
+[08:31:52 + 2225.2s]   SAINT: step 1500/3000 train 4.3725 validation 4.4132
+[08:36:00 + 2473.8s]   SAINT: step 1750/3000 train 4.3217 validation 4.4061
+[08:40:12 + 2725.7s]   SAINT: step 2000/3000 train 4.3195 validation 4.3965
+[08:44:27 + 2981.0s]   SAINT: step 2250/3000 train 4.3255 validation 4.3872
+[08:51:31 + 3405.1s]   SAINT: step 2500/3000 train 4.3002 validation 4.3855
+[09:00:53 + 3967.0s]   SAINT: step 2750/3000 train 4.3403 validation 4.3735
+[09:03:18 + 4111.9s]   SAINT: step 3000/3000 train 4.2523 validation 4.3724
+[09:03:54 + 4147.2s] SAINT: CKA 0.664 F1 0.616 silhouette 0.071 NMI 0.047 ARI 0.031 (3458s)
+[09:08:30 + 4423.5s] selected SAINT; outputs in D:\complete\latent\data
