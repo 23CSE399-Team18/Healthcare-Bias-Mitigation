@@ -1,0 +1,23 @@
+2026-11-13 09:08:57 start in-processing diabetes
+09:09:02 [ERM] trained in 3.0s | validation AUROC 0.7781
+09:09:02 [FairCare] trained in 0.8s | validation AUROC 0.7770
+09:09:03 [DANN] trained in 0.7s | validation AUROC 0.7754
+09:09:04 [GroupDRO] trained in 0.7s | validation AUROC 0.7790
+09:09:05 [Fair-ERM] trained in 0.8s | validation AUROC 0.7783
+09:09:06 [FOMO] trained in 1.7s | validation AUROC 0.7801
+09:09:07 [Intersectional debiasing] trained in 0.7s | validation AUROC 0.7727
+09:09:08 [Fairness-constrained optimization] trained in 0.9s | validation AUROC 0.7781
+09:09:09 [GroupDRO (intersectional)] trained in 0.8s | validation AUROC 0.7747
+09:09:09 [AvUC] trained in 0.7s | validation AUROC 0.7787
+09:09:10 [CRL] trained in 0.6s | validation AUROC 0.7783
+09:09:11 [Uncertainty-weighted gradient] trained in 0.6s | validation AUROC 0.7758
+09:09:12 [Calibration-regularized] trained in 1.3s | validation AUROC 0.5327
+09:09:15 [cross-hospital ERM] trained in 3.0s | AUROC eICU validation hospitals 0.5814 | MIMIC 0.5733
+09:09:29 [cross-hospital Fishr] trained in 13.8s | AUROC eICU validation hospitals 0.5815 | MIMIC 0.5740
+09:09:39 [cross-hospital V-REx] trained in 9.9s | AUROC eICU validation hospitals 0.5777 | MIMIC 0.5656
+09:09:49 [cross-hospital EQRM] trained in 10.2s | AUROC eICU validation hospitals 0.5344 | MIMIC 0.5421
+09:09:57 [cross-hospital Fish] trained in 8.5s | AUROC eICU validation hospitals 0.5818 | MIMIC 0.5738
+09:09:59 SELECTED demographic: DANN
+09:09:59 SELECTED intersectional: Intersectional debiasing
+09:10:00 SELECTED calibration: Uncertainty-weighted gradient
+09:10:01 SELECTED environment: V-REx
