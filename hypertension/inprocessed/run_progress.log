@@ -1,0 +1,23 @@
+2026-11-13 09:08:57 start in-processing hypertension
+09:09:02 [ERM] trained in 3.3s | validation AUROC 0.8357
+09:09:03 [FairCare] trained in 1.2s | validation AUROC 0.8395
+09:09:04 [DANN] trained in 1.1s | validation AUROC 0.8377
+09:09:05 [GroupDRO] trained in 1.1s | validation AUROC 0.8415
+09:09:06 [Fair-ERM] trained in 1.2s | validation AUROC 0.8397
+09:09:09 [FOMO] trained in 2.7s | validation AUROC 0.8420
+09:09:10 [Intersectional debiasing] trained in 1.1s | validation AUROC 0.8400
+09:09:12 [Fairness-constrained optimization] trained in 2.1s | validation AUROC 0.8357
+09:09:14 [GroupDRO (intersectional)] trained in 2.1s | validation AUROC 0.8427
+09:09:16 [AvUC] trained in 1.2s | validation AUROC 0.8357
+09:09:17 [CRL] trained in 1.3s | validation AUROC 0.8355
+09:09:18 [Uncertainty-weighted gradient] trained in 1.2s | validation AUROC 0.8417
+09:09:21 [Calibration-regularized] trained in 2.5s | validation AUROC 0.8336
+09:09:24 [cross-hospital ERM] trained in 3.7s | AUROC eICU validation hospitals 0.6468 | MIMIC 0.7000
+09:09:39 [cross-hospital Fishr] trained in 14.5s | AUROC eICU validation hospitals 0.6470 | MIMIC 0.6997
+09:09:50 [cross-hospital V-REx] trained in 10.5s | AUROC eICU validation hospitals 0.6456 | MIMIC 0.6986
+09:10:00 [cross-hospital EQRM] trained in 10.8s | AUROC eICU validation hospitals 0.6190 | MIMIC 0.6596
+09:10:08 [cross-hospital Fish] trained in 7.7s | AUROC eICU validation hospitals 0.6478 | MIMIC 0.6998
+09:10:11 SELECTED demographic: GroupDRO
+09:10:12 SELECTED intersectional: GroupDRO (intersectional)
+09:10:13 SELECTED calibration: Calibration-regularized
+09:10:15 SELECTED environment: V-REx
