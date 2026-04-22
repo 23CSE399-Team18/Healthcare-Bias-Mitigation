@@ -1,0 +1,23 @@
+2026-11-13 09:08:57 start in-processing respiratory
+09:09:02 [ERM] trained in 3.3s | validation AUROC 0.7638
+09:09:04 [FairCare] trained in 1.7s | validation AUROC 0.7635
+09:09:05 [DANN] trained in 1.3s | validation AUROC 0.7632
+09:09:06 [GroupDRO] trained in 1.5s | validation AUROC 0.7637
+09:09:08 [Fair-ERM] trained in 1.7s | validation AUROC 0.7638
+09:09:11 [FOMO] trained in 2.6s | validation AUROC 0.7584
+09:09:13 [Intersectional debiasing] trained in 2.0s | validation AUROC 0.7629
+09:09:15 [Fairness-constrained optimization] trained in 2.6s | validation AUROC 0.7638
+09:09:18 [GroupDRO (intersectional)] trained in 3.0s | validation AUROC 0.7630
+09:09:20 [AvUC] trained in 2.1s | validation AUROC 0.7638
+09:09:22 [CRL] trained in 1.8s | validation AUROC 0.7638
+09:09:24 [Uncertainty-weighted gradient] trained in 1.3s | validation AUROC 0.7617
+09:09:28 [Calibration-regularized] trained in 4.0s | validation AUROC 0.4050
+09:09:31 [cross-hospital ERM] trained in 3.4s | AUROC eICU validation hospitals 0.6465 | MIMIC 0.6573
+09:09:46 [cross-hospital Fishr] trained in 15.0s | AUROC eICU validation hospitals 0.6496 | MIMIC 0.6579
+09:09:57 [cross-hospital V-REx] trained in 10.6s | AUROC eICU validation hospitals 0.6437 | MIMIC 0.6557
+09:10:07 [cross-hospital EQRM] trained in 9.9s | AUROC eICU validation hospitals 0.5837 | MIMIC 0.6031
+09:10:13 [cross-hospital Fish] trained in 5.1s | AUROC eICU validation hospitals 0.6464 | MIMIC 0.6573
+09:10:15 SELECTED demographic: GroupDRO
+09:10:15 SELECTED intersectional: Fairness-constrained optimization
+09:10:16 SELECTED calibration: Uncertainty-weighted gradient
+09:10:17 SELECTED environment: Fishr
