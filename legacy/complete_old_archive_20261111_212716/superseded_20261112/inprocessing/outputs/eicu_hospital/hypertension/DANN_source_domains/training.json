@@ -1,0 +1,46 @@
+{
+  "method": "DANN_source_domains",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 80606,
+      "training_objective": 1.1450643183631737,
+      "validation_log_loss": 0.6601947834826956
+    },
+    {
+      "epoch": 2,
+      "training_rows": 80606,
+      "training_objective": 1.1163816997686238,
+      "validation_log_loss": 0.6513279280300933
+    },
+    {
+      "epoch": 3,
+      "training_rows": 80606,
+      "training_objective": 1.099388032912782,
+      "validation_log_loss": 0.6453077003394438
+    },
+    {
+      "epoch": 4,
+      "training_rows": 80606,
+      "training_objective": 1.0933620512841922,
+      "validation_log_loss": 0.6449156771599235
+    },
+    {
+      "epoch": 5,
+      "training_rows": 80606,
+      "training_objective": 1.0904244967963155,
+      "validation_log_loss": 0.644455744307907
+    },
+    {
+      "epoch": 6,
+      "training_rows": 80606,
+      "training_objective": 1.088178319564023,
+      "validation_log_loss": 0.6451794759493092
+    }
+  ],
+  "chosen_epoch": 5,
+  "training_rows": 80606,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
