@@ -1,0 +1,46 @@
+{
+  "method": "AdversarialFair_tabular",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 80606,
+      "training_objective": 0.8065965072252619,
+      "validation_log_loss": 0.6780338358209828
+    },
+    {
+      "epoch": 2,
+      "training_rows": 80606,
+      "training_objective": 0.7809130394425939,
+      "validation_log_loss": 0.6624265138177012
+    },
+    {
+      "epoch": 3,
+      "training_rows": 80606,
+      "training_objective": 0.7669460501895159,
+      "validation_log_loss": 0.6586455137588921
+    },
+    {
+      "epoch": 4,
+      "training_rows": 80606,
+      "training_objective": 0.7612780538489202,
+      "validation_log_loss": 0.6555034847440676
+    },
+    {
+      "epoch": 5,
+      "training_rows": 80606,
+      "training_objective": 0.755973147759706,
+      "validation_log_loss": 0.6531751079412791
+    },
+    {
+      "epoch": 6,
+      "training_rows": 80606,
+      "training_objective": 0.7512366041706368,
+      "validation_log_loss": 0.6501619158902625
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 80606,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
