@@ -1,0 +1,82 @@
+[
+  {
+    "bin": 0,
+    "lower": 0,
+    "upper": 0.1,
+    "rows": 0,
+    "mean_probability": null,
+    "event_rate": null
+  },
+  {
+    "bin": 1,
+    "lower": 0.1,
+    "upper": 0.2,
+    "rows": 126,
+    "mean_probability": 0.17403433495570744,
+    "event_rate": 0.20634920634920634
+  },
+  {
+    "bin": 2,
+    "lower": 0.2,
+    "upper": 0.3,
+    "rows": 899,
+    "mean_probability": 0.257739573634241,
+    "event_rate": 0.26362625139043383
+  },
+  {
+    "bin": 3,
+    "lower": 0.3,
+    "upper": 0.4,
+    "rows": 1337,
+    "mean_probability": 0.3519188210691368,
+    "event_rate": 0.34480179506357517
+  },
+  {
+    "bin": 4,
+    "lower": 0.4,
+    "upper": 0.5,
+    "rows": 1743,
+    "mean_probability": 0.4518450245355233,
+    "event_rate": 0.4406196213425129
+  },
+  {
+    "bin": 5,
+    "lower": 0.5,
+    "upper": 0.6,
+    "rows": 1832,
+    "mean_probability": 0.5490713171237941,
+    "event_rate": 0.49344978165938863
+  },
+  {
+    "bin": 6,
+    "lower": 0.6,
+    "upper": 0.7,
+    "rows": 1626,
+    "mean_probability": 0.6459061115576918,
+    "event_rate": 0.6285362853628537
+  },
+  {
+    "bin": 7,
+    "lower": 0.7,
+    "upper": 0.8,
+    "rows": 701,
+    "mean_probability": 0.7402852472667177,
+    "event_rate": 0.7218259629101283
+  },
+  {
+    "bin": 8,
+    "lower": 0.8,
+    "upper": 0.9,
+    "rows": 164,
+    "mean_probability": 0.836472353920704,
+    "event_rate": 0.7560975609756098
+  },
+  {
+    "bin": 9,
+    "lower": 0.9,
+    "upper": 1,
+    "rows": 26,
+    "mean_probability": 0.9481983528687403,
+    "event_rate": 0.6538461538461539
+  }
+]
