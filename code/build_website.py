@@ -2,8 +2,8 @@
 
     python code/build_website.py
 
-Keeps the team's written sections (motivation, themes, literature survey, gaps, objectives, problem statement) from the
-previous page and replaces datasets, methods, plots and latent results with the real outputs in D:/complete.
+Writes the team's sections (motivation, research gaps, objectives, problem statement; text of the Review-4 presentation
+PPT_changed_in__Copy__2, user request 2026-11-14) and builds datasets, methods, plots and latent results from the real outputs in D:/complete.
 Copies every individual bias dashboard to Team-18/plots/<dataset>/ and the latent dashboards to Team-18/plots/latent/.
 """
 import html
@@ -18,8 +18,6 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 SITE = Path("D:/Team-18/Team-18")
 OLD_PAGE = SITE / "index.html"
-# The team's original page (backed up before the redesign) is the source of the kept written sections.
-ORIGINAL_PAGE = Path("D:/complete_old_archive_20261111_212716/website_before_20261112/index.html")
 # Website theme: bright, vivid colours on white (user request 2026-11-13). Dataset colours: validated categorical set
 # (dataviz validator, light mode, all pairs: lightness, chroma, normal-vision PASS; CVD 6.9 -> scatter also uses shapes).
 DATASETS = {
@@ -58,7 +56,7 @@ def hospital_facts():
             "splits": df.split.value_counts().to_dict()}
 
 
-BIASES = [  # key in pipeline_log, dashboard file, traditional, modern, metrics
+BIASES = [  # key in pipeline_log, dashboard file, baseline methods, candidate methods, metrics
     ("Missing data", "01_missing_data_bias_dashboard.html", "GMM, Random Forest, GAIN, MICE, KNN", "HyperImpute, CSDI, MIP-VAE",
      "Wasserstein, correlation preservation, MAE, RMSE, NRMSE, CRPS, NLL"),
     ("Class imbalance", "02_class_imbalance_bias_dashboard.html", "SMOTE, ADASYN, Borderline-SMOTE, NearMiss",
@@ -76,7 +74,34 @@ BIASES = [  # key in pipeline_log, dashboard file, traditional, modern, metrics
     ("Encoding / domain", "08_encoding_domain_bias_dashboard.html", "DANN, CORAL, autoencoder", "IRM, OT domain adaptation, DG transformer",
      "MMD, domain-classifier AUC, Wasserstein, worst-group accuracy, DG gap, target AUROC, OOD performance"),
 ]
-KEEP_SECTIONS = ["motivation", "themes", "gaps", "objectives", "problem"]       # Literature Survey removed at the user's request (2026-11-13)
+# Written sections: text of the Review-4 presentation (user request 2026-11-14; Research Theme removed, Literature Survey removed 2026-11-13).
+WRITTEN_SECTIONS = '''<section class="reveal" id="motivation"><div class="container"><span class="s-label">Background &amp; context</span><h2 class="s-title">Motivation</h2>
+<div class="grid-2">
+<div class="card"><div class="card-h">Biased, demographically skewed data</div><p class="card-p">Healthcare AI systems are frequently developed using datasets that carry sampling bias and are demographically skewed, which restricts fairness and equitable performance across diverse patient populations.</p></div>
+<div class="card"><div class="card-h">Accuracy-only optimisation</div><p class="card-p">Conventional machine learning models primarily optimize for overall accuracy, often neglecting performance disparities affecting underrepresented and vulnerable groups.</p></div>
+</div></div></section>
+
+<section class="reveal" id="gaps"><div class="container"><span class="s-label">Unresolved challenges</span><h2 class="s-title">Research Gaps</h2>
+<div class="grid-2 two">
+<div class="card"><div class="card-h">Gap 1 &middot; Stage-isolated bias handling</div><p class="card-p">Most bias mitigation techniques operate only at a single level (data or algorithm or output), and do not analyze how bias propagates across the entire ML pipeline.</p></div>
+<div class="card"><div class="card-h">Gap 2 &middot; Lack of clinical risk awareness</div><p class="card-p">Fairness metrics optimize statistical parity but ignore that some errors have medical consequences that are clinically more harmful than others.</p></div>
+<div class="card"><div class="card-h">Gap 3 &middot; Absence of continuous fairness monitoring</div><p class="card-p">Existing studies evaluate fairness offline on retrospective datasets and lack an integrated auditing mechanism that monitors demographic performance and detects fairness drift after deployment.</p></div>
+<div class="card"><div class="card-h">Gap 4 &middot; Human&ndash;AI interaction neglect</div><p class="card-p">Algorithmic fairness research rarely considers decision-level bias arising from clinician interpretation.</p></div>
+</div></div></section>
+
+<section class="reveal" id="objectives"><div class="container"><span class="s-label">Core project goals</span><h2 class="s-title">Objectives</h2>
+<div class="glass" style="margin-top:24px"><div class="card-h">Overall problem</div><p class="card-p" style="font-size:1rem">Healthcare AI models trained on real-world clinical data often exhibit uneven predictive reliability across patient groups, resulting in unfair and unsafe clinical decision support. Existing solutions typically address these issues at isolated stages of the learning pipeline, limiting robustness for high-risk patient outcomes.</p></div>
+<div class="grid-2 two">
+<div class="card"><div class="card-h">Objective 1</div><p class="card-p">Design a healthcare AI framework incorporating equitable data collection and pre-processing techniques to reduce data-related bias and unfair clinical decision outcomes.</p></div>
+<div class="card"><div class="card-h">Objective 2</div><p class="card-p">Implement in-processing bias mitigation strategies within the learning pipeline to improve fairness in healthcare AI models.</p></div>
+<div class="card"><div class="card-h">Objective 3</div><p class="card-p">Apply post-processing bias mitigation techniques to reduce prediction disparities and improve fairness across patient demographics.</p></div>
+<div class="card"><div class="card-h">Objective 4</div><p class="card-p">Incorporate clinical risk-aware learning and privacy-preserving fairness mechanisms to minimize high-risk misclassification errors and enable local (on-device) model operation without exposing patient data.</p></div>
+</div></div></section>
+
+<section class="reveal" id="problem"><div class="container"><span class="s-label">Formal problem definition</span><h2 class="s-title">Problem Statement</h2>
+<div class="card" style="margin-top:24px;background:rgba(192,74,214,0.03);border-color:rgba(192,74,214,0.2);"><div class="card-h">Core problem</div>
+<p class="card-p" style="font-size:1.02rem;color:var(--ink);line-height:1.75;">To develop a clinically risk-aware, multi-stage bias mitigation framework that ensures fairness and consistent predictive performance across diverse patient populations, reducing unfair and unsafe clinical decision support.</p></div>
+</div></section>'''
 PRE_METHODS = sum(len(t.split(", ")) + len(m.split(", ")) for _, _, t, m, _ in BIASES)          # 53
 INPROC = [  # family, title, methods, metrics, plain-language aim, dashboard file   (inprocessing.png)
     ("demographic", "Demographic prediction dependence", "FairCare (adversarial fair representation), DANN, GroupDRO, Fair-ERM",
@@ -169,27 +194,21 @@ def latent_scatter():
             "views": {m: v[perm].round(4).tolist() for m, v in views.items()}}
 
 
-def old_sections():
-    text = (ORIGINAL_PAGE if ORIGINAL_PAGE.exists() else OLD_PAGE).read_text(encoding="utf-8")
-    out = {}
-    for sid in KEEP_SECTIONS:
-        m = re.search(r'<section[^>]*id="%s".*?</section>' % sid, text, flags=re.S)
-        if m:
-            sec = re.sub(r'^<section([^>]*?)\sclass="[^"]*"', r"<section\1", m.group(0), count=1)
-            sec = sec.replace("rgba(0,212,255,", "rgba(192,74,214,")                 # site theme
-            out[sid] = sec.replace("<section", '<section class="reveal"', 1)
-    return out
+def selection_summary(name):
+    """Per detected bias: the selected method, the next-best candidate and the best baseline with their mean ranks
+    (written by plots_comparison/make_method_comparison.py from the notebooks' saved comparison tables)."""
+    p = ROOT / name / "plots_comparison" / "method_comparison_summary.csv"
+    return pd.read_csv(p) if p.exists() else None
 
 
 def dataset_facts(name):
     raw = pd.read_csv(ROOT / name / "raw" / f"{name}_raw.csv", low_memory=False)
     preds = [c for c in raw.columns if c != "target" and not c.startswith(("meta_", "sens_"))]
     out = ROOT / name / "preprocessed"
-    log_path, why_path = out / "pipeline_log.json", out / "modern_vs_traditional.csv"
+    log_path = out / "pipeline_log.json"
     return {"rows": len(raw), "predictors": len(preds), "positive": float(raw.target.mean()),
             "missing": float(raw[preds].isna().to_numpy().mean()),
-            "log": json.loads(log_path.read_text(encoding="utf-8")) if log_path.exists() else None,   # None = notebook still running
-            "why": pd.read_csv(why_path, index_col=0) if why_path.exists() else None}
+            "log": json.loads(log_path.read_text(encoding="utf-8")) if log_path.exists() else None}   # None = notebook still running
 
 
 NUMBER = re.compile(r"-?\d+(?:\.\d+)?(?:e-?\d+)?")
@@ -224,12 +243,13 @@ def pre_rows(key, before, after):
 
 
 def pre_facts(name):
-    """Bias statistic before/after the selected modern method, why it was chosen, and the end-to-end model check."""
+    """Bias statistic before/after the selected method, why it was chosen, and the end-to-end model check."""
     out = ROOT / name / "preprocessed"
     if not (out / "bias_summary.csv").exists():
         return None
     summary = pd.read_csv(out / "bias_summary.csv", index_col=0)
-    why = pd.read_csv(out / "modern_vs_traditional.csv", index_col=0) if (out / "modern_vs_traditional.csv").exists() else None
+    sel = selection_summary(name)
+    sel = {str(r["bias"]).lower(): r for _, r in sel.iterrows()} if sel is not None else {}
     cards = []
     dashboards = {k: f for k, f, *_ in BIASES}
     for key in ("Duplicate", "Missing data", "Outlier", "Data noise", "Feature scale", "Encoding / domain", "Class imbalance", "Demographic"):
@@ -239,11 +259,13 @@ def pre_facts(name):
         r = summary.loc[key]
         card = {"bias": key, "detected": str(r["detected"]).strip().upper() == "YES", "statistic": str(r["statistic"]),
                 "rows": pre_rows(key, r["before"], r["after"]), "selected": str(r["selected method (modern)"]),
-                "traditional": str(r["best traditional (comparison only)"]), "compared": int(r["methods compared"]),
+                "baseline": str(r["best traditional (comparison only)"]), "compared": int(r["methods compared"]),
                 "dashboard": f"plots/{name}/{dash}" if (ROOT / name / "plots" / dash).exists() else ""}
-        if why is not None and key in why.index and num(why.loc[key, "modern mean rank"]) is not None:
-            card["rank"] = [num(why.loc[key, "modern mean rank"]), num(why.loc[key, "traditional mean rank"])]
-            card["won"] = str(why.loc[key, "metrics where modern is better"])
+        s = sel.get(key.lower())
+        if s is not None and num(s["next_candidate_mean_rank"]) is not None:
+            card["rank"] = [num(s["mean_rank"]), num(s["next_candidate_mean_rank"])]
+            card.update(next=str(s["next_candidate"]), k=int(s["candidates"]),
+                        base=str(s["best_baseline"]) if isinstance(s["best_baseline"], str) else "", base_rank=num(s["best_baseline_mean_rank"]))
         cards.append(card)
     e2e = []
     if (out / "end_to_end_check.csv").exists():
@@ -287,9 +309,23 @@ DASH_TEXT = {"rgba(15,23,42,": "rgba(28,23,69,", "rgba(37,99,200,": "rgba(109,63
 _HEX = re.compile(r"(?<![&\w])#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})(?![0-9a-fA-F])")       # not &#128273; emoji codes
 
 
+# Website wording (user request 2026-11-14): methods that can be applied = candidate methods, comparison-only methods =
+# baseline methods; latent methods are all 'latent method' (PCA stays the baseline); no 'Generated <date>' line.
+WORDS = [('"values":["Traditional",', '"values":["Latent method",'), ('"values":["Modern",', '"values":["Latent method",'),
+         ('"columns":["family",', '"columns":["type",'),
+         ("only <b>${esc(d.select_family)}</b> methods can be selected", "only the <b>candidate</b> methods can be selected")]
+_WORD = re.compile(r"\b(Traditional|traditional|TRADITIONAL|Modern|modern|MODERN)\b")
+_SWAP = {"Traditional": "Baseline", "traditional": "baseline", "TRADITIONAL": "BASELINE",
+         "Modern": "Candidate", "modern": "candidate", "MODERN": "CANDIDATE"}
+_GENERATED = re.compile(r',\s*\["Generated",\s*"[^"]*"\]|Generated \d{1,2}-[A-Za-z]{3}-\d{4} \u00b7 ')
+
+
 def theme_dashboard(text):
     for old, new in DASH_TEXT.items():                     # text first: the cohort list is replaced as a whole
         text = text.replace(old, new)
+    for old, new in WORDS:
+        text = text.replace(old, new)
+    text = _GENERATED.sub("", _WORD.sub(lambda m: _SWAP[m.group(0)], text))
     return _HEX.sub(lambda m: DASH_THEME.get(m.group(0).upper(), m.group(0)), text)
 
 
@@ -314,8 +350,8 @@ def copy_plots():
 
 
 def comparison_gallery():
-    """Copy <dataset>/plots_comparison/*.png (method-comparison plots + 10-record infographics, user request 2026-11-13)
-    to the site and describe them for the 'Method plots' section. Nothing is deleted."""
+    """Copy the method-comparison plots of <dataset>/plots_comparison (user request 2026-11-13) to the site and describe
+    them for the comparison section. The 10-record walkthroughs are no longer shown (user request 2026-11-14). Nothing is deleted."""
     out = {}
     for name, d in DATASETS.items():
         src = ROOT / name / "plots_comparison"
@@ -323,31 +359,26 @@ def comparison_gallery():
             continue
         dest = SITE / "plots" / name / "plots_comparison"
         dest.mkdir(parents=True, exist_ok=True)
-        for f in src.glob("*.png"):
+        for f in src.glob("0*.png"):
             shutil.copy2(f, dest / f.name)
         rel = f"plots/{name}/plots_comparison/"
-        walk = []
-        for f in sorted(src.glob("S10_*_infographic.png")):
-            h = f.with_suffix(".html")
-            m = re.search(r'<div class="sub"><span[^>]*>(.*?)</span>', h.read_text(encoding="utf-8")) if h.exists() else None
-            bias = re.sub(r"^S10_\d+_|_infographic$", "", f.stem).replace("_", " ").capitalize()
-            walk.append({"title": f"{bias} · {html.unescape(m.group(1)) if m else ''}", "src": rel + f.name})
         cmp = []
         if (src / "00_overview_applied_vs_all_methods.png").exists():
             cmp.append({"bias": "Overview", "src": rel + "00_overview_applied_vs_all_methods.png",
-                        "note": "Where the applied method sits among all methods, for every detected bias."})
+                        "note": "The selected method has the lowest mean rank of the candidate methods in every detected bias."})
         summ = src / "method_comparison_summary.csv"
         if summ.exists():
             for _, r in pd.read_csv(summ).iterrows():
                 cmp.append({"bias": r["bias"], "src": rel + r["file"],
-                            "note": f"Applied: {r['applied']} · mean rank {r['mean_rank']:.2f} · position {r['position']}"
-                                    + ("" if r["lowest_mean_rank"] == r["applied"] else f" · lowest mean rank: {r['lowest_mean_rank']}")})
-        out[d["title"]] = {"color": d["color"], "walk": walk, "cmp": cmp}
+                            "note": f"{d['title']} · {r['bias']} · selected: {r['applied']} · lowest rank total of the {r['candidates']} candidate methods "
+                                    f"({r['rank_total']:g}, mean rank {r['mean_rank']:.2f}; next candidate {r['next_candidate']} {r['next_candidate_rank_total']:g})"
+                                    + (f" · tied with {r['tie_with']}, the first in the notebook's list is applied" if isinstance(r["tie_with"], str) and r["tie_with"] else "")
+                                    + (f" · all {r['methods']} methods shown; baseline methods are run for comparison only")})
+        out[d["title"]] = {"color": d["color"], "cmp": cmp}
     return out
 
 
 def main():
-    keep = old_sections()
     facts = {n: dataset_facts(n) for n in DATASETS}
     infacts = {n: inproc_facts(n) for n in DATASETS}
     prefacts = {n: pre_facts(n) for n in DATASETS}
@@ -378,24 +409,24 @@ def main():
         b = facts[n]["log"]["biases"].get(key, {})
         if not b.get("detected"):
             return '<td><span class="pill off">not detected</span></td>'
-        return f'<td><span class="pill on">{html.escape(str(b.get("selected", "-")))}</span><small>vs {html.escape(str(b.get("best_traditional", "-")))}</small></td>'
+        return f'<td><span class="pill on">{html.escape(str(b.get("selected", "-")))}</span><small>best baseline: {html.escape(str(b.get("best_traditional", "-")))}</small></td>'
     matrix = "".join(f"<tr><td><b>{k}</b><small>{m}</small></td>" + "".join(cell(n, k) for n in DATASETS) + "</tr>"
                      for k, _, t, m, _ in BIASES)
     bias_cards = "".join(f"""
 <div class="bias-card reveal"><div class="bias-num">{i + 1:02d}</div><h3>{k} bias</h3>
-<div class="m-row"><span class="tag trad">Traditional</span><p>{t}</p></div><div class="m-row"><span class="tag mod">Modern</span><p>{m}</p></div>
+<div class="m-row"><span class="tag base">Baseline</span><p>{t}</p></div><div class="m-row"><span class="tag cand">Candidate</span><p>{m}</p></div>
 <div class="m-row"><span class="tag met">Metrics</span><p>{mt}</p></div></div>""" for i, (k, _, t, m, mt) in enumerate(BIASES))
 
     why_rows = []
     for n, d in DATASETS.items():
-        w = facts[n]["why"]
+        w = selection_summary(n)
         if w is None:
             continue
-        for bias, r in w.iterrows():
-            if pd.isna(r.get("modern mean rank")):
-                continue
-            why_rows.append(f"<tr><td>{d['title']}</td><td>{bias}</td><td><b>{html.escape(str(r['selected modern']))}</b></td><td>{r['modern mean rank']:.2f}</td>"
-                            f"<td>{html.escape(str(r['best traditional']))}</td><td>{r['traditional mean rank']:.2f}</td><td>{r['metrics where modern is better']}</td></tr>")
+        for _, r in w.iterrows():
+            tie = " (tie)" if isinstance(r["tie_with"], str) and r["tie_with"] else ""
+            why_rows.append(f"<tr><td>{d['title']}</td><td>{html.escape(str(r['bias']))}</td><td><b>{html.escape(str(r['applied']))}</b></td><td><b>{r['mean_rank']:.2f}</b></td>"
+                            f"<td>{html.escape(str(r['next_candidate']))}</td><td>{r['next_candidate_mean_rank']:.2f}{tie}</td>"
+                            f"<td>{html.escape(str(r['best_baseline']))}</td><td>{r['best_baseline_mean_rank']:.2f}</td></tr>")
     explorer_map = {"Pre-processing": {}, "Latent space": {}, "In-processing": {}}
     known = {f for _, f, *_ in BIASES} | {"index.html"}
     for n, d in DATASETS.items():
@@ -416,7 +447,7 @@ def main():
     # ---------------------------------------------------------------- in-processing section
     in_cards = "".join(f"""
 <div class="bias-card in-card reveal"><div class="bias-num">{i + 1:02d}</div><h3>{t}</h3><p class="aim">{aim}</p>
-<div class="m-row"><span class="tag mod">Methods</span><p>{m}</p></div><div class="m-row"><span class="tag met">Metrics</span><p>{mt}</p></div></div>"""
+<div class="m-row"><span class="tag cand">Methods</span><p>{m}</p></div><div class="m-row"><span class="tag met">Metrics</span><p>{mt}</p></div></div>"""
                        for i, (_, t, m, mt, aim, _) in enumerate(INPROC))
 
     def in_cell(n, key):
@@ -461,11 +492,11 @@ def main():
         f'<mpath href="#flowPath"/></animateMotion><animate attributeName="fill" values="#e8457c;#e8457c;#0e8f80;#0e8f80;#6d3fd9;#6d3fd9" '
         f'keyTimes="0;0.18;0.36;0.55;0.75;1" dur="8s" begin="-{i * 0.57:.2f}s" repeatCount="indefinite"/></circle>' for i in range(14))
     if not why_rows:
-        why_rows = ['<tr><td colspan="7"><span class="pill run">notebooks running&hellip;</span> the comparison appears when each dataset finishes</td></tr>']
+        why_rows = ['<tr><td colspan="8"><span class="pill run">notebooks running&hellip;</span> the comparison appears when each dataset finishes</td></tr>']
     page = TEMPLATE
     for key, value in {"__TOTAL__": f"{total_rows:,}", "__DS_CARDS__": ds_cards, "__MATRIX__": matrix, "__BIAS_CARDS__": bias_cards,
                        "__WHY__": "".join(why_rows), "__EXPLORER__": json.dumps(explorer_map), "__LATENT__": latent_html,
-                       "__KEEP__": "".join(keep.get(s, "") for s in KEEP_SECTIONS), "__TOTAL_RAW__": str(total_rows),
+                       "__KEEP__": WRITTEN_SECTIONS, "__TOTAL_RAW__": str(total_rows),
                        "__STREAM_DOTS__": stream_dots, "__IN_CARDS__": in_cards, "__IN_MATRIX__": in_matrix,
                        "__CMP_JSON__": json.dumps(comparison_gallery(), allow_nan=False).replace("</", "<\\/"),
                        "__IN_JSON__": json.dumps(in_json, allow_nan=False).replace("</", "<\\/"),
@@ -499,11 +530,11 @@ a{color:#2f5fd8}h1,h2,h3,h4{font-family:Outfit,Inter,sans-serif;margin:.2em 0 .5
 .container{max-width:1240px;margin:0 auto;padding:0 22px}
 nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(16px)}
 nav:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--grad)}
-nav .container{display:flex;align-items:center;justify-content:space-between;height:62px}
+nav .container{display:flex;align-items:center;justify-content:center;height:62px}
 .logo{font-family:Outfit;font-weight:800;font-size:1.18rem;background:var(--grad-text);-webkit-background-clip:text;color:transparent}
 .nav-links{display:flex;gap:4px;flex-wrap:wrap}.nav-links a{color:var(--ink2);text-decoration:none;font-size:.82rem;font-weight:600;padding:6px 11px;border-radius:999px;transition:.25s}
 .nav-links a:hover,.nav-links a.active{color:#fff;background:var(--grad-btn);box-shadow:0 6px 16px rgba(168,59,224,.25)}
-@media(max-width:980px){.nav-links{display:none}}
+@media(max-width:980px){nav .container{justify-content:flex-start}.nav-links{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%}}
 #hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:62px;background:#fff}
 #hero:before,#hero:after{content:"";position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(90px);opacity:.30;animation:float 16s ease-in-out infinite}
 #hero:before{background:#ffc21a;top:30%;left:38%;animation-delay:-4s}#hero:after{background:#2ed3a5;bottom:-180px;left:-120px;animation-delay:-10s}
@@ -530,8 +561,8 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .btn.p{background:var(--grad-btn);color:#fff;box-shadow:0 12px 28px rgba(168,59,224,.32)}
 .btn.s{border:2px solid var(--line);color:var(--ink);background:#fff}.btn.s:hover{border-color:var(--violet);color:var(--violet)}.btn:hover{transform:translateY(-3px)}
 section{padding:96px 0;position:relative;background:transparent}section:nth-of-type(even){background:rgba(247,245,255,.75)}
-#motivation{--sec:var(--pink)}#themes{--sec:var(--amber)}#gaps{--sec:var(--teal)}#objectives{--sec:var(--blue)}#problem{--sec:var(--orchid)}
-#datasets{--sec:var(--blue)}#pipeline{--sec:var(--violet)}#preprocessing{--sec:var(--pink)}#why-modern{--sec:var(--amber)}
+#motivation{--sec:var(--pink)}#gaps{--sec:var(--teal)}#objectives{--sec:var(--blue)}#problem{--sec:var(--orchid)}
+#datasets{--sec:var(--blue)}#pipeline{--sec:var(--violet)}#preprocessing{--sec:var(--pink)}#why-selected{--sec:var(--amber)}
 #latent{--sec:var(--orchid)}#inprocessing{--sec:var(--teal)}#explorer{--sec:var(--blue)}
 .s-label{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;padding:5px 12px;border-radius:999px;
  background:color-mix(in srgb,var(--sec) 13%,#fff);color:color-mix(in srgb,var(--sec) 72%,#000)}
@@ -578,16 +609,13 @@ td small{display:block;color:var(--ink2);font-size:.72rem;margin-top:3px}tr.sel 
 .bias-num{position:absolute;right:16px;top:12px;font-family:Outfit;font-size:2rem;font-weight:800;opacity:.35;color:var(--sec)}
 .m-row{display:flex;gap:10px;align-items:flex-start;margin:8px 0}.m-row p{margin:0;font-size:.84rem;color:var(--ink2)}
 .tag{flex:none;font-size:.66rem;font-weight:800;padding:3px 8px;border-radius:7px;text-transform:uppercase;letter-spacing:.06em}
-.tag.trad{background:#eef0ff;color:#3b46b5}.tag.mod{background:var(--grad-btn);color:#fff}.tag.met{background:#e0f7f3;color:#076b5e}
+.tag.base{background:#eef0ff;color:#3b46b5}.tag.cand{background:var(--grad-btn);color:#fff}.tag.met{background:#e0f7f3;color:#076b5e}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 12px}.tab{padding:9px 17px;border-radius:999px;border:2px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;font-weight:700;font-size:.85rem;transition:.2s}
 .tab.on{background:var(--grad-btn);border-color:transparent;color:#fff;box-shadow:0 8px 20px rgba(168,59,224,.28)}.tab:hover{transform:translateY(-2px);border-color:#c9b8ff}
 .biasbtns{display:flex;gap:8px;flex-wrap:wrap}.bb{padding:7px 12px;border-radius:999px;border:2px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer;font-size:.8rem;font-weight:600}
 .bb.on{color:#1f4fc0;border-color:var(--blue);background:#eaf2ff}
 .frame{margin-top:16px;border-radius:20px;overflow:hidden;border:3px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--grad) border-box;height:820px;box-shadow:0 30px 60px rgba(28,23,69,.12)}
-.walk{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.walk-card{display:block;text-decoration:none;color:var(--ink);background:#fff;border-radius:18px;overflow:hidden;border:2px solid var(--line);box-shadow:0 14px 34px rgba(28,23,69,.08);transition:.25s}
-.walk-card:hover{transform:translateY(-4px);border-color:var(--accent)}.walk-card img{width:100%;display:block;border-bottom:3px solid var(--accent)}
-.walk-card span{display:block;padding:10px 14px;font-weight:700;font-size:.9rem}
+.grid-2.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr))}
 .cmp-h{margin:26px 0 10px;font-size:1.1rem}.cmp-note{color:var(--ink2);font-size:.88rem;margin:12px 0 0}
 .cmp-img{margin-top:12px;border-radius:20px;overflow:hidden;border:3px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--grad) border-box;box-shadow:0 30px 60px rgba(28,23,69,.12)}
 .cmp-img img{width:100%;display:block}
@@ -648,17 +676,17 @@ td small{display:block;color:var(--ink2);font-size:.72rem;margin-top:3px}tr.sel 
 footer{padding:46px 0;color:#fff;font-size:.88rem;text-align:center;background:var(--grad-btn);font-weight:600}
 .wizard,.wiz-steps{display:none}
 </style></head><body>
-<nav><div class="container"><div class="logo">Group 18 &middot; Bias Mitigation</div><div class="nav-links">
+<nav><div class="container"><div class="nav-links">
 <a href="#hero">Home</a><a href="#motivation">Motivation</a><a href="#objectives">Objectives</a><a href="#datasets">Datasets</a>
-<a href="#pipeline">Pipeline</a><a href="#preprocessing">Pre-processing</a><a href="#why-modern">Modern vs traditional</a><a href="#latent">Latent</a><a href="#inprocessing">In-processing</a><a href="#explorer">Plots</a></div></div></nav>
+<a href="#pipeline">Pipeline</a><a href="#preprocessing">Pre-processing</a><a href="#why-selected">Method selection</a><a href="#latent">Latent</a><a href="#inprocessing">In-processing</a><a href="#explorer">Plots</a></div></div></nav>
 
 <section id="hero"><canvas id="net"></canvas><div class="hero-glow g1"></div><div class="hero-glow g2"></div>
-<div class="container hero-inner"><span class="badge"><i></i>Type 1 Research Project &mdash; Group 18</span>
+<div class="container hero-inner">
 <h1 class="hero-title">Healthcare Bias Mitigation:<br><span class="grad">a multi-method approach across diverse clinical applications</span></h1>
 <svg class="ecg" viewBox="0 0 760 70"><defs><linearGradient id="ecgGrad"><stop offset="0" stop-color="#e8457c"/><stop offset=".35" stop-color="#e09400"/><stop offset=".65" stop-color="#0e8f80"/><stop offset="1" stop-color="#3d8bfd"/></linearGradient></defs>
 <path d="M0 40 H120 L135 40 L145 18 L155 62 L165 6 L178 40 H300 L315 40 L325 18 L335 62 L345 6 L358 40 H480 L495 40 L505 18 L515 62 L525 6 L538 40 H760"/></svg>
-<p class="hero-sub">Three stages against bias: <b>pre-processing</b> repairs the data of four disease cohorts (eight biases, every traditional and
-modern method benchmarked, the best modern one applied), the <b>latent stage</b> maps the four diseases and a cross-hospital ICU cohort into one shared
+<p class="hero-sub">Three stages against bias: <b>pre-processing</b> repairs the data of four disease cohorts (eight biases, every
+method benchmarked on every metric, the best-ranked candidate method applied), the <b>latent stage</b> maps the four diseases and a cross-hospital ICU cohort into one shared
 feature space, and <b>in-processing</b> trains the model itself to be fair, calibrated and robust in hospitals it has never seen.</p>
 <div class="stats"><div class="stat"><b class="count" data-to="5">0</b><span>cohorts (4 diseases + cross-hospital ICU)</span></div><div class="stat"><b class="count" data-to="__TOTAL_RAW__">0</b><span>records analysed</span></div>
 <div class="stat"><b class="count" data-to="12">0</b><span>bias types (8 data + 4 model)</span></div><div class="stat"><b class="count" data-to="__ALL_N__">0</b><span>methods compared</span></div></div>
@@ -673,7 +701,7 @@ __KEEP__
 <section id="pipeline" class="reveal"><div class="container"><span class="s-label">End-to-end workflow</span><h2 class="s-title">Bias-aware pipeline</h2>
 <p class="s-desc">Every step is fitted on training rows; methods are scored on training and validation rows; the test split is only used for the final check.</p>
 <div class="stages">
-<div class="stage reveal"><div class="num">1</div><h3>Pre-processing</h3><p>Repair the <b>data</b> of each disease.</p><ul><li>8 data biases, __PRE_N__ methods</li><li>best <b>modern</b> method applied, traditional kept as comparison</li><li>one dashboard per bias</li></ul><div class="run"></div></div>
+<div class="stage reveal"><div class="num">1</div><h3>Pre-processing</h3><p>Repair the <b>data</b> of each disease.</p><ul><li>8 data biases, __PRE_N__ methods</li><li>best-ranked <b>candidate</b> method applied, baselines kept as comparison</li><li>one dashboard per bias</li></ul><div class="run"></div></div>
 <div class="stage reveal"><div class="num">2</div><h3>Latent space</h3><p>Put all cohorts into <b>one shared 16-D feature space</b>.</p><ul><li>DGCCA, SAINT, MV-DAE vs PCA</li><li>chosen by CKA, Macro-F1, Silhouette, NMI/ARI</li><li>4 diseases + cross-hospital ICU cohort</li></ul><div class="run"></div></div>
 <div class="stage reveal"><div class="num">3</div><h3>In-processing</h3><p>Train the <b>model</b> to be fair, calibrated and robust.</p><ul><li>4 model biases, __IN_N__ methods, ERM = before</li><li>best mean rank over each bias's 4 metrics</li><li>final check on unseen hospitals + MIMIC</li></ul><div class="run"></div></div>
 </div>
@@ -688,25 +716,23 @@ __STREAM_DOTS__
 <text x="20" y="112">raw records (missing, skewed, imbalanced, duplicated)</text><text x="500" y="112" text-anchor="middle">common latent space</text><text x="980" y="112" text-anchor="end">fair, calibrated prediction</text></svg>
 <div class="legend-row"><span><i style="background:#e8457c"></i>record still carrying a data bias</span><span><i style="background:#0e8f80"></i>repaired by pre-processing</span><span><i style="background:#6d3fd9"></i>prediction from the in-processing model</span></div></div></section>
 
-<section id="preprocessing"><div class="container"><span class="s-label reveal">Pre-processing</span><h2 class="s-title reveal">Eight biases &middot; traditional vs modern methods</h2>
-<p class="s-desc reveal">All listed methods run on every detected bias; ranks are averaged over the metrics; the best-ranked <b>modern</b> method is applied and the best traditional method is kept as the comparison.</p>
+<section id="preprocessing"><div class="container"><span class="s-label reveal">Pre-processing</span><h2 class="s-title reveal">Eight biases &middot; candidate and baseline methods</h2>
+<p class="s-desc reveal">All listed methods run on every detected bias and are ranked on every metric; the <b>candidate</b> method with the lowest mean rank is applied and the <b>baseline</b> methods are kept as the comparison.</p>
 <div class="grid-4">__BIAS_CARDS__</div>
-<div class="glass reveal" style="margin-top:28px"><h3>What was applied to each dataset</h3><p class="s-desc">Green = selected modern method (below: best traditional method it was compared with).</p>
+<div class="glass reveal" style="margin-top:28px"><h3>What was applied to each dataset</h3><p class="s-desc">Green = selected method (below: the best baseline method it was compared with).</p>
 <div class="table-wrap"><table><thead><tr><th>Bias</th><th>Heart</th><th>Diabetes</th><th>Hypertension</th><th>Respiratory</th></tr></thead><tbody>__MATRIX__</tbody></table></div></div>
-<div class="glass reveal" style="margin-top:28px"><h3>Before (raw data) &rarr; after (selected modern method)</h3>
-<p class="s-desc">Each detected bias, measured before its step and after the selected modern method; every bias statistic is better when lower. Under the bars: why that modern method was chosen. The last card trains the same model on the raw and on the fully pre-processed data and checks it on the untouched test split.</p>
-<div class="tabs" id="preTabs"></div><div class="ba-key"><span><i style="border:1.5px solid #8c9eff;background:repeating-linear-gradient(135deg,rgba(91,124,250,.30) 0 3px,transparent 3px 6px)"></i>before (raw data)</span><span><i id="preKey" style="background:#e8457c"></i>after (selected modern method), in the dataset's colour</span><span>&darr; lower is better &middot; &uarr; higher is better</span></div>
+<div class="glass reveal" style="margin-top:28px"><h3>Before (raw data) &rarr; after (selected method)</h3>
+<p class="s-desc">Each detected bias, measured before its step and after the selected method; every bias statistic is better when lower. Under the bars: why that method was chosen. The last card trains the same model on the raw and on the fully pre-processed data and checks it on the untouched test split.</p>
+<div class="tabs" id="preTabs"></div><div class="ba-key"><span><i style="border:1.5px solid #8c9eff;background:repeating-linear-gradient(135deg,rgba(91,124,250,.30) 0 3px,transparent 3px 6px)"></i>before (raw data)</span><span><i id="preKey" style="background:#e8457c"></i>after (selected method), in the dataset's colour</span><span>&darr; lower is better &middot; &uarr; higher is better</span></div>
 <div class="ba" id="prePanels"></div></div></div></section>
 
-<section id="why-modern" class="reveal"><div class="container"><span class="s-label">Evidence</span><h2 class="s-title">Why the modern method was selected</h2>
-<p class="s-desc">Mean rank over the bias metrics (lower = better) for the selected modern method and the best traditional method, and the number of metrics on which the modern method is better.</p>
-<div class="table-wrap"><table><thead><tr><th>Dataset</th><th>Bias</th><th>Selected modern</th><th>Mean rank</th><th>Best traditional</th><th>Mean rank</th><th>Metrics won by modern</th></tr></thead><tbody>__WHY__</tbody></table></div>
-<p class="s-desc" style="margin-top:14px"><a href="#comparison" style="font-weight:700;color:var(--blue)">See every method compared on every metric, and 10 records walked through the applied method &darr;</a></p></div></section>
+<section id="why-selected" class="reveal"><div class="container"><span class="s-label">Evidence</span><h2 class="s-title">Why each method was selected</h2>
+<p class="s-desc">Mean rank over the bias metrics (lower = better). The selected method has the lowest mean rank of the candidate methods; the next-best candidate and the best baseline method (run for comparison only) are shown with theirs.</p>
+<div class="table-wrap"><table><thead><tr><th>Dataset</th><th>Bias</th><th>Selected method</th><th>Mean rank</th><th>Next-best candidate</th><th>Mean rank</th><th>Best baseline (comparison only)</th><th>Mean rank</th></tr></thead><tbody>__WHY__</tbody></table></div></div></section>
 
-<section id="comparison" class="reveal"><div class="container"><span class="s-label">Method comparison plots</span><h2 class="s-title">Every method compared, and 10 records through the applied method</h2>
-<p class="s-desc">Walkthroughs follow 10 traced records of a dataset through one applied method: detect, apply, corrected data, an independent validation check and accept / flag. The comparison plots show every method that was run for a bias on every metric (blue = applied method, &#9733; = best value), with the mean rank, the rank on each metric, head-to-head wins and why the method was chosen. Click an image to open it full size.</p>
+<section id="comparison" class="reveal"><div class="container"><span class="s-label">Method comparison plots</span><h2 class="s-title">Every method compared on every metric</h2>
+<p class="s-desc">For each detected bias, every method that was run (candidate methods on top, baseline methods below the dashed line): A the rank total used for the selection, B the rank on each metric, C the raw value of every metric (blue = selected method, &#9733; = best value of that metric), and why the method was chosen. Click an image to open it full size.</p>
 <div class="tabs" id="cmpTabs"></div>
-<h3 class="cmp-h">10-record walkthroughs</h3><div class="walk" id="cmpWalk"></div>
 <h3 class="cmp-h">All methods per bias</h3><div class="biasbtns" id="cmpBias"></div><p class="cmp-note" id="cmpNote"></p>
 <div class="cmp-img"><a id="cmpOpen" target="_blank"><img id="cmpImg" alt="method comparison plot" loading="lazy"></a></div></div></section>
 
@@ -743,7 +769,6 @@ __STREAM_DOTS__
 
 
 
-<footer><div class="container">Group 18 &middot; Healthcare Bias Mitigation &middot; pre-processing, latent and in-processing results generated from the project notebooks in D:/complete</div></footer>
 <script>
 // animated particle network in the hero
 (function(){const c=document.getElementById('net'),x=c.getContext('2d');let w,h,p=[];function rs(){w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;
@@ -773,13 +798,11 @@ if(src){fr.removeAttribute('srcdoc');fr.src=src;op.href=src;op.style.visibility=
 else{fr.removeAttribute('src');op.style.visibility='hidden';fr.srcdoc="<body style='margin:0;font-family:Inter,sans-serif;background:#f7f5ff;color:#575375;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center'>"
 +"<div><div style='font-size:42px'>&#9203;</div><h3 style='color:#1c1745'>"+st+" for "+ds+" is still running</h3><p>This dashboard appears here as soon as that run finishes.</p></div></body>"}}
 render();
-// method comparison plots + 10-record walkthroughs: dataset -> images
+// method comparison plots: dataset -> bias -> image
 (function(){const C=__CMP_JSON__;const keys=Object.keys(C);if(!keys.length){document.getElementById('comparison').style.display='none';return}
-const tb=document.getElementById('cmpTabs'),wk=document.getElementById('cmpWalk'),cb=document.getElementById('cmpBias'),img=document.getElementById('cmpImg'),op=document.getElementById('cmpOpen'),nt=document.getElementById('cmpNote');
+const tb=document.getElementById('cmpTabs'),cb=document.getElementById('cmpBias'),img=document.getElementById('cmpImg'),op=document.getElementById('cmpOpen'),nt=document.getElementById('cmpNote');
 let d=keys[0],b=0;
 function draw(){tb.innerHTML='';keys.forEach(k=>tb.appendChild(mk('tab',k,k===d,()=>{d=k;b=0;draw()})));const x=C[d];
-wk.innerHTML='';x.walk.forEach(w=>{const a=document.createElement('a');a.className='walk-card';a.href=w.src;a.target='_blank';a.style.setProperty('--accent',x.color);
-const im=document.createElement('img');im.src=w.src;im.alt=w.title;im.loading='lazy';const s=document.createElement('span');s.textContent=w.title;a.append(im,s);wk.appendChild(a)});
 cb.innerHTML='';x.cmp.forEach((c,i)=>cb.appendChild(mk('bb',c.bias,i===b,()=>{b=i;draw()})));const c=x.cmp[b];
 if(c){img.src=c.src;img.alt=d+' · '+c.bias;op.href=c.src;nt.textContent=c.note}}
 draw()})();
@@ -835,7 +858,7 @@ function render(){tabsEl.innerHTML='';names.forEach(n=>tabsEl.appendChild(mk('ta
    +(f.dashboard?` &middot; <a href="${f.dashboard}" target="_blank" rel="noopener">dashboard &#8599;</a>`:'')+`</p>${f.metrics.concat(extra).map(m=>row(m,f.selected)).join('')}</div>`}).join('');
  const grow=()=>panels.querySelectorAll('.ba-bar i').forEach(i=>i.style.width=Math.max(.8,+i.dataset.w)+'%');requestAnimationFrame(()=>requestAnimationFrame(grow))}
 render()})();
-// pre-processing: each bias statistic before (raw data) -> after (selected modern method); bars grow when shown
+// pre-processing: each bias statistic before (raw data) -> after (selected method); bars grow when shown
 (function(){const P=__PRE_JSON__,tabsEl=document.getElementById('preTabs'),panels=document.getElementById('prePanels');if(!tabsEl)return;
 const names=Object.keys(P);let cur=names.find(n=>P[n])||names[0];
 const fmt=v=>v===null||v===undefined?'n/a':Number.isInteger(v)?String(v):(Math.abs(v)>=100?v.toFixed(1):Math.abs(v)>=1?v.toFixed(3):v.toFixed(4));
@@ -846,9 +869,10 @@ function row(m,a,b,w){const mx=Math.max(Math.abs(m.erm||0),Math.abs(m.sel||0))||
  return `<div class="ba-row"><div class="nm">${m.name} ${m.dir==='max'?'\u2191':'\u2193'}${v}<small>${m.note||''}</small></div><div class="ba-bars">
  <div class="ba-bar erm" title="${a}: ${fmt(m.erm)}"><div class="trk"><i data-w="${100*Math.abs(m.erm||0)/mx}"></i></div><span>${fmt(m.erm)}</span></div>
  <div class="ba-bar sel" title="${b}: ${fmt(m.sel)}"><div class="trk"><i data-w="${100*Math.abs(m.sel||0)/mx}"></i></div><span>${fmt(m.sel)}</span></div></div></div>`}
-function why(c){if(!c.rank)return '';const mo=c.rank[0],tr=c.rank[1],cls=mo<tr-1e-9?'up':mo>tr+1e-9?'amb':'eq';
- const txt=cls==='up'?'modern ranks ahead':cls==='eq'?'tied on mean rank':'traditional ranked better';
- return `<p class="why-line"><span class="verdict ${cls}">${txt}</span> mean rank ${mo.toFixed(2)} vs ${tr.toFixed(2)} for <b>${c.traditional}</b> (best traditional, lower = better) &middot; modern better on ${c.won} metrics</p>`}
+function why(c){if(!c.rank)return '';const s=c.rank[0],nx=c.rank[1],cls=s<nx-1e-9?'up':'eq';
+ const txt=cls==='up'?'best of the '+c.k+' candidate methods':'tied with the next candidate (first in the list applied)';
+ return `<p class="why-line"><span class="verdict ${cls}">${txt}</span> mean rank ${s.toFixed(2)} vs ${nx.toFixed(2)} for <b>${c.next}</b> (next candidate, lower = better)`
+  +(c.base&&c.base_rank!==null?` &middot; best baseline (comparison only): ${c.base} ${c.base_rank.toFixed(2)}`:'')+'</p>'}
 function render(){tabsEl.innerHTML='';names.forEach(n=>tabsEl.appendChild(mk('tab',n,n===cur,()=>{cur=n;render()})));const D=P[cur];
  document.getElementById('preKey').style.background=D?D.color:'#6d3fd9';
  if(!D){panels.innerHTML='<div class="ba-card"><span class="pill run">still running&hellip;</span> The pre-processing results for '+cur+' appear here when its notebook finishes.</div>';return}
