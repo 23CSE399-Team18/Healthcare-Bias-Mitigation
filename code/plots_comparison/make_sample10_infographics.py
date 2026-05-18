@@ -1,5 +1,5 @@
 """Sample-10 infographics: the applied method of 8 biases (2 per dataset) shown on the project's 10 traced records,
-in the layout of the 'Missing Value Imputation and Validation Framework' reference image:
+in the layout of the 'Missing Value Imputation and Validation' reference image:
   1 detect -> 2 apply method -> 3 corrected data -> 4 independent validation -> 5 accept or flag.
 
 Inputs (nothing is re-run): <d>/preprocessed/sample10_trace.json (the 10 records before/after every stage),
@@ -356,7 +356,7 @@ def heart_missing():
     acc = [f"{sid(r)} · {len(miss[r])} imputed · pct {res[r][1]:.0f}" for r in imputed if res[r][2]]
     flg = [f"{sid(r)} · {len(miss[r])} imputed · pct {res[r][1]:.1f}" for r in imputed if not res[r][2]]
     return dict(
-        ds=d, nn="01", key="missing_data", title="Missing Value Imputation and Validation Framework",
+        ds=d, nn="01", key="missing_data", title="Missing Value Imputation and Validation",
         method_line="HyperImpute Imputation", valid_line="GMM Validation (using ALL columns)",
         steps=[("Detect Missing Values", f"{float(br['before']):.2%} of predictor cells missing; {len(imputed)} of the 10 records have gaps.", "detect"),
                ("HyperImpute Imputation", "Per-column learners (chosen automatically) predict each gap from the other columns.", "model"),
@@ -444,7 +444,7 @@ def heart_scale():
     flg = [f"{sid(r)} · max |z| {zmax[r]:.2f}" for r in recs if zmax[r] > 3]
     ex = max(recs, key=lambda r: s["before"][r]["bmi"])
     return dict(
-        ds=d, nn="02", key="feature_scale", title="Feature-Scale Correction and Validation Framework",
+        ds=d, nn="02", key="feature_scale", title="Feature-Scale Correction and Validation",
         method_line="Yeo-Johnson Power Transform", valid_line="Distribution-Shape Validation (all scaled columns)",
         steps=[("Detect Scale Bias", f"SD ratio {br['before'].split(';')[0]} across predictors and max |skew| {br['before'].split(';')[1].strip()}.", "detect"),
                ("Yeo-Johnson Transform", "A power λ is fitted per column on the training split, then the column is standardised.", "model"),
@@ -545,7 +545,7 @@ def diabetes_imbalance():
     acc = [f"syn of {sid(p.meta_record_id)} · pct {pct_of(p.ll, ll_ref):.0f}" for _, p in P.iterrows() if p.ok]
     flg = [f"syn of {sid(p.meta_record_id)} · pct {pct_of(p.ll, ll_ref):.1f}" for _, p in P.iterrows() if not p.ok]
     return dict(
-        ds=d, nn="03", key="class_imbalance", title="Class-Imbalance Correction and Validation Framework",
+        ds=d, nn="03", key="class_imbalance", title="Class-Imbalance Correction and Validation",
         method_line="TabDDPM Synthetic Cases", valid_line="GMM Validation of Synthetic Records (all columns)",
         steps=[("Detect Class Imbalance", f"Imbalance ratio {float(br['before']):.2f} : 1 (non-cases : cases); 4 of the 10 records are cases.", "detect"),
                ("TabDDPM Generation", "A diffusion model learns the real cases and samples new case records.", "model"),
@@ -638,7 +638,7 @@ def diabetes_demographic():
     flg = [f"{sid(r)} · P(sex) {prob[r][1]:.2f}" for r in recs if prob[r][1] > 0.65]
     br = bias_row(d, "Demographic")
     return dict(
-        ds=d, nn="04", key="demographic", title="Demographic-Bias Mitigation and Validation Framework",
+        ds=d, nn="04", key="demographic", title="Demographic-Bias Mitigation and Validation",
         method_line="Adversarial Debiasing (fair representation)", valid_line="Adversary Validation (all 32 dimensions)",
         steps=[("Detect Demographic Bias", "Group gaps: min disparate impact {} ; max EOD {}.".format(*[x.strip() for x in str(br['before']).split(';')]), "detect"),
                ("Adversarial Debiasing", "An encoder predicts diabetes while an adversary tries to recover sex / race; the encoder is trained to fool it.", "model"),
@@ -729,7 +729,7 @@ def hypertension_noise():
     flg = [f"{sid(r)} · recorded non-case · P {pr[r]:.2f}" for r in removed]
     rb, ra = int(s["rows_before"]), int(s["rows_after"])
     return dict(
-        ds=d, nn="05", key="data_noise", title="Label-Noise Detection and Validation Framework",
+        ds=d, nn="05", key="data_noise", title="Label-Noise Detection and Validation",
         method_line="Confident Learning (Cleanlab)", valid_line="Out-of-Fold Label Validation (all columns)",
         steps=[("Detect Label Noise", f"Confident Learning flags {float(br['before']):.2%} of recorded labels as likely wrong.", "detect"),
                ("Confident Learning", "Out-of-fold probabilities + per-group confident thresholds find recorded non-cases that look like cases.", "model"),
@@ -827,7 +827,7 @@ def hypertension_domain():
     flg = [f"{sid(r)} · P(own) {own[r][1]:.2f}" for r in here if own[r][1] > chance + 0.15]
     br = bias_row(d, "Encoding / domain")
     return dict(
-        ds=d, nn="06", key="encoding_domain", title="Domain-Shift Correction and Validation Framework",
+        ds=d, nn="06", key="encoding_domain", title="Domain-Shift Correction and Validation",
         method_line="Domain-Generalisation Transformer", valid_line="Domain-Classifier Validation (all 32 dimensions)",
         steps=[("Detect Domain Bias", f"US region is predictable from the features (domain-classifier AUC; AUROC drop: {br['before']}).", "detect"),
                ("DG Transformer", "Feature tokens + [CLS] transformer trained to predict hypertension equally well in every region.", "model"),
@@ -954,7 +954,7 @@ def respiratory_missing():
     nochk = [r for r in recs if res[r] is None]
     br = bias_row(d, "Missing data")
     return dict(
-        ds=d, nn="07", key="missing_data", title="Missing Value Imputation and Validation Framework",
+        ds=d, nn="07", key="missing_data", title="Missing Value Imputation and Validation",
         method_line="MIP-VAE Imputation", valid_line="GMM Validation (using ALL continuous columns)",
         steps=[("Detect Missing Values", f"{float(br['before']):.2%} of predictor cells missing (labs, blood gases, urine output).", "detect"),
                ("MIP-VAE Imputation", "A variational autoencoder trained on the observed cells reconstructs the missing ones.", "model"),
@@ -1044,7 +1044,7 @@ def respiratory_outlier():
     br = bias_row(d, "Outlier")
     rb, ra = int(s["rows_before"]), int(s["rows_after"])
     return dict(
-        ds=d, nn="08", key="outlier", title="Outlier Detection and Validation Framework",
+        ds=d, nn="08", key="outlier", title="Outlier Detection and Validation",
         method_line="ECOD Outlier Detection", valid_line="ECOD Re-check on the Completed Data (all columns)",
         steps=[("Detect Outliers", f"{float(br['before']):.2%} of rows lie beyond the skew-adjusted extreme fences.", "detect"),
                ("ECOD Scoring", "Empirical-CDF tail probabilities of every column are combined into one outlier score.", "model"),
