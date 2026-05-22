@@ -1,0 +1,46 @@
+{
+  "method": "FairERM_softEO",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 80606,
+      "training_objective": 0.6880787829280511,
+      "validation_log_loss": 0.6734949311874818
+    },
+    {
+      "epoch": 2,
+      "training_rows": 80606,
+      "training_objective": 0.6731572486823467,
+      "validation_log_loss": 0.6599343673537018
+    },
+    {
+      "epoch": 3,
+      "training_rows": 80606,
+      "training_objective": 0.6676806536388821,
+      "validation_log_loss": 0.6563548575297335
+    },
+    {
+      "epoch": 4,
+      "training_rows": 80606,
+      "training_objective": 0.6644018679606578,
+      "validation_log_loss": 0.6533514724327764
+    },
+    {
+      "epoch": 5,
+      "training_rows": 80606,
+      "training_objective": 0.6615321329443744,
+      "validation_log_loss": 0.6500913474266241
+    },
+    {
+      "epoch": 6,
+      "training_rows": 80606,
+      "training_objective": 0.6597589334994839,
+      "validation_log_loss": 0.6485078612549217
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 80606,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
