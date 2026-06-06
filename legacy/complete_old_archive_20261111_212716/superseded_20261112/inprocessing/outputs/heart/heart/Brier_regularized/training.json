@@ -1,0 +1,46 @@
+{
+  "method": "Brier_regularized",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 308077,
+      "training_objective": 0.4704724260145729,
+      "validation_log_loss": 0.2597151423043308
+    },
+    {
+      "epoch": 2,
+      "training_rows": 308077,
+      "training_objective": 0.3302830225331862,
+      "validation_log_loss": 0.2529300995826953
+    },
+    {
+      "epoch": 3,
+      "training_rows": 308077,
+      "training_objective": 0.3251868463203112,
+      "validation_log_loss": 0.2506068021322798
+    },
+    {
+      "epoch": 4,
+      "training_rows": 308077,
+      "training_objective": 0.32307930159780524,
+      "validation_log_loss": 0.24936997535343602
+    },
+    {
+      "epoch": 5,
+      "training_rows": 308077,
+      "training_objective": 0.32196182912962934,
+      "validation_log_loss": 0.24873484495078424
+    },
+    {
+      "epoch": 6,
+      "training_rows": 308077,
+      "training_objective": 0.32136058784291693,
+      "validation_log_loss": 0.24846661390650945
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 308077,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
