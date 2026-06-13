@@ -1,0 +1,46 @@
+{
+  "method": "Fishr_last_layer",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 308077,
+      "training_objective": 0.3789243441890008,
+      "validation_log_loss": 0.26079728835015376
+    },
+    {
+      "epoch": 2,
+      "training_rows": 308077,
+      "training_objective": 0.26607587023171525,
+      "validation_log_loss": 0.2518156275335495
+    },
+    {
+      "epoch": 3,
+      "training_rows": 308077,
+      "training_objective": 0.255971264752032,
+      "validation_log_loss": 0.24951412807968984
+    },
+    {
+      "epoch": 4,
+      "training_rows": 308077,
+      "training_objective": 0.25315631477409867,
+      "validation_log_loss": 0.24888823875869245
+    },
+    {
+      "epoch": 5,
+      "training_rows": 308077,
+      "training_objective": 0.2520348032533552,
+      "validation_log_loss": 0.24841048621254927
+    },
+    {
+      "epoch": 6,
+      "training_rows": 308077,
+      "training_objective": 0.25142026881282165,
+      "validation_log_loss": 0.24831437931482747
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 308077,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
