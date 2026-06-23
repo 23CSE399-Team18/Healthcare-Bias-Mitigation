@@ -1,0 +1,46 @@
+{
+  "method": "Constrained_softEO",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 20629,
+      "training_objective": 0.6936458449026462,
+      "validation_log_loss": 0.6773517971384334
+    },
+    {
+      "epoch": 2,
+      "training_rows": 20629,
+      "training_objective": 0.6627583759431664,
+      "validation_log_loss": 0.642732091600574
+    },
+    {
+      "epoch": 3,
+      "training_rows": 20629,
+      "training_objective": 0.6217748537234187,
+      "validation_log_loss": 0.594281616090502
+    },
+    {
+      "epoch": 4,
+      "training_rows": 20629,
+      "training_objective": 0.5694954838233355,
+      "validation_log_loss": 0.5418844428390144
+    },
+    {
+      "epoch": 5,
+      "training_rows": 20629,
+      "training_objective": 0.5246288355157647,
+      "validation_log_loss": 0.5092521863384483
+    },
+    {
+      "epoch": 6,
+      "training_rows": 20629,
+      "training_objective": 0.5040362975544102,
+      "validation_log_loss": 0.49789004765523254
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 20629,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
