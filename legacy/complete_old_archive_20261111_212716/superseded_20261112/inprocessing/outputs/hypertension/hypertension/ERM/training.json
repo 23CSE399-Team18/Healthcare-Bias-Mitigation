@@ -1,0 +1,46 @@
+{
+  "method": "ERM",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 20629,
+      "training_objective": 0.6936458449026462,
+      "validation_log_loss": 0.6773517971384334
+    },
+    {
+      "epoch": 2,
+      "training_rows": 20629,
+      "training_objective": 0.6627583759431664,
+      "validation_log_loss": 0.642732091600574
+    },
+    {
+      "epoch": 3,
+      "training_rows": 20629,
+      "training_objective": 0.6217748537234187,
+      "validation_log_loss": 0.594281616090502
+    },
+    {
+      "epoch": 4,
+      "training_rows": 20629,
+      "training_objective": 0.5694952370140497,
+      "validation_log_loss": 0.5418842705344846
+    },
+    {
+      "epoch": 5,
+      "training_rows": 20629,
+      "training_objective": 0.524603566876546,
+      "validation_log_loss": 0.5092473377247733
+    },
+    {
+      "epoch": 6,
+      "training_rows": 20629,
+      "training_objective": 0.5038645254079933,
+      "validation_log_loss": 0.49787369576800955
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 20629,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
