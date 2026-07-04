@@ -1,0 +1,46 @@
+{
+  "method": "Intersectional_adversary",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 20629,
+      "training_objective": 1.0242567520861863,
+      "validation_log_loss": 0.6781384370763055
+    },
+    {
+      "epoch": 2,
+      "training_rows": 20629,
+      "training_objective": 0.9919227597971086,
+      "validation_log_loss": 0.6457162569942881
+    },
+    {
+      "epoch": 3,
+      "training_rows": 20629,
+      "training_objective": 0.9474324618592924,
+      "validation_log_loss": 0.600804821556225
+    },
+    {
+      "epoch": 4,
+      "training_rows": 20629,
+      "training_objective": 0.8892985237650821,
+      "validation_log_loss": 0.5505849235584896
+    },
+    {
+      "epoch": 5,
+      "training_rows": 20629,
+      "training_objective": 0.8328702389613177,
+      "validation_log_loss": 0.5154879703394092
+    },
+    {
+      "epoch": 6,
+      "training_rows": 20629,
+      "training_objective": 0.799341075736707,
+      "validation_log_loss": 0.5015021569787996
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 20629,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
