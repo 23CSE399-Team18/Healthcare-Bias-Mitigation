@@ -1,0 +1,46 @@
+{
+  "method": "AvUC_deterministic",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 52229,
+      "training_objective": 0.6606404746762665,
+      "validation_log_loss": 0.6356221351347332
+    },
+    {
+      "epoch": 2,
+      "training_rows": 52229,
+      "training_objective": 0.645966455594021,
+      "validation_log_loss": 0.6208352601702078
+    },
+    {
+      "epoch": 3,
+      "training_rows": 52229,
+      "training_objective": 0.6351747578848222,
+      "validation_log_loss": 0.615023515381962
+    },
+    {
+      "epoch": 4,
+      "training_rows": 52229,
+      "training_objective": 0.632637344250676,
+      "validation_log_loss": 0.6130260649803011
+    },
+    {
+      "epoch": 5,
+      "training_rows": 52229,
+      "training_objective": 0.6320190506594142,
+      "validation_log_loss": 0.6123491374874329
+    },
+    {
+      "epoch": 6,
+      "training_rows": 52229,
+      "training_objective": 0.631848988661019,
+      "validation_log_loss": 0.6113009657984445
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 52229,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
