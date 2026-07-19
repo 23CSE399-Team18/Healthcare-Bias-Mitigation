@@ -1,0 +1,46 @@
+{
+  "method": "GroupDRO_sex_label",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 52229,
+      "training_objective": 0.690586904069206,
+      "validation_log_loss": 0.6780979915620371
+    },
+    {
+      "epoch": 2,
+      "training_rows": 52229,
+      "training_objective": 0.6828821310430235,
+      "validation_log_loss": 0.6731507642268882
+    },
+    {
+      "epoch": 3,
+      "training_rows": 52229,
+      "training_objective": 0.6789905191068115,
+      "validation_log_loss": 0.6660902090837855
+    },
+    {
+      "epoch": 4,
+      "training_rows": 52229,
+      "training_objective": 0.6777440919368303,
+      "validation_log_loss": 0.6710799127545876
+    },
+    {
+      "epoch": 5,
+      "training_rows": 52229,
+      "training_objective": 0.6771134665772,
+      "validation_log_loss": 0.6710103430475673
+    },
+    {
+      "epoch": 6,
+      "training_rows": 52229,
+      "training_objective": 0.6764477106423323,
+      "validation_log_loss": 0.6680793125718626
+    }
+  ],
+  "chosen_epoch": 3,
+  "training_rows": 52229,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
