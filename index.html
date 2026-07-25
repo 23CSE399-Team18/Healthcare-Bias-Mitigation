@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Bias Mitigation | Group 18 Research</title>
+    <meta name="description" content="Healthcare Bias Mitigation: A Multi-Method Approach to Addressing Bias Across Diverse Clinical Applications - Group 18 Research Project">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <path d="M14 20 L18 24 L26 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 12 L28 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+                </svg>
+            </div>
+            <span class="logo-text">BiasMitigate</span>
+        </div>
+
+        <div class="sidebar-nav">
+            <a href="#intro" class="nav-item active" data-section="intro">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+                </span>
+                <span class="nav-label">Introduction</span>
+            </a>
+            <a href="#motivation" class="nav-item" data-section="motivation">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </span>
+                <span class="nav-label">Motivation</span>
+            </a>
+            <a href="#research-theme" class="nav-item" data-section="research-theme">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                </span>
+                <span class="nav-label">Research Theme</span>
+            </a>
+            <a href="#research-gaps" class="nav-item" data-section="research-gaps">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </span>
+                <span class="nav-label">Research Gaps</span>
+            </a>
+            <a href="#objectives" class="nav-item" data-section="objectives">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                </span>
+                <span class="nav-label">Objectives</span>
+            </a>
+            <a href="#problem-statement" class="nav-item" data-section="problem-statement">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </span>
+                <span class="nav-label">Problem Statement</span>
+            </a>
+            <a href="#io" class="nav-item" data-section="io">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                </span>
+                <span class="nav-label">Input & Output</span>
+            </a>
+            <a href="#algorithms" class="nav-item" data-section="algorithms">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                </span>
+                <span class="nav-label">Algorithms</span>
+            </a>
+            <a href="#methodology" class="nav-item" data-section="methodology">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 2,7 12,12 22,7"/><polyline points="2,17 12,22 22,17"/><polyline points="2,12 12,17 22,12"/></svg>
+                </span>
+                <span class="nav-label">Methodology</span>
+            </a>
+            <a href="#datasets" class="nav-item" data-section="datasets">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                </span>
+                <span class="nav-label">Datasets</span>
+            </a>
+            <a href="#bias-analysis" class="nav-item" data-section="bias-analysis">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </span>
+                <span class="nav-label">Bias Analysis</span>
+            </a>
+            <a href="#latent-features" class="nav-item" data-section="latent-features">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                </span>
+                <span class="nav-label">Latent Features</span>
+            </a>
+            <a href="#team" class="nav-item" data-section="team">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
+                <span class="nav-label">Team</span>
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-toggle" id="sidebarToggle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <span></span><span></span><span></span>
+    </button>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+
+        <!-- INTRO SECTION -->
+        <section id="intro" class="section hero-section">
+            <div class="hero-bg-elements">
+                <div class="hero-circle hero-circle-1"></div>
+                <div class="hero-circle hero-circle-2"></div>
+                <div class="hero-circle hero-circle-3"></div>
+                <div class="hero-grid"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Type 1: Research Project &bull; Project Review 1
+                </div>
+                <h1 class="hero-title">
+                    Healthcare Bias<br>
+                    <span class="gradient-text">Mitigation</span>
+                </h1>
+                <p class="hero-subtitle">A Multi-Method Approach to Addressing Bias Across Diverse Clinical Applications</p>
+                <div class="hero-meta">
+                    <div class="meta-card">
+                        <span class="meta-label">Group</span>
+                        <span class="meta-value">18</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">Guide</span>
+                        <span class="meta-value">Dr. Bagavathi Sivakumar P<br>Dr. Deepika T</span>
+                    </div>
+                </div>
+                <div class="hero-cta">
+                    <a href="#motivation" class="btn-primary">Explore Research</a>
+                    <a href="#objectives" class="btn-secondary">View Objectives</a>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="scroll-mouse">
+                    <div class="scroll-dot"></div>
+                </div>
+                <span>Scroll to explore</span>
+            </div>
+        </section>
+
+        <!-- MOTIVATION SECTION -->
+        <section id="motivation" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Why This Matters</span>
+                    <h2 class="section-title">Motivation</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="motivation-grid">
+                    <div class="motivation-card reveal-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="20"/><path d="M24 14v10l7 7"/></svg>
+                        </div>
+                        <h3>Sampling Bias in Healthcare AI</h3>
+                        <p>Healthcare AI systems are frequently developed using datasets that are sampling bias and demographically skewed, which restricts fairness and equitable performance across diverse patient populations.</p>
+                        <div class="card-ref">[1]</div>
+                    </div>
+                    <div class="motivation-card reveal-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="36" height="36" rx="4"/><line x1="6" y1="18" x2="42" y2="18"/><line x1="18" y1="6" x2="18" y2="42"/></svg>
+                        </div>
+                        <h3>Accuracy Over Equity</h3>
+                        <p>Conventional machine learning models primarily optimize for overall accuracy, often neglecting performance disparities affecting underrepresented and vulnerable groups.</p>
+                        <div class="card-ref">[2]</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESEARCH THEME SECTION -->
+        <section id="research-theme" class="section section-alt">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Publication Target</span>
+                    <h2 class="section-title">Research Theme</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="theme-grid">
+                    <div class="theme-card reveal-card">
+                        <div class="theme-badge">Special Issue</div>
+                        <div class="theme-journal">IEEE Journal of Biomedical and Health Informatics</div>
+                        <h3>Biomedical and Healthcare Intelligence Using Imperfect Data</h3>
+                        <p>Challenges, Advances and Trends</p>
+                        <div class="theme-deadline">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                            Deadline: 30 April, 2026
+                        </div>
+                    </div>
+                    <div class="theme-card reveal-card">
+                        <div class="theme-badge">Special Issue</div>
+                        <div class="theme-journal">IEEE Journal of Biomedical and Health Informatics</div>
+                        <h3>Agentic AI for Healthcare</h3>
+                        <p>Towards Autonomous, Trustworthy, and Human-Centric Systems</p>
+                        <div class="theme-deadline">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                            Deadline: 30 April, 2026
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESEARCH GAPS SECTION -->
+        <section id="research-gaps" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Identified Gaps</span>
+                    <h2 class="section-title">Research Gaps</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="gaps-timeline">
+                    <div class="gap-item reveal-card">
+                        <div class="gap-number">RG1</div>
+                        <div class="gap-content">
+                            <h3>Stage-Isolated Bias Handling</h3>
+                            <p>Most bias mitigation techniques operate only at a single level (data or algorithm or output), and do not analyze how bias propagates across the entire ML pipeline.</p>
+                            <div class="gap-refs">[1, 11, 5, 8, 15]</div>
+                        </div>
+                    </div>
+                    <div class="gap-item reveal-card">
+                        <div class="gap-number">RG2</div>
+                        <div class="gap-content">
+                            <h3>Lack of Clinical Risk Awareness</h3>
+                            <p>Fairness metrics optimize statistical parity but ignore medical consequences — some misclassifications are clinically more harmful than others.</p>
+                            <div class="gap-refs">[7, 14, 2, 9, 16]</div>
+                        </div>
+                    </div>
+                    <div class="gap-item reveal-card">
+                        <div class="gap-number">RG3</div>
+                        <div class="gap-content">
+                            <h3>Absence of Continuous Fairness Monitoring</h3>
+                            <p>Existing studies evaluate fairness offline on retrospective datasets and lack an integrated auditing mechanism that monitors demographic performance and detects fairness drift after deployment.</p>
+                            <div class="gap-refs">[11, 12, 15, 7]</div>
+                        </div>
+                    </div>
+                    <div class="gap-item reveal-card">
+                        <div class="gap-number">RG4</div>
+                        <div class="gap-content">
+                            <h3>Human–AI Interaction Neglect</h3>
+                            <p>Algorithmic fairness research rarely considers decision-level bias arising from clinician interpretation.</p>
+                            <div class="gap-refs">[1, 13, 9, 10, 6, 15]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OBJECTIVES SECTION -->
+        <section id="objectives" class="section section-alt">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Project Goals</span>
+                    <h2 class="section-title">Objectives</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="objectives-problem">
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <h3>Overall Problem</h3>
+                    <p>Healthcare AI models trained on real-world clinical data often exhibit uneven predictive reliability across patient groups, resulting in unfair and unsafe clinical decision support. Existing solutions typically address these issues at isolated stages of the learning pipeline, limiting robustness for high-risk patient outcomes.</p>
+                </div>
+                <div class="objectives-grid">
+                    <div class="objective-card reveal-card">
+                        <div class="obj-num">01</div>
+                        <p>Design a healthcare AI framework that maintains consistent predictive performance across diverse patient populations to reduce unfair clinical decision outcomes.</p>
+                        <div class="obj-tags"><span>RG 1</span><span>RG 4</span></div>
+                    </div>
+                    <div class="objective-card reveal-card">
+                        <div class="obj-num">02</div>
+                        <p>Implement a multi-stage bias mitigation strategy addressing pre-processing, in-processing, and post-processing stages of the learning pipeline.</p>
+                        <div class="obj-tags"><span>RG 1</span></div>
+                    </div>
+                    <div class="objective-card reveal-card">
+                        <div class="obj-num">03</div>
+                        <p>Incorporate clinical risk-aware learning to minimize high-risk misclassification errors while preserving model accuracy.</p>
+                        <div class="obj-tags"><span>RG 2</span></div>
+                    </div>
+                    <div class="objective-card reveal-card">
+                        <div class="obj-num">04</div>
+                        <p>Develop an automated bias detection and auditing module to identify performance disparities across patient demographics.</p>
+                        <div class="obj-tags"><span>RG 3</span><span>RG 4</span></div>
+                    </div>
+                    <div class="objective-card reveal-card">
+                        <div class="obj-num">05</div>
+                        <p>Integrate a privacy-preserving fairness mechanism that enables local (on-device) model operation to support fairness-by-design without exposing patient data.</p>
+                        <div class="obj-tags"><span>RG 3</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM STATEMENT SECTION -->
+        <section id="problem-statement" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Core Challenge</span>
+                    <h2 class="section-title">Problem Statement</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="problem-statement-card reveal-card">
+                    <div class="ps-icon">
+                        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><circle cx="32" cy="32" r="28"/><path d="M32 18v16"/><circle cx="32" cy="42" r="2" fill="currentColor"/></svg>
+                    </div>
+                    <blockquote>
+                        To develop a clinically risk-aware, multi-stage bias mitigation framework that ensures fairness and consistent predictive performance across diverse patient populations, reducing unfair and unsafe clinical decision support.
+                    </blockquote>
+                </div>
+                <div class="sdg-section reveal-card">
+                    <h3>Sustainable Development Goals</h3>
+                    <div class="sdg-grid">
+                        <div class="sdg-item">
+                            <div class="sdg-icon sdg-3">3</div>
+                            <span>Good Health & Well-being</span>
+                        </div>
+                        <div class="sdg-item">
+                            <div class="sdg-icon sdg-10">10</div>
+                            <span>Reduced Inequalities</span>
+                        </div>
+                        <div class="sdg-item">
+                            <div class="sdg-icon sdg-16">16</div>
+                            <span>Peace, Justice & Strong Institutions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INPUT & OUTPUT SECTION -->
+        <section id="io" class="section section-alt">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Data Flow</span>
+                    <h2 class="section-title">Input & Output</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="io-grid">
+                    <div class="io-card reveal-card">
+                        <div class="io-obj-badge">Objective 1</div>
+                        <div class="io-flow">
+                            <div class="io-block io-input">
+                                <h4>Input</h4>
+                                <p>Patient medical data, Demographic attributes</p>
+                            </div>
+                            <div class="io-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                            </div>
+                            <div class="io-block io-output">
+                                <h4>Output</h4>
+                                <p>Fair disease prediction model, Bias evaluation results, Privacy-preserving AI system</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="io-card reveal-card">
+                        <div class="io-obj-badge">Objective 2</div>
+                        <div class="io-flow">
+                            <div class="io-block io-input">
+                                <h4>Input</h4>
+                                <p>Raw healthcare dataset, Demographic / sensitive attributes, Training labels, Dataset issues</p>
+                            </div>
+                            <div class="io-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                            </div>
+                            <div class="io-block io-output">
+                                <h4>Output</h4>
+                                <p>Bias-reduced predictions and a fair healthcare AI model</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="io-card reveal-card">
+                        <div class="io-obj-badge">Objective 3</div>
+                        <div class="io-flow">
+                            <div class="io-block io-input">
+                                <h4>Input</h4>
+                                <p>Patient medical data, Risk factors, Disease labels</p>
+                            </div>
+                            <div class="io-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                            </div>
+                            <div class="io-block io-output">
+                                <h4>Output</h4>
+                                <p>Accurate healthcare predictions with minimized high-risk misclassification errors</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="io-card reveal-card">
+                        <div class="io-obj-badge">Objective 4</div>
+                        <div class="io-flow">
+                            <div class="io-block io-input">
+                                <h4>Input</h4>
+                                <p>Model predictions, True labels, Patient demographic data</p>
+                            </div>
+                            <div class="io-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                            </div>
+                            <div class="io-block io-output">
+                                <h4>Output</h4>
+                                <p>Bias detection results and fairness evaluation showing disparities between patient demographics</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="io-card reveal-card">
+                        <div class="io-obj-badge">Objective 5</div>
+                        <div class="io-flow">
+                            <div class="io-block io-input">
+                                <h4>Input</h4>
+                                <p>Patient medical data, Risk factors, Disease labels</p>
+                            </div>
+                            <div class="io-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                            </div>
+                            <div class="io-block io-output">
+                                <h4>Output</h4>
+                                <p>Accurate healthcare predictions with minimized high-risk misclassification errors</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALGORITHMS SECTION -->
+        <section id="algorithms" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Technical Core</span>
+                    <h2 class="section-title">Algorithms</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="algo-tabs">
+                    <button class="algo-tab active" data-tab="obj1">Obj 1</button>
+                    <button class="algo-tab" data-tab="obj2">Obj 2</button>
+                    <button class="algo-tab" data-tab="obj3">Obj 3</button>
+                    <button class="algo-tab" data-tab="obj4">Obj 4</button>
+                    <button class="algo-tab" data-tab="obj5">Obj 5</button>
+                </div>
+                <div class="algo-content">
+                    <div class="algo-panel active" id="tab-obj1">
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">cxr-foundation-bias Algorithm</div>
+                            <p>Reduces bias by learning disease-focused features independent of sensitive attributes.</p>
+                            <span class="algo-ref">[3]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">XGBoost (Extreme Gradient Boosting)</div>
+                            <p>Improves accuracy by combining multiple decision trees to make reliable predictions.</p>
+                            <span class="algo-ref">[14]</span>
+                        </div>
+                    </div>
+                    <div class="algo-panel" id="tab-obj2">
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">Optimized Data Imputation Selection Algorithm</div>
+                            <p>Selects the best imputation method to handle missing data while minimizing bias across different patient groups. (C-Chart Based DI Selection)</p>
+                            <span class="algo-ref">[9]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">MICE</div>
+                            <p>Fills missing values using relationships between variables to create balanced and less biased data.</p>
+                            <span class="algo-ref">[9]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">Adversarial Debiasing (AD)</div>
+                            <p>Trains the model to make accurate predictions while simultaneously preventing it from learning sensitive attributes (like gender or race).</p>
+                            <span class="algo-ref">[1]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">CFReg (Counterfactual Fairness Regularization)</div>
+                            <p>Ensures predictions remain the same even if sensitive attributes are hypothetically changed.</p>
+                            <span class="algo-ref">[2]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">CEO (Calibrated Equalized Odds)</div>
+                            <p>Adjusts final predictions to ensure equal error rates across different demographic groups.</p>
+                            <span class="algo-ref">[1]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">Reject Option Classification (ROC)</div>
+                            <p>Changes decisions near uncertain cases to favor fairness for disadvantaged groups.</p>
+                            <span class="algo-ref">[1]</span>
+                        </div>
+                    </div>
+                    <div class="algo-panel" id="tab-obj3">
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">QMix (Quality-Aware Learning)</div>
+                            <p>Prioritizes high-risk patient cases during training to reduce critical misclassification errors.</p>
+                            <span class="algo-ref">[3]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">Gate Recurrent Unit Network</div>
+                            <p>Captures temporal patterns in patient data (like history over time) to improve accurate predictions.</p>
+                            <span class="algo-ref">[9]</span>
+                        </div>
+                    </div>
+                    <div class="algo-panel" id="tab-obj4">
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">FlipSet Algorithm</div>
+                            <p>Identifies minimal changes in patient attributes that would flip the model's prediction, helping reveal hidden bias.</p>
+                            <span class="algo-ref">[2]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">HAITI Computation Algorithm</div>
+                            <p>Measures performance differences across demographic groups to detect unfair disparities.</p>
+                            <span class="algo-ref">[12]</span>
+                        </div>
+                    </div>
+                    <div class="algo-panel" id="tab-obj5">
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">Federated Averaging Algorithm (FedAvg)</div>
+                            <p>Trains the model across multiple hospitals/devices without sharing raw patient data, preserving privacy.</p>
+                            <span class="algo-ref">[4]</span>
+                        </div>
+                        <div class="algo-card reveal-card">
+                            <div class="algo-name">DP-SGD (Differentially Private Stochastic Gradient Descent)</div>
+                            <p>Adds controlled noise during training to protect sensitive patient information while learning.</p>
+                            <span class="algo-ref">[4]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METHODOLOGY SECTION -->
+        <section id="methodology" class="section section-alt">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Approach</span>
+                    <h2 class="section-title">Methodology</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="methodology-accordion">
+                    <div class="accordion-item reveal-card">
+                        <button class="accordion-header active">
+                            <span class="acc-obj">Obj 1</span>
+                            <span class="acc-title">Domain Adaptation & Feature Extraction</span>
+                            <span class="acc-chevron">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content active">
+                            <div class="method-item">
+                                <h4>Domain-Specific Batch Normalization (DSBN)</h4>
+                                <p>Learns separate normalization statistics per domain, reducing distribution shift across patient groups. <span class="ref">[3]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Domain-Invariant Feature Extraction</h4>
+                                <p>Forces the model to learn features independent of demographics, improving generalization and fairness. <span class="ref">[3]</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal-card">
+                        <button class="accordion-header">
+                            <span class="acc-obj">Obj 2</span>
+                            <span class="acc-title">Fairness-Constrained Training</span>
+                            <span class="acc-chevron">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="method-item">
+                                <h4>NearMiss</h4>
+                                <p>Balances imbalanced datasets by selecting informative samples from majority class, reducing bias in training data. <span class="ref">[1]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Regularization</h4>
+                                <p>Adds fairness constraints/penalties during training to prevent biased model behavior. <span class="ref">[1]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Treatment Equality Alignment</h4>
+                                <p>Ensures equal error trade-offs (FP vs FN) across groups for fair clinical decisions. <span class="ref">[11]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Output Calibrations</h4>
+                                <p>Adjusts predicted probabilities to be equally reliable across different demographic groups. <span class="ref">[11]</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal-card">
+                        <button class="accordion-header">
+                            <span class="acc-obj">Obj 3</span>
+                            <span class="acc-title">Risk-Aware Learning</span>
+                            <span class="acc-chevron">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="method-item">
+                                <h4>Focal Loss</h4>
+                                <p>Focuses learning on hard/high-risk misclassified cases, improving detection of critical conditions. <span class="ref">[3]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Sample Reweighting with Declining Weight</h4>
+                                <p>Assigns higher importance to critical samples initially and stabilizes training over time. <span class="ref">[3]</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal-card">
+                        <button class="accordion-header">
+                            <span class="acc-obj">Obj 4</span>
+                            <span class="acc-title">Bias Detection & Auditing</span>
+                            <span class="acc-chevron">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="method-item">
+                                <h4>Theil Index (TI)</h4>
+                                <p>Measures inequality in model errors across groups to quantify bias. <span class="ref">[1]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Average Odds Difference (AOD)</h4>
+                                <p>Evaluates disparity in false positive and false negative rates between groups. <span class="ref">[1]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>LIME</h4>
+                                <p>Provides local explanations to identify if predictions are influenced by biased features. <span class="ref">[12]</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal-card">
+                        <button class="accordion-header">
+                            <span class="acc-obj">Obj 5</span>
+                            <span class="acc-title">Privacy-Preserving Mechanisms</span>
+                            <span class="acc-chevron">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="method-item">
+                                <h4>Fairness-Aware Federated Learning (FAFL)</h4>
+                                <p>Trains models across institutions without sharing raw data while enforcing fairness. <span class="ref">[12]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Secure Multi-Party Computation</h4>
+                                <p>Enables collaborative model training on encrypted data without exposing patient information. <span class="ref">[12]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Health-FedNet</h4>
+                                <p>Combines federated learning and fairness mechanisms specifically tailored for healthcare data privacy and equity. <span class="ref">[12]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Gradient Perturbation</h4>
+                                <p>Adds controlled noise to gradients during training to preserve privacy while preventing the model from overfitting to sensitive or biased patterns. <span class="ref">[4]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Homomorphic Encryption</h4>
+                                <p>Allows computations to be performed directly on encrypted healthcare data, ensuring data privacy without compromising model training. <span class="ref">[4]</span></p>
+                            </div>
+                            <div class="method-item">
+                                <h4>Secure Aggregation</h4>
+                                <p>Aggregates model updates from multiple clients in encrypted form so that individual patient or hospital data remains confidential. <span class="ref">[4]</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DATASETS SECTION -->
+        <section id="datasets" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Data Collection</span>
+                    <h2 class="section-title">Datasets</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <p class="section-desc">Healthcare datasets collected to train, analyse, and evaluate ML models for fair clinical decision support.</p>
+                <div class="dataset-grid">
+                    <div class="dataset-card reveal-card">
+                        <div class="ds-badge">D1</div>
+                        <h3>UCI Heart Disease</h3>
+                        <div class="ds-details">
+                            <div class="ds-row"><strong>Parameters:</strong> Age, sex, blood pressure, cholesterol, ECG, heart rate, ST depression</div>
+                            <div class="ds-row"><strong>Target:</strong> Heart disease (binary)</div>
+                            <div class="ds-row"><strong>Bias Studied:</strong> <span class="ds-bias">Sex</span></div>
+                        </div>
+                    </div>
+                    <div class="dataset-card reveal-card">
+                        <div class="ds-badge">D2</div>
+                        <h3>CKD (Chronic Kidney Disease)</h3>
+                        <div class="ds-details">
+                            <div class="ds-row"><strong>Parameters:</strong> Blood chemistry, urinalysis, comorbidity flags (hypertension, diabetes, anemia)</div>
+                            <div class="ds-row"><strong>Target:</strong> CKD diagnosis (binary)</div>
+                            <div class="ds-row"><strong>Bias Studied:</strong> <span class="ds-bias">Age group (derived)</span></div>
+                        </div>
+                    </div>
+                    <div class="dataset-card reveal-card">
+                        <div class="ds-badge">D3</div>
+                        <h3>eICU (ICU Critical Care)</h3>
+                        <div class="ds-details">
+                            <div class="ds-row"><strong>Parameters:</strong> Demographics, diagnosis counts, aggregated lab results</div>
+                            <div class="ds-row"><strong>Target:</strong> ICU mortality (binary)</div>
+                            <div class="ds-row"><strong>Bias Studied:</strong> <span class="ds-bias">Gender × Ethnicity</span></div>
+                        </div>
+                    </div>
+                    <div class="dataset-card reveal-card">
+                        <div class="ds-badge">D4</div>
+                        <h3>NHANES (2021–2023)</h3>
+                        <div class="ds-details">
+                            <div class="ds-row"><strong>Parameters:</strong> Age, gender, race/ethnicity, income, education</div>
+                            <div class="ds-row"><strong>Target:</strong> Demographic fairness validation</div>
+                            <div class="ds-row"><strong>Bias Studied:</strong> <span class="ds-bias">Gender, Race/Ethnicity</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BIAS ANALYSIS SECTION -->
+        <section id="bias-analysis" class="section section-alt">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Analysis</span>
+                    <h2 class="section-title">Preprocessing Bias Analysis</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="bias-table-wrapper reveal-card">
+                    <div class="table-scroll">
+                        <table class="bias-table">
+                            <thead>
+                                <tr>
+                                    <th>Bias Type</th>
+                                    <th>Heart</th>
+                                    <th>Kidney</th>
+                                    <th>Breast</th>
+                                    <th>CDC</th>
+                                    <th>Without Methodology</th>
+                                    <th>Methodology Applied</th>
+                                    <th>Performance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="bias-name">Missing Data Bias</td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td>Missing values reduce prediction accuracy.</td>
+                                    <td>GMM, Random Forest Imputation, Autoencoder, GAN</td>
+                                    <td>Improved data completeness and prediction accuracy.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Class Imbalance Bias</td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td>Majority class dominates learning.</td>
+                                    <td>NearMiss, GMM-based synthetic oversampling, SMOTE</td>
+                                    <td>Improved recall and F1-score.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Outlier Bias</td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td>Extreme values distort learning.</td>
+                                    <td>GMM, Regularization, Outlier detection algorithm</td>
+                                    <td>More robust predictions.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Feature Scale Bias</td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td>Large-scale features dominate.</td>
+                                    <td>Feature Scaling, MinMax Scaler, Regularization</td>
+                                    <td>Balanced feature contribution.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Measurement Bias</td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td>Different devices produce inconsistent measurements.</td>
+                                    <td>Output Calibration, DSBN</td>
+                                    <td>More consistent feature distributions.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Domain-Specific Bias</td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td>Model learns dataset-specific patterns.</td>
+                                    <td>Multi-Domain Adaptation, Optimal Transport, DSBN</td>
+                                    <td>Better domain invariance and cross-dataset generalization.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Data Noise Bias</td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td>Noisy records reduce learning quality.</td>
+                                    <td>Autoencoder, GAN-based Methods, Regularization</td>
+                                    <td>Cleaner feature representation.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Hospital Bias</td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td>Model depends on hospital-specific characteristics.</td>
+                                    <td>Multi-Domain Adaptation, DSBN, Domain-Invariant Feature Extraction</td>
+                                    <td>Better cross-hospital generalization.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Batch Effect Bias</td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td>Model learns batch-specific variations.</td>
+                                    <td>DSBN, Multi-Domain Adaptation, Optimal Transport</td>
+                                    <td>Reduced batch effects and improved alignment.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Data Entry Bias</td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td>Incorrect data entries reduce model performance.</td>
+                                    <td>GMM, RFI, Autoencoder</td>
+                                    <td>Improved data quality and prediction accuracy.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Encoding Bias</td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td>Inconsistent categorical encoding affects feature representation.</td>
+                                    <td>Domain-Invariant Feature Extraction, One-hot Encoding</td>
+                                    <td>Improved feature consistency and learning efficiency.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bias-name">Data Integration Bias</td>
+                                    <td><span class="check no">×</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check yes">✓</span></td>
+                                    <td><span class="check no">×</span></td>
+                                    <td>Merging heterogeneous datasets introduces inconsistencies.</td>
+                                    <td>Multi-Domain Adaptation, Optimal Transport, DSBN</td>
+                                    <td>Better integration and improved overall model performance.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LATENT FEATURES SECTION -->
+        <section id="latent-features" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Advanced Methods</span>
+                    <h2 class="section-title">Latent Feature Extraction</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="latent-grid">
+                    <div class="latent-card reveal-card">
+                        <div class="latent-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="12" r="8"/><circle cx="12" cy="36" r="8"/><circle cx="36" cy="36" r="8"/><line x1="20" y1="18" x2="14" y2="30"/><line x1="28" y1="18" x2="34" y2="30"/><line x1="20" y1="36" x2="28" y2="36"/></svg>
+                        </div>
+                        <h3>DGCCA</h3>
+                        <p class="latent-full">Deep Generalized Canonical Correlation Analysis</p>
+                        <p>Learns a unified latent representation from multiple heterogeneous healthcare datasets by maximizing shared information across different domains, facilitating cross-dataset feature alignment and integration.</p>
+                    </div>
+                    <div class="latent-card reveal-card">
+                        <div class="latent-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="36" height="36" rx="4"/><line x1="6" y1="16" x2="42" y2="16"/><line x1="6" y1="26" x2="42" y2="26"/><line x1="6" y1="36" x2="42" y2="36"/><circle cx="16" cy="11" r="2" fill="currentColor"/><circle cx="30" cy="21" r="2" fill="currentColor"/><circle cx="22" cy="31" r="2" fill="currentColor"/></svg>
+                        </div>
+                        <h3>SAINT</h3>
+                        <p class="latent-full">Self-Attention and Intersample Transformer</p>
+                        <p>Learns robust latent feature representations by modeling both feature-level and inter-sample dependencies using a self-attention mechanism, improving the representation quality of tabular healthcare data.</p>
+                    </div>
+                    <div class="latent-card reveal-card">
+                        <div class="latent-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="4"/><circle cx="12" cy="12" r="3"/><circle cx="36" cy="12" r="3"/><circle cx="12" cy="36" r="3"/><circle cx="36" cy="36" r="3"/><line x1="15" y1="14" x2="21" y2="21"/><line x1="33" y1="14" x2="27" y2="21"/><line x1="15" y1="34" x2="21" y2="27"/><line x1="33" y1="34" x2="27" y2="27"/><line x1="14" y1="14" x2="34" y2="34" opacity="0.3"/><line x1="34" y1="14" x2="14" y2="34" opacity="0.3"/></svg>
+                        </div>
+                        <h3>GNN</h3>
+                        <p class="latent-full">Graph Neural Network</p>
+                        <p>Learns informative latent feature representations by modeling structural relationships among connected patients or features, capturing complex interactions that enhance predictive performance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEAM SECTION -->
+        <section id="team" class="section section-alt">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Group 18</span>
+                    <h2 class="section-title">Our Team</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="team-grid">
+                    <div class="team-card reveal-card">
+                        <div class="team-avatar">ER</div>
+                        <h3>E. RatanRaja</h3>
+                        <p class="team-reg">CB.SC.U4CSE23414</p>
+                    </div>
+                    <div class="team-card reveal-card">
+                        <div class="team-avatar">DK</div>
+                        <h3>Datta K</h3>
+                        <p class="team-reg">CB.SC.U4CSE23422</p>
+                    </div>
+                    <div class="team-card reveal-card">
+                        <div class="team-avatar">SU</div>
+                        <h3>Srija U</h3>
+                        <p class="team-reg">CB.SC.U4CSE23452</p>
+                    </div>
+                    <div class="team-card reveal-card">
+                        <div class="team-avatar">SU</div>
+                        <h3>Sriya U</h3>
+                        <p class="team-reg">CB.SC.U4CSE23554</p>
+                    </div>
+                </div>
+                <div class="guide-card reveal-card">
+                    <h3>Project Guides</h3>
+                    <div class="guide-names">
+                        <span>Dr. Bagavathi Sivakumar P</span>
+                        <span class="guide-sep">•</span>
+                        <span>Dr. Deepika T</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2026 Group 18 — Healthcare Bias Mitigation Research Project</p>
+                <p class="footer-sub">Amrita School of Computing, Coimbatore</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
