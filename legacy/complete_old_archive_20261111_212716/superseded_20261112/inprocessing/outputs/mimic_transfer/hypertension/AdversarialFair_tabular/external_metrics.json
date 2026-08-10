@@ -1,0 +1,46 @@
+{
+  "rows": 109378,
+  "positives": 62817,
+  "threshold": 0.6000000000000002,
+  "macro_f1": 0.5998619291809599,
+  "balanced_accuracy": 0.599793387211129,
+  "auroc": 0.6358246545352474,
+  "average_precision": 0.669917629928555,
+  "brier": 0.23057556770154736,
+  "log_loss": 0.6551906481739816,
+  "ece_10_bins": 0.055381842545901935,
+  "positive_recall": 0.661604342773453,
+  "max_equalized_odds_gap": 1,
+  "group_disparities": {
+    "sens_sex": {
+      "selection_rate_gap": 0.011451933162232697,
+      "tpr_gap": 0.0031744044804189464,
+      "fpr_gap": 0.03652942954095134,
+      "equalized_odds_gap": 0.03652942954095134
+    },
+    "sens_age_group": {
+      "selection_rate_gap": 0.9768230018958659,
+      "tpr_gap": 0.9748944194237092,
+      "fpr_gap": 0.9772970274359288,
+      "equalized_odds_gap": 0.9772970274359288
+    },
+    "sens_race_ethnicity": {
+      "selection_rate_gap": 0.2413674875563342,
+      "tpr_gap": 0.19169020562930117,
+      "fpr_gap": 0.22179143870657875,
+      "equalized_odds_gap": 0.22179143870657875
+    },
+    "intersection": {
+      "selection_rate_gap": 1,
+      "tpr_gap": 1,
+      "fpr_gap": 1,
+      "equalized_odds_gap": 1
+    },
+    "domain": {
+      "selection_rate_gap": 0.8515151515151516,
+      "tpr_gap": 0.9545454545454546,
+      "fpr_gap": 0.7875,
+      "equalized_odds_gap": 0.9545454545454546
+    }
+  }
+}
