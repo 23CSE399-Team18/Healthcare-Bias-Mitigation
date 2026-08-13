@@ -1,8 +1,8 @@
-dataset,bias,applied,mean_rank,position,lowest_mean_rank,file
-respiratory,Missing Data,MIP-VAE,3.571,3 of 8,Random Forest,01_missing_data_bias_method_comparison.png
-respiratory,Class Imbalance,TabDDPM,3.333,1 of 8,TabDDPM,02_class_imbalance_bias_method_comparison.png
-respiratory,Outlier,ECOD,3.429,3 of 6,LOF,03_outlier_bias_method_comparison.png
-respiratory,Feature Scale,SNN (SELU),2.833,2 of 6,Quantile transform,04_feature_scale_bias_method_comparison.png
-respiratory,Demographic,Fair contrastive learning,2.75,2 of 6,Reweighting,05_demographic_bias_method_comparison.png
-respiratory,Data Noise,Robust loss (GCE),1.167,1 of 7,Robust loss (GCE),07_data_noise_bias_method_comparison.png
-respiratory,Encoding / Domain,Domain-generalisation transformer,2.875,1 of 6,Domain-generalisation transformer,08_encoding_domain_bias_method_comparison.png
+dataset,bias,applied,mean_rank,rank_total,methods,candidates,candidate_position,tie_with,next_candidate,next_candidate_mean_rank,next_candidate_rank_total,best_baseline,best_baseline_mean_rank,best_baseline_rank_total,baselines_with_lower_mean_rank,file
+respiratory,Missing Data,MIP-VAE,3.571,25,8,3,1,,HyperImpute,4.714,33.0,Random Forest,2.857,20,2,01_missing_data_bias_method_comparison.png
+respiratory,Class Imbalance,TabDDPM,3.333,30,8,4,1,,CTGAN,4.556,41.0,SMOTE,3.778,34,0,02_class_imbalance_bias_method_comparison.png
+respiratory,Outlier,ECOD,3.429,24,6,3,1,,EBM,4.143,29.0,LOF,1.714,12,2,03_outlier_bias_method_comparison.png
+respiratory,Feature Scale,SNN (SELU),2.833,17,6,3,1,,PowerTransform (Yeo-Johnson),3.167,19.0,Quantile transform,2.833,17,0,04_feature_scale_bias_method_comparison.png
+respiratory,Demographic,Fair contrastive learning,2.75,22,6,3,1,,Counterfactual recourse (DiCE),4.062,32.5,Reweighting,2.5,20,1,05_demographic_bias_method_comparison.png
+respiratory,Data Noise,Robust loss (GCE),1.167,7,7,3,1,,Confident Learning (Cleanlab),1.833,11.0,Denoising autoencoder,4.5,27,0,07_data_noise_bias_method_comparison.png
+respiratory,Encoding / Domain,Domain-generalisation transformer,2.875,23,6,3,1,,OT domain adaptation,3.0,24.0,CORAL,3.5,28,0,08_encoding_domain_bias_method_comparison.png
