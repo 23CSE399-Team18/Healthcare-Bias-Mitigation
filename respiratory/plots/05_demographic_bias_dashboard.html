@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Demographic Bias (Before vs After Preprocessing)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#6FA0DA;
+    --before-line:#3E6FA8;
+    --after:#7BC17E;
+    --after-line:#4C9B50;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:22px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px minmax(0,1fr); gap:16px; padding:16px; align-items:start;}
+  .main{min-width:0;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; gap:10px; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .info-row span.v{text-align:right;}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center; font-weight:400; flex-wrap:wrap;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px;}
+  @media (max-width:1500px){ .grid6{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  @media (max-width:1100px){ .grid6{grid-template-columns:repeat(2,minmax(0,1fr));} .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe; cursor:pointer;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .row2{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .mv-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .mv-inner{min-width:640px;}
+  .mv-headrow{display:grid; grid-template-columns:170px minmax(0,1fr) minmax(0,1fr); gap:26px; margin-bottom:10px;}
+  .mv-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .mv-row{display:grid; grid-template-columns:170px minmax(0,1fr) minmax(0,1fr); gap:26px; align-items:center; margin-bottom:4px;}
+  .mv-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mv-grid{display:grid; grid-template-columns:repeat(var(--n), minmax(0,1fr)); gap:2px;}   /* 15px cells, shrinking to fit narrower screens */
+  .mv-cell{width:100%; aspect-ratio:1/1; background:#FFFFFF; border:1px solid #D7DEEC; border-radius:2px; box-sizing:border-box;}
+  .mv-cell.on{background:#C0533E; border-color:#9B4230;}
+  .mv-pct{font-size:9.5px; color:var(--muted); text-align:right; margin-top:2px;}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+  .kpi-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:2px;}
+  .kpi{flex:1 1 100px; background:#F6F8FC; border:1px solid var(--border); border-radius:8px; padding:8px 10px; text-align:center;}
+  .kpi .val{font-size:16px; font-weight:800; color:var(--navy);}
+  .kpi .lbl{font-size:10px; color:var(--muted); margin-top:2px;}
+  .method-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:8px;}
+  .method-table th, .method-table td{padding:5px 6px; text-align:center; border-bottom:1px solid var(--border);}
+  .method-table th{color:var(--muted); font-weight:600; font-size:10.5px;}
+  .method-table td.m{text-align:left; font-weight:600;}
+  .method-table tr.winner td{background:#EAF3FF; font-weight:700; color:var(--blue-hi);}
+  .method-table tr.ref td{color:var(--muted); font-style:italic;}
+  .method-table td.top{color:var(--after-line); font-weight:700;}
+  .muted-note{font-size:11.5px; color:var(--muted); margin:-4px 0 10px;}
+</style>
+</head>
+<body><div style="padding:8px 16px;background:#eef1f7;color:#26334a;font:12px sans-serif">Public copy: individual clinical records and point-level projections are omitted; aggregate results are retained.</div>
+
+<header class="topbar">
+  <h1 id="ttl"></h1>
+  <div class="sub" id="sub"></div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="info-title">&#9432; Dataset Info</p>
+      <div id="info"></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before Preprocessing</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After Preprocessing</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Preprocessing)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="muted-note" id="distNote" style="display:none"></div>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Preprocessing)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:170px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 6 Vars</option>
+              <option value="all" id="corrAllOpt">All Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; overflow-x:auto;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title"><span id="heatTitle"></span>
+        <span class="legend-inline" id="heatChips"></span>
+      </p>
+      <div class="muted-note" id="heatNote"></div>
+      <div id="mvHeat"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Method Comparison (every method &times; every metric)
+        <span class="legend-inline"><span class="lg"><span class="swatch" style="background:#EAF3FF;border:1px solid var(--blue-hi)"></span>Selected (best-ranked modern method)</span></span>
+      </p>
+      <div id="cmp"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="note">
+  <span id="footNote"></span>
+  <div class="foot-legend" id="footChips"></div>
+</footer>
+
+<script>
+const D = {"title":"Demographic Bias","subtitle":"Respiratory ICU mortality — eICU-CRD v2.0 · Stage 8 of 8 · Demographic detected → Fair contrastive learning","info":[["Total Patients (before)","33,874"],["Rows after","33,874"],["Variables shown","40"],["Bias detected","YES"],["Statistic","min DI of outcome rate; max EOD of baseline model (protected attributes)"],["Value (before)","0.66; 0.187"],["Threshold","DI < 0.80 or EOD > 0.10"],["Protected attributes","sex, race_ethnicity"],["Worst SPD before → after","0.063 → 0.086"],["Worst EOD before → after","0.083 → 0.068"],["Test AUROC before → after","0.771 → 0.744"],["Selected method","Fair contrastive learning"],["Best traditional","Reweighting"],["Generated","13-Nov-2026"]],"vars":["z1","z2","z3","z4","z5","z6","z7","z8","z9","z10","z11","z12","z13","z14","z15","z16","z17","z18","z19","z20","f1","f2","f3","f4","f5","f6","f7","f8","f9","f10","f11","f12","f13","f14","f15","f16","f17","f18","f19","f20"],"dist":{"z1":{"rel":false,"b":[837,3733,10100,10379,5006,1967,893,430,238,291],"r":[0.3579871599193526,1.034433928609529]},"z2":{"rel":false,"b":[472,826,1748,3454,5988,8331,7182,4052,1312,509],"r":[-0.11903495427413545,0.26821464553475405]},"z3":{"rel":false,"b":[1521,3825,5500,6562,6496,4521,2626,1471,814,538],"r":[-0.5001903742551803,0.6455514000403567]},"z4":{"rel":false,"b":[772,1420,2645,3700,4637,5114,5155,4868,3847,1716],"r":[-0.7694771641492844,0.8270809599757196]},"z5":{"rel":false,"b":[265,170,278,661,1432,2856,5312,9099,10229,3572],"r":[0.9581782686331423,1.8388417633704295]},"z6":{"rel":false,"b":[642,1146,2174,3186,4358,5293,5596,5365,4123,1991],"r":[-1.240709719755634,1.1823055219650276]},"z7":{"rel":false,"b":[253,157,245,491,817,1417,2646,6263,16493,5092],"r":[0.7401834174990655,2.235313823408825]},"z8":{"rel":false,"b":[8352,13280,5561,2814,1520,933,572,340,218,284],"r":[-1.162947883605957,0.11464026112470178]},"z9":{"rel":false,"b":[466,731,1596,3209,5579,7058,6542,4918,2769,1006],"r":[-1.1096576323060483,-0.25377449914812966]},"z10":{"rel":false,"b":[249,132,196,378,690,1224,2908,9534,14355,4208],"r":[0.49868837594985965,1.6187836803112732]},"z11":{"rel":false,"b":[677,1564,2929,4980,6559,6718,5335,3083,1384,645],"r":[0.4578519454598427,1.3501428437931646]},"z12":{"rel":false,"b":[1367,3390,4840,5343,5279,4814,3925,2768,1497,651],"r":[-0.5851471412181855,1.200611166954041]},"z13":{"rel":false,"b":[2079,4550,5903,6395,6079,4169,2378,1199,638,484],"r":[-1.2554197663068771,0.876316332353187]},"z14":{"rel":false,"b":[438,608,1209,2236,3473,5379,6740,6729,4868,2194],"r":[-1.0500829441090849,0.9365087592601781]},"z15":{"rel":false,"b":[1982,3774,4443,5017,5398,5086,3928,2386,1231,629],"r":[-0.3524717336893082,0.8108318659871588]},"z16":{"rel":false,"b":[1350,2414,3267,4037,4492,4900,5077,4570,2724,1043],"r":[-0.49468905210494996,0.4850781957244611]},"z17":{"rel":false,"b":[374,413,915,2013,4306,8556,10384,4885,1422,606],"r":[0.23541659672881335,0.9967363372439266]},"z18":{"rel":false,"b":[1020,3098,6767,8348,6155,3844,2225,1242,687,488],"r":[-2.208263053714756,-1.2781748088766074]},"z19":{"rel":false,"b":[656,1894,5435,8312,6580,4215,2917,1974,1210,681],"r":[-1.255546032261674,-0.6494671374559402]},"z20":{"rel":false,"b":[1355,2632,4185,5281,5694,5259,3979,2758,1755,976],"r":[-0.8950066456198692,0.8495066034793878]},"f1":{"rel":false,"a":[641,1718,4078,4146,3216,2899,4332,7141,4407,1296],"r":[0.13432902574539185,0.3439707881212235]},"f2":{"rel":false,"a":[871,5065,5217,2681,2095,2439,3579,6322,4227,1378],"r":[-0.0030235014890786257,0.22227973774075516]},"f3":{"rel":false,"a":[652,1171,2641,4913,4203,3691,5167,7173,3171,1092],"r":[0.17245654866099358,0.36318983852863335]},"f4":{"rel":false,"a":[2564,6690,4478,3106,2526,2568,4364,4866,1992,720],"r":[-0.3509074454009533,-0.135182346999645]},"f5":{"rel":false,"a":[533,2199,3791,3992,3716,3750,5352,6316,3205,1020],"r":[0.11666393961757422,0.27498706653714183]},"f6":{"rel":false,"a":[596,1200,3306,5872,6442,7067,4795,2770,1212,614],"r":[0.2162622956931591,0.3322602087259293]},"f7":{"rel":false,"a":[952,2191,4312,4264,2925,2664,2775,4185,7683,1923],"r":[0.12022662159055471,0.3360859169065953]},"f8":{"rel":false,"a":[772,2020,5414,4039,2712,2481,3106,4305,5422,3603],"r":[0.07816813834011554,0.29073637157678606]},"f9":{"rel":false,"a":[734,1798,4870,4684,3309,2972,3707,5564,5180,1056],"r":[-0.01935007356107235,0.15721867389976993]},"f10":{"rel":false,"a":[806,2193,4978,4050,3010,3042,3896,5374,5031,1494],"r":[0.07026005662977695,0.2715765596926213]},"f11":{"rel":false,"a":[899,4694,5482,2949,2486,2763,4169,5525,3554,1353],"r":[-0.12768560394644737,0.08216337341815237]},"f12":{"rel":false,"a":[526,1264,3659,5211,4040,3806,4352,5110,4342,1564],"r":[0.08052040990442037,0.23857681535184388]},"f13":{"rel":false,"a":[627,2192,6189,4395,3285,3195,4299,5794,2900,998],"r":[-0.10586127933114767,0.08215030472725635]},"f14":{"rel":false,"a":[838,2256,5534,4750,3218,3171,3755,5458,3843,1051],"r":[-0.013872180809266865,0.21421833530068415]},"f15":{"rel":false,"a":[1521,6560,4272,2781,2369,2522,3347,5267,4206,1029],"r":[-0.2269520516693592,0.043273007757961834]},"f16":{"rel":false,"a":[900,2362,5020,5601,3785,3502,4325,5467,2199,713],"r":[-0.06879865311086178,0.09658301338553428]},"f17":{"rel":false,"a":[898,2486,4687,4188,3710,3586,4319,5488,3678,834],"r":[0.13741585277020932,0.29576903253793735]},"f18":{"rel":false,"a":[783,1994,4719,6349,5453,4821,4726,3438,1038,553],"r":[-0.16339553974568843,-0.05163237072527388]},"f19":{"rel":false,"a":[1638,5944,5327,3143,2518,2924,4233,5153,2172,822],"r":[-0.3078709384799004,-0.09264960825443258]},"f20":{"rel":false,"a":[1721,6648,4414,3039,2512,2717,3465,5121,3215,1022],"r":[-0.3290595343708992,-0.06007117236033067]}},"box":{"z1":{"b":{"q1":0.5242051333189011,"med":0.5736376204102536,"q3":0.6320357655629861,"loW":0.36245918495277346,"hiW":0.7937817139291137,"out":[],"min":0.13956613838672638,"max":1.5972799062728882}},"z2":{"b":{"q1":0.050529835196335963,"med":0.09586614377870484,"q3":0.13635549321770668,"loW":-0.0782086518357201,"hiW":0.2650939802497627,"out":[],"min":-0.35311058163642883,"max":0.5189549922943115}},"z3":{"b":{"q1":-0.20253001735024218,"med":-0.04959623075479564,"q3":0.10427818409969841,"loW":-0.6627423195251531,"hiW":0.5644904862746093,"out":[],"min":-1.0602562427520752,"max":0.9258854389190674}},"z4":{"b":{"q1":-0.13402122801550692,"med":0.14739050691429262,"q3":0.41282951831817627,"loW":-0.9542973475160317,"hiW":1.233105637818701,"out":[],"min":-1.3417261838912964,"max":1.60689377784729}},"z5":{"b":{"q1":1.538859874010086,"med":1.635882019996643,"q3":1.7049651818304885,"loW":1.2897019122794824,"hiW":1.9187588373579496,"out":[],"min":-1.322508692741394,"max":1.9187588373579496}},"z6":{"b":{"q1":-0.1906411074849892,"med":0.21831527446616475,"q3":0.5890957914869266,"loW":-1.3602464559428629,"hiW":1.629042148590088,"out":[],"min":-1.8131033182144165,"max":1.629042148590088}},"z7":{"b":{"q1":1.8628180027008057,"med":1.9927467300873478,"q3":2.0590123534202576,"loW":1.5685264766216278,"hiW":2.3533038794994354,"out":[],"min":-1.9765429496765137,"max":2.5720467567443848}},"z8":{"b":{"q1":-1.0343183279037476,"med":-0.9671116173267365,"q3":-0.8313047901396711,"loW":-1.301426887512207,"hiW":-0.5267844834935563,"out":[],"min":-1.301426887512207,"max":1.3983263969421387}},"z9":{"b":{"q1":-0.7250582739390703,"med":-0.6159077224841536,"q3":-0.5068999181768937,"loW":-1.0522958075823352,"hiW":-0.17966238453362887,"out":[],"min":-1.48827064037323,"max":0.9385377764701843}},"z10":{"b":{"q1":1.328641959128988,"med":1.4068783521652222,"q3":1.467271839837973,"loW":1.1206971380655104,"hiW":1.6752166609014503,"out":[],"min":-1.7796655893325806,"max":1.7671762973950431}},"z11":{"b":{"q1":0.7880805283784866,"med":0.9074463844299316,"q3":1.0226944596739451,"loW":0.4361596314352989,"hiW":1.3746153566171329,"out":[],"min":-0.542930006980896,"max":1.6807931062940058}},"z12":{"b":{"q1":-0.08731408330050384,"med":0.1947752299091078,"q3":0.5027004559685597,"loW":-0.9570382237434387,"hiW":1.387722264872155,"out":[],"min":-0.9570382237434387,"max":1.8421859741210938}},"z13":{"b":{"q1":-0.760081484913826,"med":-0.47007826429059196,"q3":-0.17400686979029256,"loW":-1.6391934075991261,"hiW":0.7051050528950076,"out":[],"min":-2.177675485610962,"max":1.5519282817840576}},"z14":{"b":{"q1":-0.03503957390785217,"med":0.25049705396285094,"q3":0.4955136711851229,"loW":-0.8308694415473148,"hiW":1.2913435388245855,"out":[],"min":-2.1108336448669434,"max":1.3063143491744995}},"z15":{"b":{"q1":-0.04720633756369352,"med":0.14975763693868577,"q3":0.338428814279781,"loW":-0.6256590653289054,"hiW":0.9168815420449928,"out":[],"min":-1.1520317792892456,"max":1.1049388201406662}},"z16":{"b":{"q1":-0.16386084631085396,"med":0.02458072453737259,"q3":0.1888270154595375,"loW":-0.6928926389664412,"hiW":0.6600874499102942,"out":[],"min":-1.4272527694702148,"max":0.6600874499102942}},"z17":{"b":{"q1":0.6214539110660553,"med":0.694786366875223,"q3":0.7546503394842148,"loW":0.42165926843881607,"hiW":0.954444982111454,"out":[],"min":-0.1650102287530899,"max":1.484171986579895}},"z18":{"b":{"q1":-1.9574561581162153,"med":-1.8638525605201721,"q3":-1.74290731549263,"loW":-2.2792794220515935,"hiW":-1.421084051557252,"out":[],"min":-2.4400787910788724,"max":1.342895269393921}},"z19":{"b":{"q1":-1.070069819430162,"med":-1.0079524187752087,"q3":-0.9197978377342224,"loW":-1.2954777919740716,"hiW":-0.6943898651903129,"out":[],"min":-1.588460073113437,"max":0.2166733741760254}},"z20":{"b":{"q1":-0.3615124672651291,"med":-0.09187941998243332,"q3":0.18956968831937016,"loW":-1.188135700641878,"hiW":1.0161929216961192,"out":[],"min":-1.2884469032287598,"max":1.288601040840149}},"f1":{"a":{"q1":0.20658094435930252,"med":0.26157577335834503,"q3":0.2938176691532135,"loW":0.07572585716843605,"hiW":0.3748652935028076,"out":[],"min":0.05276961997151375,"max":0.3748652935028076}},"f2":{"a":{"q1":0.05053649563342333,"med":0.11934122815728188,"q3":0.16806191951036453,"loW":-0.08546535670757294,"hiW":0.2525397539138794,"out":[],"min":-0.08546535670757294,"max":0.2525397539138794}},"f3":{"a":{"q1":0.24521684274077415,"med":0.2852398157119751,"q3":0.3133273050189018,"loW":0.14305114932358265,"hiW":0.40042799711227417,"out":[],"min":0.11896666139364243,"max":0.40042799711227417}},"f4":{"a":{"q1":-0.3106761574745178,"med":-0.2638922184705734,"q3":-0.20312752947211266,"loW":-0.3786576986312866,"hiW":-0.07051966339349747,"out":[],"min":-0.3786576986312866,"max":-0.07051966339349747}},"f5":{"a":{"q1":0.1719960793852806,"med":0.20745276659727097,"q3":0.23231935501098633,"loW":0.08151116594672203,"hiW":0.3138948976993561,"out":[],"min":0.06200423091650009,"max":0.3138948976993561}},"f6":{"a":{"q1":0.2576713562011719,"med":0.27347995340824127,"q3":0.28777773678302765,"loW":0.21251178532838821,"hiW":0.3329373076558113,"out":[],"min":0.16526591777801514,"max":0.3623700439929962}},"f7":{"a":{"q1":0.18959985300898552,"med":0.24676191806793213,"q3":0.297004759311676,"loW":0.07674867659807205,"hiW":0.38857072591781616,"out":[],"min":0.07674867659807205,"max":0.38857072591781616}},"f8":{"a":{"q1":0.14303098991513252,"med":0.20139358192682266,"q3":0.2505360543727875,"loW":-0.01600642502307892,"hiW":0.33200639486312866,"out":[],"min":-0.01600642502307892,"max":0.33200639486312866}},"f9":{"a":{"q1":0.03741650842130184,"med":0.07815734669566154,"q3":0.11595198139548302,"loW":-0.08038670103996992,"hiW":0.19677741825580597,"out":[],"min":-0.08568288385868073,"max":0.19677741825580597}},"f10":{"a":{"q1":0.1326664201915264,"med":0.18373296409845352,"q3":0.2246795855462551,"loW":-0.005353327840566635,"hiW":0.3025318384170532,"out":[],"min":-0.03390387073159218,"max":0.3025318384170532}},"f11":{"a":{"q1":-0.076992591843009,"med":-0.01910584233701229,"q3":0.026323402766138315,"loW":-0.17800931632518768,"hiW":0.11237772554159164,"out":[],"min":-0.17800931632518768,"max":0.11237772554159164}},"f12":{"a":{"q1":0.13639524206519127,"med":0.16893767565488815,"q3":0.19931034743785858,"loW":0.0420225840061903,"hiW":0.26422467827796936,"out":[],"min":0.03533046320080757,"max":0.26422467827796936}},"f13":{"a":{"q1":-0.05122439283877611,"med":-0.010137773118913174,"q3":0.030125782825052738,"loW":-0.1732496563345194,"hiW":0.11650218814611435,"out":[],"min":-0.18026189506053925,"max":0.11650218814611435}},"f14":{"a":{"q1":0.05400415509939194,"med":0.10274013504385948,"q3":0.15458185970783234,"loW":-0.07938096672296524,"hiW":0.2729397714138031,"out":[],"min":-0.07938096672296524,"max":0.2729397714138031}},"f15":{"a":{"q1":-0.17099376395344734,"med":-0.09858997911214828,"q3":-0.0256838146597147,"loW":-0.28910157084465027,"hiW":0.09799718111753464,"out":[],"min":-0.28910157084465027,"max":0.09799718111753464}},"f16":{"a":{"q1":-0.01866291183978319,"med":0.010326935444027185,"q3":0.046704416163265705,"loW":-0.11141423135995865,"hiW":0.1427672654390335,"out":[],"min":-0.11141423135995865,"max":0.1427672654390335}},"f17":{"a":{"q1":0.18630048632621765,"med":0.2210242822766304,"q3":0.25310225784778595,"loW":0.08736775815486908,"hiW":0.3533049151301384,"out":[],"min":0.08736775815486908,"max":0.3585871160030365}},"f18":{"a":{"q1":-0.1280648335814476,"med":-0.11259597539901733,"q3":-0.0934155285358429,"loW":-0.18003879114985466,"hiW":-0.04144157096743584,"out":[],"min":-0.19695661962032318,"max":-0.0016605142736807466}},"f19":{"a":{"q1":-0.2619013786315918,"med":-0.2146947905421257,"q3":-0.15862248092889786,"loW":-0.35464417934417725,"hiW":-0.05468437448143959,"out":[],"min":-0.35464417934417725,"max":-0.05468437448143959}},"f20":{"a":{"q1":-0.27475739270448685,"med":-0.20940328389406204,"q3":-0.13544431328773499,"loW":-0.3969796299934387,"hiW":-0.019888421520590782,"out":[],"min":-0.3969796299934387,"max":-0.019888421520590782}}},"qq":{"z1":{"b":[]},"z2":{"b":[]},"z3":{"b":[]},"z4":{"b":[]},"z5":{"b":[]},"z6":{"b":[]},"z7":{"b":[]},"z8":{"b":[]},"z9":{"b":[]},"z10":{"b":[]},"z11":{"b":[]},"z12":{"b":[]},"z13":{"b":[]},"z14":{"b":[]},"z15":{"b":[]},"z16":{"b":[]},"z17":{"b":[]},"z18":{"b":[]},"z19":{"b":[]},"z20":{"b":[]},"f1":{"a":[]},"f2":{"a":[]},"f3":{"a":[]},"f4":{"a":[]},"f5":{"a":[]},"f6":{"a":[]},"f7":{"a":[]},"f8":{"a":[]},"f9":{"a":[]},"f10":{"a":[]},"f11":{"a":[]},"f12":{"a":[]},"f13":{"a":[]},"f14":{"a":[]},"f15":{"a":[]},"f16":{"a":[]},"f17":{"a":[]},"f18":{"a":[]},"f19":{"a":[]},"f20":{"a":[]}},"corr":{"core":{"bv":["z1","z2","z3","z4","z5","z6"],"b":[[1,-0.56,0.32,-0.21,-0.13,-0.34],[-0.56,1,-0.47,0.49,-0.26,0.54],[0.32,-0.47,1,-0.87,-0.08,-0.87],[-0.21,0.49,-0.87,1,0.01,0.96],[-0.13,-0.26,-0.08,0.01,1,0.09],[-0.34,0.54,-0.87,0.96,0.09,1]],"av":["f1","f2","f3","f4","f5","f6"],"a":[[1,0.85,-0.81,-0.84,0.76,0.53],[0.85,1,-0.8,-0.86,0.79,0.56],[-0.81,-0.8,1,0.79,-0.72,-0.49],[-0.84,-0.86,0.79,1,-0.78,-0.47],[0.76,0.79,-0.72,-0.78,1,0.44],[0.53,0.56,-0.49,-0.47,0.44,1]]},"all":{"bv":["z1","z2","z3","z4","z5","z6","z7","z8","z9","z10","z11","z12"],"b":[[1,-0.56,0.32,-0.21,-0.13,-0.34,-0.52,0.6,-0.5,-0.5,0.29,0.29],[-0.56,1,-0.47,0.49,-0.26,0.54,0.29,-0.49,0.41,0.15,-0.58,-0.37],[0.32,-0.47,1,-0.87,-0.08,-0.87,-0.68,0.78,-0.68,-0.4,0.64,0.83],[-0.21,0.49,-0.87,1,0.01,0.96,0.62,-0.68,0.6,0.37,-0.86,-0.94],[-0.13,-0.26,-0.08,0.01,1,0.09,0.47,-0.47,-0.05,0.66,0.16,-0.06],[-0.34,0.54,-0.87,0.96,0.09,1,0.7,-0.77,0.7,0.48,-0.87,-0.94],[-0.52,0.29,-0.68,0.62,0.47,0.7,1,-0.88,0.61,0.79,-0.49,-0.7],[0.6,-0.49,0.78,-0.68,-0.47,-0.77,-0.88,1,-0.59,-0.7,0.52,0.67],[-0.5,0.41,-0.68,0.6,-0.05,0.7,0.61,-0.59,1,0.5,-0.62,-0.69],[-0.5,0.15,-0.4,0.37,0.66,0.48,0.79,-0.7,0.5,1,-0.25,-0.45],[0.29,-0.58,0.64,-0.86,0.16,-0.87,-0.49,0.52,-0.62,-0.25,1,0.86],[0.29,-0.37,0.83,-0.94,-0.06,-0.94,-0.7,0.67,-0.69,-0.45,0.86,1]],"av":["f1","f2","f3","f4","f5","f6","f7","f8","f9","f10","f11","f12"],"a":[[1,0.85,-0.81,-0.84,0.76,0.53,-0.83,0.85,0.83,0.83,0.85,0.76],[0.85,1,-0.8,-0.86,0.79,0.56,-0.89,0.88,0.88,0.84,0.9,0.8],[-0.81,-0.8,1,0.79,-0.72,-0.49,0.8,-0.8,-0.76,-0.79,-0.79,-0.72],[-0.84,-0.86,0.79,1,-0.78,-0.47,0.89,-0.88,-0.82,-0.86,-0.88,-0.81],[0.76,0.79,-0.72,-0.78,1,0.44,-0.76,0.79,0.72,0.73,0.77,0.73],[0.53,0.56,-0.49,-0.47,0.44,1,-0.48,0.49,0.44,0.49,0.53,0.44],[-0.83,-0.89,0.8,0.89,-0.76,-0.48,1,-0.89,-0.84,-0.87,-0.9,-0.79],[0.85,0.88,-0.8,-0.88,0.79,0.49,-0.89,1,0.86,0.86,0.87,0.8],[0.83,0.88,-0.76,-0.82,0.72,0.44,-0.84,0.86,1,0.81,0.83,0.73],[0.83,0.84,-0.79,-0.86,0.73,0.49,-0.87,0.86,0.81,1,0.86,0.79],[0.85,0.9,-0.79,-0.88,0.77,0.53,-0.9,0.87,0.83,0.86,1,0.79],[0.76,0.8,-0.72,-0.81,0.73,0.44,-0.79,0.8,0.73,0.79,0.79,1]]}},"heat":{"title":"Demographic Bias Heatmap","states":[{"v":1,"label":"Missed case (false negative)","color":"#2563C8","border":"#1D4FA0"}],"rows":[],"note":"Public copy: individual clinical records and point-level projections are omitted; aggregate results are retained.","off":"Detected case","empty":"Record-level examples are available only in the authorized local version."},"comparison":{"metrics":["SPD","DID","EOD","Equalized-odds difference","Counterfactual validity","Proximity","Sparsity","AUROC (accuracy guard)"],"arrows":["↓","↓","↓","↓","↑","↓","↓","↑"],"dirs":["min","min","min","min","max","min","min","max"],"rows":[{"method":"Reweighting","family":"Traditional","values":[0.05343699864247814,0.12357305936073071,0.08333333333333337,0.08333333333333337,1,0.4377775910468763,2.2,0.7681941766770478],"mean_rank":2.5},{"method":"Fair contrastive learning","family":"Modern","values":[0.05162474883946511,0.13548504409491768,0.08333333333333337,0.1255358807082945,1,0.26142788227823494,1.44,0.7450768698403283],"mean_rank":2.75},{"method":"FairSMOTE","family":"Traditional","values":[0.03915968827145555,0.10261288685946224,0.11391437308868502,0.11391437308868502,1,0.5525650336815287,2.8,0.7594423846952396],"mean_rank":3.1875},{"method":"Counterfactual recourse (DiCE)","family":"Modern","values":[0.10620031796502383,0.2820945945945945,0.15740740740740744,0.1771374586679263,1,0.3942578044896633,1.84,0.7685777843689753],"mean_rank":4.0625},{"method":"Optimal Transport","family":"Traditional","values":[0.09613723312353445,0.21483728626585763,0.06727828746177378,0.17007902298850572,1,1.216196369339728,3.76,0.7645054130209105],"mean_rank":4.1875},{"method":"Adversarial debiasing","family":"Modern","values":[0.0796669352672576,0.21161529680365299,0.08944954128440363,0.14265470004723663,1,1.409124785526883,3.72,0.7606920757328588],"mean_rank":4.3125},{"method":"No mitigation (reference)","family":"reference","values":[0.08503023571516727,0.18506580714477583,0.08333333333333337,0.08333333333333337,1,0.532274982206859,2.4,0.7668179346482773],"mean_rank":null}],"best":"Fair contrastive learning","best_trad":"Reweighting","select_family":"Modern"},"cmp_note":"No methods were run: the bias was not detected, so the data are unchanged (After = Before).","footer":"<b>Detected: min DI of outcome rate; max EOD of baseline model (protected attributes) = 0.66; 0.187 — Fair contrastive learning selected (best-ranked modern method; best traditional for comparison: Reweighting) and applied.<\/b> Mitigation groups = intersection of sex × race_ethnicity. Age group is audited (heatmap rows) but not equalised. Fairness is always measured on the untouched test split. The selected method replaced the predictors with a learned representation (f1, f2, ...), shown as After-only variables. Public copy: individual clinical records and point-level projections are omitted; aggregate results are retained.","chips":["<b>33,874<\/b> rows (before)","<b>33,874<\/b> rows (after)","Bias detected: <b>YES<\/b>","Worst SPD: <b>0.063 → 0.086<\/b>","Worst EOD: <b>0.083 → 0.068<\/b>","Test AUROC: <b>0.771 → 0.744<\/b>","Selected method: <b>Fair contrastive learning<\/b>"]};
+const ALL_VARS = D.vars;
+const B_ONLY = ALL_VARS.filter(v=>D.box[v].b && !D.box[v].a), A_ONLY = ALL_VARS.filter(v=>D.box[v].a && !D.box[v].b);
+const REPLACED = B_ONLY.length>0 && A_ONLY.length>0;   // the step replaced the predictors with learned features
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){ const e=document.createElementNS(NS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(Math.abs(val)>=1e5) return val.toExponential(1);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+function fmtCount(n){ if(n>=1e6) return (n/1e6).toFixed(1)+'M'; if(n>=1e4) return Math.round(n/1e3)+'k'; if(n>=1e3) return (n/1e3).toFixed(1)+'k'; return String(Math.round(n)); }
+function fmtVal(v){ if(v===null||v===undefined||Number.isNaN(v)) return '–'; const a=Math.abs(v); if(a!==0&&(a<0.001||a>=1e6)) return v.toExponential(2); if(a>=1000) return v.toFixed(0); if(a>=100) return v.toFixed(1); if(a>=1) return v.toFixed(3); return v.toFixed(4); }
+
+document.getElementById('ttl').textContent = 'Interactive EDA Dashboard — ' + D.title + ' (Before vs After Preprocessing)';
+document.title = 'Interactive EDA Dashboard — ' + D.title + ' (Before vs After Preprocessing)';
+document.getElementById('sub').textContent = D.subtitle;
+document.getElementById('info').innerHTML = D.info.map(([k,v])=>`<div class="info-row"><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></div>`).join('');
+document.getElementById('footNote').innerHTML = D.footer;
+document.getElementById('footChips').innerHTML = D.chips.map(c=>`<span>${c}</span>`).join('');
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; varDropdown.appendChild(o); });
+let selectedVar = ALL_VARS[0];
+let gridVars = REPLACED ? B_ONLY.slice(0,5).concat(A_ONLY.slice(0,5)) : ALL_VARS.slice(0, 10);
+if(REPLACED){
+  const n=document.getElementById('distNote'); n.style.display='block';
+  n.textContent='The selected method replaced the original predictors with learned features, so an original variable has no direct After value. Blue charts = original predictors (Before); green charts = learned features (After).';
+}
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = v;
+    d.onclick = ()=>choose(v);
+    varList.appendChild(d);
+  });
+}
+function choose(v){
+  selectedVar=v; varDropdown.value=v; renderVarList();
+  if(!gridVars.includes(v)){
+    if(REPLACED){
+      const top = list => [v].concat(list.filter(x=>x!==v)).slice(0,5);
+      gridVars = B_ONLY.includes(v) ? top(B_ONLY).concat(A_ONLY.slice(0,5)) : B_ONLY.slice(0,5).concat(top(A_ONLY));
+    } else { gridVars = [v].concat(ALL_VARS.filter(x=>x!==v).slice(0, 9)); }
+    renderGrids();
+  }
+  highlightVar(v); document.getElementById('qqVar').value=v; drawQQ();
+}
+varDropdown.addEventListener('change', e=>choose(e.target.value));
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= Histogram / Density =================
+function drawDistChart(container, v){
+  const d = D.dist[v];
+  const nb = (d.b||d.a).length;
+  const maxc = Math.max(...(d.b||[0]), ...(d.a||[0]), 1);
+  const W=250, H=d.rel?160:150, padL=30, padB=d.rel?30:20, padT=6, padR=6;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const bw = plotW/nb;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=4;i++){
+    const y = padT + plotH - (i/4)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtCount((i/4)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  function barsOrLine(counts, color, line, alpha){
+    if(!counts) return;
+    if(plotType==='hist'){
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw;
+        const barH = (c/maxc)*plotH;
+        svg.appendChild(svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:color, opacity:alpha, stroke:line, 'stroke-width':1}));
+      });
+    } else {
+      let dd='';
+      counts.forEach((c,i)=>{ const x = padL + i*bw + bw/2; const y = padT + plotH - (c/maxc)*plotH; dd += (i===0?'M':'L') + x + ' ' + y + ' '; });
+      svg.appendChild(svgEl('path',{d:dd.trim(), fill:'none', stroke:line, 'stroke-width':2}));
+      const dArea = dd.trim() + ` L ${padL+bw*(nb-0.5)} ${padT+plotH} L ${padL+bw/2} ${padT+plotH} Z`;
+      svg.appendChild(svgEl('path',{d:dArea, fill:color, opacity:alpha*0.6}));
+    }
+  }
+  barsOrLine(d.b, 'var(--before)', 'var(--before-line)', 0.55);
+  barsOrLine(d.a, 'var(--after)', 'var(--after-line)', 0.55);
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  if(d.rel){
+    [['b','B','#3E6FA8',H-15],['a','A','#4C9B50',H-4]].forEach(([k,lab,col,y])=>{
+      if(!d[k+'r']) return; const [lo,hi]=d[k+'r'];
+      const t=svgEl('text',{x:padL,y:y,'font-size':8,fill:col}); t.textContent=`${lab}: ${fmtAxis(lo,hi-lo)}–${fmtAxis(hi,hi-lo)}`; svg.appendChild(t);
+    });
+  } else {
+    const [lo,hi]=d.r;
+    const xt1=svgEl('text',{x:padL,y:H-4,'font-size':8,fill:'#8791A3'}); xt1.textContent=fmtAxis(lo,hi-lo); svg.appendChild(xt1);
+    const xt2=svgEl('text',{x:W-padR,y:H-4,'text-anchor':'end','font-size':8,fill:'#8791A3'}); xt2.textContent=fmtAxis(hi,hi-lo); svg.appendChild(xt2);
+  }
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function drawBoxChart(container, v){
+  const s = D.box[v], rel = D.dist[v].rel;
+  const W=250, H=150, padL=32, padB=20, padT=8, padR=10;
+  const plotH=H-padT-padB;
+  const rng = st => [Math.min(st.loW, ...st.out), Math.max(st.hiW, ...st.out)];
+  let lo=Infinity, hi=-Infinity;
+  ['b','a'].forEach(k=>{ if(s[k]){ const [l,h]=rng(s[k]); lo=Math.min(lo,l); hi=Math.max(hi,h); } });
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){ const yy=padT+(i/3)*plotH; svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'})); }
+  function box(cx, st, color, line){
+    let L=lo, Hh=hi; if(rel){ [L,Hh]=rng(st); }
+    const y = val => padT + plotH - ((val-L)/((Hh-L)||1))*plotH;
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(st.loW),y2:y(st.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(st.q3),y2:y(st.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(st.loW),y2:y(st.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(st.hiW),y2:y(st.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('rect',{x:cx-bw/2, y:y(st.q3), width:bw, height:Math.max(y(st.q1)-y(st.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85}));
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(st.med),y2:y(st.med),stroke:line,'stroke-width':1.6}));
+    st.out.forEach(o=>{ svg.appendChild(svgEl('circle',{cx:cx, cy:y(o), r:2, fill:'none', stroke:line, 'stroke-width':1})); });
+  }
+  const xb=padL+(W-padL-padR)*(s.a?0.28:0.5), xa=padL+(W-padL-padR)*(s.b?0.72:0.5);
+  if(s.b) box(xb, s.b, 'var(--before)', 'var(--before-line)');
+  if(s.a) box(xa, s.a, 'var(--after)', 'var(--after-line)');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  [['b',xb,'Before','#556'],['a',xa,'After','#556']].forEach(([k,x,lab,col])=>{
+    if(!s[k]) return;
+    let txt=lab, c=col;
+    if(rel && s[k]){ const [l,h]=rng(s[k]); txt=`${lab} [${fmtAxis(l,h-l)}, ${fmtAxis(h,h-l)}]`; c = k==='b'?'#3E6FA8':'#4C9B50'; }
+    const t=svgEl('text',{x:x,y:H-4,'text-anchor':'middle','font-size':rel?7.5:9,fill:c}); t.textContent=txt; svg.appendChild(t);
+  });
+  if(!rel){
+    for(let i=0;i<=3;i++){
+      const val = lo + (i/3)*(hi-lo); const yy=padT+plotH-(i/3)*plotH;
+      const t=svgEl('text',{x:padL-4,y:yy+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtAxis(val,hi-lo); svg.appendChild(t);
+    }
+  }
+  container.appendChild(svg);
+}
+
+// ================= render grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  gridVars.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v; cb.onclick=()=>choose(v);
+    const t = document.createElement('div'); t.className='ct'; t.textContent=v; t.title=v; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+    const bb = document.createElement('div'); bb.className='chart-box'; bb.onclick=()=>choose(v);
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=v; t2.title=v; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function drawQQSub(svg, x0, w, pts, color, line, label, H, padT, padB){
+  const container = svg;
+  if(!pts){ const t=svgEl('text',{x:x0+w/2,y:H/2,'text-anchor':'middle','font-size':10,fill:'#8791A3'}); t.textContent='not present'; svg.appendChild(t); }
+  else {
+    const theo=pts.map(p=>p[0]), z=pts.map(p=>p[1]);
+    const lo=Math.min(...theo,...z), hi=Math.max(...theo,...z);
+    const plotH=H-padT-padB, plotW=w-40;
+    const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+    const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+    svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+    svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+    svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+    theo.forEach((t,i)=>{ svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(z[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85})); });
+  }
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; container.appendChild(lb);
+}
+function drawQQ(){
+  if(Object.values(D.qq).every(q=>!q.b?.length&&!q.a?.length)){document.getElementById('qqChart').textContent='Point-level Q-Q data are available only in the authorized local version.';return;}
+  const v = document.getElementById('qqVar').value;
+  const q = D.qq[v] || {};
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520, H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  let pb=q.b, pa=q.a, lb='Before Preprocessing', la='After Preprocessing';
+  if(!pb && B_ONLY.length){ pb=D.qq[B_ONLY[0]].b; lb+=` (${B_ONLY[0]})`; }
+  if(!pa && A_ONLY.length){ pa=D.qq[A_ONLY[0]].a; la+=` (${A_ONLY[0]})`; }
+  drawQQSub(svg, 0, W/2, pb, 'var(--before)', 'var(--before-line)', lb, H, padT, padB);
+  drawQQSub(svg, W/2, W/2, pa, 'var(--after)', 'var(--after-line)', la, H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function short(v){ return v.length>8 ? v.slice(0,6)+'…' : v; }
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  if(!vars.length){ const p=document.createElement('div'); p.className='mv-pct'; p.style.textAlign='center'; p.textContent='no variables'; wrap.appendChild(p); return wrap; }
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=short(v); th.title=v; th.style.writingMode='vertical-rl'; th.style.transform='rotate(180deg)'; th.style.fontSize='9px'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=short(v1); th.title=v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2); td.title=`${v1} × ${v2}: ${val.toFixed(2)}`;
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const c = D.corr[document.getElementById('corrSet').value];
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(c.bv, c.b, 'Before Preprocessing'));
+  container.appendChild(renderCorrTable(c.av, c.a, 'After Preprocessing'));
+}
+
+// ================= Bias heatmap (cell grid) =================
+function chip(st){ return `<span class="lg"><span class="swatch" style="background:${st.color};border:1px solid ${st.border||st.color}"></span>${esc(st.label)}</span>`; }
+function drawMVHeat(){
+  const h = D.heat;
+  document.getElementById('heatTitle').textContent = h.title;
+  document.getElementById('heatChips').innerHTML = h.states.map(chip).join('');
+  document.getElementById('heatNote').innerHTML = h.note;
+  const container = document.getElementById('mvHeat'); container.innerHTML='';
+  if(!h.rows.length){ container.innerHTML = `<div style="font-size:12.5px;color:var(--muted);padding:6px 0;">${esc(h.empty||'Not applicable')}</div>`; return; }
+  const colour = {}; h.states.forEach(s=>colour[s.v]=s);
+  const outer = document.createElement('div'); outer.className='mv-wrap';
+  const wrap = document.createElement('div'); wrap.className='mv-inner';
+  outer.appendChild(wrap);
+  const head = document.createElement('div'); head.className='mv-headrow';
+  const gw = k => Math.max(...h.rows.map(r=>r[k].length))*17-2;
+  head.innerHTML = `<div></div><div class="h" style="width:min(100%,${gw('b')}px)">Before</div><div class="h" style="width:min(100%,${gw('a')}px)">After</div>`;
+  wrap.appendChild(head);
+  h.rows.forEach(r=>{
+    const row = document.createElement('div'); row.className='mv-row';
+    const label = document.createElement('div'); label.className='mv-label'; label.textContent=r.label; label.title=r.label;
+    row.appendChild(label);
+    [['b','Before'],['a','After']].forEach(([k,lab])=>{
+      const holder = document.createElement('div'); holder.style.width=`min(100%,${r[k].length*17-2}px)`;
+      const grid = document.createElement('div'); grid.className='mv-grid'; grid.style.setProperty('--n', r[k].length);
+      r[k].forEach((s,i)=>{
+        const cell = document.createElement('div'); cell.className='mv-cell';
+        if(s>0 && colour[s]){ cell.style.background=colour[s].color; cell.style.borderColor=colour[s].border||colour[s].color; }
+        cell.title = `${r.label} · example ${i+1} · ${lab}: ` + (s>0 && colour[s] ? colour[s].label : h.off);
+        grid.appendChild(cell);
+      });
+      const pct = document.createElement('div'); pct.className='mv-pct'; pct.textContent = k==='b' ? r.pb : r.pa;
+      holder.appendChild(grid); holder.appendChild(pct);
+      row.appendChild(holder);
+    });
+    row.style.marginBottom='10px';
+    row.style.alignItems='start';
+    wrap.appendChild(row);
+  });
+  container.appendChild(outer);
+  const legend = document.createElement('div');
+  legend.style.cssText='display:flex;gap:14px;justify-content:center;margin-top:14px;font-size:11px;color:var(--muted);flex-wrap:wrap;';
+  legend.innerHTML = h.states.map(s=>`<span><span class="swatch" style="background:${s.color};border:1px solid ${s.border||s.color};display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px;"></span>${esc(s.label)}</span>`).join('') +
+    `<span><span class="swatch" style="background:#FFFFFF;border:1px solid #D6DCEA;display:inline-block;width:11px;height:11px;border-radius:0;margin-right:5px;vertical-align:-1px;"></span>${esc(h.off)}</span>`;
+  container.appendChild(legend);
+}
+
+// ================= Method comparison =================
+function drawCmp(){
+  const c = document.getElementById('cmp'); const d = D.comparison;
+  if(!d){ c.innerHTML = `<div class="muted-note" style="margin:0;font-size:12.5px;">${esc(D.cmp_note)}</div>`; return; }
+  const best=[];
+  d.metrics.forEach((m,j)=>{
+    const vals=d.rows.filter(x=>x.family!=='reference').map(x=>x.values[j]).filter(v=>v!==null);
+    if(!vals.length){ best.push(null); return; }
+    const dir=d.dirs[j]; let b;
+    if(dir==='max') b=Math.max(...vals); else if(dir==='min') b=Math.min(...vals);
+    else if(dir[0]==='target') b=vals.reduce((p,v)=>Math.abs(v-dir[1])<Math.abs(p-dir[1])?v:p);
+    else b=vals.reduce((p,v)=>Math.abs(v)<Math.abs(p)?v:p);
+    best.push(b);
+  });
+  const nm = d.rows.filter(x=>x.family!=='reference').length;
+  let h = `<div class="kpi-row">
+    <div class="kpi"><div class="val">${nm}</div><div class="lbl">methods compared</div></div>
+    <div class="kpi"><div class="val">${d.metrics.length}</div><div class="lbl">metrics</div></div>
+    <div class="kpi"><div class="val" style="font-size:13px">${esc(d.best)}</div><div class="lbl">selected (best-ranked ${esc(d.select_family.toLowerCase())})</div></div>
+    <div class="kpi"><div class="val" style="font-size:13px;color:var(--muted)">${esc(d.best_trad||'—')}</div><div class="lbl">best traditional (comparison only)</div></div></div>`;
+  h += `<div style="overflow-x:auto"><table class="method-table"><tr><th style="text-align:left">Method</th>${d.metrics.map((m,j)=>`<th>${esc(m)} ${d.arrows[j]}</th>`).join('')}<th>Mean rank ↓</th></tr>`;
+  d.rows.forEach(x=>{
+    const cls = x.method===d.best ? 'winner' : (x.family==='reference' ? 'ref' : '');
+    h += `<tr class="${cls}"><td class="m">${esc(x.method)}</td>` +
+         x.values.map((v,j)=>`<td class="${(cls!=='winner'&&x.family!=='reference'&&v!==null&&v===best[j])?'top':''}">${fmtVal(v)}</td>`).join('') +
+         `<td>${x.mean_rank===null?'–':x.mean_rank.toFixed(2)}</td></tr>`;
+  });
+  h += `</table></div><div class="mv-pct" style="text-align:left;margin-top:8px;font-size:11px;">All methods are ranked together on every metric (green = best value of that metric). Project rule: only <b>${esc(d.select_family)}</b> methods can be selected and applied; traditional methods are compared only. Reference rows give context and are not ranked.</div>`;
+  c.innerHTML = h;
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+document.getElementById('corrAllOpt').textContent = `All ${Math.max(D.corr.all.bv.length, D.corr.all.av.length)} Vars`;
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawMVHeat();
+drawCmp();
+</script>
+</body>
+</html>
