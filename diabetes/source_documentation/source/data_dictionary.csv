@@ -1,0 +1,30 @@
+column,role,definition
+SEQN,identifier,NHANES participant ID; join key; never a predictor
+RIDAGEYR,predictor / fairness,"Age at screening, years; age80 means80 or older"
+RIAGENDR,predictor / fairness,"CDC-labelled gender variable:1 male,2 female; retain for fairness evaluation"
+RIDRETH3,predictor / fairness,"Race/Hispanic origin:1 Mexican American,2 other Hispanic,3 non-Hispanic White,4 non-Hispanic Black,6 non-Hispanic Asian,7 other/multiracial"
+DMDEDUC2,"source provenance, not baseline predictor","Raw adult20+ education:1 below9th,2 grades9-11,3 high school/GED,4 some college/AA,5 college+,7 refused,9 unknown; structurally missing at18-19"
+education_level,predictor,DMDEDUC2 valid1-5;7/9 converted to missing; no imputation
+INDFMPIR,predictor,"Family income to poverty ratio, top coded5"
+BMXBMI,predictor,Measured body mass index kg/m2
+BMXWAIST,predictor,Measured waist circumference cm
+BMXWT,"optional predictor, redundant with BMI",Measured weight kg; excluded from default baseline feature list
+BMXHT,"optional predictor, redundant with BMI",Measured standing height cm; excluded from default baseline feature list
+SMQ020,"source provenance, not baseline predictor","100+ lifetime cigarettes:1 yes,2 no,7 refused,9 unknown"
+SMQ040,"source provenance, not baseline predictor","Current smoking:1 every day,2 some days,3 none; skipped for never-smokers"
+smoking_status,predictor,never if SMQ020=2; former if020=1 and040=3; current if020=1 and040 in1/2; otherwise missing
+DIQ010,"label source, never predictor","Diagnosed diabetes:1 yes,2 no,3 borderline,7 refused,9 unknown; pregnancy-only diabetes excluded by question wording"
+diabetes_diagnosed,target,DIQ010=1 ->1; DIQ010=2 ->0
+WTINT2YR,survey metadata,Interview weight for interview-only analyses
+WTMEC2YR,survey metadata,MEC weight for baseline analyses incorporating measured BMI/waist; use appropriate examined population
+SDMVSTRA,survey metadata,Masked variance stratum; not predictor
+SDMVPSU,survey metadata,Masked variance PSU; not predictor and not hospital ID
+RIDSTATR,survey metadata,"Interview/examination status;1 interview only,2 interviewed and examined"
+RIDEXPRG,cohort metadata,"Pregnancy status;1 pregnant,2 not pregnant,3 cannot determine; restricted reporting ages; not a baseline feature"
+LBXGH,biomarker extension only,HbA1c percent; not included in baseline predictors
+WTPH2YR,survey metadata,Phlebotomy weight for HbA1c blood analyte analyses; positive weights only in relevant analytic population
+LBXGLU,biomarker extension only,Fasting plasma glucose mg/dL; not included in baseline predictors
+LBDGLUSI,biomarker extension only,"Fasting glucose mmol/L, redundant unit conversion; not baseline"
+WTSAF2YR,survey metadata,Fasting subsample weight for fasting glucose analyses; supersedes general MEC/interview weights for that subsample
+included_binary_task,cohort metadata,Whether adult with DIQ0101/2
+exclusion_reason,cohort metadata,Reason participant excluded; no excluded records discarded from audit
