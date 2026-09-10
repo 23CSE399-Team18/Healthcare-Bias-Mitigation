@@ -1,0 +1,7 @@
+dataset,bias,applied,mean_rank,rank_total,methods,candidates,candidate_position,tie_with,next_candidate,next_candidate_mean_rank,next_candidate_rank_total,best_baseline,best_baseline_mean_rank,best_baseline_rank_total,baselines_with_lower_mean_rank,file
+diabetes,Missing Data,MIP-VAE,4.429,31.0,8,3,1,,HyperImpute,4.571,32.0,MICE,2.857,20.0,3,01_missing_data_bias_method_comparison.png
+diabetes,Class Imbalance,TabDDPM,3.111,28.0,8,4,1,,DeepSMOTE,3.444,31.0,Borderline-SMOTE,3.0,27.0,1,02_class_imbalance_bias_method_comparison.png
+diabetes,Feature Scale,PowerTransform (Yeo-Johnson),2.5,15.0,6,3,1,,SNN (SELU),3.083,18.5,Min-Max scaler,3.333,20.0,0,04_feature_scale_bias_method_comparison.png
+diabetes,Demographic,Adversarial debiasing,2.938,23.5,6,3,1,,Fair contrastive learning,4.312,34.5,Optimal Transport,2.875,23.0,1,05_demographic_bias_method_comparison.png
+diabetes,Duplicate,Ditto (transformer matcher),2.143,15.0,6,3,1,,GNN entity resolution,2.929,20.5,GBER (graph-based ER),2.357,16.5,0,06_duplicate_bias_method_comparison.png
+diabetes,Data Noise,Robust loss (GCE),1.417,8.5,7,3,1,,Confident Learning (Cleanlab),1.583,9.5,Denoising autoencoder,3.333,20.0,0,07_data_noise_bias_method_comparison.png
