@@ -1,0 +1,9 @@
+bias,selected modern,modern mean rank,best traditional,traditional mean rank,metrics where modern is better,modern ranks ahead
+Duplicate,- (bias not detected: nothing applied),,,,,
+Missing data,HyperImpute,3.2857142857142856,GMM,3.0,4/7,False
+Outlier,EBM,2.4285714285714284,One-Class SVM,2.857142857142857,4/7,True
+Data noise,Robust loss (GCE),1.1666666666666667,Denoising autoencoder,2.8333333333333335,5/6,True
+Feature scale,PowerTransform (Yeo-Johnson),3.0,Min-Max scaler,3.3333333333333335,4/6,True
+Encoding / domain,- (bias not detected: nothing applied),,,,,
+Class imbalance,TabDDPM,2.7777777777777777,Borderline-SMOTE,3.2222222222222223,5/9,True
+Demographic,Adversarial debiasing,2.8125,Optimal Transport,3.625,5/8,True
