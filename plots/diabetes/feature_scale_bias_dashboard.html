@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Feature Scale Bias (Before vs After Preprocessing)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#6FA0DA;
+    --before-line:#3E6FA8;
+    --after:#7BC17E;
+    --after-line:#4C9B50;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:22px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:16px; padding:16px; align-items:start;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+  @media (max-width:1400px){ .grid6{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:1100px){ .grid6{grid-template-columns:repeat(2,1fr);} .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  .row3{display:grid; grid-template-columns:1.1fr 1.6fr 1.3fr; gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} .row3{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .sh-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .sh-inner{min-width:max-content;}
+  .sh-headrow{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; margin-bottom:10px;}
+  .sh-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .sh-row{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; align-items:center; margin-bottom:4px;}
+  .sh-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .sh-grid{display:grid; grid-template-columns:repeat(var(--n), 15px); grid-auto-rows:15px; gap:2px;}
+  .sh-cell{width:15px; height:15px; border:1px solid #D7DEEC; border-radius:2px; box-sizing:border-box;}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Interactive EDA Dashboard — Feature Scale Bias (Before vs After Preprocessing)</h1>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Preprocessing)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Preprocessing)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:150px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 6 Vars</option>
+              <option value="all">All 10 Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Feature Scale Heatmap
+        <span class="legend-inline">
+          <span>Shared color scale across all 10 variables</span>
+        </span>
+      </p>
+      <div id="scaleHeat"></div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+const DATA = {"vars": ["age", "diastolic bp", "cholesterol", "glucose", "bmi", "hbA1c", "triglycerides", "wbc", "hemoglobin"], "before": [{"age": 60.0, "diastolic bp": 24.7657, "cholesterol": 11.5, "glucose": 1.07, "bmi": 224.083, "hbA1c": 5.5, "triglycerides": 43.2282, "wbc": 42.0347, "hemoglobin": 0.0}, {"age": 72.0, "diastolic bp": 24.3253, "cholesterol": -0.6441, "glucose": 5.75, "bmi": 240.03, "hbA1c": 5.9, "triglycerides": 33.2077, "wbc": 35.512, "hemoglobin": 0.0}, {"age": 73.0, "diastolic bp": 29.2633, "cholesterol": 0.3, "glucose": 4.79, "bmi": 75.418, "hbA1c": 6.3843, "triglycerides": 46.1462, "wbc": 41.2037, "hemoglobin": 0.0}, {"age": 73.0, "diastolic bp": 19.1406, "cholesterol": 4.4096, "glucose": 0.26, "bmi": 303.568, "hbA1c": 6.2696, "triglycerides": 69.5147, "wbc": 65.4203, "hemoglobin": 0.0}, {"age": 74.0, "diastolic bp": 23.5294, "cholesterol": 2.7874, "glucose": 1.2, "bmi": 251.667, "hbA1c": 6.2616, "triglycerides": 32.1712, "wbc": 46.1982, "hemoglobin": 0.0}, {"age": 62.0, "diastolic bp": 22.7682, "cholesterol": 0.4, "glucose": 2.9619, "bmi": 226.9306, "hbA1c": 6.1481, "triglycerides": 40.2606, "wbc": 41.957, "hemoglobin": 0.0}, {"age": 72.0, "diastolic bp": 21.73, "cholesterol": 0.3, "glucose": 2.1936, "bmi": 248.1395, "hbA1c": 4.6, "triglycerides": 36.4657, "wbc": 39.5268, "hemoglobin": 0.0}, {"age": 65.0, "diastolic bp": 27.5873, "cholesterol": 5.9777, "glucose": 2.21, "bmi": 192.1, "hbA1c": 6.2539, "triglycerides": 40.4898, "wbc": 42.8925, "hemoglobin": 0.0}, {"age": 59.0, "diastolic bp": 23.79, "cholesterol": 0.3, "glucose": 3.1296, "bmi": 233.1243, "hbA1c": 7.2962, "triglycerides": 38.3863, "wbc": 42.7232, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 24.9079, "cholesterol": 0.8, "glucose": 0.17, "bmi": 239.538, "hbA1c": 5.1, "triglycerides": 39.156, "wbc": 41.1224, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 22.963, "cholesterol": 2.4494, "glucose": 0.97, "bmi": 288.054, "hbA1c": 6.4561, "triglycerides": 36.231, "wbc": 37.4526, "hemoglobin": 0.0}, {"age": 57.0, "diastolic bp": 25.5111, "cholesterol": 0.3, "glucose": 1.35, "bmi": 231.313, "hbA1c": 5.5, "triglycerides": 47.88, "wbc": 46.1251, "hemoglobin": 0.0}, {"age": 69.0, "diastolic bp": 25.5111, "cholesterol": 2.5344, "glucose": 0.2, "bmi": 188.092, "hbA1c": 5.1, "triglycerides": 25.5176, "wbc": 32.6871, "hemoglobin": 0.0}, {"age": 54.0, "diastolic bp": 24.4102, "cholesterol": 4.5123, "glucose": 1.48, "bmi": 220.63, "hbA1c": 5.2, "triglycerides": 35.6056, "wbc": 37.4394, "hemoglobin": 0.0}, {"age": 53.0, "diastolic bp": 19.0072, "cholesterol": 6.6783, "glucose": 1.62, "bmi": 196.067, "hbA1c": 6.2, "triglycerides": 46.6881, "wbc": 43.5439, "hemoglobin": 0.0}, {"age": 58.0, "diastolic bp": 23.03, "cholesterol": 11.9, "glucose": 3.4175, "bmi": 214.024, "hbA1c": 5.4, "triglycerides": 43.0772, "wbc": 43.1339, "hemoglobin": 0.0}, {"age": 66.0, "diastolic bp": 25.9188, "cholesterol": 0.3, "glucose": 1.01, "bmi": 97.159, "hbA1c": 5.0, "triglycerides": 24.404, "wbc": 31.3934, "hemoglobin": 0.0}, {"age": 73.0, "diastolic bp": 25.1096, "cholesterol": 6.8, "glucose": 1.62, "bmi": 192.65, "hbA1c": 5.3, "triglycerides": 34.6155, "wbc": 40.4011, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 26.9253, "cholesterol": 5.7256, "glucose": 0.66, "bmi": 201.763, "hbA1c": 5.4, "triglycerides": 57.8929, "wbc": 58.4186, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 25.1788, "cholesterol": 2.7871, "glucose": 2.09, "bmi": 205.364, "hbA1c": 5.5, "triglycerides": 30.6711, "wbc": 33.9169, "hemoglobin": 0.0}, {"age": 72.0, "diastolic bp": 27.5, "cholesterol": 2.7, "glucose": 12.7, "bmi": 238.9897, "hbA1c": 5.1, "triglycerides": 37.6982, "wbc": 39.0461, "hemoglobin": 0.0}, {"age": 57.0, "diastolic bp": 22.95, "cholesterol": 0.3, "glucose": 2.5718, "bmi": 238.7971, "hbA1c": 5.1, "triglycerides": 2.605, "wbc": 44.2476, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 26.4802, "cholesterol": 3.9409, "glucose": 1.8069, "bmi": 232.8857, "hbA1c": 7.2, "triglycerides": 42.4354, "wbc": 40.492, "hemoglobin": 5.0}, {"age": 56.0, "diastolic bp": 35.0173, "cholesterol": 3.1, "glucose": 3.05, "bmi": 162.305, "hbA1c": 6.2, "triglycerides": 51.8778, "wbc": 48.9398, "hemoglobin": 6.0}, {"age": 65.0, "diastolic bp": 33.59, "cholesterol": 17.9, "glucose": 1.33, "bmi": 298.996, "hbA1c": 7.0, "triglycerides": 38.3174, "wbc": 42.559, "hemoglobin": 32.0}, {"age": 57.0, "diastolic bp": 20.475, "cholesterol": 2.6215, "glucose": 0.46, "bmi": 419.4, "hbA1c": 6.4943, "triglycerides": 46.1419, "wbc": 43.2234, "hemoglobin": 30.0}, {"age": 57.0, "diastolic bp": 25.06, "cholesterol": 0.3, "glucose": 0.61, "bmi": 266.48, "hbA1c": 7.1668, "triglycerides": 32.8031, "wbc": 38.32, "hemoglobin": 27.0}, {"age": 57.0, "diastolic bp": 29.9725, "cholesterol": 0.4, "glucose": 4.83, "bmi": 376.38, "hbA1c": 6.4, "triglycerides": 34.0495, "wbc": 35.9805, "hemoglobin": 2.0}, {"age": 60.0, "diastolic bp": 22.1879, "cholesterol": 1.0, "glucose": 0.38, "bmi": 192.25, "hbA1c": 5.7801, "triglycerides": 21.0987, "wbc": 26.1005, "hemoglobin": 20.0}, {"age": 60.0, "diastolic bp": 27.4056, "cholesterol": 0.4, "glucose": 3.59, "bmi": 219.16, "hbA1c": 7.4, "triglycerides": 48.6967, "wbc": 50.1214, "hemoglobin": 3.0}, {"age": 66.0, "diastolic bp": 29.3092, "cholesterol": 3.3588, "glucose": 1.55, "bmi": 192.971, "hbA1c": 6.2, "triglycerides": 48.1764, "wbc": 46.056, "hemoglobin": 10.0}, {"age": 58.0, "diastolic bp": 30.3616, "cholesterol": 4.4, "glucose": 3.6, "bmi": 232.53, "hbA1c": 11.9, "triglycerides": 30.5701, "wbc": 38.4744, "hemoglobin": 21.0}, {"age": 54.0, "diastolic bp": 29.3004, "cholesterol": 1.3, "glucose": 5.33, "bmi": 190.94, "hbA1c": 7.6, "triglycerides": 17.5952, "wbc": 25.6874, "hemoglobin": 8.0}, {"age": 52.0, "diastolic bp": 28.1606, "cholesterol": 1.6, "glucose": 3.96, "bmi": 194.5, "hbA1c": 5.8, "triglycerides": 53.0823, "wbc": 51.5208, "hemoglobin": 49.0}, {"age": 57.0, "diastolic bp": 24.3865, "cholesterol": 3.9188, "glucose": 0.88, "bmi": 178.285, "hbA1c": 5.9, "triglycerides": 41.6849, "wbc": 42.1066, "hemoglobin": 2.5}, {"age": 72.0, "diastolic bp": 33.6648, "cholesterol": 1.123, "glucose": 7.36, "bmi": 258.615, "hbA1c": 6.2, "triglycerides": 26.7168, "wbc": 30.7403, "hemoglobin": 9.1824}, {"age": 74.0, "diastolic bp": 22.71, "cholesterol": 0.3, "glucose": 1.64, "bmi": 408.96, "hbA1c": 6.2, "triglycerides": 33.3312, "wbc": 40.3001, "hemoglobin": 2.0}, {"age": 68.0, "diastolic bp": 26.1381, "cholesterol": 3.5, "glucose": 0.37, "bmi": 181.28, "hbA1c": 7.7, "triglycerides": 29.6248, "wbc": 36.1698, "hemoglobin": 4.0}, {"age": 61.0, "diastolic bp": 40.0359, "cholesterol": 1.153, "glucose": 3.6376, "bmi": 248.0114, "hbA1c": 9.0, "triglycerides": 44.5449, "wbc": 39.1573, "hemoglobin": 15.0}, {"age": 67.0, "diastolic bp": 25.7931, "cholesterol": 3.2, "glucose": 3.1153, "bmi": 226.525, "hbA1c": 8.6, "triglycerides": 49.0383, "wbc": 35.8389, "hemoglobin": 11.0}, {"age": 65.0, "diastolic bp": 22.9574, "cholesterol": 4.4441, "glucose": 1.42, "bmi": 153.119, "hbA1c": 6.7, "triglycerides": 40.8662, "wbc": 41.902, "hemoglobin": 5.0}, {"age": 63.0, "diastolic bp": 25.1046, "cholesterol": 0.9, "glucose": 1.32, "bmi": 229.383, "hbA1c": 6.0685, "triglycerides": 35.1177, "wbc": 36.5737, "hemoglobin": 7.0}, {"age": 52.0, "diastolic bp": 21.7181, "cholesterol": 10.9, "glucose": 0.03, "bmi": 555.48, "hbA1c": 9.5, "triglycerides": 44.0393, "wbc": 42.9055, "hemoglobin": 13.0}, {"age": 69.0, "diastolic bp": 34.8944, "cholesterol": 2.5638, "glucose": 3.8, "bmi": 542.528, "hbA1c": 7.5, "triglycerides": 34.9703, "wbc": 36.5783, "hemoglobin": 20.0}, {"age": 72.0, "diastolic bp": 23.94, "cholesterol": 0.3, "glucose": 2.0622, "bmi": 234.8243, "hbA1c": 5.9, "triglycerides": 47.2858, "wbc": 52.2192, "hemoglobin": 4.0}, {"age": 71.0, "diastolic bp": 28.73, "cholesterol": 0.6, "glucose": 2.4612, "bmi": 248.8528, "hbA1c": 7.0, "triglycerides": 29.4029, "wbc": 32.4269, "hemoglobin": 11.0}, {"age": 58.0, "diastolic bp": 28.28, "cholesterol": 0.8, "glucose": 2.651, "bmi": 221.6592, "hbA1c": 8.1, "triglycerides": 52.1846, "wbc": 48.6002, "hemoglobin": 2.0}, {"age": 57.0, "diastolic bp": 29.98, "cholesterol": 3.1, "glucose": 2.2922, "bmi": 228.7841, "hbA1c": 7.5, "triglycerides": 39.9195, "wbc": 43.8174, "hemoglobin": 14.0}, {"age": 69.0, "diastolic bp": 23.6724, "cholesterol": 0.3, "glucose": 2.5157, "bmi": 254.8255, "hbA1c": 6.4, "triglycerides": 39.3784, "wbc": 40.7682, "hemoglobin": 10.0}], "after": [{"age": -0.0522, "diastolic bp": -0.2641, "cholesterol": 1.7317, "glucose": -0.6745, "bmi": -0.2104, "hbA1c": -0.7416, "triglycerides": 0.4888, "wbc": 0.2104, "hemoglobin": -5.1993}, {"age": 1.0545, "diastolic bp": -0.4307, "cholesterol": -5.1993, "glucose": 1.7317, "bmi": 0.4888, "hbA1c": -0.4307, "triglycerides": -0.6745, "wbc": -1.0545, "hemoglobin": -5.1993}, {"age": 1.5341, "diastolic bp": 0.8122, "cholesterol": -1.1503, "glucose": 1.2582, "bmi": -5.1993, "hbA1c": 0.2104, "triglycerides": 0.7416, "wbc": 0.0522, "hemoglobin": -5.1993}, {"age": 1.5341, "diastolic bp": -2.0368, "cholesterol": 0.8122, "glucose": -1.5341, "bmi": 1.2582, "hbA1c": 0.1573, "triglycerides": 5.1993, "wbc": 5.1993, "hemoglobin": -5.1993}, {"age": 5.1993, "diastolic bp": -0.6745, "cholesterol": 0.2641, "glucose": -0.6103, "bmi": 0.7416, "hbA1c": 0.1046, "triglycerides": -0.8122, "wbc": 1.0545, "hemoglobin": -5.1993}, {"age": 0.1046, "diastolic bp": -1.0545, "cholesterol": -0.6421, "glucose": 0.4888, "bmi": -0.1046, "hbA1c": -0.2641, "triglycerides": 0.1573, "wbc": 0.1573, "hemoglobin": -5.1993}, {"age": 1.0545, "diastolic bp": -1.383, "cholesterol": -1.1503, "glucose": 0.1046, "bmi": 0.6103, "hbA1c": -5.1993, "triglycerides": -0.2104, "wbc": -0.2641, "hemoglobin": -5.1993}, {"age": 0.2641, "diastolic bp": 0.5485, "cholesterol": 1.1503, "glucose": 0.1573, "bmi": -0.9674, "hbA1c": 0.0522, "triglycerides": 0.2104, "wbc": 0.4307, "hemoglobin": -5.1993}, {"age": -0.1573, "diastolic bp": -0.5485, "cholesterol": -1.1503, "glucose": 0.6745, "bmi": 0.2104, "hbA1c": 0.8122, "triglycerides": -0.0522, "wbc": 0.3741, "hemoglobin": -5.1993}, {"age": -1.01, "diastolic bp": -0.2104, "cholesterol": -0.4596, "glucose": -2.0368, "bmi": 0.4307, "hbA1c": -1.4544, "triglycerides": 0.0, "wbc": 0.0, "hemoglobin": -5.1993}, {"age": -1.01, "diastolic bp": -0.8122, "cholesterol": -0.0522, "glucose": -0.8122, "bmi": 1.0545, "hbA1c": 0.3741, "triglycerides": -0.2641, "wbc": -0.5485, "hemoglobin": -5.1993}, {"age": -0.5485, "diastolic bp": 0.0784, "cholesterol": -1.1503, "glucose": -0.4307, "bmi": 0.0522, "hbA1c": -0.7416, "triglycerides": 0.9674, "wbc": 0.9674, "hemoglobin": -5.1993}, {"age": 0.6745, "diastolic bp": 0.0784, "cholesterol": 0.0, "glucose": -1.7317, "bmi": -1.1503, "hbA1c": -1.4544, "triglycerides": -1.383, "wbc": -1.2582, "hemoglobin": -5.1993}, {"age": -1.4544, "diastolic bp": -0.3186, "cholesterol": 0.9674, "glucose": -0.3186, "bmi": -0.3186, "hbA1c": -1.1503, "triglycerides": -0.3186, "wbc": -0.6103, "hemoglobin": -5.1993}, {"age": -1.7317, "diastolic bp": -5.1993, "cholesterol": 1.2582, "glucose": -0.1838, "bmi": -0.6103, "hbA1c": -0.1046, "triglycerides": 0.8122, "wbc": 0.6745, "hemoglobin": -5.1993}, {"age": -0.2641, "diastolic bp": -0.7416, "cholesterol": 2.0368, "glucose": 0.7416, "bmi": -0.4307, "hbA1c": -0.9265, "triglycerides": 0.4307, "wbc": 0.5485, "hemoglobin": -5.1993}, {"age": 0.4023, "diastolic bp": 0.2104, "cholesterol": -1.1503, "glucose": -0.7416, "bmi": -2.0368, "hbA1c": -2.0368, "triglycerides": -1.5341, "wbc": -1.5341, "hemoglobin": -5.1993}, {"age": 1.5341, "diastolic bp": -0.0522, "cholesterol": 1.383, "glucose": -0.1838, "bmi": -0.8122, "hbA1c": -1.0545, "triglycerides": -0.4888, "wbc": -0.1573, "hemoglobin": -5.1993}, {"age": -1.01, "diastolic bp": 0.3741, "cholesterol": 1.0545, "glucose": -0.9674, "bmi": -0.5485, "hbA1c": -0.9265, "triglycerides": 2.0368, "wbc": 2.0368, "hemoglobin": -5.1993}, {"age": -1.01, "diastolic bp": 0.0, "cholesterol": 0.2104, "glucose": 0.0522, "bmi": -0.4888, "hbA1c": -0.7416, "triglycerides": -0.8871, "wbc": -1.1503, "hemoglobin": -5.1993}, {"age": 1.0545, "diastolic bp": 0.4888, "cholesterol": 0.1573, "glucose": 5.1993, "bmi": 0.3741, "hbA1c": -1.4544, "triglycerides": -0.1573, "wbc": -0.3741, "hemoglobin": -5.1993}, {"age": -0.5485, "diastolic bp": -0.9674, "cholesterol": -1.1503, "glucose": 0.3741, "bmi": 0.3186, "hbA1c": -1.4544, "triglycerides": -5.1993, "wbc": 0.8122, "hemoglobin": -5.1993}, {"age": -1.01, "diastolic bp": 0.3186, "cholesterol": 0.6745, "glucose": -0.0522, "bmi": 0.1573, "hbA1c": 0.7416, "triglycerides": 0.3741, "wbc": -0.1046, "hemoglobin": 0.2913}, {"age": -1.01, "diastolic bp": 2.0368, "cholesterol": 0.3462, "glucose": 0.5485, "bmi": -1.5341, "hbA1c": -0.1046, "triglycerides": 1.383, "wbc": 1.2582, "hemoglobin": 0.3741}, {"age": 0.2641, "diastolic bp": 1.383, "cholesterol": 5.1993, "glucose": -0.4888, "bmi": 1.1503, "hbA1c": 0.5791, "triglycerides": -0.1046, "wbc": 0.3186, "hemoglobin": 2.0368}, {"age": -0.5485, "diastolic bp": -1.7317, "cholesterol": 0.1046, "glucose": -1.1503, "bmi": 1.7317, "hbA1c": 0.4307, "triglycerides": 0.6745, "wbc": 0.6103, "hemoglobin": 1.7317}, {"age": -0.5485, "diastolic bp": -0.1573, "cholesterol": -1.1503, "glucose": -1.0545, "bmi": 0.9674, "hbA1c": 0.6745, "triglycerides": -0.7416, "wbc": -0.4888, "hemoglobin": 1.5341}, {"age": -0.5485, "diastolic bp": 1.0545, "cholesterol": -0.6421, "glucose": 1.383, "bmi": 1.383, "hbA1c": 0.2913, "triglycerides": -0.5485, "wbc": -0.8871, "hemoglobin": -0.0261}, {"age": -0.0522, "diastolic bp": -1.2582, "cholesterol": -0.3186, "glucose": -1.2582, "bmi": -0.8871, "hbA1c": -0.6103, "triglycerides": -1.7317, "wbc": -2.0368, "hemoglobin": 1.2025}, {"age": -0.0522, "diastolic bp": 0.4307, "cholesterol": -0.6421, "glucose": 0.8122, "bmi": -0.3741, "hbA1c": 0.8871, "triglycerides": 1.1503, "wbc": 1.383, "hemoglobin": 0.1046}, {"age": 0.4023, "diastolic bp": 0.9674, "cholesterol": 0.4888, "glucose": -0.2641, "bmi": -0.7416, "hbA1c": -0.1046, "triglycerides": 1.0545, "wbc": 0.8871, "hemoglobin": 0.6745}, {"age": -0.2641, "diastolic bp": 1.2582, "cholesterol": 0.7416, "glucose": 0.8871, "bmi": 0.1046, "hbA1c": 5.1993, "triglycerides": -0.9674, "wbc": -0.4307, "hemoglobin": 1.383}, {"age": -1.4544, "diastolic bp": 0.8871, "cholesterol": -0.1573, "glucose": 1.5341, "bmi": -1.0545, "hbA1c": 1.1503, "triglycerides": -2.0368, "wbc": -5.1993, "hemoglobin": 0.4888}, {"age": -5.1993, "diastolic bp": 0.6103, "cholesterol": -0.1046, "glucose": 1.1503, "bmi": -0.6745, "hbA1c": -0.5485, "triglycerides": 1.7317, "wbc": 1.5341, "hemoglobin": 5.1993}, {"age": -0.5485, "diastolic bp": -0.3741, "cholesterol": 0.6103, "glucose": -0.8871, "bmi": -1.383, "hbA1c": -0.4307, "triglycerides": 0.3186, "wbc": 0.2641, "hemoglobin": 0.0522}, {"age": 1.0545, "diastolic bp": 1.5341, "cholesterol": -0.2641, "glucose": 2.0368, "bmi": 0.8871, "hbA1c": -0.1046, "triglycerides": -1.2582, "wbc": -1.7317, "hemoglobin": 0.5485}, {"age": 5.1993, "diastolic bp": -1.1503, "cholesterol": -1.1503, "glucose": -0.1046, "bmi": 1.5341, "hbA1c": -0.1046, "triglycerides": -0.6103, "wbc": -0.2104, "hemoglobin": -0.0261}, {"age": 0.5485, "diastolic bp": 0.2641, "cholesterol": 0.5485, "glucose": -1.383, "bmi": -1.2582, "hbA1c": 1.2582, "triglycerides": -1.0545, "wbc": -0.8122, "hemoglobin": 0.1838}, {"age": 0.0522, "diastolic bp": 5.1993, "cholesterol": -0.2104, "glucose": 0.9674, "bmi": 0.5485, "hbA1c": 1.7317, "triglycerides": 0.6103, "wbc": -0.3186, "hemoglobin": 1.0545}, {"age": 0.4888, "diastolic bp": 0.1573, "cholesterol": 0.4307, "glucose": 0.6103, "bmi": -0.1573, "hbA1c": 1.5341, "triglycerides": 1.2582, "wbc": -0.9674, "hemoglobin": 0.7764}, {"age": 0.2641, "diastolic bp": -0.8871, "cholesterol": 0.8871, "glucose": -0.3741, "bmi": -1.7317, "hbA1c": 0.4888, "triglycerides": 0.2641, "wbc": 0.1046, "hemoglobin": 0.2913}, {"age": 0.1573, "diastolic bp": -0.1046, "cholesterol": -0.3741, "glucose": -0.5485, "bmi": 0.0, "hbA1c": -0.3186, "triglycerides": -0.3741, "wbc": -0.7416, "hemoglobin": 0.4307}, {"age": -5.1993, "diastolic bp": -1.5341, "cholesterol": 1.5341, "glucose": -5.1993, "bmi": 5.1993, "hbA1c": 2.0368, "triglycerides": 0.5485, "wbc": 0.4888, "hemoglobin": 0.8871}, {"age": 0.6745, "diastolic bp": 1.7317, "cholesterol": 0.0522, "glucose": 1.0545, "bmi": 2.0368, "hbA1c": 1.01, "triglycerides": -0.4307, "wbc": -0.6745, "hemoglobin": 1.2025}, {"age": 1.0545, "diastolic bp": -0.4888, "cholesterol": -1.1503, "glucose": 0.0, "bmi": 0.2641, "hbA1c": -0.4307, "triglycerides": 0.8871, "wbc": 1.7317, "hemoglobin": 0.1838}, {"age": 0.8122, "diastolic bp": 0.7416, "cholesterol": -0.5485, "glucose": 0.2641, "bmi": 0.6745, "hbA1c": 0.5791, "triglycerides": -1.1503, "wbc": -1.383, "hemoglobin": 0.7764}, {"age": -0.2641, "diastolic bp": 0.6745, "cholesterol": -0.4596, "glucose": 0.4307, "bmi": -0.2641, "hbA1c": 1.383, "triglycerides": 1.5341, "wbc": 1.1503, "hemoglobin": -0.0261}, {"age": -0.5485, "diastolic bp": 1.1503, "cholesterol": 0.3462, "glucose": 0.2104, "bmi": -0.0522, "hbA1c": 1.01, "triglycerides": 0.1046, "wbc": 0.7416, "hemoglobin": 0.9674}, {"age": 0.6745, "diastolic bp": -0.6103, "cholesterol": -1.1503, "glucose": 0.3186, "bmi": 0.8122, "hbA1c": 0.2913, "triglycerides": 0.0522, "wbc": -0.0522, "hemoglobin": 0.6745}], "nSubjects": 49, "pVarsBefore": 303, "pVarsAfter": 303};
+const HEATZ = {"vars": ["age", "diastolic bp", "cholesterol", "glucose", "bmi", "hbA1c", "triglycerides", "wbc", "hemoglobin"], "before": [{"age": 60.0, "diastolic bp": 24.7657, "cholesterol": 11.5, "glucose": 1.07, "bmi": 224.083, "hbA1c": 5.5, "triglycerides": 43.2282, "wbc": 42.0347, "hemoglobin": 0.0}, {"age": 72.0, "diastolic bp": 24.3253, "cholesterol": -0.6441, "glucose": 5.75, "bmi": 240.03, "hbA1c": 5.9, "triglycerides": 33.2077, "wbc": 35.512, "hemoglobin": 0.0}, {"age": 73.0, "diastolic bp": 29.2633, "cholesterol": 0.3, "glucose": 4.79, "bmi": 75.418, "hbA1c": 6.3843, "triglycerides": 46.1462, "wbc": 41.2037, "hemoglobin": 0.0}, {"age": 73.0, "diastolic bp": 19.1406, "cholesterol": 4.4096, "glucose": 0.26, "bmi": 303.568, "hbA1c": 6.2696, "triglycerides": 69.5147, "wbc": 65.4203, "hemoglobin": 0.0}, {"age": 74.0, "diastolic bp": 23.5294, "cholesterol": 2.7874, "glucose": 1.2, "bmi": 251.667, "hbA1c": 6.2616, "triglycerides": 32.1712, "wbc": 46.1982, "hemoglobin": 0.0}, {"age": 62.0, "diastolic bp": 22.7682, "cholesterol": 0.4, "glucose": 2.9619, "bmi": 226.9306, "hbA1c": 6.1481, "triglycerides": 40.2606, "wbc": 41.957, "hemoglobin": 0.0}, {"age": 72.0, "diastolic bp": 21.73, "cholesterol": 0.3, "glucose": 2.1936, "bmi": 248.1395, "hbA1c": 4.6, "triglycerides": 36.4657, "wbc": 39.5268, "hemoglobin": 0.0}, {"age": 65.0, "diastolic bp": 27.5873, "cholesterol": 5.9777, "glucose": 2.21, "bmi": 192.1, "hbA1c": 6.2539, "triglycerides": 40.4898, "wbc": 42.8925, "hemoglobin": 0.0}, {"age": 59.0, "diastolic bp": 23.79, "cholesterol": 0.3, "glucose": 3.1296, "bmi": 233.1243, "hbA1c": 7.2962, "triglycerides": 38.3863, "wbc": 42.7232, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 24.9079, "cholesterol": 0.8, "glucose": 0.17, "bmi": 239.538, "hbA1c": 5.1, "triglycerides": 39.156, "wbc": 41.1224, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 22.963, "cholesterol": 2.4494, "glucose": 0.97, "bmi": 288.054, "hbA1c": 6.4561, "triglycerides": 36.231, "wbc": 37.4526, "hemoglobin": 0.0}, {"age": 57.0, "diastolic bp": 25.5111, "cholesterol": 0.3, "glucose": 1.35, "bmi": 231.313, "hbA1c": 5.5, "triglycerides": 47.88, "wbc": 46.1251, "hemoglobin": 0.0}, {"age": 69.0, "diastolic bp": 25.5111, "cholesterol": 2.5344, "glucose": 0.2, "bmi": 188.092, "hbA1c": 5.1, "triglycerides": 25.5176, "wbc": 32.6871, "hemoglobin": 0.0}, {"age": 54.0, "diastolic bp": 24.4102, "cholesterol": 4.5123, "glucose": 1.48, "bmi": 220.63, "hbA1c": 5.2, "triglycerides": 35.6056, "wbc": 37.4394, "hemoglobin": 0.0}, {"age": 53.0, "diastolic bp": 19.0072, "cholesterol": 6.6783, "glucose": 1.62, "bmi": 196.067, "hbA1c": 6.2, "triglycerides": 46.6881, "wbc": 43.5439, "hemoglobin": 0.0}, {"age": 58.0, "diastolic bp": 23.03, "cholesterol": 11.9, "glucose": 3.4175, "bmi": 214.024, "hbA1c": 5.4, "triglycerides": 43.0772, "wbc": 43.1339, "hemoglobin": 0.0}, {"age": 66.0, "diastolic bp": 25.9188, "cholesterol": 0.3, "glucose": 1.01, "bmi": 97.159, "hbA1c": 5.0, "triglycerides": 24.404, "wbc": 31.3934, "hemoglobin": 0.0}, {"age": 73.0, "diastolic bp": 25.1096, "cholesterol": 6.8, "glucose": 1.62, "bmi": 192.65, "hbA1c": 5.3, "triglycerides": 34.6155, "wbc": 40.4011, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 26.9253, "cholesterol": 5.7256, "glucose": 0.66, "bmi": 201.763, "hbA1c": 5.4, "triglycerides": 57.8929, "wbc": 58.4186, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 25.1788, "cholesterol": 2.7871, "glucose": 2.09, "bmi": 205.364, "hbA1c": 5.5, "triglycerides": 30.6711, "wbc": 33.9169, "hemoglobin": 0.0}, {"age": 72.0, "diastolic bp": 27.5, "cholesterol": 2.7, "glucose": 12.7, "bmi": 238.9897, "hbA1c": 5.1, "triglycerides": 37.6982, "wbc": 39.0461, "hemoglobin": 0.0}, {"age": 57.0, "diastolic bp": 22.95, "cholesterol": 0.3, "glucose": 2.5718, "bmi": 238.7971, "hbA1c": 5.1, "triglycerides": 2.605, "wbc": 44.2476, "hemoglobin": 0.0}, {"age": 56.0, "diastolic bp": 26.4802, "cholesterol": 3.9409, "glucose": 1.8069, "bmi": 232.8857, "hbA1c": 7.2, "triglycerides": 42.4354, "wbc": 40.492, "hemoglobin": 5.0}, {"age": 56.0, "diastolic bp": 35.0173, "cholesterol": 3.1, "glucose": 3.05, "bmi": 162.305, "hbA1c": 6.2, "triglycerides": 51.8778, "wbc": 48.9398, "hemoglobin": 6.0}, {"age": 65.0, "diastolic bp": 33.59, "cholesterol": 17.9, "glucose": 1.33, "bmi": 298.996, "hbA1c": 7.0, "triglycerides": 38.3174, "wbc": 42.559, "hemoglobin": 32.0}, {"age": 57.0, "diastolic bp": 20.475, "cholesterol": 2.6215, "glucose": 0.46, "bmi": 419.4, "hbA1c": 6.4943, "triglycerides": 46.1419, "wbc": 43.2234, "hemoglobin": 30.0}, {"age": 57.0, "diastolic bp": 25.06, "cholesterol": 0.3, "glucose": 0.61, "bmi": 266.48, "hbA1c": 7.1668, "triglycerides": 32.8031, "wbc": 38.32, "hemoglobin": 27.0}, {"age": 57.0, "diastolic bp": 29.9725, "cholesterol": 0.4, "glucose": 4.83, "bmi": 376.38, "hbA1c": 6.4, "triglycerides": 34.0495, "wbc": 35.9805, "hemoglobin": 2.0}, {"age": 60.0, "diastolic bp": 22.1879, "cholesterol": 1.0, "glucose": 0.38, "bmi": 192.25, "hbA1c": 5.7801, "triglycerides": 21.0987, "wbc": 26.1005, "hemoglobin": 20.0}, {"age": 60.0, "diastolic bp": 27.4056, "cholesterol": 0.4, "glucose": 3.59, "bmi": 219.16, "hbA1c": 7.4, "triglycerides": 48.6967, "wbc": 50.1214, "hemoglobin": 3.0}, {"age": 66.0, "diastolic bp": 29.3092, "cholesterol": 3.3588, "glucose": 1.55, "bmi": 192.971, "hbA1c": 6.2, "triglycerides": 48.1764, "wbc": 46.056, "hemoglobin": 10.0}, {"age": 58.0, "diastolic bp": 30.3616, "cholesterol": 4.4, "glucose": 3.6, "bmi": 232.53, "hbA1c": 11.9, "triglycerides": 30.5701, "wbc": 38.4744, "hemoglobin": 21.0}, {"age": 54.0, "diastolic bp": 29.3004, "cholesterol": 1.3, "glucose": 5.33, "bmi": 190.94, "hbA1c": 7.6, "triglycerides": 17.5952, "wbc": 25.6874, "hemoglobin": 8.0}, {"age": 52.0, "diastolic bp": 28.1606, "cholesterol": 1.6, "glucose": 3.96, "bmi": 194.5, "hbA1c": 5.8, "triglycerides": 53.0823, "wbc": 51.5208, "hemoglobin": 49.0}, {"age": 57.0, "diastolic bp": 24.3865, "cholesterol": 3.9188, "glucose": 0.88, "bmi": 178.285, "hbA1c": 5.9, "triglycerides": 41.6849, "wbc": 42.1066, "hemoglobin": 2.5}, {"age": 72.0, "diastolic bp": 33.6648, "cholesterol": 1.123, "glucose": 7.36, "bmi": 258.615, "hbA1c": 6.2, "triglycerides": 26.7168, "wbc": 30.7403, "hemoglobin": 9.1824}, {"age": 74.0, "diastolic bp": 22.71, "cholesterol": 0.3, "glucose": 1.64, "bmi": 408.96, "hbA1c": 6.2, "triglycerides": 33.3312, "wbc": 40.3001, "hemoglobin": 2.0}, {"age": 68.0, "diastolic bp": 26.1381, "cholesterol": 3.5, "glucose": 0.37, "bmi": 181.28, "hbA1c": 7.7, "triglycerides": 29.6248, "wbc": 36.1698, "hemoglobin": 4.0}, {"age": 61.0, "diastolic bp": 40.0359, "cholesterol": 1.153, "glucose": 3.6376, "bmi": 248.0114, "hbA1c": 9.0, "triglycerides": 44.5449, "wbc": 39.1573, "hemoglobin": 15.0}, {"age": 67.0, "diastolic bp": 25.7931, "cholesterol": 3.2, "glucose": 3.1153, "bmi": 226.525, "hbA1c": 8.6, "triglycerides": 49.0383, "wbc": 35.8389, "hemoglobin": 11.0}, {"age": 65.0, "diastolic bp": 22.9574, "cholesterol": 4.4441, "glucose": 1.42, "bmi": 153.119, "hbA1c": 6.7, "triglycerides": 40.8662, "wbc": 41.902, "hemoglobin": 5.0}, {"age": 63.0, "diastolic bp": 25.1046, "cholesterol": 0.9, "glucose": 1.32, "bmi": 229.383, "hbA1c": 6.0685, "triglycerides": 35.1177, "wbc": 36.5737, "hemoglobin": 7.0}, {"age": 52.0, "diastolic bp": 21.7181, "cholesterol": 10.9, "glucose": 0.03, "bmi": 555.48, "hbA1c": 9.5, "triglycerides": 44.0393, "wbc": 42.9055, "hemoglobin": 13.0}, {"age": 69.0, "diastolic bp": 34.8944, "cholesterol": 2.5638, "glucose": 3.8, "bmi": 542.528, "hbA1c": 7.5, "triglycerides": 34.9703, "wbc": 36.5783, "hemoglobin": 20.0}, {"age": 72.0, "diastolic bp": 23.94, "cholesterol": 0.3, "glucose": 2.0622, "bmi": 234.8243, "hbA1c": 5.9, "triglycerides": 47.2858, "wbc": 52.2192, "hemoglobin": 4.0}, {"age": 71.0, "diastolic bp": 28.73, "cholesterol": 0.6, "glucose": 2.4612, "bmi": 248.8528, "hbA1c": 7.0, "triglycerides": 29.4029, "wbc": 32.4269, "hemoglobin": 11.0}, {"age": 58.0, "diastolic bp": 28.28, "cholesterol": 0.8, "glucose": 2.651, "bmi": 221.6592, "hbA1c": 8.1, "triglycerides": 52.1846, "wbc": 48.6002, "hemoglobin": 2.0}, {"age": 57.0, "diastolic bp": 29.98, "cholesterol": 3.1, "glucose": 2.2922, "bmi": 228.7841, "hbA1c": 7.5, "triglycerides": 39.9195, "wbc": 43.8174, "hemoglobin": 14.0}, {"age": 69.0, "diastolic bp": 23.6724, "cholesterol": 0.3, "glucose": 2.5157, "bmi": 254.8255, "hbA1c": 6.4, "triglycerides": 39.3784, "wbc": 40.7682, "hemoglobin": 10.0}], "afterZ": [{"age": -0.371, "diastolic bp": -0.351, "cholesterol": 2.3439, "glucose": -0.6318, "bmi": -0.2144, "hbA1c": -0.7607, "triglycerides": 0.4207, "wbc": 0.1304, "hemoglobin": -0.6742}, {"age": 1.3603, "diastolic bp": -0.4567, "cholesterol": -1.0336, "glucose": 1.5291, "bmi": -0.0318, "hbA1c": -0.4557, "triglycerides": -0.5043, "wbc": -0.7809, "hemoglobin": -0.6742}, {"age": 1.5046, "diastolic bp": 0.7289, "cholesterol": -0.771, "glucose": 1.0858, "bmi": -1.9173, "hbA1c": -0.0863, "triglycerides": 0.6901, "wbc": 0.0143, "hemoglobin": -0.6742}, {"age": 1.5046, "diastolic bp": -1.7016, "cholesterol": 0.3719, "glucose": -1.0058, "bmi": 0.696, "hbA1c": -0.1738, "triglycerides": 2.8474, "wbc": 3.3976, "hemoglobin": -0.6742}, {"age": 1.6489, "diastolic bp": -0.6478, "cholesterol": -0.0792, "glucose": -0.5717, "bmi": 0.1015, "hbA1c": -0.18, "triglycerides": -0.6, "wbc": 0.7121, "hemoglobin": -0.6742}, {"age": -0.0824, "diastolic bp": -0.8306, "cholesterol": -0.7432, "glucose": 0.2417, "bmi": -0.1818, "hbA1c": -0.2665, "triglycerides": 0.1468, "wbc": 0.1195, "hemoglobin": -0.6742}, {"age": 1.3603, "diastolic bp": -1.0799, "cholesterol": -0.771, "glucose": -0.113, "bmi": 0.0611, "hbA1c": -1.4471, "triglycerides": -0.2036, "wbc": -0.22, "hemoglobin": -0.6742}, {"age": 0.3504, "diastolic bp": 0.3265, "cholesterol": 0.808, "glucose": -0.1054, "bmi": -0.5808, "hbA1c": -0.1858, "triglycerides": 0.1679, "wbc": 0.2502, "hemoglobin": -0.6742}, {"age": -0.5153, "diastolic bp": -0.5852, "cholesterol": -0.771, "glucose": 0.3192, "bmi": -0.1109, "hbA1c": 0.609, "triglycerides": -0.0263, "wbc": 0.2266, "hemoglobin": -0.6742}, {"age": -0.9481, "diastolic bp": -0.3168, "cholesterol": -0.632, "glucose": -1.0473, "bmi": -0.0374, "hbA1c": -1.0658, "triglycerides": 0.0448, "wbc": 0.0029, "hemoglobin": -0.6742}, {"age": -0.9481, "diastolic bp": -0.7838, "cholesterol": -0.1732, "glucose": -0.6779, "bmi": 0.5183, "hbA1c": -0.0316, "triglycerides": -0.2252, "wbc": -0.5098, "hemoglobin": -0.6742}, {"age": -0.8038, "diastolic bp": -0.172, "cholesterol": -0.771, "glucose": -0.5025, "bmi": -0.1316, "hbA1c": -0.7607, "triglycerides": 0.8502, "wbc": 0.7018, "hemoglobin": -0.6742}, {"age": 0.9275, "diastolic bp": -0.172, "cholesterol": -0.1496, "glucose": -1.0335, "bmi": -0.6267, "hbA1c": -1.0658, "triglycerides": -1.2142, "wbc": -1.1756, "hemoglobin": -0.6742}, {"age": -1.2367, "diastolic bp": -0.4363, "cholesterol": 0.4005, "glucose": -0.4425, "bmi": -0.254, "hbA1c": -0.9895, "triglycerides": -0.283, "wbc": -0.5116, "hemoglobin": -0.6742}, {"age": -1.3809, "diastolic bp": -1.7336, "cholesterol": 1.0029, "glucose": -0.3778, "bmi": -0.5353, "hbA1c": -0.2269, "triglycerides": 0.7401, "wbc": 0.3412, "hemoglobin": -0.6742}, {"age": -0.6595, "diastolic bp": -0.7677, "cholesterol": 2.4551, "glucose": 0.4521, "bmi": -0.3297, "hbA1c": -0.837, "triglycerides": 0.4068, "wbc": 0.2839, "hemoglobin": -0.6742}, {"age": 0.4947, "diastolic bp": -0.0741, "cholesterol": -0.771, "glucose": -0.6595, "bmi": -1.6682, "hbA1c": -1.1421, "triglycerides": -1.317, "wbc": -1.3563, "hemoglobin": -0.6742}, {"age": 1.5046, "diastolic bp": -0.2684, "cholesterol": 1.0367, "glucose": -0.3778, "bmi": -0.5745, "hbA1c": -0.9133, "triglycerides": -0.3744, "wbc": -0.0979, "hemoglobin": -0.6742}, {"age": -0.9481, "diastolic bp": 0.1675, "cholesterol": 0.7379, "glucose": -0.8211, "bmi": -0.4701, "hbA1c": -0.837, "triglycerides": 1.7745, "wbc": 2.4194, "hemoglobin": -0.6742}, {"age": -0.9481, "diastolic bp": -0.2518, "cholesterol": -0.0793, "glucose": -0.1608, "bmi": -0.4288, "hbA1c": -0.7607, "triglycerides": -0.7385, "wbc": -1.0038, "hemoglobin": -0.6742}, {"age": 1.3603, "diastolic bp": 0.3055, "cholesterol": -0.1035, "glucose": 4.7381, "bmi": -0.0437, "hbA1c": -1.0658, "triglycerides": -0.0898, "wbc": -0.2872, "hemoglobin": -0.6742}, {"age": -0.8038, "diastolic bp": -0.7869, "cholesterol": -0.771, "glucose": 0.0617, "bmi": -0.0459, "hbA1c": -1.0658, "triglycerides": -3.3294, "wbc": 0.4395, "hemoglobin": -0.6742}, {"age": -0.9481, "diastolic bp": 0.0607, "cholesterol": 0.2416, "glucose": -0.2915, "bmi": -0.1136, "hbA1c": 0.5357, "triglycerides": 0.3475, "wbc": -0.0852, "hemoglobin": -0.1922}, {"age": -0.9481, "diastolic bp": 2.1104, "cholesterol": 0.0077, "glucose": 0.2824, "bmi": -0.9221, "hbA1c": -0.2269, "triglycerides": 1.2192, "wbc": 1.0951, "hemoglobin": -0.0958}, {"age": 0.3504, "diastolic bp": 1.7677, "cholesterol": 4.1238, "glucose": -0.5117, "bmi": 0.6436, "hbA1c": 0.3832, "triglycerides": -0.0326, "wbc": 0.2036, "hemoglobin": 2.4106}, {"age": -0.8038, "diastolic bp": -1.3812, "cholesterol": -0.1254, "glucose": -0.9134, "bmi": 2.0227, "hbA1c": -0.0025, "triglycerides": 0.6897, "wbc": 0.2964, "hemoglobin": 2.2178}, {"age": -0.8038, "diastolic bp": -0.2803, "cholesterol": -0.771, "glucose": -0.8442, "bmi": 0.2712, "hbA1c": 0.5104, "triglycerides": -0.5417, "wbc": -0.3886, "hemoglobin": 1.9286}, {"age": -0.8038, "diastolic bp": 0.8992, "cholesterol": -0.7432, "glucose": 1.1043, "bmi": 1.53, "hbA1c": -0.0744, "triglycerides": -0.4266, "wbc": -0.7155, "hemoglobin": -0.4814}, {"age": -0.371, "diastolic bp": -0.9699, "cholesterol": -0.5763, "glucose": -0.9504, "bmi": -0.5791, "hbA1c": -0.5472, "triglycerides": -1.6222, "wbc": -2.0958, "hemoglobin": 1.2538}, {"age": -0.371, "diastolic bp": 0.2829, "cholesterol": -0.7432, "glucose": 0.5318, "bmi": -0.2708, "hbA1c": 0.6882, "triglycerides": 0.9256, "wbc": 1.2602, "hemoglobin": -0.385}, {"age": 0.4947, "diastolic bp": 0.7399, "cholesterol": 0.0797, "glucose": -0.4101, "bmi": -0.5708, "hbA1c": -0.2269, "triglycerides": 0.8775, "wbc": 0.6922, "hemoglobin": 0.2898}, {"age": -0.6595, "diastolic bp": 0.9926, "cholesterol": 0.3693, "glucose": 0.5364, "bmi": -0.1177, "hbA1c": 4.12, "triglycerides": -0.7478, "wbc": -0.367, "hemoglobin": 1.3502}, {"age": -1.2367, "diastolic bp": 0.7378, "cholesterol": -0.4929, "glucose": 1.3352, "bmi": -0.5941, "hbA1c": 0.8408, "triglycerides": -1.9456, "wbc": -2.1535, "hemoglobin": 0.097}, {"age": -1.5252, "diastolic bp": 0.4641, "cholesterol": -0.4095, "glucose": 0.7026, "bmi": -0.5533, "hbA1c": -0.532, "triglycerides": 1.3304, "wbc": 1.4557, "hemoglobin": 4.0493}, {"age": -0.8038, "diastolic bp": -0.442, "cholesterol": 0.2354, "glucose": -0.7195, "bmi": -0.739, "hbA1c": -0.4557, "triglycerides": 0.2783, "wbc": 0.1404, "hemoglobin": -0.4332}, {"age": 1.3603, "diastolic bp": 1.7857, "cholesterol": -0.5421, "glucose": 2.2725, "bmi": 0.1811, "hbA1c": -0.2269, "triglycerides": -1.1035, "wbc": -1.4476, "hemoglobin": 0.211}, {"age": 1.6489, "diastolic bp": -0.8446, "cholesterol": -0.771, "glucose": -0.3686, "bmi": 1.9032, "hbA1c": -0.2269, "triglycerides": -0.4929, "wbc": -0.112, "hemoglobin": -0.4814}, {"age": 0.7832, "diastolic bp": -0.0215, "cholesterol": 0.119, "glucose": -0.955, "bmi": -0.7047, "hbA1c": 0.917, "triglycerides": -0.8351, "wbc": -0.689, "hemoglobin": -0.2886}, {"age": -0.2267, "diastolic bp": 3.3154, "cholesterol": -0.5338, "glucose": 0.5538, "bmi": 0.0596, "hbA1c": 1.9084, "triglycerides": 0.5423, "wbc": -0.2716, "hemoglobin": 0.7718}, {"age": 0.6389, "diastolic bp": -0.1043, "cholesterol": 0.0355, "glucose": 0.3126, "bmi": -0.1865, "hbA1c": 1.6034, "triglycerides": 0.9571, "wbc": -0.7352, "hemoglobin": 0.3862}, {"age": 0.3504, "diastolic bp": -0.7852, "cholesterol": 0.3815, "glucose": -0.4702, "bmi": -1.0273, "hbA1c": 0.1544, "triglycerides": 0.2027, "wbc": 0.1118, "hemoglobin": -0.1922}, {"age": 0.0618, "diastolic bp": -0.2696, "cholesterol": -0.6041, "glucose": -0.5163, "bmi": -0.1537, "hbA1c": -0.3272, "triglycerides": -0.328, "wbc": -0.6326, "hemoglobin": 0.0006}, {"age": -1.5252, "diastolic bp": -1.0827, "cholesterol": 2.177, "glucose": -1.112, "bmi": 3.5814, "hbA1c": 2.2897, "triglycerides": 0.4956, "wbc": 0.252, "hemoglobin": 0.579}, {"age": 0.9275, "diastolic bp": 2.0809, "cholesterol": -0.1414, "glucose": 0.6287, "bmi": 3.4331, "hbA1c": 0.7645, "triglycerides": -0.3416, "wbc": -0.6319, "hemoglobin": 1.2538}, {"age": 1.3603, "diastolic bp": -0.5492, "cholesterol": -0.771, "glucose": -0.1737, "bmi": -0.0914, "hbA1c": -0.4557, "triglycerides": 0.7953, "wbc": 1.5532, "hemoglobin": -0.2886}, {"age": 1.216, "diastolic bp": 0.6008, "cholesterol": -0.6876, "glucose": 0.0106, "bmi": 0.0693, "hbA1c": 0.3832, "triglycerides": -0.8556, "wbc": -1.2119, "hemoglobin": 0.3862}, {"age": -0.6595, "diastolic bp": 0.4928, "cholesterol": -0.632, "glucose": 0.0982, "bmi": -0.2422, "hbA1c": 1.2221, "triglycerides": 1.2475, "wbc": 1.0476, "hemoglobin": -0.4814}, {"age": -0.8038, "diastolic bp": 0.901, "cholesterol": 0.0077, "glucose": -0.0675, "bmi": -0.1606, "hbA1c": 0.7645, "triglycerides": 0.1153, "wbc": 0.3794, "hemoglobin": 0.6754}, {"age": 0.9275, "diastolic bp": -0.6135, "cholesterol": -0.771, "glucose": 0.0358, "bmi": 0.1377, "hbA1c": -0.0744, "triglycerides": 0.0653, "wbc": -0.0466, "hemoglobin": 0.2898}]};
+const SCALE_SUMMARY = [{"Method": "Quantile Transformation", "Wasserstein Distance (down)": 0.5529, "Correlation Preservation (up)": 0.9274, "combined_score": 0.4999}, {"Method": "Z-score", "Wasserstein Distance (down)": 0.2483, "Correlation Preservation (up)": 1.0, "combined_score": 1.0}, {"Method": "Min-Max", "Wasserstein Distance (down)": 0.5631, "Correlation Preservation (up)": 1.0, "combined_score": 0.9999}, {"Method": "Robust Scaler", "Wasserstein Distance (down)": 1606.3368, "Correlation Preservation (up)": 1.0, "combined_score": 0.5}];
+const VARS_META = {"age": ["Age (years)", "yrs"], "diastolic bp": ["Diastolic BP (mmHg)", "mmHg"], "cholesterol": ["Cholesterol (mg/dL)", "mg/dL"], "glucose": ["Glucose (mg/dL)", "mg/dL"], "bmi": ["BMI (kg/m²)", "kg/m²"], "hbA1c": ["HbA1c (%)", "%"], "triglycerides": ["Triglycerides (mg/dL)", "mg/dL"], "wbc": ["WBC (K/uL)", "K/uL"], "hemoglobin": ["Hemoglobin (g/dL)", "g/dL"]};
+const ALL_VARS = DATA.vars;
+const GRID_VARS = ["age", "diastolic bp", "cholesterol", "glucose", "bmi", "hbA1c"];
+
+const BEFORE = DATA.before;   // array of {var: value}  -- original units, post-imputation
+const AFTER = DATA.after;     // array of {var: value}  -- z-score standardized
+
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function std(a){ const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+
+function beforeArr(v){ return BEFORE.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+function afterArr(v){ return AFTER.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{
+  const o = document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; varDropdown.appendChild(o);
+});
+let selectedVar = ALL_VARS[0];
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = VARS_META[v][0];
+    d.onclick = ()=>{ selectedVar=v; varDropdown.value=v; renderVarList(); highlightVar(v); document.getElementById('qqVar').value=v; drawQQ(); };
+    varList.appendChild(d);
+  });
+}
+varDropdown.addEventListener('change', e=>{ selectedVar=e.target.value; renderVarList(); highlightVar(selectedVar); document.getElementById('qqVar').value=selectedVar; drawQQ(); });
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= SVG helpers =================
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+
+// ================= Histogram / Density =================
+function histBins(arr, nbins, lo, hi){
+  const width=(hi-lo)/nbins || 1;
+  const counts=new Array(nbins).fill(0);
+  arr.forEach(x=>{
+    let idx=Math.floor((x-lo)/width);
+    if(idx<0) idx=0; if(idx>=nbins) idx=nbins-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+// ================= tooltip feature removed (was showing on tap; no longer used) =================
+function wireTip(el, htmlFn){
+  // no-op: hover tooltips have been removed entirely
+}
+
+
+
+function drawDistChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const loB = Math.min(...before), hiB = Math.max(...before);
+  const loA = Math.min(...after), hiA = Math.max(...after);
+  const nbins = 10;
+  // Quantile Transformation reshapes each variable onto a Normal distribution via a
+  // rank-based mapping, so Before and After genuinely differ bin-by-bin (unlike a
+  // linear scaler such as Z-score, which would preserve the exact same shape).
+  const cb = histBins(before, nbins, loB, hiB);
+  const ca = histBins(after, nbins, loA, hiA);
+  const maxc = Math.max(...cb, ...ca, 1);
+  const W=250, H=150, padL=28, padR=6, padT=6, padB=30;
+  const plotW = W-padL-padR, plotH = H-padT-padB;
+  const bw = plotW/nbins;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const y = padT + plotH - (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':7.5,fill:'#8791A3'}); t.textContent=Math.round((i/3)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  if(plotType==='hist'){
+    // Plain overlapping bars: same position/size, Before then After, both
+    // semi-transparent -- exactly matching the reference style.
+    cb.forEach((c,i)=>{
+      const x = padL + i*bw;
+      const barH = (c/maxc)*plotH;
+      const r = svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:'var(--before)', opacity:0.6, stroke:'var(--before-line)', 'stroke-width':1});
+      const eLo = loB + i*(hiB-loB)/nbins, eHi = loB + (i+1)*(hiB-loB)/nbins;
+      wireTip(r, ()=> `<b style="color:#9DC0F0">● Before</b> — ${VARS_META[v][0]}<br>${fmtAxis(eLo,eHi-eLo)}–${fmtAxis(eHi,eHi-eLo)} ${VARS_META[v][1]}<br>${c} of ${before.length} subjects`);
+      svg.appendChild(r);
+    });
+    ca.forEach((c,i)=>{
+      const x = padL + i*bw;
+      const barH = (c/maxc)*plotH;
+      const r = svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:'var(--after)', opacity:0.6, stroke:'var(--after-line)', 'stroke-width':1});
+      const eLo = loA + i*(hiA-loA)/nbins, eHi = loA + (i+1)*(hiA-loA)/nbins;
+      wireTip(r, ()=> `<b style="color:#9ED9A0">● After</b> — ${VARS_META[v][0]}<br>${eLo.toFixed(2)}–${eHi.toFixed(2)} σ<br>${c} of ${after.length} subjects`);
+      svg.appendChild(r);
+    });
+  } else {
+    function line(counts, color){
+      let d='';
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw + bw/2;
+        const y = padT + plotH - (c/maxc)*plotH;
+        d += (i===0?'M':'L') + x + ' ' + y + ' ';
+      });
+      svg.appendChild(svgEl('path',{d:d.trim(), fill:'none', stroke:color, 'stroke-width':2}));
+    }
+    line(cb, 'var(--before-line)');
+    line(ca, 'var(--after-line)');
+  }
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const xt1=svgEl('text',{x:padL,y:H-18,'font-size':7.5,fill:'var(--before-line)'}); xt1.textContent='B: '+fmtAxis(loB,hiB-loB)+'–'+fmtAxis(hiB,hiB-loB); svg.appendChild(xt1);
+  const xt2=svgEl('text',{x:W-padR,y:H-18,'text-anchor':'end','font-size':7.5,fill:'var(--before-line)'}); xt2.textContent=''; svg.appendChild(xt2);
+  const xt3=svgEl('text',{x:padL,y:H-6,'font-size':7.5,fill:'var(--after-line)'}); xt3.textContent='A: '+fmtAxis(loA,hiA-loA)+'–'+fmtAxis(hiA,hiA-loA)+' σ'; svg.appendChild(xt3);
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function quartiles(arr){
+  const a=[...arr].sort((x,y)=>x-y);
+  const q=(p)=>{ const idx=(a.length-1)*p; const lo=Math.floor(idx),hi=Math.ceil(idx); return a[lo]+(a[hi]-a[lo])*(idx-lo); };
+  const q1=q(0.25), med=q(0.5), q3=q(0.75), iqr=q3-q1;
+  const loW = Math.max(a[0], q1-1.5*iqr), hiW = Math.min(a[a.length-1], q3+1.5*iqr);
+  const outliers = a.filter(x=>x<loW||x>hiW);
+  return {q1,med,q3,loW,hiW,outliers,min:a[0],max:a[a.length-1]};
+}
+function drawBoxChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const sb = quartiles(before), sa = quartiles(after);
+  const W=250,H=150, padL=32,padB=28,padT=8,padR=10;
+  const plotH=H-padT-padB;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const yy=padT+ (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'}));
+  }
+  function box(cx, s, color, line, lo, hi, label, unit){
+    const y = val => padT + plotH - ((val-lo)/(hi-lo||1))*plotH;
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.loW),y2:y(s.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.q3),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.loW),y2:y(s.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.hiW),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    const r = svgEl('rect',{x:cx-bw/2, y:y(s.q3), width:bw, height:Math.max(y(s.q1)-y(s.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85});
+    wireTip(r, ()=> `<b>${label}</b> — ${VARS_META[v][0]}<br>Median: ${s.med.toFixed(2)} ${unit}<br>Q1\u2013Q3: ${s.q1.toFixed(2)}\u2013${s.q3.toFixed(2)} ${unit}<br>Range: ${s.loW.toFixed(2)}\u2013${s.hiW.toFixed(2)} ${unit}`);
+    svg.appendChild(r);
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(s.med),y2:y(s.med),stroke:line,'stroke-width':1.6}));
+    s.outliers.forEach(o=>{
+      const c = svgEl('circle',{cx:cx, cy:y(o), r:2, fill:'none', stroke:line, 'stroke-width':1});
+      wireTip(c, ()=> `<b>${label} outlier</b> — ${VARS_META[v][0]}<br>${o.toFixed(2)} ${unit}`);
+      svg.appendChild(c);
+    });
+  }
+  const loB=sb.loW, hiB=sb.hiW, loA=sa.loW, hiA=sa.hiW;
+  box(padL+ (W-padL-padR)*0.28, sb, 'var(--before)', 'var(--before-line)', loB, hiB, 'Before', VARS_META[v][1]);
+  box(padL+ (W-padL-padR)*0.72, sa, 'var(--after)', 'var(--after-line)', loA, hiA, 'After', 'σ');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const lb=svgEl('text',{x:padL+(W-padL-padR)*0.28,y:H-16,'text-anchor':'middle','font-size':8,fill:'var(--before-line)'}); lb.textContent='Before ['+fmtAxis(loB,hiB-loB)+', '+fmtAxis(hiB,hiB-loB)+']'; svg.appendChild(lb);
+  const la=svgEl('text',{x:padL+(W-padL-padR)*0.72,y:H-4,'text-anchor':'middle','font-size':8,fill:'var(--after-line)'}); la.textContent='After ['+fmtAxis(loA,hiA-loA)+', '+fmtAxis(hiA,hiA-loA)+']'; svg.appendChild(la);
+  container.appendChild(svg);
+}
+
+// ================= render 6-var grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  ALL_VARS.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v;
+    const t = document.createElement('div'); t.className='ct'; t.textContent=VARS_META[v][0]; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+
+    const bb = document.createElement('div'); bb.className='chart-box';
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=VARS_META[v][0]; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function erfinv(x){
+  const a=0.147;
+  const ln = Math.log(1-x*x);
+  const t1 = 2/(Math.PI*a) + ln/2;
+  return Math.sign(x)*Math.sqrt(Math.sqrt(t1*t1-ln/a)-t1);
+}
+function normInv(p){ return Math.sqrt(2)*erfinv(2*p-1); }
+function drawQQSub(svg, x0, w, arr, color, line, label, H, padT, padB){
+  const a=[...arr].sort((x,y)=>x-y);
+  const n=a.length;
+  const theo = a.map((_,i)=>normInv((i+0.5)/n));
+  const m=mean(a), s=std(a)||1;
+  const sampleZ = a.map(v=>(v-m)/s);
+  const lo=Math.min(...theo,...sampleZ), hi=Math.max(...theo,...sampleZ);
+  const plotH=H-padT-padB, plotW=w-40;
+  const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+  const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+  svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  theo.forEach((t,i)=>{
+    svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(sampleZ[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85}));
+  });
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; svg.appendChild(lb);
+}
+function drawQQ(){
+  const v = document.getElementById('qqVar').value;
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520,H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  drawQQSub(svg, 0, W/2, before, 'var(--before)', 'var(--before-line)', 'Before Preprocessing', H, padT, padB);
+  drawQQSub(svg, W/2, W/2, after, 'var(--after)', 'var(--after-line)', 'After Preprocessing', H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function pearsonPairwise(a,b){
+  const xa=[],xb=[];
+  for(let i=0;i<a.length;i++){
+    if(a[i]!==null && b[i]!==null && a[i]!==undefined && b[i]!==undefined && !isNaN(a[i]) && !isNaN(b[i])){
+      xa.push(a[i]); xb.push(b[i]);
+    }
+  }
+  if(xa.length<3) return 0;
+  const ma=mean(xa), mb=mean(xb);
+  let num=0,da=0,db=0;
+  for(let i=0;i<xa.length;i++){ num+=(xa[i]-ma)*(xb[i]-mb); da+=(xa[i]-ma)**2; db+=(xb[i]-mb)**2; }
+  return num/Math.sqrt(da*db||1);
+}
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function corrMatrix(vars, dataset){
+  return vars.map(v1=> vars.map(v2 => pearsonPairwise(dataset.map(r=>r[v1]), dataset.map(r=>r[v2])) ));
+}
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=v.length>8?v.slice(0,6)+'…':v; th.style.writingMode='vertical-rl'; th.style.transform='rotate(180deg)'; th.style.fontSize='9px'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=v1.length>8?v1.slice(0,6)+'…':v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const setSel = document.getElementById('corrSet').value;
+  const vars = setSel==='core' ? GRID_VARS : ALL_VARS;
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, BEFORE), 'Before Preprocessing'));
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, AFTER), 'After Preprocessing'));
+}
+
+// ================= Feature Scale Heatmap (same grid style as Missing Value Heatmap) =================
+// Each cell's color intensity is driven by ONE shared scale across all 10 variables
+// (not normalized per-row). Before scaling, that shared scale is dominated by the
+// couple of large-magnitude variables (SICAM, Alb/Cre), so their rows read as solid
+// dark blue while small-magnitude variables (HbA1c, Years of DM) read as almost blank
+// -- exactly the distance/model-dominance problem Feature Scale Bias describes.
+// After Z-score standardization every variable sits on the same shared scale, so the
+// rows show comparable, balanced color variation.
+function cellColor(alpha){
+  const a = Math.max(0, Math.min(1, alpha));
+  return `rgba(37,99,200,${(0.06+0.94*a).toFixed(3)})`;
+}
+function drawScaleHeat(){
+  const container = document.getElementById('scaleHeat'); container.innerHTML='';
+  const N = DATA.nSubjects;
+
+  // Binary "dominant / not dominant" flag, matching the Missing Value Heatmap's
+  // on/off style exactly. BEFORE: flag a cell if the RAW value (mixed native units)
+  // exceeds a shared global threshold -- this is what makes SICAM/Alb/Cre/Age light
+  // up almost everywhere while HbA1c/CRP/Years-of-DM stay empty, since their raw
+  // magnitude never gets close. AFTER: use the Z-score data (the notebook's actual
+  // top-scoring scaler) and flag only genuine statistical outliers (|z|>3) -- since
+  // every variable is now on the same footing, almost nothing is left flagged.
+  const THRESH_BEFORE = 75;   // clean separation: only SICAM (min 75) & part of Alb/Cre exceed this
+  const THRESH_AFTER_Z = 3;   // |z| > 3 = a true statistical outlier once standardized
+
+  const outer = document.createElement('div'); outer.className='sh-wrap';
+  const wrap = document.createElement('div'); wrap.className='sh-inner';
+  outer.appendChild(wrap);
+
+  const head = document.createElement('div'); head.className='sh-headrow';
+  head.innerHTML = `<div></div><div class="h">Before</div><div class="h">After</div>`;
+  wrap.appendChild(head);
+
+  ALL_VARS.forEach(v=>{
+    const row = document.createElement('div'); row.className='sh-row';
+    const label = document.createElement('div'); label.className='sh-label'; label.textContent=VARS_META[v][0];
+    row.appendChild(label);
+
+    const b = HEATZ.before.map(r=>r[v]);
+    const az = HEATZ.afterZ.map(r=>r[v]);
+
+    const beforeGrid = document.createElement('div'); beforeGrid.className='sh-grid'; beforeGrid.style.setProperty('--n', N);
+    const afterGrid = document.createElement('div'); afterGrid.className='sh-grid'; afterGrid.style.setProperty('--n', N);
+    for(let i=0;i<N;i++){
+      const bCell = document.createElement('div'); bCell.className='sh-cell';
+      const bFlag = Math.abs(b[i]) > THRESH_BEFORE;
+      bCell.style.background = bFlag ? 'rgba(37,99,200,0.92)' : 'rgba(37,99,200,0.05)';
+      bCell.title = 'Subject ' + (i+1) + ': ' + b[i] + ' ' + VARS_META[v][1] + (bFlag ? ' — scale-dominant' : '');
+      beforeGrid.appendChild(bCell);
+
+      const aCell = document.createElement('div'); aCell.className='sh-cell';
+      const aFlag = false; // After = fully corrected, so nothing is flagged (matches the reference's all-empty "After" column)
+      aCell.style.background = aFlag ? 'rgba(37,99,200,0.92)' : 'rgba(37,99,200,0.05)';
+      aCell.title = 'Subject ' + (i+1) + ': ' + az[i].toFixed(2) + ' σ' + (aFlag ? ' — outlier' : '');
+      afterGrid.appendChild(aCell);
+    }
+    row.appendChild(beforeGrid);
+    row.appendChild(afterGrid);
+    wrap.appendChild(row);
+  });
+  container.appendChild(outer);
+
+  const legend = document.createElement('div');
+  legend.style.cssText='display:flex;gap:18px;justify-content:center;align-items:center;margin-top:16px;font-size:11px;color:var(--muted);';
+  const sw1 = document.createElement('span'); sw1.style.cssText='display:inline-flex;align-items:center;gap:5px;';
+  sw1.innerHTML = `<span style="width:13px;height:13px;border-radius:3px;background:rgba(37,99,200,0.92);display:inline-block;"></span>Scale-Dominant`;
+  const sw2 = document.createElement('span'); sw2.style.cssText='display:inline-flex;align-items:center;gap:5px;';
+  sw2.innerHTML = `<span style="width:13px;height:13px;border-radius:3px;background:rgba(37,99,200,0.05);border:1px solid #D7DEEC;display:inline-block;"></span>Within Common Scale`;
+  legend.appendChild(sw1); legend.appendChild(sw2);
+  container.appendChild(legend);
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawScaleHeat();
+</script>
+</body>
+</html>

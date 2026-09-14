@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Healthcare Bias Mitigation | Group 18 — Project Review 1</title>
+  <meta name="description" content="Healthcare Bias Mitigation: A Multi-Method Approach to Addressing Across Diverse Clinical Applications — Research & Pipeline Portal" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#070b12;--bg2:#0d1320;--bg3:#131c2e;
+      --card:rgba(255,255,255,0.035);--card-hover:rgba(255,255,255,0.06);
+      --border:rgba(255,255,255,0.08);--border-bright:rgba(0,212,255,0.3);
+      --cyan:#00d4ff;--blue:#3b82f6;--purple:#8b5cf6;
+      --green:#10b981;--amber:#f59e0b;--red:#ef4444;
+      --txt:#e2e8f0;--txt2:#94a3b8;--txt3:#64748b;
+      --g1:linear-gradient(135deg,#00d4ff,#3b82f6,#8b5cf6);
+      --g2:linear-gradient(135deg,#10b981,#3b82f6);
+      --g3:linear-gradient(135deg,#f59e0b,#ef4444);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;overflow-x:hidden}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:#3b82f6;border-radius:3px}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;backdrop-filter:blur(20px);
+        background:rgba(7,11,18,.92);border-bottom:1px solid var(--border);
+        padding:0 2rem;display:flex;align-items:center;justify-space:space-between;height:62px}
+    .nav-logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.1rem;
+              background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .nav-links{display:flex;gap:.2rem;list-style:none}
+    .nav-links a{color:var(--txt2);text-decoration:none;font-size:.78rem;font-weight:500;
+                 padding:.35rem .65rem;border-radius:8px;transition:all .2s}
+    .nav-links a:hover{color:var(--cyan);background:rgba(0,212,255,.08)}
+    .nav-badge{background:var(--g1);border-radius:20px;padding:.28rem .85rem;
+               font-size:.7rem;font-weight:800;color:#000;letter-spacing:.02em}
+
+    /* LAYOUT */
+    section{padding:80px 0;position:relative}
+    .container{max-width:1200px;margin:0 auto;padding:0 2rem}
+    .s-label{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.13em;
+             text-transform:uppercase;color:var(--cyan);background:rgba(0,212,255,.08);
+             border:1px solid rgba(0,212,255,.18);padding:.28rem .8rem;border-radius:20px;margin-bottom:1rem}
+    .s-title{font-family:'Outfit',sans-serif;font-size:clamp(1.85rem,4vw,2.5rem);
+             font-weight:800;line-height:1.25;margin-bottom:1rem}
+    .s-title span{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .s-desc{color:var(--txt2);font-size:.95rem;max-width:750px;margin-bottom:2rem}
+
+    /* HERO */
+    #hero{min-height:70vh;display:flex;align-items:center;padding-top:100px;padding-bottom:60px;
+          background:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(0,212,255,.14),transparent)}
+    .proj-type{font-size:.78rem;font-weight:700;color:var(--cyan);letter-spacing:.14em;
+               text-transform:uppercase;margin-bottom:.8rem}
+    .hero-title{font-family:'Outfit',sans-serif;font-size:clamp(2.3rem,5vw,3.6rem);
+                font-weight:800;line-height:1.15;max-width:1000px}
+    .hero-title span{background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    /* CARDS & GRIDS */
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+          padding:1.5rem;transition:transform .2s,border-color .2s}
+    .card:hover{transform:translateY(-3px);border-color:rgba(0,212,255,.25)}
+    .card-h{font-family:'Outfit',sans-serif;font-weight:700;font-size:1.05rem;
+            margin-bottom:.6rem;color:var(--txt)}
+    .card-p{font-size:.86rem;color:var(--txt2);line-height:1.65}
+    .badge-check{display:inline-block;padding:.2rem .6rem;border-radius:6px;font-size:.72rem;font-weight:700;background:rgba(16,185,129,.15);color:var(--green);margin-right:.3rem}
+    .badge-cross{display:inline-block;padding:.2rem .6rem;border-radius:6px;font-size:.72rem;font-weight:700;background:rgba(239,68,68,.15);color:var(--red);margin-right:.3rem}
+    .badge-tech{display:inline-block;padding:.22rem .55rem;border-radius:6px;font-size:.73rem;font-weight:700;background:rgba(0,212,255,.14);color:#00d4ff;border:1px solid rgba(0,212,255,.25);white-space:nowrap}
+    .badge-no{display:inline-block;padding:.22rem .55rem;border-radius:6px;font-size:.73rem;font-weight:700;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25);white-space:nowrap}
+
+    /* TABLES */
+    .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;
+                overflow-x:auto;margin-top:1.5rem}
+    table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:900px}
+    th{background:rgba(255,255,255,.05);color:var(--cyan);text-align:left;
+       padding:.9rem 1rem;font-weight:700;border-bottom:1px solid var(--border);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+    td{padding:.85rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);color:var(--txt2);vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:rgba(255,255,255,.025)}
+
+    /* WIZARD */
+    .wizard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem}
+    .wiz-steps{display:flex;gap:.8rem;margin-bottom:2rem}
+    .wiz-step{padding:.45rem 1.3rem;border-radius:20px;font-size:.8rem;font-weight:700;
+              background:rgba(255,255,255,.05);color:var(--txt3);cursor:pointer;transition:all .2s}
+    .wiz-step.active{background:var(--g1);color:#000}
+    .wiz-btns{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.9rem;margin-top:1.2rem}
+    .wiz-btn{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;
+             padding:1.1rem 1rem;color:var(--txt);text-align:center;cursor:pointer;transition:all .2s}
+    .wiz-btn:hover,.wiz-btn.selected{border-color:var(--cyan);background:rgba(0,212,255,.1);transform:translateY(-2px)}
+    .wiz-btn h4{font-size:.95rem;font-weight:700;margin:0}
+
+    /* IFRAME DASHBOARD */
+    .dashboard-iframe-wrap{width:100%;margin-top:1.2rem;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+    .dashboard-iframe{width:100%;height:850px;border:none;background:#fff;display:block}
+
+    /* PLOT CARD BUTTON */
+    .plot-open-btn{display:inline-flex;align-items:center;justify-content:center;gap:.7rem;
+                   background:var(--g1);color:#000;text-decoration:none;border-radius:12px;
+                   padding:1rem 2rem;font-size:1rem;font-weight:800;font-family:'Outfit',sans-serif;
+                   transition:opacity .2s,transform .2s;margin-top:1.2rem}
+    .plot-open-btn:hover{opacity:.9;transform:translateY(-2px)}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--border);padding:2.8rem 0;text-align:center;
+           color:var(--txt3);font-size:.82rem;background:rgba(0,0,0,.3)}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">GROUP 18</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Overview</a></li>
+      <li><a href="#motivation">Motivation</a></li>
+      <li><a href="#themes">Themes</a></li>
+      <li><a href="#survey">Literature</a></li>
+      <li><a href="#gaps">Gaps</a></li>
+      <li><a href="#objectives">Objectives</a></li>
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#datasets">Datasets</a></li>
+      <li><a href="#disease-mitigation">Disease Strategies</a></li>
+      <li><a href="#preprocessing">Preprocessing Matrix</a></li>
+      <li><a href="#explorer">Plots Explorer</a></li>
+      <li><a href="#latent">Latent Methods</a></li>
+    </ul>
+    <div class="nav-badge">REVIEW 1</div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container">
+      <div class="proj-type">Type 1: Research Project &mdash; Group 18</div>
+      <h1 class="hero-title">Healthcare Bias Mitigation: <span>A Multi-Method Approach to Addressing Across Diverse Clinical Applications</span></h1>
+    </div>
+  </section>
+
+  <!-- MOTIVATION -->
+  <section id="motivation">
+    <div class="container">
+      <span class="s-label">Background & Context</span>
+      <h2 class="s-title">Motivation</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-h">Core Clinical Challenge</div>
+          <p class="card-p">Healthcare AI systems are frequently developed using datasets that are sampling bias and demographically imbalanced, leading to suboptimal or biased clinical predictions when deployed across diverse patient populations. Addressing bias across pre-processing, in-processing, and post-processing stages is essential for equitable healthcare delivery.</p>
+        </div>
+        <div class="card">
+          <div class="card-h">Our Research Vision</div>
+          <p class="card-p">This project introduces a multi-method bias mitigation framework targeting key bias dimensions &mdash; missing data, class imbalance, outliers, feature scale differences, demographic disparities, record duplication, measurement noise, and domain shifts &mdash; across four distinct disease cohorts: Heart Disease, Diabetes, Respiratory, and Hypertension.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH THEMES -->
+  <section id="themes">
+    <div class="container">
+      <span class="s-label">Scope of Investigation</span>
+      <h2 class="s-title">Research Theme Covered</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-h">Theme 1: Data Pre-processing & Bias Reduction</div>
+          <p class="card-p">Identifies and mitigates missingness, outliers, feature scale imbalance, demographic underrepresentation, record duplicate bias, noise, and domain shifts at the data layer.</p>
+        </div>
+        <div class="card">
+          <div class="card-h">Theme 2: Fairness-Aware & In-Processing Learning</div>
+          <p class="card-p">Integrates clinical risk-aware constraint functions, adversarial domain alignment (DANN), and FairSMOTE to prevent systemic model disparities during training.</p>
+        </div>
+        <div class="card">
+          <div class="card-h">Theme 3: Multi-Cohort Benchmarking & Auditing</div>
+          <p class="card-p">Evaluates performance across Heart, Diabetes, Respiratory, and Hypertension cohorts using statistical parity, MMD, Wasserstein distance, and class entropy metrics.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LITERATURE SURVEY -->
+  <section id="survey">
+    <div class="container">
+      <span class="s-label">Prior Work Analysis</span>
+      <h2 class="s-title">Literature Survey</h2>
+      <p class="s-desc">Comprehensive review of recent research on medical AI bias, algorithmic fairness, and clinical data pre-processing.</p>
+      
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Paper Title & Citation</th>
+              <th>Core Focus / Objective</th>
+              <th>Methodology / Approach</th>
+              <th>Key Findings & Contributions</th>
+              <th>Identified Gaps / Future Scope</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>FairBias: Mixed Noise Mitigation in Medical Imaging</strong><br/><span style="color:var(--txt3);font-size:.76rem;">IEEE TMI 2024</span></td>
+              <td>To develop the FairBias framework that reduces bias in medical image diagnosis by handling mixed noise while maintaining diagnostic accuracy.</td>
+              <td>Dual-branch denoising network with fairness-constrained adversarial learning.</td>
+              <td>Achieved 14% improvement in equalized odds across demographic subgroups on chest X-ray datasets.</td>
+              <td>Limited to 2D image modalities; does not address tabular or time-series clinical EHR data.</td>
+            </tr>
+            <tr>
+              <td><strong>Evaluating Algorithmic Fairness in Clinical Prediction Models</strong><br/><span style="color:var(--txt3);font-size:.76rem;">JAMIA 2023</span></td>
+              <td>Systematically evaluate bias mitigation at pre, in, and post-processing stages in healthcare ML.</td>
+              <td>Comparative benchmark of SMOTE, Reweighting, Adversarial Debiasing, and Equalized Odds post-processing.</td>
+              <td>Pre-processing techniques provided the best trade-off between fairness metrics and overall AUC-ROC.</td>
+              <td>Evaluated on single-hospital datasets; multi-center domain shift was not analyzed.</td>
+            </tr>
+            <tr>
+              <td><strong>Preventing Unfair Hospital AI Assistance</strong><br/><span style="color:var(--txt3);font-size:.76rem;">Lancet Digital Health 2023</span></td>
+              <td>Address hospital AI bias to prevent unfair assistance and ensure equitable medical care.</td>
+              <td>Subgroup disparity analysis and clinical risk-stratified reweighting.</td>
+              <td>Demonstrated that standard accuracy metrics mask severe performance drops in underrepresented racial minorities.</td>
+              <td>Does not incorporate automated outlier or duplicate record bias detection.</td>
+            </tr>
+            <tr>
+              <td><strong>Fairness and Bias Mitigation in Healthcare LLMs</strong><br/><span style="color:var(--txt3);font-size:.76rem;">Nature Medicine 2024</span></td>
+              <td>Evaluate bias mitigation in healthcare LLMs while balancing fairness and performance.</td>
+              <td>Instruction tuning with fairness prompts and counterfactual evaluation.</td>
+              <td>Reduced demographic stereotyping in clinical note summaries by 28%.</td>
+              <td>High computational cost; evaluation focused primarily on text rather than structured lab values.</td>
+            </tr>
+            <tr>
+              <td><strong>Ethical AI Design Principles in Clinical Decision Systems</strong><br/><span style="color:var(--txt3);font-size:.76rem;">BMJ Health 2023</span></td>
+              <td>Identify historical medical bias in AI and advocate for ethical, fair design principles.</td>
+              <td>Conceptual bias analysis, Ethical evaluation</td>
+              <td>Develop bias-aware pipelines validated on multi-hospital and multi-demographic datasets.</td>
+              <td>Provides qualitative guidelines but lacks quantitative algorithmic implementation.</td>
+            </tr>
+            <tr>
+              <td><strong>Demographic Stereotypes in Clinician Pain Assessment</strong><br/><span style="color:var(--txt3);font-size:.76rem;">PAIN Journal 2022</span></td>
+              <td>Test if perceived sex affects pain assessment and if gendered stereotypes explain biases.</td>
+              <td>Controlled vignette study with demographic variation.</td>
+              <td>Identified significant gender and racial disparities in emergency department pain medication ordering.</td>
+              <td>Observational study design; algorithmic mitigation strategies were not tested.</td>
+            </tr>
+            <tr>
+              <td><strong>Racial & Ethnic Biases in Cardiovascular AI Models</strong><br/><span style="color:var(--txt3);font-size:.76rem;">Circulation 2023</span></td>
+              <td>Investigate racial and ethnic biases in AI-based cardiovascular disease models.</td>
+              <td>Recalibration and optimal transport alignment across ethnic subgroups.</td>
+              <td>Improved risk score calibration for Hispanic and Black patient cohorts by 19%.</td>
+              <td>Targeted cardiovascular data only; generalizability to diabetes or respiratory cohorts unproven.</td>
+            </tr>
+            <tr>
+              <td><strong>Algorithmic Resource Allocation Bias in Emergency Care</strong><br/><span style="color:var(--txt3);font-size:.76rem;">Science 2019</span></td>
+              <td>Develop a framework analyzing how algorithmic bias affects resource allocation and response times.</td>
+              <td>Health cost proxy analysis and commercial algorithm disparity audit.</td>
+              <td>Revealed that using health costs as a proxy for healthcare needs introduced severe racial bias against Black patients.</td>
+              <td>Focused on commercial cost prediction algorithm; does not cover clinical parameter pre-processing.</td>
+            </tr>
+            <tr>
+              <td><strong>Gender Fairness in Chronic Disease Risk Prediction</strong><br/><span style="color:var(--txt3);font-size:.76rem;">Artificial Intelligence in Medicine 2023</span></td>
+              <td>Check whether disease datasets and machine learning models are fair for males and females.</td>
+              <td>Apply bias mitigation techniques across stages to reduce gender disparities.</td>
+              <td>FairSMOTE and reweighting reduced male/female recall gap to under 2%.</td>
+              <td>Did not address missing data or measurement noise bias simultaneous with gender bias.</td>
+            </tr>
+            <tr>
+              <td><strong>Class Imbalance & Intersectional Bias in Diabetes Prediction</strong><br/><span style="color:var(--txt3);font-size:.76rem;">IEEE JBHI 2024</span></td>
+              <td>Reduce class imbalance bias for reliable, interpretable diabetes prediction.</td>
+              <td>Extend to demographic bias and integrate fairness-aware learning.</td>
+              <td>Fuzzy SMOTE combined with feature scaling improved F1-score on imbalanced diabetes dataset by 15%.</td>
+              <td>Single dataset study (NHANES); cross-domain generalizability not established.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH GAPS -->
+  <section id="gaps">
+    <div class="container">
+      <span class="s-label">Unresolved Technical Challenges</span>
+      <h2 class="s-title">Research Gaps</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-h">Gap 1: Single-Stage vs. Multi-Stage Mitigation</div>
+          <p class="card-p">Most bias mitigation techniques operate only at a single level (data or algorithm or output), and do not systematically address compound biases (e.g. simultaneous missingness, class imbalance, and demographic disparity) occurring together in clinical datasets.</p>
+        </div>
+        <div class="card">
+          <div class="card-h">Gap 2: Cross-Disease Pipeline Generalizability</div>
+          <p class="card-p">Existing debiasing methods are typically evaluated on a single dataset or disease (e.g. MIMIC-IV cardiac data). There is a critical lack of frameworks validated across diverse clinical conditions such as Heart Disease, Diabetes, Respiratory, and Hypertension.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OBJECTIVES -->
+  <section id="objectives">
+    <div class="container">
+      <span class="s-label">Core Project Goals</span>
+      <h2 class="s-title">Objectives</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-h">1. Pre-Processing Data Debiasing</div>
+          <p class="card-p">Design a healthcare AI framework incorporating equitable data collection and pre-processing techniques (GAIN, MICE, KNN Imputer, SMOTE, LOF, Wavelet, Quantile Transformation) to eliminate data-level biases before model training.</p>
+        </div>
+        <div class="card">
+          <div class="card-h">2. In-Processing & Domain Debiasing</div>
+          <p class="card-p">Implement in-processing and post-processing bias mitigation strategies (DANN, FairSMOTE, Optimal Transport) within the learning pipeline to preserve fairness across heterogeneous patient subgroups.</p>
+        </div>
+        <div class="card">
+          <div class="card-h">3. Automated Auditing & Dashboarding</div>
+          <p class="card-p">Incorporate clinical risk-aware learning and automated bias detection and auditing to minimize high-risk clinical errors and provide interactive visual inspection of bias mitigation results.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM STATEMENT -->
+  <section id="problem">
+    <div class="container">
+      <span class="s-label">Formal Problem Definition</span>
+      <h2 class="s-title">Problem Statement</h2>
+      <div class="card" style="background:rgba(0,212,255,0.03);border-color:rgba(0,212,255,0.2);">
+        <p class="card-p" style="font-size:1.02rem;color:var(--txt);line-height:1.75;">To develop a clinically risk-aware, multi-stage healthcare bias mitigation framework that systematically detects, quantifies, and eliminates data-level and algorithmic biases across diverse clinical cohorts &mdash; ensuring equitable, accurate, and trustworthy AI decision support for Heart Disease, Diabetes, Respiratory, and Hypertension patients.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATASETS -->
+  <section id="datasets">
+    <div class="container">
+      <span class="s-label">Clinical Data Foundations</span>
+      <h2 class="s-title">Datasets & Clinical Parameters</h2>
+      <p class="s-desc">Healthcare datasets collected to train, analyze, and evaluate ML models for fair clinical decision support.</p>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-h">1. Heart Disease Cohort</div>
+          <p class="card-p"><strong>Parameters:</strong> Age, Diagnose, Smoker, Systolic BP, Diastolic BP, Cardiac output (at rest), Cardiac index (at rest), Stroke volume index (at rest)</p>
+        </div>
+        <div class="card">
+          <div class="card-h">2. Diabetes Cohort</div>
+          <p class="card-p"><strong>Parameters:</strong> Age, Diastolic BP, Cholesterol, Glucose, BMI, HDL, Triglycerides, WBC, HbA1c, Hemoglobin</p>
+        </div>
+        <div class="card">
+          <div class="card-h">3. Respiratory Cohort</div>
+          <p class="card-p"><strong>Parameters:</strong> Age, Gender, Ethnicity, Admission weight, Respiratory rate, Oxygenation, Tidal volume, Airway pressures, Respiratory blood gases</p>
+        </div>
+        <div class="card">
+          <div class="card-h">4. Hypertension Cohort</div>
+          <p class="card-p"><strong>Parameters:</strong> Gender, Age, Weight, Height, BSA, BMI, Smoker, SBP, DBP, IMT MAX, LVMi, EF</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISEASE-SPECIFIC BIAS MITIGATION SUMMARY -->
+  <section id="disease-mitigation">
+    <div class="container">
+      <span class="s-label">Disease-Specific Strategy</span>
+      <h2 class="s-title">Bias Mitigation Techniques per Clinical Cohort</h2>
+      <p class="s-desc">Exact bias mitigation techniques applied across each disease dataset based on empirical diagnostic assessment.</p>
+      
+      <div class="grid-2">
+        <!-- HEART -->
+        <div class="card" style="border-top:3px solid var(--cyan);">
+          <div class="card-h" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>❤️ Heart Disease Cohort</span>
+            <span class="badge-tech" style="font-size:0.7rem;">5 Biases Mitigated</span>
+          </div>
+          <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.45rem;font-size:0.83rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Missing Data Bias:</span>
+              <span class="badge-tech">KNN Imputer</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Class Imbalance Bias:</span>
+              <span class="badge-tech">SMOTE</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Outlier Bias:</span>
+              <span class="badge-tech">LOF</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Feature Scale Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Demographic Bias:</span>
+              <span class="badge-tech">FairSMOTE</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Duplicate Bias:</span>
+              <span class="badge-tech">Fuzzy Matching</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Data Noise Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Encoding / Domain Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESPIRATORY -->
+        <div class="card" style="border-top:3px solid var(--blue);">
+          <div class="card-h" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>🫁 Respiratory Disease Cohort</span>
+            <span class="badge-tech" style="font-size:0.7rem;">4 Biases Mitigated</span>
+          </div>
+          <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.45rem;font-size:0.83rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Missing Data Bias:</span>
+              <span class="badge-tech">GAIN</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Class Imbalance Bias:</span>
+              <span class="badge-tech">Near Miss</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Outlier Bias:</span>
+              <span class="badge-tech">One-Class SVM</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Feature Scale Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Demographic Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Duplicate Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Data Noise Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Encoding / Domain Bias:</span>
+              <span class="badge-tech">DANN</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIABETES -->
+        <div class="card" style="border-top:3px solid var(--purple);">
+          <div class="card-h" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>🩸 Diabetes Cohort</span>
+            <span class="badge-tech" style="font-size:0.7rem;">5 Biases Mitigated</span>
+          </div>
+          <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.45rem;font-size:0.83rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Missing Data Bias:</span>
+              <span class="badge-tech">MICE</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Class Imbalance Bias:</span>
+              <span class="badge-tech">SMOTE</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Outlier Bias:</span>
+              <span class="badge-tech">LOF</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Feature Scale Bias:</span>
+              <span class="badge-tech">Quantile Transformation</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Demographic Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Duplicate Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Data Noise Bias:</span>
+              <span class="badge-tech">Wavelet</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Encoding / Domain Bias:</span>
+              <span class="badge-tech">DANN</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- HYPERTENSION -->
+        <div class="card" style="border-top:3px solid var(--amber);">
+          <div class="card-h" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>🫀 Hyper Tension Cohort</span>
+            <span class="badge-tech" style="font-size:0.7rem;">5 Biases Mitigated</span>
+          </div>
+          <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.45rem;font-size:0.83rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Missing Data Bias:</span>
+              <span class="badge-tech">KNN Imputer</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Class Imbalance Bias:</span>
+              <span class="badge-tech">Near Miss</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Outlier Bias:</span>
+              <span class="badge-tech">Isolation Forest</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Feature Scale Bias:</span>
+              <span class="badge-tech">Quantile Transformation</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Demographic Bias:</span>
+              <span class="badge-tech">Optimal Transport</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Duplicate Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Data Noise Bias:</span>
+              <span class="badge-tech">Denoising Autoencoder</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.02);border-radius:6px;">
+              <span style="color:var(--txt2);">Encoding / Domain Bias:</span>
+              <span class="badge-no">NO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREPROCESSING BIAS ANALYSIS MATRIX -->
+  <section id="preprocessing">
+    <div class="container">
+      <span class="s-label">Preprocessing Bias Analysis</span>
+      <h2 class="s-title">Preprocessing Bias Analysis Matrix</h2>
+      <p class="s-desc">Cross-dataset evaluation matrix mapping 8 bias categories across Heart, Diabetes, Respiratory, and Hyper Tension clinical cohorts (Slides 16 & 17).</p>
+      
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Bias Category</th>
+              <th>Heart</th>
+              <th>Diabetes</th>
+              <th>Respiratory</th>
+              <th>HyperTension</th>
+              <th>Methodology Applied</th>
+              <th>Metrics Applied</th>
+              <th>Performance Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Missing Data Bias</strong></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td>KNN Imputer, MICE, GAIN</td>
+              <td>Wasserstein Distance, Correlation Preservation</td>
+              <td>Improved data quality and complete clinical feature availability.</td>
+            </tr>
+            <tr>
+              <td><strong>Class Imbalance Bias</strong></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td>SMOTE, Near Miss</td>
+              <td>Imbalance Ratio, Class Entropy</td>
+              <td>Improved minority class recall and balanced F1-score.</td>
+            </tr>
+            <tr>
+              <td><strong>Outlier Bias</strong></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td>LOF, One-Class SVM, Isolation Forest</td>
+              <td>Outlier Score Stability, Neighborhood Consistency</td>
+              <td>Reduced outlier effects and improved statistical stability.</td>
+            </tr>
+            <tr>
+              <td><strong>Feature Scale Bias</strong></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td>Quantile Transformation</td>
+              <td>Wasserstein Distance, Feature Kurtosis</td>
+              <td>Balanced feature influence and standardized gradient updates.</td>
+            </tr>
+            <tr>
+              <td><strong>Demographic Bias</strong></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td>FairSMOTE, Optimal Transport</td>
+              <td>Statistical Parity Difference, Disparate Impact</td>
+              <td>Reduced demographic disparities and improved model fairness.</td>
+            </tr>
+            <tr>
+              <td><strong>Duplicate Bias</strong></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-cross">×</span></td>
+              <td>Fuzzy Matching</td>
+              <td>Duplicate Rate, Redundancy Reduction</td>
+              <td>Eliminated duplicate patient records and data leakage.</td>
+            </tr>
+            <tr>
+              <td><strong>Data Noise Bias</strong></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td>Wavelet, Denoising Autoencoder</td>
+              <td>Residual Variance, Signal-to-Noise Ratio (SNR)</td>
+              <td>Filtered measurement noise while preserving clinical signals.</td>
+            </tr>
+            <tr>
+              <td><strong>Encoding / Domain Bias</strong></td>
+              <td><span class="badge-cross">×</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-check">✓</span></td>
+              <td><span class="badge-cross">×</span></td>
+              <td>DANN (Domain-Adversarial Neural Networks)</td>
+              <td>MMD, Domain Classifier AUC</td>
+              <td>Aligned latent domain representations across multi-center data.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE PLOTS EXPLORER -->
+  <section id="explorer">
+    <div class="container">
+      <span class="s-label">Interactive Dashboard Harness</span>
+      <h2 class="s-title">Interactive Preprocessing Bias Plot Explorer</h2>
+      <p class="s-desc">Select any clinical dataset and bias category to load the corresponding interactive dashboard html file directly from the <code>plots/</code> directory.</p>
+
+      <div class="wizard">
+        <div class="wiz-steps">
+          <div class="wiz-step active" id="step1-btn" onclick="goToStep(1)">1. Select Dataset</div>
+          <div class="wiz-step" id="step2-btn" onclick="goToStep(2)">2. Select Bias Category</div>
+          <div class="wiz-step" id="step3-btn" onclick="goToStep(3)">3. View Interactive Plot</div>
+        </div>
+
+        <!-- STEP 1: DATASETS -->
+        <div id="step1-content">
+          <div class="wiz-btns">
+            <div class="wiz-btn selected" onclick="selectDataset('Heart', this)">
+              <h4>Heart</h4>
+            </div>
+            <div class="wiz-btn" onclick="selectDataset('Diabetes', this)">
+              <h4>Diabetes</h4>
+            </div>
+            <div class="wiz-btn" onclick="selectDataset('Respiratory', this)">
+              <h4>Respiratory</h4>
+            </div>
+            <div class="wiz-btn" onclick="selectDataset('HyperTension', this)">
+              <h4>HyperTension</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: BIAS CATEGORIES -->
+        <div id="step2-content" style="display:none;">
+          <div class="wiz-btns" id="bias-button-container">
+            <!-- Dynamically injected -->
+          </div>
+        </div>
+
+        <!-- STEP 3: INTERACTIVE IFRAME DASHBOARD -->
+        <div id="step3-content" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <div>
+              <h3 id="selected-summary" style="font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;">Heart &mdash; Missing Data Bias Dashboard</h3>
+              <p id="dash-path" style="font-size:.8rem;color:var(--txt3);font-family:monospace;margin-top:.2rem;">plots/heart/missing_data_bias_dashboard (1).html</p>
+            </div>
+            <button onclick="goToStep(2)" style="background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--txt);padding:.4rem 1rem;border-radius:8px;cursor:pointer;font-size:.8rem;">&larr; Change Selection</button>
+          </div>
+          <div class="dashboard-iframe-wrap">
+            <iframe id="plot-iframe" class="dashboard-iframe" src="plots/heart/missing_data_bias_dashboard (1).html"></iframe>
+          </div>
+          <div style="text-align:center;">
+            <a id="plot-external-link" class="plot-open-btn" href="plots/heart/missing_data_bias_dashboard (1).html" target="_blank">
+              <span>&#x1F5D7;</span> Open Full Interactive Plot in New Window
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- LATENT FEATURE EXTRACTION METHODS -->
+  <section id="latent">
+    <div class="container">
+      <span class="s-label">Empirical Benchmarking & Metrics</span>
+      <h2 class="s-title">Latent Feature Extraction Methods & Metrics</h2>
+      <p class="s-desc">Deep learning architectures and evaluation metrics used for cross-dataset feature alignment and latent representation benchmarking.</p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-h">1. Deep Generalized CCA (DGCCA)</div>
+          <p class="card-p">Learns joint non-linear latent representations across multi-view disease cohorts by maximizing canonical correlation across non-linearly transformed views.</p>
+        </div>
+        <div class="card">
+          <div class="card-h">2. SAINT (Self-Attention & Intersample)</div>
+          <p class="card-p">Specialized tabular transformer utilizing self-attention over features and intersample attention over patient rows to capture complex cross-cohort dependencies.</p>
+        </div>
+        <div class="card">
+          <div class="card-h">3. Graph Neural Networks (GNN)</div>
+          <p class="card-p">Constructs patient similarity graphs using clinical parameter topologies to propagate latent representations and preserve local manifold structure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>Healthcare Bias Mitigation Framework | Group 18 | Project Review 1</p>
+    </div>
+  </footer>
+
+  <script>
+    let currentDataset = 'Heart';
+    let currentBias = 'Missing Data Bias';
+
+    // Plot Dashboards Mapping pointing strictly to plots/<disease>/<filename>.html
+    const plotDashboards = {
+      'Heart': {
+        'Missing Data Bias':       'plots/heart/missing_data_bias_dashboard (1).html',
+        'Class Imbalance Bias':   'plots/heart/cardiac_class_imbalance_dashboard__1_.html',
+        'Outlier Bias':           'plots/heart/outlier_bias_dashboard__1_.html',
+        'Feature Scale Bias':     'plots/heart/feature_scale_bias_dashboard__1_.html',
+        'Demographic Bias':       'plots/heart/demographic_bias_dashboard__3_.html',
+        'Duplicate Bias':         'plots/heart/duplicate_bias_dashboard__4_.html',
+        'Data Noise Bias':        'plots/heart/data_noise_bias_dashboard.html',
+        'Encoding / Domain Bias': 'plots/heart/encoding_domain_bias_dashboard__1_.html'
+      },
+      'Diabetes': {
+        'Missing Data Bias':       'plots/diabetes/missing_bias_dashboard.html',
+        'Class Imbalance Bias':   'plots/diabetes/class_imbalance_bias_dashboard.html',
+        'Outlier Bias':           'plots/diabetes/outlier_bias_dashboard.html',
+        'Feature Scale Bias':     'plots/diabetes/feature_scale_bias_dashboard.html',
+        'Demographic Bias':       'plots/diabetes/demographic_bias_dashboard.html',
+        'Duplicate Bias':         'plots/diabetes/duplicate_bias_dashboard.html',
+        'Data Noise Bias':        'plots/diabetes/noise_bias_dashboard.html',
+        'Encoding / Domain Bias': 'plots/diabetes/encoding_domain_bias_dashboard.html'
+      },
+      'Respiratory': {
+        'Missing Data Bias':       'plots/respiratory/respiratory_missing_data_bias_dashboard (3).html',
+        'Class Imbalance Bias':   'plots/respiratory/icu_class_imbalance_bias_dashboard (2).html',
+        'Outlier Bias':           'plots/respiratory/outlier_detection_treatment_dashboard__2_.html',
+        'Feature Scale Bias':     'plots/respiratory/feature_scale_bias_dashboard__4_.html',
+        'Demographic Bias':       'plots/respiratory/demographic_bias_dashboard__5_.html',
+        'Duplicate Bias':         'plots/respiratory/icu_duplicate_bias_dashboard_fixed (1).html',
+        'Data Noise Bias':        'plots/respiratory/icu_noise_bias_dashboard (1).html',
+        'Encoding / Domain Bias': 'plots/respiratory/encoding domain.html'
+      },
+      'HyperTension': {
+        'Missing Data Bias':       'plots/hypertension/Missing_Bias_Dashboard (2).html',
+        'Class Imbalance Bias':   'plots/hypertension/Class_Imbalance_Bias_Dashboard (4).html',
+        'Outlier Bias':           'plots/hypertension/Outlier_Bias_Dashboard (7).html',
+        'Feature Scale Bias':     'plots/hypertension/Feature_Scale_Bias_Dashboard (5).html',
+        'Demographic Bias':       'plots/hypertension/demographic_bias_dashboard (6).html',
+        'Duplicate Bias':         'plots/hypertension/duplicate_bias_dashboard (5).html',
+        'Data Noise Bias':        'plots/hypertension/noise_bias_dashboard (4).html',
+        'Encoding / Domain Bias': 'plots/hypertension/encoding_domain_bias_dashboard (1).html'
+      }
+    };
+
+    // Valid biases per dataset
+    const datasetValidBiases = {
+      'Heart': [
+        'Missing Data Bias',
+        'Class Imbalance Bias',
+        'Outlier Bias',
+        'Demographic Bias',
+        'Duplicate Bias'
+      ],
+      'Diabetes': [
+        'Missing Data Bias',
+        'Class Imbalance Bias',
+        'Outlier Bias',
+        'Feature Scale Bias',
+        'Data Noise Bias',
+        'Encoding / Domain Bias'
+      ],
+      'Respiratory': [
+        'Missing Data Bias',
+        'Class Imbalance Bias',
+        'Outlier Bias',
+        'Encoding / Domain Bias'
+      ],
+      'HyperTension': [
+        'Missing Data Bias',
+        'Class Imbalance Bias',
+        'Outlier Bias',
+        'Feature Scale Bias',
+        'Demographic Bias',
+        'Data Noise Bias'
+      ]
+    };
+
+    function renderBiasButtons() {
+      const container = document.getElementById('bias-button-container');
+      container.innerHTML = '';
+      const biases = datasetValidBiases[currentDataset] || Object.keys(plotDashboards[currentDataset]);
+      
+      if (!biases.includes(currentBias)) {
+        currentBias = biases[0];
+      }
+
+      biases.forEach(b => {
+        const div = document.createElement('div');
+        div.className = 'wiz-btn' + (b === currentBias ? ' selected' : '');
+        div.onclick = () => selectBias(b, div);
+        div.innerHTML = `<h4>${b}</h4>`;
+        container.appendChild(div);
+      });
+    }
+
+    function selectDataset(ds, el) {
+      currentDataset = ds;
+      document.querySelectorAll('#step1-content .wiz-btn').forEach(b => b.classList.remove('selected'));
+      if (el) el.classList.add('selected');
+      renderBiasButtons();
+      goToStep(2);
+    }
+
+    function selectBias(b, el) {
+      currentBias = b;
+      document.querySelectorAll('#bias-button-container .wiz-btn').forEach(btn => btn.classList.remove('selected'));
+      if (el) el.classList.add('selected');
+      updateDashboardIframe();
+      goToStep(3);
+    }
+
+    function updateDashboardIframe() {
+      const relPath = plotDashboards[currentDataset]?.[currentBias] || '';
+      document.getElementById('selected-summary').innerText = `${currentDataset} — ${currentBias} Dashboard`;
+      document.getElementById('dash-path').innerText = relPath;
+      document.getElementById('plot-iframe').src = relPath;
+      document.getElementById('plot-external-link').href = relPath;
+    }
+
+    function goToStep(stepNum) {
+      document.getElementById('step1-btn').classList.toggle('active', stepNum === 1);
+      document.getElementById('step2-btn').classList.toggle('active', stepNum === 2);
+      document.getElementById('step3-btn').classList.toggle('active', stepNum === 3);
+
+      document.getElementById('step1-content').style.display = stepNum === 1 ? 'block' : 'none';
+      document.getElementById('step2-content').style.display = stepNum === 2 ? 'block' : 'none';
+      document.getElementById('step3-content').style.display = stepNum === 3 ? 'block' : 'none';
+    }
+
+    // Initialize default bias buttons on page load
+    renderBiasButtons();
+  </script>
+</body>
+</html>

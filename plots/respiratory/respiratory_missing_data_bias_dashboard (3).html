@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Missing Data Bias (Before vs After Imputation)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#AECBEE;
+    --before-line:#6FA0DA;
+    --after:#BEE0BF;
+    --after-line:#7BC17E;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:21px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:16px; padding:16px; align-items:start;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:6px;}
+  @media (max-width:1100px){ .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .mv-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .mv-inner{min-width:max-content;}
+  .cb-headrow{display:flex; justify-content:space-between; margin-bottom:6px; padding:0 4px;}
+  .cb-headrow .h{font-weight:700; font-size:14px; color:var(--text);}
+  .cb-grid{display:grid; grid-template-columns:repeat(var(--n), 16px); grid-auto-rows:16px; gap:3px; margin-bottom:6px;}
+  .cb-cell{width:16px; height:16px; border-radius:3px; box-sizing:border-box;}
+  .cb-cell.control{background:var(--before); border:1px solid var(--before-line);}
+  .cb-cell.dm{background:var(--after); border:1px solid var(--after-line);}
+  .cb-cell.synth{border:2px dashed #C0533E !important; box-shadow: inset 0 0 0 2px #fff;}
+  .cb-pct{font-size:11px; color:var(--muted); text-align:right; margin-top:2px;}
+  .mv-headrow{display:grid; grid-template-columns:170px 678px 678px; gap:26px; margin-bottom:10px;}
+  .mv-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .mv-row{display:grid; grid-template-columns:170px 678px 678px; gap:26px; align-items:center; margin-bottom:4px;}
+  .mv-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mv-grid{display:grid; grid-template-columns:repeat(var(--n), 15px); grid-auto-rows:15px; gap:2px;}
+  .mv-cell{width:15px; height:15px; border-radius:2px; box-sizing:border-box; background:#4C6FA8; border:1px solid #3A5885;}
+  .mv-cell.control{background:#4C6FA8; border:1px solid #3A5885;}
+  .mv-cell.dm{background:#4C6FA8; border:1px solid #3A5885;}
+  .mv-cell.synth{border:2px dashed #C0533E !important;}
+  .mv-cell.empty{background:#FFFFFF; border:1px solid #D7DEEC;}
+  .mv-pct{font-size:9.5px; color:var(--muted); text-align:right; margin-top:2px;}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+  .kpi-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:2px;}
+  .kpi{flex:1 1 150px; background:#F6F8FC; border:1px solid var(--border); border-radius:8px; padding:8px 10px; text-align:center;}
+  .kpi .val{font-size:15px; font-weight:800; color:var(--navy);}
+  .kpi .lbl{font-size:10px; color:var(--muted); margin-top:2px;}
+  .method-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:12px;}
+  .method-table th, .method-table td{padding:5px 6px; text-align:center; border-bottom:1px solid var(--border);}
+  .method-table th{color:var(--muted); font-weight:600; font-size:10.5px;}
+  .method-table tr.winner td{background:#EAF3FF; font-weight:700; color:var(--blue-hi);}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Interactive EDA Dashboard — Missing Data Bias (Before vs After Imputation)</h1>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before (raw, with missing values)</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Imputation)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Imputation)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:150px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 8 Vars</option>
+              <option value="all">All 8 Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Missingness Heatmap (MNAR Pattern)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:#4C6FA8"></span>Missing (pre-harmonization)</span>
+          <span class="lg"><span class="swatch" style="background:#fff;border:1px solid #D7DEEC"></span>Not missing</span>
+        </span>
+      </p>
+      <div id="classGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="note">
+</footer>
+
+<script>
+const DATA = {"vars": ["Age", "Gender_Enc", "Ethnicity_Enc", "ICU_LOS", "TV_IBW", "PEEP", "PaO2", "Lactate"], "gridVars": ["Age", "Gender_Enc", "Ethnicity_Enc", "ICU_LOS", "TV_IBW", "PEEP", "PaO2", "Lactate"], "before": [{"Age": 62.6, "Gender_Enc": 0.459, "Ethnicity_Enc": 0.397, "ICU_LOS": 65.9, "TV_IBW": 4.09, "PEEP": 8.2, "PaO2": null, "Lactate": 2.05}, {"Age": 53.6, "Gender_Enc": 0.625, "Ethnicity_Enc": 0.07, "ICU_LOS": 57.4, "TV_IBW": 9.06, "PEEP": 5.8, "PaO2": 88.4, "Lactate": 0.9}, {"Age": 56.3, "Gender_Enc": 0.125, "Ethnicity_Enc": 0.649, "ICU_LOS": 78.3, "TV_IBW": 6.72, "PEEP": 6.3, "PaO2": 82.1, "Lactate": 1.36}, {"Age": 58.7, "Gender_Enc": 0.647, "Ethnicity_Enc": 0.272, "ICU_LOS": 139.8, "TV_IBW": 6.1, "PEEP": 7.1, "PaO2": 137.1, "Lactate": 0.79}, {"Age": 84.4, "Gender_Enc": 0.218, "Ethnicity_Enc": 0.564, "ICU_LOS": 34.8, "TV_IBW": 7.84, "PEEP": 7.2, "PaO2": 82.6, "Lactate": 0.49}, {"Age": 61.0, "Gender_Enc": 0.273, "Ethnicity_Enc": 0.609, "ICU_LOS": 190.2, "TV_IBW": 8.63, "PEEP": 4.4, "PaO2": 87.8, "Lactate": 2.18}, {"Age": 40.6, "Gender_Enc": 0.63, "Ethnicity_Enc": 0.309, "ICU_LOS": 34.5, "TV_IBW": 4.88, "PEEP": 7.9, "PaO2": 83.0, "Lactate": null}, {"Age": 48.2, "Gender_Enc": 0.602, "Ethnicity_Enc": 0.246, "ICU_LOS": 130.3, "TV_IBW": 8.37, "PEEP": 12.6, "PaO2": 89.7, "Lactate": null}, {"Age": 65.8, "Gender_Enc": 0.955, "Ethnicity_Enc": 0.408, "ICU_LOS": 41.8, "TV_IBW": 4.0, "PEEP": 8.7, "PaO2": 82.5, "Lactate": 1.09}, {"Age": 39.2, "Gender_Enc": 0.775, "Ethnicity_Enc": 0.492, "ICU_LOS": 60.0, "TV_IBW": 6.44, "PEEP": 9.9, "PaO2": 75.4, "Lactate": 2.95}, {"Age": 56.9, "Gender_Enc": 0.208, "Ethnicity_Enc": 0.663, "ICU_LOS": 53.0, "TV_IBW": 5.84, "PEEP": 5.4, "PaO2": 69.0, "Lactate": 1.03}, {"Age": 41.2, "Gender_Enc": 0.411, "Ethnicity_Enc": 0.608, "ICU_LOS": 120.8, "TV_IBW": 6.62, "PEEP": 7.3, "PaO2": 88.3, "Lactate": 0.99}, {"Age": 42.7, "Gender_Enc": 0.706, "Ethnicity_Enc": 0.67, "ICU_LOS": 27.6, "TV_IBW": 6.59, "PEEP": 11.8, "PaO2": 94.9, "Lactate": 3.42}, {"Age": 81.5, "Gender_Enc": 0.511, "Ethnicity_Enc": 0.414, "ICU_LOS": 130.5, "TV_IBW": 6.29, "PEEP": 6.1, "PaO2": null, "Lactate": 1.0}, {"Age": 62.9, "Gender_Enc": 0.577, "Ethnicity_Enc": 0.225, "ICU_LOS": 73.5, "TV_IBW": 6.99, "PEEP": 7.1, "PaO2": 110.9, "Lactate": 2.31}, {"Age": 63.6, "Gender_Enc": 0.828, "Ethnicity_Enc": 0.831, "ICU_LOS": 70.0, "TV_IBW": 5.34, "PEEP": 8.8, "PaO2": 133.6, "Lactate": 0.7}, {"Age": 55.1, "Gender_Enc": 0.612, "Ethnicity_Enc": 0.769, "ICU_LOS": 74.6, "TV_IBW": 7.84, "PEEP": 6.2, "PaO2": 107.7, "Lactate": 0.5}, {"Age": 64.6, "Gender_Enc": 0.131, "Ethnicity_Enc": 0.09, "ICU_LOS": 69.8, "TV_IBW": 8.83, "PEEP": 6.1, "PaO2": 91.3, "Lactate": 0.65}, {"Age": 49.8, "Gender_Enc": 0.329, "Ethnicity_Enc": 0.38, "ICU_LOS": 32.8, "TV_IBW": 6.46, "PEEP": 7.5, "PaO2": 107.1, "Lactate": 0.49}, {"Age": 76.9, "Gender_Enc": 0.576, "Ethnicity_Enc": 0.563, "ICU_LOS": 30.9, "TV_IBW": 6.43, "PEEP": 8.6, "PaO2": 107.0, "Lactate": 1.5}, {"Age": 61.9, "Gender_Enc": 0.387, "Ethnicity_Enc": 0.037, "ICU_LOS": 106.3, "TV_IBW": 6.66, "PEEP": 10.0, "PaO2": 46.5, "Lactate": 1.1}, {"Age": 77.3, "Gender_Enc": 0.187, "Ethnicity_Enc": 0.432, "ICU_LOS": 73.7, "TV_IBW": 5.56, "PEEP": 6.0, "PaO2": 116.4, "Lactate": 0.52}, {"Age": 54.9, "Gender_Enc": 0.583, "Ethnicity_Enc": 0.683, "ICU_LOS": 93.5, "TV_IBW": 6.03, "PEEP": 11.3, "PaO2": null, "Lactate": 1.03}, {"Age": 47.7, "Gender_Enc": 0.509, "Ethnicity_Enc": 0.132, "ICU_LOS": 65.9, "TV_IBW": 6.43, "PEEP": 5.0, "PaO2": 61.7, "Lactate": 1.27}, {"Age": 65.7, "Gender_Enc": 0.505, "Ethnicity_Enc": 0.498, "ICU_LOS": 119.0, "TV_IBW": 7.04, "PEEP": 7.9, "PaO2": 85.7, "Lactate": 2.3}, {"Age": 70.2, "Gender_Enc": 0.649, "Ethnicity_Enc": 0.471, "ICU_LOS": 101.1, "TV_IBW": 6.51, "PEEP": 5.9, "PaO2": 85.6, "Lactate": 1.08}, {"Age": 48.8, "Gender_Enc": 0.425, "Ethnicity_Enc": 0.299, "ICU_LOS": 83.6, "TV_IBW": 6.13, "PEEP": 7.8, "PaO2": 115.8, "Lactate": null}, {"Age": 80.0, "Gender_Enc": 0.381, "Ethnicity_Enc": 0.564, "ICU_LOS": 127.1, "TV_IBW": 6.92, "PEEP": 6.6, "PaO2": 101.1, "Lactate": 1.29}, {"Age": 36.1, "Gender_Enc": 0.336, "Ethnicity_Enc": 0.38, "ICU_LOS": 39.2, "TV_IBW": 5.61, "PEEP": 7.0, "PaO2": 78.3, "Lactate": 1.19}, {"Age": 49.7, "Gender_Enc": 0.656, "Ethnicity_Enc": 0.432, "ICU_LOS": 81.5, "TV_IBW": 8.72, "PEEP": 9.3, "PaO2": null, "Lactate": 1.78}, {"Age": 78.0, "Gender_Enc": 0.166, "Ethnicity_Enc": 0.599, "ICU_LOS": 73.7, "TV_IBW": 9.08, "PEEP": 9.6, "PaO2": 91.0, "Lactate": 0.9}, {"Age": 70.3, "Gender_Enc": 0.649, "Ethnicity_Enc": 0.386, "ICU_LOS": 33.3, "TV_IBW": 5.51, "PEEP": 9.2, "PaO2": 95.4, "Lactate": 0.81}, {"Age": 71.2, "Gender_Enc": 0.786, "Ethnicity_Enc": 0.644, "ICU_LOS": 116.2, "TV_IBW": 8.51, "PEEP": 9.1, "PaO2": null, "Lactate": null}, {"Age": 82.2, "Gender_Enc": 0.254, "Ethnicity_Enc": 0.514, "ICU_LOS": 81.1, "TV_IBW": 8.91, "PEEP": 9.3, "PaO2": null, "Lactate": 0.84}, {"Age": 74.4, "Gender_Enc": 0.462, "Ethnicity_Enc": 0.434, "ICU_LOS": 61.0, "TV_IBW": 7.87, "PEEP": 8.7, "PaO2": 73.5, "Lactate": 3.53}, {"Age": 95.0, "Gender_Enc": 0.197, "Ethnicity_Enc": 0.407, "ICU_LOS": 42.8, "TV_IBW": 8.11, "PEEP": 14.5, "PaO2": null, "Lactate": null}, {"Age": 83.3, "Gender_Enc": 0.766, "Ethnicity_Enc": 0.912, "ICU_LOS": 66.0, "TV_IBW": 8.99, "PEEP": 11.4, "PaO2": 50.8, "Lactate": 2.93}, {"Age": 63.2, "Gender_Enc": 0.43, "Ethnicity_Enc": 0.657, "ICU_LOS": 63.6, "TV_IBW": 10.03, "PEEP": 13.1, "PaO2": null, "Lactate": null}, {"Age": 77.4, "Gender_Enc": 0.767, "Ethnicity_Enc": 0.392, "ICU_LOS": 86.4, "TV_IBW": 7.39, "PEEP": 8.3, "PaO2": 63.8, "Lactate": 3.2}, {"Age": 57.3, "Gender_Enc": 0.825, "Ethnicity_Enc": 0.295, "ICU_LOS": 133.0, "TV_IBW": 8.61, "PEEP": 7.0, "PaO2": null, "Lactate": null}], "after": [{"Age": 62.6, "Gender_Enc": 0.258, "Ethnicity_Enc": 0.476, "ICU_LOS": 67.9, "TV_IBW": 4.53, "PEEP": 8.2, "PaO2": 55.4, "Lactate": 2.05}, {"Age": 55.0, "Gender_Enc": 0.437, "Ethnicity_Enc": 0.41, "ICU_LOS": 60.7, "TV_IBW": 8.76, "PEEP": 6.2, "PaO2": 88.4, "Lactate": 0.9}, {"Age": 57.3, "Gender_Enc": 0.497, "Ethnicity_Enc": 0.499, "ICU_LOS": 78.4, "TV_IBW": 6.77, "PEEP": 6.6, "PaO2": 82.1, "Lactate": 1.36}, {"Age": 59.3, "Gender_Enc": 0.885, "Ethnicity_Enc": 0.439, "ICU_LOS": 130.7, "TV_IBW": 6.25, "PEEP": 7.3, "PaO2": 137.1, "Lactate": 0.79}, {"Age": 81.2, "Gender_Enc": 0.541, "Ethnicity_Enc": 0.38, "ICU_LOS": 41.5, "TV_IBW": 7.72, "PEEP": 7.4, "PaO2": 82.6, "Lactate": 0.49}, {"Age": 61.2, "Gender_Enc": 0.532, "Ethnicity_Enc": 0.547, "ICU_LOS": 173.5, "TV_IBW": 8.39, "PEEP": 5.0, "PaO2": 87.8, "Lactate": 2.18}, {"Age": 43.9, "Gender_Enc": 0.65, "Ethnicity_Enc": 0.502, "ICU_LOS": 41.2, "TV_IBW": 5.21, "PEEP": 7.9, "PaO2": 83.0, "Lactate": 1.88}, {"Age": 50.4, "Gender_Enc": 0.59, "Ethnicity_Enc": 0.533, "ICU_LOS": 122.6, "TV_IBW": 8.18, "PEEP": 12.0, "PaO2": 89.7, "Lactate": 0.98}, {"Age": 65.4, "Gender_Enc": 0.684, "Ethnicity_Enc": 0.577, "ICU_LOS": 47.4, "TV_IBW": 4.46, "PEEP": 8.6, "PaO2": 82.5, "Lactate": 1.09}, {"Age": 42.7, "Gender_Enc": 0.559, "Ethnicity_Enc": 0.236, "ICU_LOS": 62.9, "TV_IBW": 6.53, "PEEP": 9.7, "PaO2": 75.4, "Lactate": 2.95}, {"Age": 57.8, "Gender_Enc": 0.553, "Ethnicity_Enc": 0.595, "ICU_LOS": 56.9, "TV_IBW": 6.02, "PEEP": 5.8, "PaO2": 69.0, "Lactate": 1.03}, {"Age": 44.5, "Gender_Enc": 0.459, "Ethnicity_Enc": 0.495, "ICU_LOS": 114.6, "TV_IBW": 6.68, "PEEP": 7.4, "PaO2": 88.3, "Lactate": 0.99}, {"Age": 45.7, "Gender_Enc": 0.45, "Ethnicity_Enc": 0.508, "ICU_LOS": 35.3, "TV_IBW": 6.66, "PEEP": 11.3, "PaO2": 94.9, "Lactate": 3.42}, {"Age": 78.7, "Gender_Enc": 0.49, "Ethnicity_Enc": 0.389, "ICU_LOS": 122.8, "TV_IBW": 6.4, "PEEP": 6.4, "PaO2": 97.3, "Lactate": 1.0}, {"Age": 62.9, "Gender_Enc": 0.387, "Ethnicity_Enc": 0.654, "ICU_LOS": 74.3, "TV_IBW": 7.0, "PEEP": 7.3, "PaO2": 110.9, "Lactate": 2.31}, {"Age": 63.4, "Gender_Enc": 0.544, "Ethnicity_Enc": 0.438, "ICU_LOS": 71.3, "TV_IBW": 5.6, "PEEP": 8.7, "PaO2": 133.6, "Lactate": 0.7}, {"Age": 56.3, "Gender_Enc": 0.516, "Ethnicity_Enc": 0.454, "ICU_LOS": 75.3, "TV_IBW": 7.72, "PEEP": 6.5, "PaO2": 107.7, "Lactate": 0.5}, {"Age": 64.4, "Gender_Enc": 0.708, "Ethnicity_Enc": 0.326, "ICU_LOS": 71.2, "TV_IBW": 8.56, "PEEP": 6.4, "PaO2": 91.3, "Lactate": 0.65}, {"Age": 51.8, "Gender_Enc": 0.531, "Ethnicity_Enc": 0.346, "ICU_LOS": 39.7, "TV_IBW": 6.55, "PEEP": 7.6, "PaO2": 107.1, "Lactate": 0.49}, {"Age": 74.8, "Gender_Enc": 0.51, "Ethnicity_Enc": 0.426, "ICU_LOS": 38.1, "TV_IBW": 6.53, "PEEP": 8.5, "PaO2": 107.0, "Lactate": 1.5}, {"Age": 62.1, "Gender_Enc": 0.575, "Ethnicity_Enc": 0.438, "ICU_LOS": 102.2, "TV_IBW": 6.72, "PEEP": 9.8, "PaO2": 46.5, "Lactate": 1.1}, {"Age": 75.1, "Gender_Enc": 0.559, "Ethnicity_Enc": 0.542, "ICU_LOS": 74.5, "TV_IBW": 5.79, "PEEP": 6.3, "PaO2": 116.4, "Lactate": 0.52}, {"Age": 56.1, "Gender_Enc": 0.436, "Ethnicity_Enc": 0.521, "ICU_LOS": 91.4, "TV_IBW": 6.18, "PEEP": 10.9, "PaO2": 93.3, "Lactate": 1.03}, {"Age": 49.9, "Gender_Enc": 0.629, "Ethnicity_Enc": 0.459, "ICU_LOS": 67.9, "TV_IBW": 6.52, "PEEP": 5.5, "PaO2": 61.7, "Lactate": 1.27}, {"Age": 65.3, "Gender_Enc": 0.4, "Ethnicity_Enc": 0.595, "ICU_LOS": 113.0, "TV_IBW": 7.04, "PEEP": 7.9, "PaO2": 85.7, "Lactate": 2.3}, {"Age": 69.0, "Gender_Enc": 0.151, "Ethnicity_Enc": 0.66, "ICU_LOS": 97.8, "TV_IBW": 6.59, "PEEP": 6.2, "PaO2": 85.6, "Lactate": 1.08}, {"Age": 50.9, "Gender_Enc": 0.427, "Ethnicity_Enc": 0.367, "ICU_LOS": 82.9, "TV_IBW": 6.27, "PEEP": 7.9, "PaO2": 115.8, "Lactate": 3.23}, {"Age": 77.4, "Gender_Enc": 0.364, "Ethnicity_Enc": 0.522, "ICU_LOS": 119.9, "TV_IBW": 6.94, "PEEP": 6.9, "PaO2": 101.1, "Lactate": 1.29}, {"Age": 40.1, "Gender_Enc": 0.452, "Ethnicity_Enc": 0.533, "ICU_LOS": 45.2, "TV_IBW": 5.83, "PEEP": 7.2, "PaO2": 78.3, "Lactate": 1.19}, {"Age": 51.7, "Gender_Enc": 0.604, "Ethnicity_Enc": 0.675, "ICU_LOS": 81.2, "TV_IBW": 8.47, "PEEP": 9.1, "PaO2": 94.0, "Lactate": 1.78}, {"Age": 75.7, "Gender_Enc": 0.461, "Ethnicity_Enc": 0.475, "ICU_LOS": 74.5, "TV_IBW": 8.78, "PEEP": 9.4, "PaO2": 91.0, "Lactate": 0.9}, {"Age": 69.2, "Gender_Enc": 0.422, "Ethnicity_Enc": 0.649, "ICU_LOS": 40.1, "TV_IBW": 5.74, "PEEP": 9.1, "PaO2": 95.4, "Lactate": 0.81}, {"Age": 70.0, "Gender_Enc": 0.837, "Ethnicity_Enc": 0.381, "ICU_LOS": 110.7, "TV_IBW": 8.29, "PEEP": 9.0, "PaO2": 52.9, "Lactate": 8.29}, {"Age": 79.3, "Gender_Enc": 0.363, "Ethnicity_Enc": 0.544, "ICU_LOS": 80.8, "TV_IBW": 8.63, "PEEP": 9.1, "PaO2": 44.5, "Lactate": 0.84}, {"Age": 72.6, "Gender_Enc": 0.501, "Ethnicity_Enc": 0.399, "ICU_LOS": 63.8, "TV_IBW": 7.75, "PEEP": 8.7, "PaO2": 73.5, "Lactate": 3.53}, {"Age": 90.2, "Gender_Enc": 0.584, "Ethnicity_Enc": 0.528, "ICU_LOS": 48.3, "TV_IBW": 7.95, "PEEP": 13.6, "PaO2": 64.8, "Lactate": 1.88}, {"Age": 80.3, "Gender_Enc": 0.605, "Ethnicity_Enc": 0.493, "ICU_LOS": 67.9, "TV_IBW": 8.7, "PEEP": 10.9, "PaO2": 50.8, "Lactate": 2.93}, {"Age": 63.1, "Gender_Enc": 0.692, "Ethnicity_Enc": 0.67, "ICU_LOS": 65.9, "TV_IBW": 9.58, "PEEP": 12.4, "PaO2": 76.1, "Lactate": 2.25}, {"Age": 75.2, "Gender_Enc": 0.57, "Ethnicity_Enc": 0.585, "ICU_LOS": 85.3, "TV_IBW": 7.34, "PEEP": 8.3, "PaO2": 63.8, "Lactate": 3.2}, {"Age": 58.1, "Gender_Enc": 0.417, "Ethnicity_Enc": 0.517, "ICU_LOS": 124.9, "TV_IBW": 8.37, "PEEP": 7.2, "PaO2": 79.7, "Lactate": 1.91}], "classBefore": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1], "classAfter": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1], "syntheticAfter": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "nBefore": 40, "nAfter": 40, "nControlBefore": 32, "nDmBefore": 8, "nControlAfter": 32, "nDmAfter": 8, "nSynthetic": 0, "missBefore": 0.3, "missAfter": 0.0, "biasPao2Before": 3.13, "biasPao2After": 0.63, "biasLacBefore": 0.25, "biasLacAfter": 0.01};
+const VARS_META = {"Age": ["Age (years)", "yrs"], "Gender_Enc": ["Gender \u2014 value", ""], "Ethnicity_Enc": ["Ethnicity \u2014 value", ""], "ICU_LOS": ["ICU length of stay (hours)", "hrs"], "TV_IBW": ["Tidal volume (mL/kg IBW)", "mL/kg"], "PEEP": ["PEEP (cmH\u2082O)", "cmH2O"], "PaO2": ["PaO\u2082 (mmHg)", "mmHg"], "Lactate": ["Lactate (mmol/L)", "mmol/L"]};
+const MISSING_BEFORE = {"Age": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "Gender_Enc": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "Ethnicity_Enc": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "ICU_LOS": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "TV_IBW": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "PEEP": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "PaO2": [true, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, true, false, false, true, true, false, true, false, true, false, true], "Lactate": [false, false, false, false, false, false, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, true, false, false, true, false, true, false, true]};
+const ALL_VARS = DATA.vars;
+const GRID_VARS = DATA.gridVars;
+
+const BEFORE = DATA.before;
+const AFTER = DATA.after;
+const CLASS_BEFORE = DATA.classBefore;
+const CLASS_AFTER = DATA.classAfter;
+const SYNTH_AFTER = DATA.syntheticAfter;
+
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function std(a){ const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+
+function fmtTick(v, val, range){
+  return fmtAxis(val, range);
+}
+
+function beforeArr(v){ return BEFORE.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+function afterArr(v){ return AFTER.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{
+  const o = document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; varDropdown.appendChild(o);
+});
+let selectedVar = ALL_VARS[0];
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = VARS_META[v][0];
+    d.onclick = ()=>{ selectedVar=v; varDropdown.value=v; renderVarList(); highlightVar(v); document.getElementById('qqVar').value=v; drawQQ(); };
+    varList.appendChild(d);
+  });
+}
+varDropdown.addEventListener('change', e=>{ selectedVar=e.target.value; renderVarList(); highlightVar(selectedVar); document.getElementById('qqVar').value=selectedVar; drawQQ(); });
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= SVG helpers =================
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+
+// ================= Histogram / Density =================
+function histBins(arr, nbins, lo, hi){
+  const width=(hi-lo)/nbins || 1;
+  const counts=new Array(nbins).fill(0);
+  arr.forEach(x=>{
+    let idx=Math.floor((x-lo)/width);
+    if(idx<0) idx=0; if(idx>=nbins) idx=nbins-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+function drawDistChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const lo = Math.min(...before,...after), hi = Math.max(...before,...after);
+  const nbins=10;
+  const cb = histBins(before,nbins,lo,hi), ca = histBins(after,nbins,lo,hi);
+  const maxc = Math.max(...cb,...ca,1);
+  const W=250,H=150, padL=30,padB=20,padT=6,padR=6;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const bw = plotW/nbins;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=4;i++){
+    const y = padT + plotH - (i/4)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=Math.round((i/4)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  const tipBg = svgEl('rect', {x:padL, y:0, width:70, height:14, rx:3, fill:'#fff', stroke:'#D7DEEC', 'stroke-width':1, style:'display:none;'});
+  const tip = svgEl('text', {x:padL+4, y:10, 'font-size':9.5, 'font-weight':700, fill:'var(--before-line)'});
+  tip.textContent = '';
+  function showTip(label, val, colorVar){
+    tip.textContent = label + ': ' + val;
+    tip.setAttribute('fill', colorVar);
+    tipBg.setAttribute('stroke', colorVar);
+    tipBg.style.display='block';
+  }
+  if(plotType==='hist'){
+    for(let i=0;i<cb.length;i++){
+      const x = padL + i*bw;
+      const bH = (cb[i]/maxc)*plotH;
+      const aH = (ca[i]/maxc)*plotH;
+      const rectB = {x:x+1, y:padT+plotH-bH, width:Math.max(bw-2,1), height:bH, fill:'var(--before)', opacity:0.9, stroke:'var(--before-line)', 'stroke-width':1.2, style:'cursor:pointer;'};
+      const rectA = {x:x+1, y:padT+plotH-aH, width:Math.max(bw-2,1), height:aH, fill:'var(--after)', opacity:0.9, stroke:'var(--after-line)', 'stroke-width':1.2, style:'cursor:pointer;'};
+      const elB = svgEl('rect', rectB);
+      const elA = svgEl('rect', rectA);
+      const tipB = ()=>{};
+      const tipA = ()=>{};
+      elB.addEventListener('click', tipB);
+      elB.addEventListener('touchstart', tipB);
+      elB.addEventListener('mouseenter', tipB);
+      elA.addEventListener('click', tipA);
+      elA.addEventListener('touchstart', tipA);
+      elA.addEventListener('mouseenter', tipA);
+      if(bH >= aH){
+        svg.appendChild(elB);
+        if(ca[i] > 0) svg.appendChild(elA);
+      } else {
+        svg.appendChild(elA);
+        if(cb[i] > 0) svg.appendChild(elB);
+      }
+    }
+    svg.appendChild(tipBg);
+    svg.appendChild(tip);
+  } else {
+    function densityLine(counts, color, line, alpha){
+      let d='';
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw + bw/2;
+        const y = padT + plotH - (c/maxc)*plotH;
+        d += (i===0?'M':'L') + x + ' ' + y + ' ';
+      });
+      const path = svgEl('path',{d:d.trim(), fill:'none', stroke:line, 'stroke-width':2});
+      svg.appendChild(path);
+      let dArea = d.trim() + ` L ${padL+plotW} ${padT+plotH} L ${padL} ${padT+plotH} Z`;
+      svg.appendChild(svgEl('path',{d:dArea, fill:color, opacity:alpha*0.6}));
+    }
+    densityLine(cb, 'var(--before)', 'var(--before-line)', 0.55);
+    densityLine(ca, 'var(--after)', 'var(--after-line)', 0.55);
+  }
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const xt1=svgEl('text',{x:padL,y:H-4,'font-size':8,fill:'#8791A3'}); xt1.textContent=fmtTick(v,lo,hi-lo); svg.appendChild(xt1);
+  const xt2=svgEl('text',{x:W-padR,y:H-4,'text-anchor':'end','font-size':8,fill:'#8791A3'}); xt2.textContent=fmtTick(v,hi,hi-lo); svg.appendChild(xt2);
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function quartiles(arr){
+  const a=[...arr].sort((x,y)=>x-y);
+  const q=(p)=>{ const idx=(a.length-1)*p; const lo=Math.floor(idx),hi=Math.ceil(idx); return a[lo]+(a[hi]-a[lo])*(idx-lo); };
+  const q1=q(0.25), med=q(0.5), q3=q(0.75), iqr=q3-q1;
+  const loW = Math.max(a[0], q1-1.5*iqr), hiW = Math.min(a[a.length-1], q3+1.5*iqr);
+  const outliers = a.filter(x=>x<loW||x>hiW);
+  return {q1,med,q3,loW,hiW,outliers,min:a[0],max:a[a.length-1]};
+}
+function drawBoxChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const sb = quartiles(before), sa = quartiles(after);
+  const lo = Math.min(sb.loW,sa.loW,...sb.outliers,...sa.outliers);
+  const hi = Math.max(sb.hiW,sa.hiW,...sb.outliers,...sa.outliers);
+  const W=250,H=150, padL=32,padB=20,padT=8,padR=10;
+  const plotH=H-padT-padB;
+  const y = val => padT + plotH - ((val-lo)/(hi-lo||1))*plotH;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const yy=padT+ (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'}));
+  }
+  function box(cx, s, color, line, label){
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.loW),y2:y(s.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.q3),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.loW),y2:y(s.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.hiW),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    const rectEl = svgEl('rect',{x:cx-bw/2, y:y(s.q3), width:bw, height:Math.max(y(s.q1)-y(s.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85});
+    svg.appendChild(rectEl);
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(s.med),y2:y(s.med),stroke:line,'stroke-width':1.6}));
+    s.outliers.forEach(o=>{ svg.appendChild(svgEl('circle',{cx:cx, cy:y(o), r:2, fill:'none', stroke:line, 'stroke-width':1})); });
+  }
+  box(padL+ (W-padL-padR)*0.28, sb, 'var(--before)', 'var(--before-line)', 'Before');
+  box(padL+ (W-padL-padR)*0.72, sa, 'var(--after)', 'var(--after-line)', 'After');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const lb=svgEl('text',{x:padL+(W-padL-padR)*0.28,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); lb.textContent='Before'; svg.appendChild(lb);
+  const la=svgEl('text',{x:padL+(W-padL-padR)*0.72,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); la.textContent='After'; svg.appendChild(la);
+  for(let i=0;i<=3;i++){
+    const val = lo + (i/3)*(hi-lo);
+    const yy=padT+plotH-(i/3)*plotH;
+    const t=svgEl('text',{x:padL-4,y:yy+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtAxis(val,hi-lo); svg.appendChild(t);
+  }
+  container.appendChild(svg);
+}
+
+// ================= render var grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  GRID_VARS.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v;
+    const t = document.createElement('div'); t.className='ct'; t.textContent=VARS_META[v][0]; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+
+    const bb = document.createElement('div'); bb.className='chart-box';
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=VARS_META[v][0]; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function erfinv(x){
+  const a=0.147;
+  const ln = Math.log(1-x*x);
+  const t1 = 2/(Math.PI*a) + ln/2;
+  return Math.sign(x)*Math.sqrt(Math.sqrt(t1*t1-ln/a)-t1);
+}
+function normInv(p){ return Math.sqrt(2)*erfinv(2*p-1); }
+function drawQQSub(svg, x0, w, arr, color, line, label, H, padT, padB){
+  const a=[...arr].sort((x,y)=>x-y);
+  const n=a.length;
+  const theo = a.map((_,i)=>normInv((i+0.5)/n));
+  const m=mean(a), s=std(a)||1;
+  const sampleZ = a.map(v=>(v-m)/s);
+  const lo=Math.min(...theo,...sampleZ), hi=Math.max(...theo,...sampleZ);
+  const plotH=H-padT-padB, plotW=w-40;
+  const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+  const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+  svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  theo.forEach((t,i)=>{
+    svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(sampleZ[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85}));
+  });
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; svg.appendChild(lb);
+}
+function drawQQ(){
+  const v = document.getElementById('qqVar').value;
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520,H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  drawQQSub(svg, 0, W/2, before, 'var(--before)', 'var(--before-line)', 'Before', H, padT, padB);
+  drawQQSub(svg, W/2, W/2, after, 'var(--after)', 'var(--after-line)', 'After', H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function pearsonPairwise(a,b){
+  const xa=[],xb=[];
+  for(let i=0;i<a.length;i++){
+    if(a[i]!==null && b[i]!==null && a[i]!==undefined && b[i]!==undefined && !isNaN(a[i]) && !isNaN(b[i])){
+      xa.push(a[i]); xb.push(b[i]);
+    }
+  }
+  if(xa.length<3) return 0;
+  const ma=mean(xa), mb=mean(xb);
+  let num=0,da=0,db=0;
+  for(let i=0;i<xa.length;i++){ num+=(xa[i]-ma)*(xb[i]-mb); da+=(xa[i]-ma)**2; db+=(xb[i]-mb)**2; }
+  return num/Math.sqrt(da*db||1);
+}
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function corrMatrix(vars, dataset){
+  return vars.map(v1=> vars.map(v2 => pearsonPairwise(dataset.map(r=>r[v1]), dataset.map(r=>r[v2])) ));
+}
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=v.length>8?v.slice(0,6)+'…':v; th.style.fontSize='8.5px'; th.style.whiteSpace='nowrap'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=v1.length>8?v1.slice(0,6)+'…':v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const setSel = document.getElementById('corrSet').value;
+  const vars = setSel==='core' ? GRID_VARS : ALL_VARS;
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, BEFORE), 'Before'));
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, AFTER), 'After'));
+}
+
+// ================= Missingness / Domain Grid =================
+function drawClassGrid(){
+  const container = document.getElementById('classGrid'); container.innerHTML='';
+  const NB = DATA.nBefore, NA_FULL = DATA.nAfter;
+  // show only a representative, evenly-spaced sample of the After cohort so
+  // the grid stays readable instead of rendering every After subject
+  const NA_DISPLAY = Math.min(NA_FULL, 40);
+  const afterIdx = Array.from({length: NA_DISPLAY}, (_,i) =>
+    NA_DISPLAY===1 ? 0 : Math.round(i*(NA_FULL-1)/(NA_DISPLAY-1))
+  );
+  const outer = document.createElement('div'); outer.className='mv-wrap';
+  const wrap = document.createElement('div'); wrap.className='mv-inner';
+  outer.appendChild(wrap);
+
+  const head = document.createElement('div'); head.className='mv-headrow';
+  head.innerHTML = `<div></div><div class="h">Before</div><div class="h">After</div>`;
+  wrap.appendChild(head);
+
+  GRID_VARS.forEach(v=>{
+    const row = document.createElement('div'); row.className='mv-row';
+    const label = document.createElement('div'); label.className='mv-label'; label.textContent=VARS_META[v][0];
+    row.appendChild(label);
+
+    const beforeGrid = document.createElement('div'); beforeGrid.className='mv-grid'; beforeGrid.style.setProperty('--n', NB);
+    const afterGrid = document.createElement('div'); afterGrid.className='mv-grid'; afterGrid.style.setProperty('--n', NA_DISPLAY);
+    for(let i=0;i<NB;i++){
+      const c = document.createElement('div');
+      const isMissing = MISSING_BEFORE[v] && MISSING_BEFORE[v][i];
+      c.className = 'mv-cell ' + (isMissing ? 'dm' : 'empty');
+      c.title = 'Subject ' + (i+1) + ' (' + (CLASS_BEFORE[i]===1?'Died':'Survived') + ') — ' + VARS_META[v][0] + ': ' + (isMissing ? 'originally missing (pre-harmonization)' : BEFORE[i][v]);
+      beforeGrid.appendChild(c);
+    }
+    afterIdx.forEach(i=>{
+      const c = document.createElement('div');
+      c.className = 'mv-cell empty';
+      c.title = 'Subject ' + (i+1) + ' (' + (CLASS_AFTER[i]===1?'Died':'Survived') + (SYNTH_AFTER[i]?', synthetic':'') + ') — ' + VARS_META[v][0] + ': ' + AFTER[i][v] + ' (harmonized, not missing)';
+      afterGrid.appendChild(c);
+    });
+    row.appendChild(beforeGrid);
+    row.appendChild(afterGrid);
+    wrap.appendChild(row);
+
+  });
+  container.appendChild(outer);
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawClassGrid();
+</script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Data Noise Bias (Before vs After Preprocessing)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#6FA0DA;
+    --before-line:#3E6FA8;
+    --after:#7BC17E;
+    --after-line:#4C9B50;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --amber:#F2B705;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  .eda-tooltip{position:fixed; pointer-events:none; background:#1B2333; color:#fff; font-size:11.5px;
+    padding:7px 10px; border-radius:7px; box-shadow:0 6px 16px rgba(0,0,0,.28); z-index:9999;
+    display:none; line-height:1.5; white-space:nowrap;}
+  .eda-tooltip b{color:#fff;}
+  .hit-rect{fill:transparent; cursor:pointer;}
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:22px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:16px; padding:16px; align-items:start;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+  @media (max-width:1400px){ .grid6{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:1100px){ .grid6{grid-template-columns:repeat(2,1fr);} .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .mv-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .mv-inner{min-width:max-content;}
+  .mv-headrow{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; margin-bottom:10px;}
+  .mv-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .mv-row{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; align-items:center; margin-bottom:4px;}
+  .mv-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mv-grid{display:grid; grid-template-columns:repeat(var(--n), 15px); grid-auto-rows:15px; gap:2px;}
+  .mv-cell{width:15px; height:15px; background:#FFFFFF; border:1px solid #D7DEEC; border-radius:2px; box-sizing:border-box;}
+  .mv-cell.on{background:var(--red-hi); border-color:var(--red-hi);}
+  .mv-cell.on-mid{background:var(--amber); border-color:var(--amber);}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div id="edaTooltip" class="eda-tooltip"></div>
+
+<header class="topbar">
+  <h1>Interactive EDA Dashboard — Data Noise Bias (Before vs After Preprocessing)</h1>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After</div>
+    </div>
+
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Preprocessing)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Preprocessing)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:150px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 6 Vars</option>
+              <option value="all">All 10 Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Noise Heatmap
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--red-hi)"></span>Large residual</span>
+          <span class="lg"><span class="swatch" style="background:var(--amber)"></span>Moderate</span>
+        </span>
+      </p>
+      <div id="noiseHeat"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="note">
+</footer>
+
+<script>
+const DATA = {"vars": ["age", "diastolic bp", "cholesterol", "glucose", "bmi", "hbA1c", "triglycerides", "wbc", "hemoglobin"], "before": [{"age": 65.5912, "diastolic bp": 25.231, "cholesterol": 6.6763, "glucose": 3.5194, "bmi": 208.1438, "hbA1c": 7.0385, "triglycerides": 38.2116, "wbc": 37.9769, "hemoglobin": 4.8661}, {"age": 66.7061, "diastolic bp": 26.5751, "cholesterol": 4.0595, "glucose": 3.6225, "bmi": 271.1862, "hbA1c": 7.111, "triglycerides": 36.6095, "wbc": 39.2087, "hemoglobin": 6.8751}, {"age": 71.6414, "diastolic bp": 25.4965, "cholesterol": 3.1017, "glucose": 2.9147, "bmi": 150.8351, "hbA1c": 7.1602, "triglycerides": 58.911, "wbc": 50.5679, "hemoglobin": 8.0777}, {"age": 76.1549, "diastolic bp": 25.6995, "cholesterol": 1.5384, "glucose": 2.5506, "bmi": 287.0563, "hbA1c": 6.9657, "triglycerides": 55.9055, "wbc": 52.8656, "hemoglobin": 8.6275}, {"age": 68.442, "diastolic bp": 25.4016, "cholesterol": 0.4003, "glucose": 2.1282, "bmi": 269.0416, "hbA1c": 7.2623, "triglycerides": 37.5574, "wbc": 43.9341, "hemoglobin": 7.1691}, {"age": 67.5609, "diastolic bp": 25.4668, "cholesterol": -0.3131, "glucose": 1.8235, "bmi": 253.7391, "hbA1c": 6.9172, "triglycerides": 40.7269, "wbc": 41.8087, "hemoglobin": 9.4222}, {"age": 64.7351, "diastolic bp": 26.7524, "cholesterol": 3.1467, "glucose": 2.3238, "bmi": 265.539, "hbA1c": 5.895, "triglycerides": 37.8474, "wbc": 41.1805, "hemoglobin": 6.5214}, {"age": 65.5251, "diastolic bp": 26.162, "cholesterol": 2.1715, "glucose": 2.2746, "bmi": 250.7125, "hbA1c": 5.8714, "triglycerides": 39.3952, "wbc": 40.8608, "hemoglobin": 6.2262}, {"age": 57.8862, "diastolic bp": 25.5106, "cholesterol": -0.3272, "glucose": 1.7892, "bmi": 231.8289, "hbA1c": 6.8587, "triglycerides": 39.0311, "wbc": 41.6615, "hemoglobin": 8.117}, {"age": 58.2909, "diastolic bp": 25.9272, "cholesterol": -0.3814, "glucose": 1.956, "bmi": 219.0175, "hbA1c": 6.6018, "triglycerides": 36.5139, "wbc": 41.5501, "hemoglobin": 4.7349}, {"age": 55.2663, "diastolic bp": 26.9607, "cholesterol": 0.679, "glucose": 1.4073, "bmi": 262.6641, "hbA1c": 6.714, "triglycerides": 41.1548, "wbc": 42.1562, "hemoglobin": 2.679}, {"age": 56.8428, "diastolic bp": 26.1758, "cholesterol": 0.4646, "glucose": 0.2014, "bmi": 288.8801, "hbA1c": 7.07, "triglycerides": 42.0545, "wbc": 43.2039, "hemoglobin": 6.4012}, {"age": 59.0143, "diastolic bp": 27.1326, "cholesterol": 3.1982, "glucose": 1.7506, "bmi": 252.7682, "hbA1c": 6.4405, "triglycerides": 28.0364, "wbc": 33.1198, "hemoglobin": 4.6821}, {"age": 60.2437, "diastolic bp": 25.9821, "cholesterol": 3.5724, "glucose": 0.8773, "bmi": 192.6615, "hbA1c": 6.0944, "triglycerides": 33.0894, "wbc": 36.7473, "hemoglobin": 14.2892}, {"age": 55.804, "diastolic bp": 22.2683, "cholesterol": 7.0787, "glucose": 3.1478, "bmi": 210.8096, "hbA1c": 6.8157, "triglycerides": 44.649, "wbc": 43.4667, "hemoglobin": 7.3929}, {"age": 54.6922, "diastolic bp": 22.2342, "cholesterol": 7.4909, "glucose": 2.7314, "bmi": 230.5981, "hbA1c": 7.0392, "triglycerides": 47.45, "wbc": 41.313, "hemoglobin": 4.0358}, {"age": 67.1276, "diastolic bp": 26.4638, "cholesterol": 4.918, "glucose": 0.5464, "bmi": 193.8563, "hbA1c": 6.2804, "triglycerides": 30.9597, "wbc": 34.7845, "hemoglobin": 6.898}, {"age": 67.7297, "diastolic bp": 27.3298, "cholesterol": 2.59, "glucose": 0.3231, "bmi": 138.6889, "hbA1c": 6.4753, "triglycerides": 30.3989, "wbc": 34.8368, "hemoglobin": 7.715}, {"age": 57.5337, "diastolic bp": 28.1622, "cholesterol": 3.6297, "glucose": 1.611, "bmi": 242.1761, "hbA1c": 6.0552, "triglycerides": 41.9474, "wbc": 45.1175, "hemoglobin": 11.1299}, {"age": 58.344, "diastolic bp": 27.8673, "cholesterol": 3.6547, "glucose": 1.8071, "bmi": 202.1434, "hbA1c": 6.1937, "triglycerides": 44.0163, "wbc": 42.993, "hemoglobin": 6.5911}, {"age": 64.6549, "diastolic bp": 28.0407, "cholesterol": 1.0816, "glucose": 10.3556, "bmi": 212.5596, "hbA1c": 5.7462, "triglycerides": 17.9615, "wbc": 39.7917, "hemoglobin": 6.1642}, {"age": 65.7769, "diastolic bp": 26.0192, "cholesterol": 1.0276, "glucose": 4.7326, "bmi": 257.4588, "hbA1c": 6.162, "triglycerides": 24.3341, "wbc": 40.7874, "hemoglobin": 5.2591}, {"age": 56.5657, "diastolic bp": 29.1793, "cholesterol": 4.1591, "glucose": 1.4011, "bmi": 178.3587, "hbA1c": 6.7578, "triglycerides": 51.679, "wbc": 44.826, "hemoglobin": -0.7189}, {"age": 54.1608, "diastolic bp": 28.5632, "cholesterol": 4.2844, "glucose": 2.666, "bmi": 155.9955, "hbA1c": 5.3536, "triglycerides": 46.5945, "wbc": 44.5382, "hemoglobin": -1.3244}, {"age": 60.2988, "diastolic bp": 25.9303, "cholesterol": 11.4161, "glucose": 0.1898, "bmi": 391.5016, "hbA1c": 5.6698, "triglycerides": 46.5794, "wbc": 47.9971, "hemoglobin": 22.0693}, {"age": 61.2856, "diastolic bp": 25.2526, "cholesterol": 9.5578, "glucose": 0.455, "bmi": 331.6065, "hbA1c": 6.1309, "triglycerides": 41.0622, "wbc": 43.8159, "hemoglobin": 21.5606}, {"age": 57.5379, "diastolic bp": 25.803, "cholesterol": 1.2092, "glucose": 2.6933, "bmi": 311.2913, "hbA1c": 6.0468, "triglycerides": 33.8769, "wbc": 38.0731, "hemoglobin": 19.0002}, {"age": 56.6001, "diastolic bp": 26.234, "cholesterol": 0.9123, "glucose": 4.156, "bmi": 340.0115, "hbA1c": 5.7703, "triglycerides": 30.2268, "wbc": 39.6389, "hemoglobin": 2.6573}, {"age": 61.9315, "diastolic bp": 21.71, "cholesterol": 1.8357, "glucose": 2.251, "bmi": 155.0552, "hbA1c": 6.0794, "triglycerides": 35.1308, "wbc": 36.598, "hemoglobin": 11.7411}, {"age": 60.5111, "diastolic bp": 23.1128, "cholesterol": 2.326, "glucose": 0.5825, "bmi": 177.8262, "hbA1c": 6.0891, "triglycerides": 34.0728, "wbc": 38.5829, "hemoglobin": 1.8205}, {"age": 66.3512, "diastolic bp": 26.8658, "cholesterol": 4.7784, "glucose": 2.8186, "bmi": 189.4015, "hbA1c": 6.8993, "triglycerides": 42.241, "wbc": 43.8017, "hemoglobin": 10.3335}, {"age": 65.2843, "diastolic bp": 28.3247, "cholesterol": 5.5715, "glucose": 3.2424, "bmi": 212.5826, "hbA1c": 10.02, "triglycerides": 37.2613, "wbc": 44.3616, "hemoglobin": 10.0524}, {"age": 55.5178, "diastolic bp": 26.859, "cholesterol": 3.0554, "glucose": 5.4147, "bmi": 218.4575, "hbA1c": 5.5268, "triglycerides": 34.8331, "wbc": 35.3874, "hemoglobin": 2.7035}, {"age": 56.9319, "diastolic bp": 27.4714, "cholesterol": 1.3702, "glucose": 4.4402, "bmi": 171.8545, "hbA1c": 5.798, "triglycerides": 35.7778, "wbc": 43.5896, "hemoglobin": 42.5228}, {"age": 60.5547, "diastolic bp": 27.2251, "cholesterol": 3.0649, "glucose": 4.2286, "bmi": 238.1286, "hbA1c": 4.8221, "triglycerides": 35.4731, "wbc": 34.8238, "hemoglobin": 4.6922}, {"age": 65.7146, "diastolic bp": 27.626, "cholesterol": 2.4855, "glucose": 5.4494, "bmi": 223.8511, "hbA1c": 5.0706, "triglycerides": 34.674, "wbc": 35.8121, "hemoglobin": 0.6309}, {"age": 71.7041, "diastolic bp": 23.2835, "cholesterol": 2.901, "glucose": 0.4154, "bmi": 324.7415, "hbA1c": 5.7762, "triglycerides": 28.9501, "wbc": 39.2784, "hemoglobin": 5.1123}, {"age": 72.0222, "diastolic bp": 23.9827, "cholesterol": 2.7721, "glucose": 1.4649, "bmi": 233.4438, "hbA1c": 5.9382, "triglycerides": 26.0052, "wbc": 41.2073, "hemoglobin": 1.855}, {"age": 65.2093, "diastolic bp": 33.9683, "cholesterol": 0.5562, "glucose": 2.3088, "bmi": 173.2606, "hbA1c": 8.1323, "triglycerides": 47.3068, "wbc": 38.3801, "hemoglobin": 3.4659}, {"age": 60.5182, "diastolic bp": 30.0402, "cholesterol": 1.5749, "glucose": 3.2537, "bmi": 233.2973, "hbA1c": 8.2288, "triglycerides": 46.5714, "wbc": 38.7293, "hemoglobin": 5.2372}, {"age": 64.6515, "diastolic bp": 22.1455, "cholesterol": 3.7394, "glucose": 0.7825, "bmi": 182.5849, "hbA1c": 5.9646, "triglycerides": 40.068, "wbc": 37.2577, "hemoglobin": -3.2432}, {"age": 62.1245, "diastolic bp": 21.2745, "cholesterol": 2.3888, "glucose": 1.4139, "bmi": 161.5741, "hbA1c": 6.3279, "triglycerides": 41.3099, "wbc": 39.9049, "hemoglobin": 3.3861}, {"age": 61.1787, "diastolic bp": 25.3808, "cholesterol": 6.4644, "glucose": 1.1823, "bmi": 503.8496, "hbA1c": 8.2419, "triglycerides": 43.2899, "wbc": 39.0982, "hemoglobin": 9.9827}, {"age": 58.9813, "diastolic bp": 27.351, "cholesterol": 6.8819, "glucose": 0.9888, "bmi": 551.1973, "hbA1c": 7.8393, "triglycerides": 36.3331, "wbc": 40.0998, "hemoglobin": 13.0704}, {"age": 71.6329, "diastolic bp": 25.243, "cholesterol": 1.3261, "glucose": 2.7294, "bmi": 211.0648, "hbA1c": 6.3213, "triglycerides": 37.1736, "wbc": 44.5336, "hemoglobin": 0.959}, {"age": 71.7456, "diastolic bp": 25.2579, "cholesterol": 2.7581, "glucose": 3.147, "bmi": 221.8085, "hbA1c": 6.324, "triglycerides": 35.8918, "wbc": 43.4583, "hemoglobin": 2.9353}, {"age": 58.609, "diastolic bp": 27.3838, "cholesterol": 0.5676, "glucose": 0.8552, "bmi": 173.8739, "hbA1c": 6.9117, "triglycerides": 50.8295, "wbc": 48.5218, "hemoglobin": -0.4067}, {"age": 58.6746, "diastolic bp": 27.699, "cholesterol": 1.7438, "glucose": 2.1023, "bmi": 219.1395, "hbA1c": 7.3202, "triglycerides": 43.1532, "wbc": 47.0087, "hemoglobin": 12.4982}, {"age": 70.4328, "diastolic bp": 23.0597, "cholesterol": 1.0825, "glucose": 3.3207, "bmi": 231.5199, "hbA1c": 5.7654, "triglycerides": 40.0727, "wbc": 40.8284, "hemoglobin": 5.665}], "after": [{"age": 66.1486, "diastolic bp": 25.9031, "cholesterol": 5.55, "glucose": 3.571, "bmi": 239.665, "hbA1c": 7.0747, "triglycerides": 37.4106, "wbc": 38.5928, "hemoglobin": 5.8706}, {"age": 66.1486, "diastolic bp": 25.9031, "cholesterol": 5.1857, "glucose": 3.571, "bmi": 239.665, "hbA1c": 7.0747, "triglycerides": 37.4106, "wbc": 38.5928, "hemoglobin": 5.8706}, {"age": 73.8982, "diastolic bp": 25.598, "cholesterol": 2.32, "glucose": 2.7326, "bmi": 210.2325, "hbA1c": 7.063, "triglycerides": 57.4083, "wbc": 51.7167, "hemoglobin": 8.3526}, {"age": 73.8982, "diastolic bp": 25.598, "cholesterol": 2.32, "glucose": 2.7326, "bmi": 227.6588, "hbA1c": 7.063, "triglycerides": 57.4083, "wbc": 51.7167, "hemoglobin": 8.3526}, {"age": 68.0014, "diastolic bp": 25.4342, "cholesterol": 0.0436, "glucose": 1.9758, "bmi": 261.3903, "hbA1c": 7.0897, "triglycerides": 39.1421, "wbc": 42.8714, "hemoglobin": 8.2956}, {"age": 68.0014, "diastolic bp": 25.4342, "cholesterol": 0.0436, "glucose": 1.9758, "bmi": 261.3903, "hbA1c": 7.0897, "triglycerides": 39.1421, "wbc": 42.8714, "hemoglobin": 8.2956}, {"age": 65.1301, "diastolic bp": 26.4572, "cholesterol": 2.6591, "glucose": 2.2992, "bmi": 258.1258, "hbA1c": 5.8832, "triglycerides": 38.6213, "wbc": 41.0206, "hemoglobin": 6.3738}, {"age": 65.1301, "diastolic bp": 26.4572, "cholesterol": 2.6591, "glucose": 2.2992, "bmi": 258.1258, "hbA1c": 5.8832, "triglycerides": 38.6213, "wbc": 41.0206, "hemoglobin": 6.3738}, {"age": 58.0885, "diastolic bp": 25.7189, "cholesterol": -0.3543, "glucose": 1.8726, "bmi": 225.4232, "hbA1c": 6.7303, "triglycerides": 37.7725, "wbc": 41.6058, "hemoglobin": 6.426}, {"age": 58.0885, "diastolic bp": 25.7189, "cholesterol": -0.3543, "glucose": 1.8726, "bmi": 225.4232, "hbA1c": 6.7303, "triglycerides": 37.7725, "wbc": 41.6058, "hemoglobin": 6.426}, {"age": 56.0546, "diastolic bp": 26.5682, "cholesterol": 0.5718, "glucose": 0.8043, "bmi": 275.7721, "hbA1c": 6.892, "triglycerides": 41.6046, "wbc": 42.6801, "hemoglobin": 4.5401}, {"age": 56.0546, "diastolic bp": 26.5682, "cholesterol": 0.5718, "glucose": 0.8043, "bmi": 275.7721, "hbA1c": 6.892, "triglycerides": 41.6046, "wbc": 42.6801, "hemoglobin": 4.5401}, {"age": 59.629, "diastolic bp": 26.5573, "cholesterol": 3.3853, "glucose": 1.314, "bmi": 222.7149, "hbA1c": 6.2674, "triglycerides": 30.5629, "wbc": 34.9335, "hemoglobin": 9.4856}, {"age": 59.629, "diastolic bp": 26.5573, "cholesterol": 3.3853, "glucose": 1.314, "bmi": 222.7149, "hbA1c": 6.2674, "triglycerides": 30.5629, "wbc": 34.9335, "hemoglobin": 9.4856}, {"age": 55.2481, "diastolic bp": 22.2513, "cholesterol": 7.2848, "glucose": 2.9396, "bmi": 220.7039, "hbA1c": 6.9275, "triglycerides": 46.0495, "wbc": 42.3899, "hemoglobin": 5.7143}, {"age": 55.2481, "diastolic bp": 22.2513, "cholesterol": 7.2848, "glucose": 2.9396, "bmi": 220.7039, "hbA1c": 6.9275, "triglycerides": 46.0495, "wbc": 42.3899, "hemoglobin": 5.7143}, {"age": 67.4286, "diastolic bp": 26.8968, "cholesterol": 3.7918, "glucose": 0.4348, "bmi": 166.2726, "hbA1c": 6.3779, "triglycerides": 30.6793, "wbc": 34.8106, "hemoglobin": 7.3065}, {"age": 67.4286, "diastolic bp": 26.8968, "cholesterol": 3.7162, "glucose": 0.4348, "bmi": 166.2726, "hbA1c": 6.3779, "triglycerides": 30.6793, "wbc": 34.8106, "hemoglobin": 7.3065}, {"age": 57.9389, "diastolic bp": 28.0147, "cholesterol": 3.6422, "glucose": 1.709, "bmi": 222.1598, "hbA1c": 6.1244, "triglycerides": 42.9818, "wbc": 44.0552, "hemoglobin": 8.8605}, {"age": 57.9389, "diastolic bp": 28.0147, "cholesterol": 3.6422, "glucose": 1.709, "bmi": 222.1598, "hbA1c": 6.1244, "triglycerides": 42.9818, "wbc": 44.0552, "hemoglobin": 8.8605}, {"age": 65.2159, "diastolic bp": 27.03, "cholesterol": 1.0546, "glucose": 9.2812, "bmi": 235.0092, "hbA1c": 5.9541, "triglycerides": 21.1478, "wbc": 40.2896, "hemoglobin": 5.7116}, {"age": 65.2159, "diastolic bp": 27.03, "cholesterol": 1.0546, "glucose": 5.807, "bmi": 235.0092, "hbA1c": 5.9541, "triglycerides": 21.1478, "wbc": 40.2896, "hemoglobin": 5.7116}, {"age": 55.3633, "diastolic bp": 28.8713, "cholesterol": 4.2218, "glucose": 2.0335, "bmi": 167.1771, "hbA1c": 6.221, "triglycerides": 49.1367, "wbc": 44.6821, "hemoglobin": -1.0217}, {"age": 55.3633, "diastolic bp": 28.8713, "cholesterol": 4.2218, "glucose": 2.0335, "bmi": 167.1771, "hbA1c": 5.8904, "triglycerides": 49.1367, "wbc": 44.6821, "hemoglobin": -1.0217}, {"age": 60.7922, "diastolic bp": 25.5914, "cholesterol": 10.4869, "glucose": 0.3224, "bmi": 361.554, "hbA1c": 5.9004, "triglycerides": 43.8208, "wbc": 45.9168, "hemoglobin": 21.8149}, {"age": 60.7922, "diastolic bp": 25.5914, "cholesterol": 10.4869, "glucose": 0.3224, "bmi": 361.554, "hbA1c": 5.9004, "triglycerides": 43.8208, "wbc": 45.8962, "hemoglobin": 21.8149}, {"age": 57.069, "diastolic bp": 26.0185, "cholesterol": 1.0608, "glucose": 3.4247, "bmi": 325.6514, "hbA1c": 5.9085, "triglycerides": 32.0518, "wbc": 38.856, "hemoglobin": 12.6144}, {"age": 57.069, "diastolic bp": 26.0185, "cholesterol": 1.0608, "glucose": 3.4247, "bmi": 325.6514, "hbA1c": 5.9085, "triglycerides": 32.0518, "wbc": 38.856, "hemoglobin": 9.0431}, {"age": 61.2213, "diastolic bp": 22.4114, "cholesterol": 2.0809, "glucose": 1.4167, "bmi": 166.4407, "hbA1c": 6.0842, "triglycerides": 34.6018, "wbc": 37.5904, "hemoglobin": 6.7808}, {"age": 61.2213, "diastolic bp": 22.4114, "cholesterol": 2.0809, "glucose": 1.4167, "bmi": 166.4407, "hbA1c": 6.0842, "triglycerides": 34.6018, "wbc": 37.5904, "hemoglobin": 6.7808}, {"age": 65.8177, "diastolic bp": 27.5953, "cholesterol": 5.175, "glucose": 3.0305, "bmi": 200.992, "hbA1c": 7.4361, "triglycerides": 39.7512, "wbc": 44.0816, "hemoglobin": 10.1929}, {"age": 65.8177, "diastolic bp": 27.5953, "cholesterol": 5.175, "glucose": 3.0305, "bmi": 200.992, "hbA1c": 9.4833, "triglycerides": 39.7512, "wbc": 44.0816, "hemoglobin": 10.1929}, {"age": 56.2249, "diastolic bp": 27.1652, "cholesterol": 2.2128, "glucose": 4.9274, "bmi": 195.156, "hbA1c": 5.6624, "triglycerides": 35.3055, "wbc": 37.4677, "hemoglobin": 9.0893}, {"age": 56.2249, "diastolic bp": 27.1652, "cholesterol": 2.2128, "glucose": 4.9274, "bmi": 195.156, "hbA1c": 5.6624, "triglycerides": 35.3055, "wbc": 41.5093, "hemoglobin": 36.137}, {"age": 62.8214, "diastolic bp": 27.4255, "cholesterol": 2.7752, "glucose": 4.839, "bmi": 230.9898, "hbA1c": 4.9463, "triglycerides": 35.0735, "wbc": 35.318, "hemoglobin": 2.6616}, {"age": 63.448, "diastolic bp": 27.4255, "cholesterol": 2.7752, "glucose": 4.839, "bmi": 230.9898, "hbA1c": 4.9463, "triglycerides": 35.0735, "wbc": 35.318, "hemoglobin": 2.6616}, {"age": 71.8631, "diastolic bp": 23.6331, "cholesterol": 2.8365, "glucose": 0.9402, "bmi": 279.0926, "hbA1c": 5.8572, "triglycerides": 27.4777, "wbc": 40.2428, "hemoglobin": 3.4837}, {"age": 71.8631, "diastolic bp": 23.6331, "cholesterol": 2.8365, "glucose": 0.9402, "bmi": 279.0926, "hbA1c": 5.8572, "triglycerides": 27.4777, "wbc": 40.2428, "hemoglobin": 3.4837}, {"age": 62.9426, "diastolic bp": 32.6126, "cholesterol": 1.0655, "glucose": 2.7812, "bmi": 203.279, "hbA1c": 8.1806, "triglycerides": 46.9391, "wbc": 38.5547, "hemoglobin": 4.3516}, {"age": 62.7849, "diastolic bp": 31.3959, "cholesterol": 1.0655, "glucose": 2.7812, "bmi": 203.279, "hbA1c": 8.1806, "triglycerides": 46.9391, "wbc": 38.5547, "hemoglobin": 4.3516}, {"age": 63.388, "diastolic bp": 21.71, "cholesterol": 3.0641, "glucose": 1.0982, "bmi": 172.0795, "hbA1c": 6.1462, "triglycerides": 40.6889, "wbc": 38.5813, "hemoglobin": 0.0714}, {"age": 63.388, "diastolic bp": 21.71, "cholesterol": 3.0641, "glucose": 1.0982, "bmi": 172.0795, "hbA1c": 6.1462, "triglycerides": 40.6889, "wbc": 38.5813, "hemoglobin": 0.0714}, {"age": 60.08, "diastolic bp": 26.3659, "cholesterol": 6.6731, "glucose": 1.0856, "bmi": 527.5235, "hbA1c": 8.0406, "triglycerides": 39.8115, "wbc": 39.599, "hemoglobin": 11.5265}, {"age": 60.08, "diastolic bp": 26.3659, "cholesterol": 6.6731, "glucose": 1.0856, "bmi": 527.5235, "hbA1c": 8.0406, "triglycerides": 39.8115, "wbc": 39.599, "hemoglobin": 11.5265}, {"age": 71.6892, "diastolic bp": 25.2505, "cholesterol": 2.0421, "glucose": 2.9382, "bmi": 216.4367, "hbA1c": 6.3226, "triglycerides": 36.5327, "wbc": 43.9959, "hemoglobin": 1.9472}, {"age": 71.6892, "diastolic bp": 25.2505, "cholesterol": 2.0421, "glucose": 2.9382, "bmi": 216.4367, "hbA1c": 6.3226, "triglycerides": 36.5327, "wbc": 43.9959, "hemoglobin": 1.9472}, {"age": 58.6418, "diastolic bp": 27.5414, "cholesterol": 1.1557, "glucose": 1.4788, "bmi": 196.5067, "hbA1c": 7.116, "triglycerides": 46.9913, "wbc": 47.7652, "hemoglobin": 5.9791}, {"age": 58.6418, "diastolic bp": 27.5414, "cholesterol": 1.1557, "glucose": 1.4788, "bmi": 196.5067, "hbA1c": 7.116, "triglycerides": 46.9913, "wbc": 47.7652, "hemoglobin": 6.1124}, {"age": 70.4328, "diastolic bp": 23.0597, "cholesterol": 1.0825, "glucose": 3.3207, "bmi": 231.5199, "hbA1c": 5.7654, "triglycerides": 40.0727, "wbc": 40.8284, "hemoglobin": 5.665}], "nSubjects": 49, "method": "Wavelet (Haar DWT, soft-threshold)", "residualVarianceZ": 0.0728, "spectralDistortion": 0.9145, "noiseStdZ": 0.35};
+const VARS_META = {"age": ["Age (years)", "yrs"], "diastolic bp": ["Diastolic BP (mmHg)", "mmHg"], "cholesterol": ["Cholesterol (mg/dL)", "mg/dL"], "glucose": ["Glucose (mg/dL)", "mg/dL"], "bmi": ["BMI (kg/m²)", "kg/m²"], "hbA1c": ["HbA1c (%)", "%"], "triglycerides": ["Triglycerides (mg/dL)", "mg/dL"], "wbc": ["WBC (K/uL)", "K/uL"], "hemoglobin": ["Hemoglobin (g/dL)", "g/dL"]};
+const ALL_VARS = DATA.vars;
+const GRID_VARS = ["age", "diastolic bp", "cholesterol", "glucose", "bmi", "hbA1c"];
+
+const BEFORE = DATA.before;   // array of {var: value}  (noisy)
+const AFTER = DATA.after;     // array of {var: value}  (denoised)
+
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function std(a){ const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+
+function beforeArr(v){ return BEFORE.map(r=>r[v]); }
+function afterArr(v){ return AFTER.map(r=>r[v]); }
+
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{
+  const o = document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; varDropdown.appendChild(o);
+});
+let selectedVar = ALL_VARS[0];
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = VARS_META[v][0];
+    d.onclick = ()=>{ selectedVar=v; varDropdown.value=v; renderVarList(); highlightVar(v); document.getElementById('qqVar').value=v; drawQQ(); };
+    varList.appendChild(d);
+  });
+}
+varDropdown.addEventListener('change', e=>{ selectedVar=e.target.value; renderVarList(); highlightVar(selectedVar); document.getElementById('qqVar').value=selectedVar; drawQQ(); });
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= SVG helpers =================
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+
+// ================= tooltip =================
+// Off by default. A user can explicitly opt in via the "Show values on
+// hover" checkbox in the sidebar — this avoids relying on unreliable
+// touch-vs-mouse auto-detection.
+let HOVER_OK = false;
+
+let _tipTimer = null;
+function showTip(html, x, y){
+  const t = document.getElementById('edaTooltip');
+  t.innerHTML = html;
+  t.style.display = 'block';
+  const pad = 14;
+  let left = x + pad, top = y + pad;
+  const tw = t.offsetWidth || 160, th = t.offsetHeight || 40;
+  if(left + tw > window.innerWidth) left = x - tw - pad;
+  if(top + th > window.innerHeight) top = y - th - pad;
+  t.style.left = left + 'px';
+  t.style.top = top + 'px';
+  clearTimeout(_tipTimer);
+  _tipTimer = setTimeout(hideTip, 4000);
+}
+function hideTip(){
+  document.getElementById('edaTooltip').style.display = 'none';
+}
+document.addEventListener('pointerdown', (e)=>{
+  if(!e.target.closest('.hit-rect')) hideTip();
+});
+
+// ================= Histogram / Density =================
+function histBins(arr, nbins, lo, hi){
+  const width=(hi-lo)/nbins || 1;
+  const counts=new Array(nbins).fill(0);
+  arr.forEach(x=>{
+    let idx=Math.floor((x-lo)/width);
+    if(idx<0) idx=0; if(idx>=nbins) idx=nbins-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+function drawDistChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const lo = Math.min(...before,...after), hi = Math.max(...before,...after);
+  const nbins=10;
+  const cb = histBins(before,nbins,lo,hi), ca = histBins(after,nbins,lo,hi);
+  const maxc = Math.max(...cb,...ca,1);
+  const W=250,H=150, padL=30,padB=20,padT=6,padR=6;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const bw = plotW/nbins;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=4;i++){
+    const y = padT + plotH - (i/4)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=Math.round((i/4)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  function barsOrLine(counts, color, line, alpha){
+    if(plotType==='hist'){
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw;
+        const barH = (c/maxc)*plotH;
+        svg.appendChild(svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:color, opacity:alpha, stroke:line, 'stroke-width':1}));
+      });
+    } else {
+      let d='';
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw + bw/2;
+        const y = padT + plotH - (c/maxc)*plotH;
+        d += (i===0?'M':'L') + x + ' ' + y + ' ';
+      });
+      const path = svgEl('path',{d:d.trim(), fill:'none', stroke:line, 'stroke-width':2});
+      svg.appendChild(path);
+      let dArea = d.trim() + ` L ${padL+plotW} ${padT+plotH} L ${padL} ${padT+plotH} Z`;
+      svg.appendChild(svgEl('path',{d:dArea, fill:color, opacity:alpha*0.6}));
+    }
+  }
+  barsOrLine(cb, 'var(--before)', 'var(--before-line)', 0.55);
+  barsOrLine(ca, 'var(--after)', 'var(--after-line)', 0.55);
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const xt1=svgEl('text',{x:padL,y:H-4,'font-size':8,fill:'#8791A3'}); xt1.textContent=fmtAxis(lo,hi-lo); svg.appendChild(xt1);
+  const xt2=svgEl('text',{x:W-padR,y:H-4,'text-anchor':'end','font-size':8,fill:'#8791A3'}); xt2.textContent=fmtAxis(hi,hi-lo); svg.appendChild(xt2);
+
+  const varLabel = (VARS_META[v] && VARS_META[v][0]) || v;
+  for(let i=0;i<nbins;i++){
+    const binLo = lo + i*(hi-lo)/nbins, binHi = lo + (i+1)*(hi-lo)/nbins;
+    const hit = svgEl('rect', {x:padL+i*bw, y:padT, width:bw, height:plotH, class:'hit-rect'});
+    const tipHtml = `<b>${varLabel}</b><br>${fmtAxis(binLo,hi-lo)} – ${fmtAxis(binHi,hi-lo)}<br>`
+      + `<span style="color:#9FC1EE">&#9632;</span> Before: <b>${cb[i]}</b>&nbsp; `
+      + `<span style="color:#B7E3B9">&#9632;</span> After: <b>${ca[i]}</b>`;
+    hit.addEventListener('pointerenter', (e)=>{ if(!HOVER_OK) return; hit.setAttribute('fill','rgba(37,99,200,0.08)'); showTip(tipHtml, e.clientX, e.clientY); });
+    hit.addEventListener('pointermove',  (e)=>{ if(!HOVER_OK) return; showTip(tipHtml, e.clientX, e.clientY); });
+    hit.addEventListener('pointerleave', ()=>{ hit.setAttribute('fill','transparent'); hideTip(); });
+    svg.appendChild(hit);
+  }
+
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function quartiles(arr){
+  const a=[...arr].sort((x,y)=>x-y);
+  const q=(p)=>{ const idx=(a.length-1)*p; const lo=Math.floor(idx),hi=Math.ceil(idx); return a[lo]+(a[hi]-a[lo])*(idx-lo); };
+  const q1=q(0.25), med=q(0.5), q3=q(0.75), iqr=q3-q1;
+  const loW = Math.max(a[0], q1-1.5*iqr), hiW = Math.min(a[a.length-1], q3+1.5*iqr);
+  const outliers = a.filter(x=>x<loW||x>hiW);
+  return {q1,med,q3,loW,hiW,outliers,min:a[0],max:a[a.length-1]};
+}
+function drawBoxChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const sb = quartiles(before), sa = quartiles(after);
+  const lo = Math.min(sb.loW,sa.loW,...sb.outliers,...sa.outliers);
+  const hi = Math.max(sb.hiW,sa.hiW,...sb.outliers,...sa.outliers);
+  const W=250,H=150, padL=32,padB=20,padT=8,padR=10;
+  const plotH=H-padT-padB;
+  const y = val => padT + plotH - ((val-lo)/(hi-lo||1))*plotH;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const yy=padT+ (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'}));
+  }
+  function box(cx, s, color, line){
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.loW),y2:y(s.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.q3),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.loW),y2:y(s.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.hiW),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('rect',{x:cx-bw/2, y:y(s.q3), width:bw, height:Math.max(y(s.q1)-y(s.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85}));
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(s.med),y2:y(s.med),stroke:line,'stroke-width':1.6}));
+    s.outliers.forEach(o=>{ svg.appendChild(svgEl('circle',{cx:cx, cy:y(o), r:2, fill:'none', stroke:line, 'stroke-width':1})); });
+  }
+  box(padL+ (W-padL-padR)*0.28, sb, 'var(--before)', 'var(--before-line)');
+  box(padL+ (W-padL-padR)*0.72, sa, 'var(--after)', 'var(--after-line)');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const lb=svgEl('text',{x:padL+(W-padL-padR)*0.28,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); lb.textContent='Before'; svg.appendChild(lb);
+  const la=svgEl('text',{x:padL+(W-padL-padR)*0.72,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); la.textContent='After'; svg.appendChild(la);
+  for(let i=0;i<=3;i++){
+    const val = lo + (i/3)*(hi-lo);
+    const yy=padT+plotH-(i/3)*plotH;
+    const t=svgEl('text',{x:padL-4,y:yy+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtAxis(val,hi-lo); svg.appendChild(t);
+  }
+  container.appendChild(svg);
+}
+
+// ================= render 6-var grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  ALL_VARS.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v;
+    const t = document.createElement('div'); t.className='ct'; t.textContent=VARS_META[v][0]; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+
+    const bb = document.createElement('div'); bb.className='chart-box';
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=VARS_META[v][0]; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function erfinv(x){
+  const a=0.147;
+  const ln = Math.log(1-x*x);
+  const t1 = 2/(Math.PI*a) + ln/2;
+  return Math.sign(x)*Math.sqrt(Math.sqrt(t1*t1-ln/a)-t1);
+}
+function normInv(p){ return Math.sqrt(2)*erfinv(2*p-1); }
+function drawQQSub(svg, x0, w, arr, color, line, label, H, padT, padB){
+  const a=[...arr].sort((x,y)=>x-y);
+  const n=a.length;
+  const theo = a.map((_,i)=>normInv((i+0.5)/n));
+  const m=mean(a), s=std(a)||1;
+  const sampleZ = a.map(v=>(v-m)/s);
+  const lo=Math.min(...theo,...sampleZ), hi=Math.max(...theo,...sampleZ);
+  const plotH=H-padT-padB, plotW=w-40;
+  const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+  const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+  svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  theo.forEach((t,i)=>{
+    svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(sampleZ[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85}));
+  });
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; svg.appendChild(lb);
+}
+function drawQQ(){
+  const v = document.getElementById('qqVar').value;
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520,H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  drawQQSub(svg, 0, W/2, before, 'var(--before)', 'var(--before-line)', 'Before Preprocessing', H, padT, padB);
+  drawQQSub(svg, W/2, W/2, after, 'var(--after)', 'var(--after-line)', 'After Preprocessing', H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function pearson(a,b){
+  const ma=mean(a), mb=mean(b);
+  let num=0,da=0,db=0;
+  for(let i=0;i<a.length;i++){ num+=(a[i]-ma)*(b[i]-mb); da+=(a[i]-ma)**2; db+=(b[i]-mb)**2; }
+  return num/Math.sqrt(da*db||1);
+}
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function corrMatrix(vars, dataset){
+  return vars.map(v1=> vars.map(v2 => pearson(dataset.map(r=>r[v1]), dataset.map(r=>r[v2])) ));
+}
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=v.length>8?v.slice(0,6)+'…':v; th.style.writingMode='vertical-rl'; th.style.transform='rotate(180deg)'; th.style.fontSize='9px'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=v1.length>8?v1.slice(0,6)+'…':v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const setSel = document.getElementById('corrSet').value;
+  const vars = setSel==='core' ? GRID_VARS : ALL_VARS;
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, BEFORE), 'Before Preprocessing'));
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, AFTER), 'After Preprocessing'));
+}
+
+// ================= Noise heatmap =================
+function noiseMask(){
+  // per-cell standardized residual |before - after| / std(before) for that variable
+  const mask = BEFORE.map(()=>({}));
+  ALL_VARS.forEach(v=>{
+    const arr = beforeArr(v);
+    const s = std(arr) || 1;
+    BEFORE.forEach((r,i)=>{
+      const d = Math.abs(r[v] - AFTER[i][v]) / s;
+      mask[i][v] = d;
+    });
+  });
+  return mask;
+}
+function drawNoiseHeat(){
+  const container = document.getElementById('noiseHeat'); container.innerHTML='';
+  const N = DATA.nSubjects;
+  const MASK = noiseMask();
+  const outer = document.createElement('div'); outer.className='mv-wrap';
+  const wrap = document.createElement('div'); wrap.className='mv-inner';
+  outer.appendChild(wrap);
+
+  const head = document.createElement('div'); head.className='mv-headrow';
+  head.innerHTML = `<div></div><div class="h">Before</div><div class="h">After</div>`;
+  wrap.appendChild(head);
+
+  ALL_VARS.forEach(v=>{
+    const row = document.createElement('div'); row.className='mv-row';
+    const label = document.createElement('div'); label.className='mv-label'; label.textContent=VARS_META[v][0].replace(/\s*\(.*?\)\s*/g,'').trim();
+    row.appendChild(label);
+
+    const beforeGrid = document.createElement('div'); beforeGrid.className='mv-grid'; beforeGrid.style.setProperty('--n', N);
+    const afterGrid = document.createElement('div'); afterGrid.className='mv-grid'; afterGrid.style.setProperty('--n', N);
+    for(let i=0;i<N;i++){
+      const d = MASK[i][v];
+      const bCell = document.createElement('div'); bCell.className='mv-cell';
+      if(d > 0.5) bCell.className += ' on';
+      else if(d > 0.25) bCell.className += ' on-mid';
+      bCell.title = 'Subject ' + (i+1) + ' |Δz| = ' + d.toFixed(2);
+      beforeGrid.appendChild(bCell);
+
+      // After: denoised view -> residual resolved, grid is clean
+      const aCell = document.createElement('div'); aCell.className='mv-cell';
+      aCell.title = 'Subject ' + (i+1);
+      afterGrid.appendChild(aCell);
+    }
+    row.appendChild(beforeGrid);
+    row.appendChild(afterGrid);
+    wrap.appendChild(row);
+  });
+  container.appendChild(outer);
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawNoiseHeat();
+</script>
+</body>
+</html>
