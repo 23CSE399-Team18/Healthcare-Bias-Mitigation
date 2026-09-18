@@ -1,0 +1,46 @@
+{
+  "method": "EQRM_empirical",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 21082,
+      "training_objective": 0.727812763138476,
+      "validation_log_loss": 0.6693923925675451
+    },
+    {
+      "epoch": 2,
+      "training_rows": 21082,
+      "training_objective": 0.6774947211611442,
+      "validation_log_loss": 0.6065233107378727
+    },
+    {
+      "epoch": 3,
+      "training_rows": 21082,
+      "training_objective": 0.6448079747952837,
+      "validation_log_loss": 0.5521577934380554
+    },
+    {
+      "epoch": 4,
+      "training_rows": 21082,
+      "training_objective": 0.6139335012867921,
+      "validation_log_loss": 0.49899451210741846
+    },
+    {
+      "epoch": 5,
+      "training_rows": 21082,
+      "training_objective": 0.5951658539115653,
+      "validation_log_loss": 0.46140411467770914
+    },
+    {
+      "epoch": 6,
+      "training_rows": 21082,
+      "training_objective": 0.5885249041773633,
+      "validation_log_loss": 0.44205383167459883
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 21082,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
