@@ -1,0 +1,46 @@
+{
+  "method": "Fish_first_order",
+  "history": [
+    {
+      "epoch": 1,
+      "training_rows": 21082,
+      "training_objective": 0.6896678334440071,
+      "validation_log_loss": 0.6241502626084358
+    },
+    {
+      "epoch": 2,
+      "training_rows": 21082,
+      "training_objective": 0.5613660914753614,
+      "validation_log_loss": 0.4816677319547618
+    },
+    {
+      "epoch": 3,
+      "training_rows": 21082,
+      "training_objective": 0.42683389006252703,
+      "validation_log_loss": 0.38465381225969103
+    },
+    {
+      "epoch": 4,
+      "training_rows": 21082,
+      "training_objective": 0.357231550139886,
+      "validation_log_loss": 0.361775592336765
+    },
+    {
+      "epoch": 5,
+      "training_rows": 21082,
+      "training_objective": 0.33482962700020324,
+      "validation_log_loss": 0.3538708086913389
+    },
+    {
+      "epoch": 6,
+      "training_rows": 21082,
+      "training_objective": 0.3231453051457153,
+      "validation_log_loss": 0.3489104046996947
+    }
+  ],
+  "chosen_epoch": 6,
+  "training_rows": 21082,
+  "test_rows_used": 0,
+  "external_rows_used": 0,
+  "all_training_rows_visited_each_epoch": true
+}
