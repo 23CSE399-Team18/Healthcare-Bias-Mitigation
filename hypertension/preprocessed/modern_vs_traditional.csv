@@ -1,0 +1,9 @@
+bias,selected modern,modern mean rank,best traditional,traditional mean rank,metrics where modern is better,modern ranks ahead
+Duplicate,- (bias not detected: nothing applied),,,,,
+Missing data,HyperImpute,3.2857142857142856,KNN,3.2857142857142856,3/7,False
+Outlier,- (bias not detected: nothing applied),,,,,
+Data noise,Confident Learning (Cleanlab),1.0,Denoising autoencoder,3.0,6/6,True
+Feature scale,PowerTransform (Yeo-Johnson),2.0,Robust scaler,3.3333333333333335,5/6,True
+Encoding / domain,Domain-generalisation transformer,2.375,CORAL,2.75,6/8,True
+Class imbalance,- (bias not detected: nothing applied),,,,,
+Demographic,Counterfactual recourse (DiCE),2.5,Optimal Transport,3.375,5/8,True
