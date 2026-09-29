@@ -1,0 +1,1044 @@
+{
+  "passed": true,
+  "tasks": {
+    "heart/heart": {
+      "passed": true,
+      "selected": "FairERM_softEO",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "DANN_source_domains": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fishr_last_layer": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "VREx": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "EQRM_empirical": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fish_first_order": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "diabetes/diabetes": {
+      "passed": true,
+      "selected": "FairERM_softEO",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "hypertension/hypertension": {
+      "passed": true,
+      "selected": "FairERM_softEO",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "DANN_source_domains": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fishr_last_layer": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "VREx": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "EQRM_empirical": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fish_first_order": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "respiratory_hospital/respiratory": {
+      "passed": true,
+      "selected": "FairERM_softEO",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "DANN_source_domains": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fishr_last_layer": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "VREx": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "EQRM_empirical": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fish_first_order": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "eicu_hospital/heart": {
+      "passed": true,
+      "selected": "DANN_source_domains",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "DANN_source_domains": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fishr_last_layer": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "VREx": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "EQRM_empirical": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fish_first_order": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "eicu_hospital/respiratory": {
+      "passed": true,
+      "selected": "GroupDRO_intersection_label",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "DANN_source_domains": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fishr_last_layer": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "VREx": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "EQRM_empirical": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fish_first_order": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "eicu_hospital/diabetes": {
+      "passed": true,
+      "selected": "CRL_history",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "DANN_source_domains": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fishr_last_layer": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "VREx": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "EQRM_empirical": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fish_first_order": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "eicu_hospital/hypertension": {
+      "passed": true,
+      "selected": "FairERM_softEO",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "DANN_source_domains": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fishr_last_layer": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "VREx": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "EQRM_empirical": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Fish_first_order": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "mimic_transfer/heart": {
+      "passed": true,
+      "selected": "FairERM_softEO",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "mimic_transfer/respiratory": {
+      "passed": true,
+      "selected": "FairERM_softEO",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "mimic_transfer/diabetes": {
+      "passed": true,
+      "selected": "GroupDRO_intersection_label",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    },
+    "mimic_transfer/hypertension": {
+      "passed": true,
+      "selected": "CRL_history",
+      "methods": {
+        "ERM": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AdversarialFair_tabular": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_sex_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FairERM_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Intersectional_adversary": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Constrained_softEO": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "GroupDRO_intersection_label": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "AvUC_deterministic": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "CRL_history": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "UWG_Brier": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Brier_regularized": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "FOMO_weight_search": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        },
+        "Uncompressed_logistic_reference": {
+          "passed": true,
+          "saved_model_reproduces_predictions": true,
+          "all_metrics_and_group_tables_recomputed": true
+        }
+      },
+      "frozen_selection_verified": true
+    }
+  }
+}
