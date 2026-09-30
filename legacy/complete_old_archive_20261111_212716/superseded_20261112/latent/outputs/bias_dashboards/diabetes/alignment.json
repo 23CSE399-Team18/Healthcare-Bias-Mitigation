@@ -1,0 +1,80 @@
+{
+  "stage": "latent",
+  "dataset": "diabetes",
+  "title": "Input / latent alignment",
+  "kind": "alignment",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 1181,
+        "input_features": null,
+        "numeric_features": 8,
+        "before_label": "Reference",
+        "after_label": "PCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "after": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "panels": [
+          {
+            "title": "same_row_input_latent_cka",
+            "data": [
+              {
+                "type": "bar",
+                "name": "same_row_input_latent_cka",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT"
+                ],
+                "y": [
+                  0.915913812828274,
+                  0.9066668116223954,
+                  0.7153720676196865,
+                  0.8773712428580037
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "same_row_input_latent_cka"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection. Same-row input/latent CKA is not cross-hospital generalization or proof of cross-dataset clinical equivalence."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "PCA"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
