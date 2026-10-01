@@ -1,0 +1,129 @@
+{
+  "stage": "latent",
+  "dataset": "eicu_hospital",
+  "title": "Input / latent alignment",
+  "kind": "alignment",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 20318,
+        "input_features": null,
+        "numeric_features": 16,
+        "before_label": "Reference",
+        "after_label": "Source PCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No separate reference metric in this record"
+        },
+        "after": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "CKA and variance retention do not prove cross-source clinical alignment"
+        },
+        "panels": [
+          {
+            "title": "Input / latent CKA on the same validation rows",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Saved PCA",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "Same-row CKA"
+                ],
+                "y": [
+                  0.6967381556887299
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Linear CKA"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Training PCA variance retained",
+            "data": [
+              {
+                "x": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16
+                ],
+                "y": [
+                  0.32814863324165344,
+                  0.5053030848503113,
+                  0.615165650844574,
+                  0.720162570476532,
+                  0.8101832270622253,
+                  0.8500535488128662,
+                  0.8871108889579773,
+                  0.9131132960319519,
+                  0.9384064078330994,
+                  0.9568002820014954,
+                  0.9714421033859253,
+                  0.9830706119537354,
+                  0.9892685413360596,
+                  0.9948920607566833,
+                  0.9983599185943604,
+                  0.9999834299087524
+                ],
+                "type": "scatter",
+                "mode": "lines",
+                "name": "Training cumulative variance"
+              }
+            ],
+            "layout": {
+              "xaxis": {
+                "title": "PCA component"
+              },
+              "yaxis": {
+                "title": "Cumulative explained variance"
+              },
+              "height": 380
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Frozen source PCA and saved latent matrices. Fixed diagnostic probes are fitted on source training data only; no encoder/classifier or saved selection is changed."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "Source PCA"
+  },
+  "default_method": "default",
+  "protocol": "Missing measurements are shown as unavailable, not as zero or successful mitigation."
+}
