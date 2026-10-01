@@ -1,0 +1,130 @@
+{
+  "stage": "latent",
+  "dataset": "diabetes",
+  "title": "Clinical information preservation",
+  "kind": "information_preservation",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 1181,
+        "input_features": null,
+        "numeric_features": 8,
+        "before_label": "Reference",
+        "after_label": "PCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "Uncompressed reference, not a bias test"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.0029621627809734985,
+          "limit": 0.02,
+          "rule": "Validation Macro-F1 decrease >0.02 versus uncompressed reference"
+        },
+        "panels": [
+          {
+            "title": "Saved validation utility guard",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Uncompressed",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "diabetes"
+                ],
+                "y": [
+                  0.5952279005189598
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "PCA",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "diabetes"
+                ],
+                "y": [
+                  0.5922657377379863
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "diabetes - all candidate probes",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Validation Macro-F1",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT"
+                ],
+                "y": [
+                  0.5922657377379863,
+                  0.5871467556778457,
+                  0.5878831803296289,
+                  0.5822039349224366
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "PCA"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
