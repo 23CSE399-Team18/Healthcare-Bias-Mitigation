@@ -1,0 +1,101 @@
+{
+  "stage": "latent",
+  "dataset": "eicu_hospital",
+  "title": "Latent structure",
+  "kind": "latent_structure",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 20318,
+        "input_features": null,
+        "numeric_features": 16,
+        "before_label": "Reference",
+        "after_label": "Source PCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No separate reference metric in this record"
+        },
+        "after": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal silhouette cutoff establishes clinical usefulness or bias"
+        },
+        "panels": [
+          {
+            "title": "Validation recorded-label silhouette",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Saved PCA",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "heart",
+                  "respiratory",
+                  "diabetes",
+                  "hypertension"
+                ],
+                "y": [
+                  0.014825367368757725,
+                  0.005978072062134743,
+                  0.0011195075931027532,
+                  0.009067138656973839
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Silhouette"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Silhouette sample sizes",
+            "table": [
+              {
+                "target": "heart",
+                "rows": 2000
+              },
+              {
+                "target": "respiratory",
+                "rows": 2000
+              },
+              {
+                "target": "diabetes",
+                "rows": 2000
+              },
+              {
+                "target": "hypertension",
+                "rows": 2000
+              }
+            ]
+          }
+        ],
+        "variables": {},
+        "note": "Frozen source PCA and saved latent matrices. Fixed diagnostic probes are fitted on source training data only; no encoder/classifier or saved selection is changed."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "Source PCA"
+  },
+  "default_method": "default",
+  "protocol": "Missing measurements are shown as unavailable, not as zero or successful mitigation."
+}
