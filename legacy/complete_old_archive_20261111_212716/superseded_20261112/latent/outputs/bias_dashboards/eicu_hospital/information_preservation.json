@@ -1,0 +1,101 @@
+{
+  "stage": "latent",
+  "dataset": "eicu_hospital",
+  "title": "Clinical information preservation",
+  "kind": "information_preservation",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 20318,
+        "input_features": null,
+        "numeric_features": 16,
+        "before_label": "Reference",
+        "after_label": "Source PCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No separate reference metric in this record"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": -0.000009436795882278304,
+          "limit": 0.02,
+          "rule": "Any validation Macro-F1 decrease >0.02 relative to the uncompressed probe"
+        },
+        "panels": [
+          {
+            "title": "Validation utility guard",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Uncompressed",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "heart",
+                  "respiratory",
+                  "diabetes",
+                  "hypertension"
+                ],
+                "y": [
+                  0.5200271411235788,
+                  0.6061859015205234,
+                  0.528707241944383,
+                  0.6028426288075849
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "Saved PCA",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "heart",
+                  "respiratory",
+                  "diabetes",
+                  "hypertension"
+                ],
+                "y": [
+                  0.5201501739948116,
+                  0.6061953383164057,
+                  0.529125463696535,
+                  0.6030062267874694
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Frozen source PCA and saved latent matrices. Fixed diagnostic probes are fitted on source training data only; no encoder/classifier or saved selection is changed."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "Source PCA"
+  },
+  "default_method": "default",
+  "protocol": "Missing measurements are shown as unavailable, not as zero or successful mitigation."
+}
