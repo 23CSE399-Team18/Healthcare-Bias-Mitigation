@@ -1,0 +1,130 @@
+{
+  "stage": "latent",
+  "dataset": "heart",
+  "title": "Clinical information preservation",
+  "kind": "information_preservation",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 66017,
+        "input_features": null,
+        "numeric_features": 8,
+        "before_label": "Reference",
+        "after_label": "DGCCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "Uncompressed reference, not a bias test"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.0026051736071440734,
+          "limit": 0.02,
+          "rule": "Validation Macro-F1 decrease >0.02 versus uncompressed reference"
+        },
+        "panels": [
+          {
+            "title": "Saved validation utility guard",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Uncompressed",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "heart"
+                ],
+                "y": [
+                  0.5853571961348839
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "DGCCA",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "heart"
+                ],
+                "y": [
+                  0.5827520225277398
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "heart - all candidate probes",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Validation Macro-F1",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT"
+                ],
+                "y": [
+                  0.5704474082672228,
+                  0.5553064177646665,
+                  0.5827520225277398,
+                  0.5578220898775454
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "DGCCA"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
