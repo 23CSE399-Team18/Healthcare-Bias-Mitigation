@@ -1,0 +1,121 @@
+{
+  "stage": "latent",
+  "dataset": "heart",
+  "title": "Domain association",
+  "kind": "domain_invariance",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 66017,
+        "input_features": null,
+        "numeric_features": 8,
+        "before_label": "Reference",
+        "after_label": "DGCCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "after": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "panels": [
+          {
+            "title": "domain_cluster_nmi",
+            "data": [
+              {
+                "type": "bar",
+                "name": "domain_cluster_nmi",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT"
+                ],
+                "y": [
+                  0.007462322447190842,
+                  0.006476383445963562,
+                  0.007556770406691418,
+                  0.006723530315816497
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "domain_cluster_nmi"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "domain_cluster_ari",
+            "data": [
+              {
+                "type": "bar",
+                "name": "domain_cluster_ari",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT"
+                ],
+                "y": [
+                  0.00109385126612625,
+                  -0.00002224975939083606,
+                  0.0012552270545785579,
+                  0.0006912076263838349
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "domain_cluster_ari"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection. NMI/ARI can be NA for one source institution or absent domain labels. Low values do not establish universal domain invariance."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "DGCCA"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
