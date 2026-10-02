@@ -1,0 +1,260 @@
+{
+  "dataset": "hypertension",
+  "title": "Hypertension \u2014 CDC NHIS 2023",
+  "source_file": "D:\\complete\\hypertension\\raw\\hypertension_raw.csv",
+  "seed": 42,
+  "fast_mode": false,
+  "train_rows": 18569,
+  "test_rows": 4421,
+  "validation_rows": 4421,
+  "final_predictors": [
+    "z1",
+    "z2",
+    "z3",
+    "z4",
+    "z5",
+    "z6",
+    "z7",
+    "z8",
+    "z9",
+    "z10",
+    "z11",
+    "z12",
+    "z13",
+    "z14",
+    "z15",
+    "z16",
+    "z17",
+    "z18",
+    "z19",
+    "z20",
+    "z21",
+    "z22",
+    "z23",
+    "z24",
+    "z25",
+    "z26",
+    "z27",
+    "z28",
+    "z29",
+    "z30",
+    "z31",
+    "z32"
+  ],
+  "schema": {
+    "z1": {
+      "type": "cont"
+    },
+    "z2": {
+      "type": "cont"
+    },
+    "z3": {
+      "type": "cont"
+    },
+    "z4": {
+      "type": "cont"
+    },
+    "z5": {
+      "type": "cont"
+    },
+    "z6": {
+      "type": "cont"
+    },
+    "z7": {
+      "type": "cont"
+    },
+    "z8": {
+      "type": "cont"
+    },
+    "z9": {
+      "type": "cont"
+    },
+    "z10": {
+      "type": "cont"
+    },
+    "z11": {
+      "type": "cont"
+    },
+    "z12": {
+      "type": "cont"
+    },
+    "z13": {
+      "type": "cont"
+    },
+    "z14": {
+      "type": "cont"
+    },
+    "z15": {
+      "type": "cont"
+    },
+    "z16": {
+      "type": "cont"
+    },
+    "z17": {
+      "type": "cont"
+    },
+    "z18": {
+      "type": "cont"
+    },
+    "z19": {
+      "type": "cont"
+    },
+    "z20": {
+      "type": "cont"
+    },
+    "z21": {
+      "type": "cont"
+    },
+    "z22": {
+      "type": "cont"
+    },
+    "z23": {
+      "type": "cont"
+    },
+    "z24": {
+      "type": "cont"
+    },
+    "z25": {
+      "type": "cont"
+    },
+    "z26": {
+      "type": "cont"
+    },
+    "z27": {
+      "type": "cont"
+    },
+    "z28": {
+      "type": "cont"
+    },
+    "z29": {
+      "type": "cont"
+    },
+    "z30": {
+      "type": "cont"
+    },
+    "z31": {
+      "type": "cont"
+    },
+    "z32": {
+      "type": "cont"
+    }
+  },
+  "biases": {
+    "Duplicate": {
+      "detected": false,
+      "statistic": "exact duplicate records (all columns except record ID)",
+      "before": 0,
+      "after": 0,
+      "selected": "\u2014",
+      "best_traditional": "\u2014",
+      "methods_compared": 0
+    },
+    "Missing data": {
+      "detected": true,
+      "statistic": "share of missing predictor cells",
+      "before": 0.017642211278810813,
+      "after": 0.0,
+      "selected": "HyperImpute",
+      "best_traditional": "KNN",
+      "methods_compared": 8
+    },
+    "Outlier": {
+      "detected": false,
+      "statistic": "rows beyond skew-adjusted extreme fences",
+      "before": 0.0,
+      "after": 0.0,
+      "selected": "\u2014",
+      "best_traditional": "\u2014",
+      "methods_compared": 0
+    },
+    "Data noise": {
+      "detected": true,
+      "statistic": "Confident-Learning label-issue rate",
+      "before": 0.17572349604925105,
+      "after": 0.07745415318230853,
+      "selected": "Confident Learning (Cleanlab)",
+      "best_traditional": "Denoising autoencoder",
+      "methods_compared": 7
+    },
+    "Feature scale": {
+      "detected": true,
+      "statistic": "max/min predictor SD ratio; max |skewness|",
+      "before": "73.1; 2.81",
+      "after": "1.0; 2.04",
+      "selected": "PowerTransform (Yeo-Johnson)",
+      "best_traditional": "Robust scaler",
+      "methods_compared": 6
+    },
+    "Encoding / domain": {
+      "detected": true,
+      "statistic": "one-vs-rest domain-classifier AUC; AUROC drop on held-out domains",
+      "before": "0.629; -0.001",
+      "after": "0.544; -0.003",
+      "selected": "Domain-generalisation transformer",
+      "best_traditional": "CORAL",
+      "methods_compared": 6
+    },
+    "Class imbalance": {
+      "detected": false,
+      "statistic": "imbalance ratio (majority/minority)",
+      "before": 1.3873293844965233,
+      "after": 1.3873293844965233,
+      "selected": "\u2014",
+      "best_traditional": "\u2014",
+      "methods_compared": 0
+    },
+    "Demographic": {
+      "detected": true,
+      "statistic": "min DI of outcome rate; max EOD of baseline model (protected attributes)",
+      "before": "0.56; 0.076",
+      "after": "SPD 0.170; EOD 0.140",
+      "selected": "Counterfactual recourse (DiCE)",
+      "best_traditional": "Optimal Transport",
+      "methods_compared": 6
+    }
+  },
+  "timings_seconds": {
+    "raw detection": 15.6,
+    "missing:GMM": 15.2,
+    "missing:Random Forest": 287.6,
+    "missing:GAIN": 42.4,
+    "missing:MICE": 128.4,
+    "missing:KNN": 144.6,
+    "missing:HyperImpute": 179.7,
+    "missing:CSDI": 1910.0,
+    "missing:MIP-VAE": 26.4,
+    "missing:apply HyperImpute": 446.1,
+    "noise:CL on full training split": 16.7,
+    "noise:Denoising autoencoder": 8.1,
+    "noise:Wavelet denoising": 0.4,
+    "noise:Median filter": 0.3,
+    "noise:Savitzky\u2013Golay": 0.4,
+    "noise:Confident Learning (Cleanlab)": 0.2,
+    "noise:Robust loss (GCE)": 11.1,
+    "noise:Diffusion denoising": 67.3,
+    "noise:apply Confident Learning (Cleanlab)": 0.2,
+    "noise:CL after": 15.3,
+    "scale:Quantile transform": 1.8,
+    "scale:Min-Max scaler": 1.7,
+    "scale:Robust scaler": 1.7,
+    "scale:SNN (SELU)": 1.9,
+    "scale:FT-Transformer": 171.8,
+    "scale:PowerTransform (Yeo-Johnson)": 2.0,
+    "domain:DANN": 24.2,
+    "domain:CORAL": 8.6,
+    "domain:Autoencoder (domain-conditional)": 11.8,
+    "domain:IRM": 25.7,
+    "domain:OT domain adaptation": 61.6,
+    "domain:Domain-generalisation transformer": 728.4,
+    "domain:apply Domain-generalisation transformer": 657.9,
+    "demographic:baseline": 45.3,
+    "demographic:Optimal Transport": 386.9,
+    "demographic:FairSMOTE": 49.2,
+    "demographic:Reweighting": 49.6,
+    "demographic:Adversarial debiasing": 71.7,
+    "demographic:Counterfactual recourse (DiCE)": 94.8,
+    "demographic:Fair contrastive learning": 63.7,
+    "demographic:apply Counterfactual recourse (DiCE)": 45.1
+  },
+  "column_rule": "inputs = every column except meta_*, sens_* and target; use meta_sample_weight as sample weight"
+}
