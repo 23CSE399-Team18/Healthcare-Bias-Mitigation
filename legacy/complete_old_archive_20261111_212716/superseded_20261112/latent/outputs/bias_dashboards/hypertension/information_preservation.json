@@ -1,0 +1,130 @@
+{
+  "stage": "latent",
+  "dataset": "hypertension",
+  "title": "Clinical information preservation",
+  "kind": "information_preservation",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 4421,
+        "input_features": null,
+        "numeric_features": 8,
+        "before_label": "Reference",
+        "after_label": "PCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "Uncompressed reference, not a bias test"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.00205600823761376,
+          "limit": 0.02,
+          "rule": "Validation Macro-F1 decrease >0.02 versus uncompressed reference"
+        },
+        "panels": [
+          {
+            "title": "Saved validation utility guard",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Uncompressed",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "hypertension"
+                ],
+                "y": [
+                  0.7493721681339036
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "PCA",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "hypertension"
+                ],
+                "y": [
+                  0.7473161598962899
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "hypertension - all candidate probes",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Validation Macro-F1",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT"
+                ],
+                "y": [
+                  0.7473161598962899,
+                  0.7266367330891847,
+                  0.734288271282967,
+                  0.7371695094796463
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "PCA"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
