@@ -1,0 +1,80 @@
+{
+  "stage": "latent",
+  "dataset": "hypertension",
+  "title": "Latent structure",
+  "kind": "latent_structure",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 4421,
+        "input_features": null,
+        "numeric_features": 8,
+        "before_label": "Reference",
+        "after_label": "PCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "after": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "panels": [
+          {
+            "title": "hypertension - validation label silhouette",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Silhouette",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT"
+                ],
+                "y": [
+                  0.05867767333984375,
+                  0.0611640140414238,
+                  0.0504051074385643,
+                  0.05679835379123688
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Silhouette"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "PCA"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
