@@ -1,0 +1,9 @@
+bias,selected modern,modern mean rank,best traditional,traditional mean rank,metrics where modern is better,modern ranks ahead
+Duplicate,- (bias not detected: nothing applied),,,,,
+Missing data,MIP-VAE,3.5714285714285716,Random Forest,2.857142857142857,3/7,False
+Outlier,ECOD,3.4285714285714284,LOF,1.7142857142857142,2/7,False
+Data noise,Robust loss (GCE),1.1666666666666667,Denoising autoencoder,4.5,6/6,True
+Feature scale,SNN (SELU),2.8333333333333335,Quantile transform,2.8333333333333335,3/6,False
+Encoding / domain,Domain-generalisation transformer,2.875,CORAL,3.5,4/8,True
+Class imbalance,TabDDPM,3.3333333333333335,SMOTE,3.7777777777777777,5/9,True
+Demographic,Fair contrastive learning,2.75,Reweighting,2.5,3/8,False
