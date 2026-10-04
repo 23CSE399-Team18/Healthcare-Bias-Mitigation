@@ -1,0 +1,289 @@
+{
+  "stage": "latent",
+  "dataset": "mimic",
+  "title": "Clinical information preservation",
+  "kind": "information_preservation",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 10829,
+        "input_features": null,
+        "numeric_features": 16,
+        "before_label": "Reference",
+        "after_label": "PCA_99.9pct_variance",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "Uncompressed reference, not a bias test"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.00018980604141460855,
+          "limit": 0.02,
+          "rule": "Validation Macro-F1 decrease >0.02 versus uncompressed reference"
+        },
+        "panels": [
+          {
+            "title": "Saved validation utility guard",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Uncompressed",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "heart",
+                  "respiratory",
+                  "diabetes",
+                  "hypertension"
+                ],
+                "y": [
+                  0.6304323937080412,
+                  0.615311792363657,
+                  0.5493055546609192,
+                  0.6464799379555628
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "PCA_99.9pct_variance",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "heart",
+                  "respiratory",
+                  "diabetes",
+                  "hypertension"
+                ],
+                "y": [
+                  0.6307429753153218,
+                  0.615142283268124,
+                  0.5491157486195046,
+                  0.6464799379555628
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "heart - all candidate probes",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Validation Macro-F1",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT",
+                  "PCA_95pct_variance",
+                  "PCA_99pct_variance",
+                  "PCA_99.9pct_variance"
+                ],
+                "y": [
+                  0.5694144473648015,
+                  0.5624953883293686,
+                  0.6180960460783134,
+                  0.5938143400464924,
+                  0.5978615526912738,
+                  0.607453332044888,
+                  0.6307429753153218
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "respiratory - all candidate probes",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Validation Macro-F1",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT",
+                  "PCA_95pct_variance",
+                  "PCA_99pct_variance",
+                  "PCA_99.9pct_variance"
+                ],
+                "y": [
+                  0.605355271329928,
+                  0.6026486044868398,
+                  0.6090996756377662,
+                  0.6129551705493782,
+                  0.6087159651775161,
+                  0.6119346119320999,
+                  0.615142283268124
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "diabetes - all candidate probes",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Validation Macro-F1",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT",
+                  "PCA_95pct_variance",
+                  "PCA_99pct_variance",
+                  "PCA_99.9pct_variance"
+                ],
+                "y": [
+                  0.4967351033940063,
+                  0.5449172383654357,
+                  0.5267214907647267,
+                  0.5381913711591959,
+                  0.5406716894257035,
+                  0.550168694648474,
+                  0.5491157486195046
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "hypertension - all candidate probes",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Validation Macro-F1",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT",
+                  "PCA_95pct_variance",
+                  "PCA_99pct_variance",
+                  "PCA_99.9pct_variance"
+                ],
+                "y": [
+                  0.5358007561276616,
+                  0.5389796571958856,
+                  0.626324516306621,
+                  0.5601822483119713,
+                  0.5796674585718473,
+                  0.5969194864254279,
+                  0.6464799379555628
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "PCA_99.9pct_variance"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
