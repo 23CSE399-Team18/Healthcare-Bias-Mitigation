@@ -1,0 +1,86 @@
+{
+  "stage": "latent",
+  "dataset": "mimic",
+  "title": "Input / latent alignment",
+  "kind": "alignment",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 10829,
+        "input_features": null,
+        "numeric_features": 16,
+        "before_label": "Reference",
+        "after_label": "PCA_99.9pct_variance",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "after": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "panels": [
+          {
+            "title": "same_row_input_latent_cka",
+            "data": [
+              {
+                "type": "bar",
+                "name": "same_row_input_latent_cka",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT",
+                  "PCA_95pct_variance",
+                  "PCA_99pct_variance",
+                  "PCA_99.9pct_variance"
+                ],
+                "y": [
+                  0.7522311281219712,
+                  0.9344051716709526,
+                  0.6721636601352683,
+                  0.5766309190665259,
+                  0.7179293913119845,
+                  0.6667236669772357,
+                  0.6356713391112044
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "same_row_input_latent_cka"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection. Same-row input/latent CKA is not cross-hospital generalization or proof of cross-dataset clinical equivalence."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "PCA_99.9pct_variance"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
