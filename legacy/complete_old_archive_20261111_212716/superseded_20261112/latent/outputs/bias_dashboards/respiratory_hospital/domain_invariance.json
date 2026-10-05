@@ -1,0 +1,85 @@
+{
+  "stage": "latent",
+  "dataset": "respiratory_hospital",
+  "title": "Domain association",
+  "kind": "domain_invariance",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 4909,
+        "input_features": null,
+        "numeric_features": 178,
+        "before_label": "Reference",
+        "after_label": "Source PCA",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No separate reference metric in this record"
+        },
+        "after": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "Training-fitted clusters versus validation hospitals; no universal bias cutoff"
+        },
+        "panels": [
+          {
+            "title": "Training-fitted clusters versus validation hospital IDs",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Saved PCA",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "NMI",
+                  "ARI"
+                ],
+                "y": [
+                  0.0595522342011502,
+                  0.006843044076580071
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Association score"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Applicability",
+            "table": [
+              {
+                "status": "Training-fitted clusters versus validation hospitals; no universal bias cutoff",
+                "validation_rows": 4909
+              }
+            ]
+          }
+        ],
+        "variables": {},
+        "note": "Frozen source PCA and saved latent matrices. Fixed diagnostic probes are fitted on source training data only; no encoder/classifier or saved selection is changed."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "Source PCA"
+  },
+  "default_method": "default",
+  "protocol": "Missing measurements are shown as unavailable, not as zero or successful mitigation."
+}
