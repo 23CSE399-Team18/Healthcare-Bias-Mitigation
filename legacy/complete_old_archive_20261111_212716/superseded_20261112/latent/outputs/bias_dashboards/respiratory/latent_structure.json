@@ -1,0 +1,82 @@
+{
+  "stage": "latent",
+  "dataset": "respiratory",
+  "title": "Latent structure",
+  "kind": "latent_structure",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 4360,
+        "input_features": null,
+        "numeric_features": 89,
+        "before_label": "Reference",
+        "after_label": "PCA_95pct_variance",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "after": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "No universal binary cutoff for this latent metric"
+        },
+        "panels": [
+          {
+            "title": "respiratory - validation label silhouette",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Silhouette",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT",
+                  "PCA_95pct_variance"
+                ],
+                "y": [
+                  0.06759899854660034,
+                  0.05702364072203636,
+                  0.06056167557835579,
+                  0.04686699062585831,
+                  0.07313782721757889
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Silhouette"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "PCA_95pct_variance"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
