@@ -1,0 +1,132 @@
+{
+  "stage": "latent",
+  "dataset": "respiratory",
+  "title": "Clinical information preservation",
+  "kind": "information_preservation",
+  "states": {
+    "validation": {
+      "default": {
+        "rows": 4360,
+        "input_features": null,
+        "numeric_features": 89,
+        "before_label": "Reference",
+        "after_label": "PCA_95pct_variance",
+        "before": {
+          "label": "Insufficient evidence",
+          "value": null,
+          "limit": 0,
+          "rule": "Uncompressed reference, not a bias test"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.0042717923969952665,
+          "limit": 0.02,
+          "rule": "Validation Macro-F1 decrease >0.02 versus uncompressed reference"
+        },
+        "panels": [
+          {
+            "title": "Saved validation utility guard",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Uncompressed",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "respiratory"
+                ],
+                "y": [
+                  0.6275131946939224
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "PCA_95pct_variance",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "respiratory"
+                ],
+                "y": [
+                  0.6232414022969271
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "respiratory - all candidate probes",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Validation Macro-F1",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "PCA",
+                  "MV_DAE",
+                  "DGCCA",
+                  "SAINT",
+                  "PCA_95pct_variance"
+                ],
+                "y": [
+                  0.5653549946783648,
+                  0.5536918414494938,
+                  0.5543480488770511,
+                  0.5550328525329498,
+                  0.6232414022969271
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Macro-F1"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          }
+        ],
+        "variables": {},
+        "note": "Validation diagnostics from the original saved manifests; no model refitting or test-label selection."
+      }
+    }
+  },
+  "default_split": "validation",
+  "methods": {
+    "default": "PCA_95pct_variance"
+  },
+  "default_method": "default",
+  "protocol": "Latent metrics are individual diagnostic pages; they are not all bias-presence tests."
+}
