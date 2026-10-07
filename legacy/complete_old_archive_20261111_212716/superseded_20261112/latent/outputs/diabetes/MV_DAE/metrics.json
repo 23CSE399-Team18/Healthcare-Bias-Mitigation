@@ -1,0 +1,27 @@
+{
+  "method": "MV_DAE",
+  "probe": {
+    "diabetes": {
+      "macro_f1": 0.5871467556778457,
+      "auroc": 0.7771160638168313,
+      "average_precision": 0.36164604787119387,
+      "validation_rows": 1181,
+      "validation_positive_rows": 161,
+      "threshold": 0.5,
+      "silhouette": 0.01240319013595581,
+      "silhouette_rows": 1181
+    }
+  },
+  "mean_validation_macro_f1": 0.5871467556778457,
+  "same_row_input_latent_cka": 0.9066668116223954,
+  "cka_rows": 1181,
+  "domain_cluster_nmi": null,
+  "domain_cluster_ari": null,
+  "domain_metric_status": "not applicable: no domain variable or only one institution",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.008081144841114107,
+  "clinical_utility_guard_passed": true,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "diabetes": -0.008081144841114107
+  }
+}
