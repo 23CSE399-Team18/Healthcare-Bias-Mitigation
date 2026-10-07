@@ -1,0 +1,27 @@
+{
+  "method": "PCA",
+  "probe": {
+    "diabetes": {
+      "macro_f1": 0.5922657377379863,
+      "auroc": 0.7705334307636098,
+      "average_precision": 0.33945784207826496,
+      "validation_rows": 1181,
+      "validation_positive_rows": 161,
+      "threshold": 0.5,
+      "silhouette": 0.0031251818872988224,
+      "silhouette_rows": 1181
+    }
+  },
+  "mean_validation_macro_f1": 0.5922657377379863,
+  "same_row_input_latent_cka": 0.915913812828274,
+  "cka_rows": 1181,
+  "domain_cluster_nmi": null,
+  "domain_cluster_ari": null,
+  "domain_metric_status": "not applicable: no domain variable or only one institution",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.0029621627809734985,
+  "clinical_utility_guard_passed": true,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "diabetes": -0.0029621627809734985
+  }
+}
