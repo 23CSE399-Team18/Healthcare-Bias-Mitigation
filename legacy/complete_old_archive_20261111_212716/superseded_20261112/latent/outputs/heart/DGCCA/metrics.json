@@ -1,0 +1,27 @@
+{
+  "method": "DGCCA",
+  "probe": {
+    "heart": {
+      "macro_f1": 0.5827520225277398,
+      "auroc": 0.8063646817544614,
+      "average_precision": 0.2840268192521644,
+      "validation_rows": 66017,
+      "validation_positive_rows": 5962,
+      "threshold": 0.5,
+      "silhouette": 0.05846046656370163,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5827520225277398,
+  "same_row_input_latent_cka": 0.6559502463352274,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.007556770406691418,
+  "domain_cluster_ari": 0.0012552270545785579,
+  "domain_metric_status": "training-fitted 8 clusters versus validation meta_domain_state; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.0026051736071440734,
+  "clinical_utility_guard_passed": true,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "heart": -0.0026051736071440734
+  }
+}
