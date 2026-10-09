@@ -1,0 +1,27 @@
+{
+  "method": "SAINT",
+  "probe": {
+    "heart": {
+      "macro_f1": 0.5578220898775454,
+      "auroc": 0.754467869956286,
+      "average_precision": 0.22382129132141532,
+      "validation_rows": 66017,
+      "validation_positive_rows": 5962,
+      "threshold": 0.5,
+      "silhouette": 0.06400788575410843,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5578220898775454,
+  "same_row_input_latent_cka": 0.6809494693851064,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.006723530315816497,
+  "domain_cluster_ari": 0.0006912076263838349,
+  "domain_metric_status": "training-fitted 8 clusters versus validation meta_domain_state; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.02753510625733846,
+  "clinical_utility_guard_passed": false,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "heart": -0.02753510625733846
+  }
+}
