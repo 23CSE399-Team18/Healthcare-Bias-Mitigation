@@ -1,0 +1,27 @@
+{
+  "method": "PCA",
+  "probe": {
+    "heart": {
+      "macro_f1": 0.5704474082672228,
+      "auroc": 0.7859606833063207,
+      "average_precision": 0.253533497460122,
+      "validation_rows": 66017,
+      "validation_positive_rows": 5962,
+      "threshold": 0.5,
+      "silhouette": 0.06251110881567001,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5704474082672228,
+  "same_row_input_latent_cka": 0.7833280341964624,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.007462322447190842,
+  "domain_cluster_ari": 0.00109385126612625,
+  "domain_metric_status": "training-fitted 8 clusters versus validation meta_domain_state; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.014909787867661062,
+  "clinical_utility_guard_passed": true,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "heart": -0.014909787867661062
+  }
+}
