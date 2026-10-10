@@ -1,0 +1,113 @@
+{
+  "passed": true,
+  "branches": {
+    "respiratory_hospital": {
+      "passed": true,
+      "train_only_statistics_verified": true,
+      "patient_disjoint": true,
+      "hospital_disjoint": true,
+      "partitions": {
+        "train": {
+          "rows": 21082,
+          "latent_dimensions": 178,
+          "hospitals": 137,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.000026702880859375
+        },
+        "validation": {
+          "rows": 4909,
+          "latent_dimensions": 178,
+          "hospitals": 34,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.0000152587890625
+        },
+        "test": {
+          "rows": 2301,
+          "latent_dimensions": 178,
+          "hospitals": 29,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0
+        }
+      }
+    },
+    "eicu_hospital": {
+      "passed": true,
+      "train_only_statistics_verified": true,
+      "patient_disjoint": true,
+      "hospital_disjoint": true,
+      "partitions": {
+        "train": {
+          "rows": 80606,
+          "latent_dimensions": 16,
+          "hospitals": 141,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.00000476837158203125
+        },
+        "validation": {
+          "rows": 20318,
+          "latent_dimensions": 16,
+          "hospitals": 34,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.000003337860107421875
+        },
+        "test": {
+          "rows": 8454,
+          "latent_dimensions": 16,
+          "hospitals": 31,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.000003814697265625
+        },
+        "external": {
+          "rows": 73990,
+          "latent_dimensions": 16,
+          "hospitals": 1,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.0000057220458984375
+        }
+      }
+    },
+    "mimic_transfer": {
+      "passed": true,
+      "train_only_statistics_verified": true,
+      "patient_disjoint": true,
+      "hospital_disjoint": false,
+      "partitions": {
+        "train": {
+          "rows": 52229,
+          "latent_dimensions": 16,
+          "hospitals": 1,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.000003814697265625
+        },
+        "validation": {
+          "rows": 10829,
+          "latent_dimensions": 16,
+          "hospitals": 1,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.0000035762786865234375
+        },
+        "test": {
+          "rows": 10932,
+          "latent_dimensions": 16,
+          "hospitals": 1,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.000003814697265625
+        },
+        "external": {
+          "rows": 109378,
+          "latent_dimensions": 16,
+          "hospitals": 206,
+          "csv_and_source_transform_verified": true,
+          "max_float32_reproduction_error": 0.00000762939453125
+        }
+      }
+    }
+  },
+  "respiratory_preprocessing": {
+    "passed": true,
+    "original_rows_accounted_for": 28842,
+    "excluded_stays": 550,
+    "train_only_statistics_verified": true,
+    "all_original_rows_and_transforms_reproduced": true
+  }
+}
