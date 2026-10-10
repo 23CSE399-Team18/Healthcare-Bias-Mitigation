@@ -1,0 +1,15 @@
+# Hospital preprocessing and latent outputs
+
+The three survey benchmarks remain separate. Use these branches for ICU evaluation. Training and validation/test hospitals are disjoint within eICU; MIMIC has one source institution. External source-to-target transformations are frozen.
+
+| Branch | Train / validation / test hospitals | Input width | Latent width | Preprocessing outputs | Latent outputs |
+|---|---|---:|---:|---|---|
+| respiratory_hospital | 137/34/29 | 277 | 178 | [train](../../../preprocessing/outputs/hospital_baseline/respiratory/respiratory_train_preprocessed.csv), [validation](../../../preprocessing/outputs/hospital_baseline/respiratory/respiratory_validation_preprocessed.csv), [test](../../../preprocessing/outputs/hospital_baseline/respiratory/respiratory_test_preprocessed.csv) | [train](respiratory_hospital/respiratory_hospital_train_latent.csv), [validation](respiratory_hospital/respiratory_hospital_validation_latent.csv), [test](respiratory_hospital/respiratory_hospital_test_latent.csv) |
+| eicu_hospital | 141/34/31 | 25 | 16 | [train](../../../preprocessing/outputs/hospital_baseline/eicu/eicu_train_preprocessed.csv), [validation](../../../preprocessing/outputs/hospital_baseline/eicu/eicu_validation_preprocessed.csv), [test](../../../preprocessing/outputs/hospital_baseline/eicu/eicu_test_preprocessed.csv), [external](../../../preprocessing/outputs/hospital_baseline/eicu/eicu_external_preprocessed.csv) | [train](eicu_hospital/eicu_hospital_train_latent.csv), [validation](eicu_hospital/eicu_hospital_validation_latent.csv), [test](eicu_hospital/eicu_hospital_test_latent.csv), [external](eicu_hospital/eicu_hospital_external_latent.csv) |
+| mimic_transfer | 1/1/1 | 24 | 16 | [train](../../../preprocessing/outputs/verified_baseline/mimic/mimic_train_preprocessed.csv), [validation](../../../preprocessing/outputs/verified_baseline/mimic/mimic_validation_preprocessed.csv), [test](../../../preprocessing/outputs/verified_baseline/mimic/mimic_test_preprocessed.csv), [external](../../../preprocessing/outputs/hospital_baseline/mimic/mimic_external_preprocessed.csv) | [train](mimic_transfer/mimic_transfer_train_latent.csv), [validation](mimic_transfer/mimic_transfer_validation_latent.csv), [test](mimic_transfer/mimic_transfer_test_latent.csv), [external](mimic_transfer/mimic_transfer_external_latent.csv) |
+
+[All plots](../../plots/hospital/index.html) | [Independent validation](independent_validation.json) | [In-processing results](../../../inprocessing/outputs/REPORT.md)
+
+The respiratory reference in `preprocessing/verified_baseline/respiratory` is a valid patient-split baseline. Its new hospital branch above is the input used for cross-hospital in-processing. Do not interchange their split files or fitted transformers.
+
+The two ICU diagnosis directions each retain four overlapping labels: heart, respiratory, diabetes and hypertension. MIMIC-to-eICU external evaluation tests transfer between sources; anonymous hospital IDs cannot establish institutional non-overlap between databases. The internal eICU hospital holdouts establish the verifiable hospital separation.
