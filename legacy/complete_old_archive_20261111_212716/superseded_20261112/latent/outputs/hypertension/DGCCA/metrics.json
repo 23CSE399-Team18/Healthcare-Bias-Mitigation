@@ -1,0 +1,27 @@
+{
+  "method": "DGCCA",
+  "probe": {
+    "hypertension": {
+      "macro_f1": 0.734288271282967,
+      "auroc": 0.8153997429619708,
+      "average_precision": 0.7075129500899355,
+      "validation_rows": 4421,
+      "validation_positive_rows": 1664,
+      "threshold": 0.5,
+      "silhouette": 0.0504051074385643,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.734288271282967,
+  "same_row_input_latent_cka": 0.6230244521779658,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.007818995778416426,
+  "domain_cluster_ari": 0.0034964620715514615,
+  "domain_metric_status": "training-fitted 4 clusters versus validation meta_domain_region; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.015083896850936584,
+  "clinical_utility_guard_passed": true,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "hypertension": -0.015083896850936584
+  }
+}
