@@ -1,0 +1,27 @@
+{
+  "method": "PCA",
+  "probe": {
+    "hypertension": {
+      "macro_f1": 0.7473161598962899,
+      "auroc": 0.8299621069445606,
+      "average_precision": 0.7287295205069844,
+      "validation_rows": 4421,
+      "validation_positive_rows": 1664,
+      "threshold": 0.5,
+      "silhouette": 0.05867767333984375,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.7473161598962899,
+  "same_row_input_latent_cka": 0.7392837905801449,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.0015806204681905426,
+  "domain_cluster_ari": 0.002737896378859084,
+  "domain_metric_status": "training-fitted 4 clusters versus validation meta_domain_region; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.00205600823761376,
+  "clinical_utility_guard_passed": true,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "hypertension": -0.00205600823761376
+  }
+}
