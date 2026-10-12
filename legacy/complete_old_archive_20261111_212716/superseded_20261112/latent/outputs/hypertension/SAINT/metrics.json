@@ -1,0 +1,27 @@
+{
+  "method": "SAINT",
+  "probe": {
+    "hypertension": {
+      "macro_f1": 0.7371695094796463,
+      "auroc": 0.8159409789068386,
+      "average_precision": 0.7020863318283715,
+      "validation_rows": 4421,
+      "validation_positive_rows": 1664,
+      "threshold": 0.5,
+      "silhouette": 0.05679835379123688,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.7371695094796463,
+  "same_row_input_latent_cka": 0.6225733428071737,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.0009277233849106242,
+  "domain_cluster_ari": -0.00281840270433044,
+  "domain_metric_status": "training-fitted 4 clusters versus validation meta_domain_region; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.012202658654257292,
+  "clinical_utility_guard_passed": true,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "hypertension": -0.012202658654257292
+  }
+}
