@@ -1,0 +1,60 @@
+{
+  "method": "MV_DAE",
+  "probe": {
+    "heart": {
+      "macro_f1": 0.5624953883293686,
+      "auroc": 0.5963782813908938,
+      "average_precision": 0.4281077883548649,
+      "validation_rows": 10829,
+      "validation_positive_rows": 3980,
+      "threshold": 0.5,
+      "silhouette": 0.005072685424238443,
+      "silhouette_rows": 2000
+    },
+    "respiratory": {
+      "macro_f1": 0.6026486044868398,
+      "auroc": 0.6489215389026134,
+      "average_precision": 0.7171176755123143,
+      "validation_rows": 10829,
+      "validation_positive_rows": 6252,
+      "threshold": 0.5,
+      "silhouette": 0.006507331971079111,
+      "silhouette_rows": 2000
+    },
+    "diabetes": {
+      "macro_f1": 0.5449172383654357,
+      "auroc": 0.5711589874857793,
+      "average_precision": 0.38081566309870085,
+      "validation_rows": 10829,
+      "validation_positive_rows": 3504,
+      "threshold": 0.5,
+      "silhouette": 0.024886537343263626,
+      "silhouette_rows": 2000
+    },
+    "hypertension": {
+      "macro_f1": 0.5389796571958856,
+      "auroc": 0.5741054285301299,
+      "average_precision": 0.7078918849562604,
+      "validation_rows": 10829,
+      "validation_positive_rows": 7102,
+      "threshold": 0.5,
+      "silhouette": 0.006719677709043026,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5622602220943824,
+  "same_row_input_latent_cka": 0.9344051716709526,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": null,
+  "domain_cluster_ari": null,
+  "domain_metric_status": "not applicable: no domain variable or only one institution",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.04812219757766267,
+  "clinical_utility_guard_passed": false,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "heart": -0.06793700537867253,
+    "respiratory": -0.012663187876817195,
+    "diabetes": -0.00438831629548353,
+    "hypertension": -0.10750028075967721
+  }
+}
