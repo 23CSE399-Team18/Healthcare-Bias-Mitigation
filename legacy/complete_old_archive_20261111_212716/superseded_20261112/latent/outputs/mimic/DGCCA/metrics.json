@@ -1,0 +1,60 @@
+{
+  "method": "DGCCA",
+  "probe": {
+    "heart": {
+      "macro_f1": 0.6180960460783134,
+      "auroc": 0.6844462310090385,
+      "average_precision": 0.5221055429040373,
+      "validation_rows": 10829,
+      "validation_positive_rows": 3980,
+      "threshold": 0.5,
+      "silhouette": 0.004161972552537918,
+      "silhouette_rows": 2000
+    },
+    "respiratory": {
+      "macro_f1": 0.6090996756377662,
+      "auroc": 0.6518403164952695,
+      "average_precision": 0.7146701309741447,
+      "validation_rows": 10829,
+      "validation_positive_rows": 6252,
+      "threshold": 0.5,
+      "silhouette": 0.006161908153444529,
+      "silhouette_rows": 2000
+    },
+    "diabetes": {
+      "macro_f1": 0.5267214907647267,
+      "auroc": 0.5779497054560755,
+      "average_precision": 0.37972129471156646,
+      "validation_rows": 10829,
+      "validation_positive_rows": 3504,
+      "threshold": 0.5,
+      "silhouette": 0.006775546818971634,
+      "silhouette_rows": 2000
+    },
+    "hypertension": {
+      "macro_f1": 0.626324516306621,
+      "auroc": 0.6838863455930627,
+      "average_precision": 0.7764292261319716,
+      "validation_rows": 10829,
+      "validation_positive_rows": 7102,
+      "threshold": 0.5,
+      "silhouette": 0.03858580067753792,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5950604321968568,
+  "same_row_input_latent_cka": 0.6721636601352683,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": null,
+  "domain_cluster_ari": null,
+  "domain_metric_status": "not applicable: no domain variable or only one institution",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.015321987475188314,
+  "clinical_utility_guard_passed": false,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "heart": -0.012336347629727795,
+    "respiratory": -0.006212116725890726,
+    "diabetes": -0.022584063896192497,
+    "hypertension": -0.020155421648941796
+  }
+}
