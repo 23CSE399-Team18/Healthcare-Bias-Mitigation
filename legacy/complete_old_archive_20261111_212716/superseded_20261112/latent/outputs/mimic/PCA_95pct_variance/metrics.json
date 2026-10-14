@@ -1,0 +1,60 @@
+{
+  "method": "PCA_95pct_variance",
+  "probe": {
+    "heart": {
+      "macro_f1": 0.5978615526912738,
+      "auroc": 0.6509497223304432,
+      "average_precision": 0.5034702109115823,
+      "validation_rows": 10829,
+      "validation_positive_rows": 3980,
+      "threshold": 0.5,
+      "silhouette": 0.002507616998627782,
+      "silhouette_rows": 2000
+    },
+    "respiratory": {
+      "macro_f1": 0.6087159651775161,
+      "auroc": 0.6548173843710192,
+      "average_precision": 0.7225710342326835,
+      "validation_rows": 10829,
+      "validation_positive_rows": 6252,
+      "threshold": 0.5,
+      "silhouette": 0.0021381231490522623,
+      "silhouette_rows": 2000
+    },
+    "diabetes": {
+      "macro_f1": 0.5406716894257035,
+      "auroc": 0.5747879751274019,
+      "average_precision": 0.3895827672165765,
+      "validation_rows": 10829,
+      "validation_positive_rows": 3504,
+      "threshold": 0.5,
+      "silhouette": 0.020209159702062607,
+      "silhouette_rows": 2000
+    },
+    "hypertension": {
+      "macro_f1": 0.5796674585718473,
+      "auroc": 0.619992595909941,
+      "average_precision": 0.7441748781451585,
+      "validation_rows": 10829,
+      "validation_positive_rows": 7102,
+      "threshold": 0.5,
+      "silhouette": 0.012987995520234108,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5817291664665851,
+  "same_row_input_latent_cka": 0.7179293913119845,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": null,
+  "domain_cluster_ari": null,
+  "domain_metric_status": "not applicable: no domain variable or only one institution",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.028653253205459972,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "heart": -0.03257084101676733,
+    "respiratory": -0.0065958271861408235,
+    "diabetes": -0.008633865235215699,
+    "hypertension": -0.06681247938371548
+  },
+  "clinical_utility_guard_passed": false
+}
