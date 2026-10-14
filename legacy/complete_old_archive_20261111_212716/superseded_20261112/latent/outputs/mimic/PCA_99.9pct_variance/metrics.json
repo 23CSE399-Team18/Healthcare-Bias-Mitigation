@@ -1,0 +1,60 @@
+{
+  "method": "PCA_99.9pct_variance",
+  "probe": {
+    "heart": {
+      "macro_f1": 0.6307429753153218,
+      "auroc": 0.705593964860072,
+      "average_precision": 0.5482637024763393,
+      "validation_rows": 10829,
+      "validation_positive_rows": 3980,
+      "threshold": 0.5,
+      "silhouette": 0.0038490386214107275,
+      "silhouette_rows": 2000
+    },
+    "respiratory": {
+      "macro_f1": 0.615142283268124,
+      "auroc": 0.6650926892382858,
+      "average_precision": 0.7302756554786842,
+      "validation_rows": 10829,
+      "validation_positive_rows": 6252,
+      "threshold": 0.5,
+      "silhouette": 0.001481174840591848,
+      "silhouette_rows": 2000
+    },
+    "diabetes": {
+      "macro_f1": 0.5491157486195046,
+      "auroc": 0.6087771751835055,
+      "average_precision": 0.40927064442623134,
+      "validation_rows": 10829,
+      "validation_positive_rows": 3504,
+      "threshold": 0.5,
+      "silhouette": 0.013370254077017307,
+      "silhouette_rows": 2000
+    },
+    "hypertension": {
+      "macro_f1": 0.6464799379555628,
+      "auroc": 0.7092773346666086,
+      "average_precision": 0.790701908890866,
+      "validation_rows": 10829,
+      "validation_positive_rows": 7102,
+      "threshold": 0.5,
+      "silhouette": 0.031349677592515945,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.6103702362896283,
+  "same_row_input_latent_cka": 0.6356713391112044,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": null,
+  "domain_cluster_ari": null,
+  "domain_metric_status": "not applicable: no domain variable or only one institution",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.000012183382416819377,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "heart": 0.00031058160728059114,
+    "respiratory": -0.00016950909553292703,
+    "diabetes": -0.00018980604141460855,
+    "hypertension": 0
+  },
+  "clinical_utility_guard_passed": true
+}
