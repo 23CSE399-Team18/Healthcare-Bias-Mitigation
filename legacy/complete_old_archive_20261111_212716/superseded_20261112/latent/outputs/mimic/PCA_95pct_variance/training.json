@@ -1,0 +1,20 @@
+{
+  "fit_rows": 52229,
+  "labels_used_for_encoder_training": false,
+  "test_rows_used_for_fitting_or_selection": 0,
+  "explained_variance_ratio": [
+    0.38333767652511597,
+    0.1801796406507492,
+    0.10274404287338257,
+    0.07706800103187561,
+    0.06971301883459091,
+    0.04169745743274689,
+    0.030714774504303932,
+    0.025670822709798813,
+    0.018431037664413452,
+    0.017368178814649582,
+    0.01586589589715004
+  ],
+  "requested_training_variance_retained": 0.95,
+  "actual_dimensions": 11
+}
