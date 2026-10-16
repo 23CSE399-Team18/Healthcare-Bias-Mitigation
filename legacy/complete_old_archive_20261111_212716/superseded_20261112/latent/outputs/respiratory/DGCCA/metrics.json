@@ -1,0 +1,27 @@
+{
+  "method": "DGCCA",
+  "probe": {
+    "respiratory": {
+      "macro_f1": 0.5543480488770511,
+      "auroc": 0.7050525554278906,
+      "average_precision": 0.3158177390084317,
+      "validation_rows": 4360,
+      "validation_positive_rows": 630,
+      "threshold": 0.5,
+      "silhouette": 0.06056167557835579,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5543480488770511,
+  "same_row_input_latent_cka": 0.4896173445609473,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.07503067022863896,
+  "domain_cluster_ari": 0.0029658419717275082,
+  "domain_metric_status": "training-fitted 8 clusters versus validation meta_domain_hospitalid; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.07316514581687128,
+  "clinical_utility_guard_passed": false,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "respiratory": -0.07316514581687128
+  }
+}
