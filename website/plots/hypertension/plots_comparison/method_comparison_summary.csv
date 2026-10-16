@@ -1,0 +1,6 @@
+dataset,bias,applied,mean_rank,rank_total,methods,candidates,candidate_position,tie_with,next_candidate,next_candidate_mean_rank,next_candidate_rank_total,best_baseline,best_baseline_mean_rank,best_baseline_rank_total,baselines_with_lower_mean_rank,file
+hypertension,Missing Data,HyperImpute,3.286,23,8,3,1,,MIP-VAE,5.143,36.0,KNN,3.286,23,0,01_missing_data_bias_method_comparison.png
+hypertension,Feature Scale,PowerTransform (Yeo-Johnson),2.0,12,6,3,1,,SNN (SELU),2.833,17.0,Robust scaler,3.333,20,0,04_feature_scale_bias_method_comparison.png
+hypertension,Demographic,Counterfactual recourse (DiCE),2.5,20,6,3,1,,Fair contrastive learning,3.562,28.5,Optimal Transport,3.375,27,0,05_demographic_bias_method_comparison.png
+hypertension,Data Noise,Confident Learning (Cleanlab),1.0,6,7,3,1,,Robust loss (GCE),2.167,13.0,Denoising autoencoder,3.0,18,0,07_data_noise_bias_method_comparison.png
+hypertension,Encoding / Domain,Domain-generalisation transformer,2.375,19,6,3,1,,OT domain adaptation,2.625,21.0,CORAL,2.75,22,0,08_encoding_domain_bias_method_comparison.png
