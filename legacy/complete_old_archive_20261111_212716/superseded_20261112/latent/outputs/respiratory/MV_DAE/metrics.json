@@ -1,0 +1,27 @@
+{
+  "method": "MV_DAE",
+  "probe": {
+    "respiratory": {
+      "macro_f1": 0.5536918414494938,
+      "auroc": 0.6958938678241627,
+      "average_precision": 0.2872594428683064,
+      "validation_rows": 4360,
+      "validation_positive_rows": 630,
+      "threshold": 0.5,
+      "silhouette": 0.05702364072203636,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5536918414494938,
+  "same_row_input_latent_cka": 0.6904787288024482,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.09829836019458145,
+  "domain_cluster_ari": 0.005035685049005759,
+  "domain_metric_status": "training-fitted 8 clusters versus validation meta_domain_hospitalid; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.07382135324442862,
+  "clinical_utility_guard_passed": false,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "respiratory": -0.07382135324442862
+  }
+}
