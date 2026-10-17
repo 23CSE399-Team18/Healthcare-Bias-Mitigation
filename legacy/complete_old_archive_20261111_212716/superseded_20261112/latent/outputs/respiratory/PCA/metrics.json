@@ -1,0 +1,27 @@
+{
+  "method": "PCA",
+  "probe": {
+    "respiratory": {
+      "macro_f1": 0.5653549946783648,
+      "auroc": 0.717477765011277,
+      "average_precision": 0.357980623478721,
+      "validation_rows": 4360,
+      "validation_positive_rows": 630,
+      "threshold": 0.5,
+      "silhouette": 0.06759899854660034,
+      "silhouette_rows": 2000
+    }
+  },
+  "mean_validation_macro_f1": 0.5653549946783648,
+  "same_row_input_latent_cka": 0.8171630876486092,
+  "cka_rows": 2000,
+  "domain_cluster_nmi": 0.10017321137117104,
+  "domain_cluster_ari": 0.004296812417349066,
+  "domain_metric_status": "training-fitted 8 clusters versus validation meta_domain_hospitalid; unweighted",
+  "test_metrics": "not computed; test retained for final in-processing evaluation",
+  "validation_macro_f1_change_vs_uncompressed": -0.06215820001555761,
+  "clinical_utility_guard_passed": false,
+  "per_target_macro_f1_change_vs_uncompressed": {
+    "respiratory": -0.06215820001555761
+  }
+}
