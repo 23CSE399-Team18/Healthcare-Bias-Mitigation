@@ -1,0 +1,230 @@
+{
+  "per_dataset": {
+    "heart": {
+      "macro_f1": 0.5721258731283837,
+      "auroc": 0.8124752832294972,
+      "silhouette": 0.022527355700731277
+    },
+    "diabetes": {
+      "macro_f1": 0.5726923602629618,
+      "auroc": 0.7760253328289546,
+      "silhouette": 0.004028606694191694
+    },
+    "hypertension": {
+      "macro_f1": 0.7588630984474769,
+      "auroc": 0.8424247021567478,
+      "silhouette": 0.17972733080387115
+    },
+    "respiratory": {
+      "macro_f1": 0.6170605227111188,
+      "auroc": 0.7598124740042018,
+      "silhouette": 0.14010344445705414
+    },
+    "hospital": {
+      "macro_f1": 0.5614617720710459,
+      "auroc": 0.6250352834799764,
+      "silhouette": 0.0105796701827785,
+      "per_condition": {
+        "target_heart": {
+          "macro_f1": 0.5203555152277282,
+          "auroc": 0.6476477768100851,
+          "silhouette": 0.02240995317697525
+        },
+        "target_diabetes": {
+          "macro_f1": 0.5248259163372722,
+          "auroc": 0.5776879618804437,
+          "silhouette": 0.0006011663354001939
+        },
+        "target_hypertension": {
+          "macro_f1": 0.6016506822345185,
+          "auroc": 0.6377263230867829,
+          "silhouette": 0.0066805267706513405
+        },
+        "target_respiratory": {
+          "macro_f1": 0.5990149744846648,
+          "auroc": 0.6370790721425941,
+          "silhouette": 0.012627034448087215
+        }
+      }
+    }
+  },
+  "cka_matrix": [
+    [
+      1.0,
+      0.6358,
+      0.9017,
+      0.6269,
+      0.6966
+    ],
+    [
+      0.6358,
+      1.0,
+      0.555,
+      0.6282,
+      0.7076
+    ],
+    [
+      0.9017,
+      0.555,
+      1.0,
+      0.502,
+      0.703
+    ],
+    [
+      0.6269,
+      0.6282,
+      0.502,
+      1.0,
+      0.6847
+    ],
+    [
+      0.6966,
+      0.7076,
+      0.703,
+      0.6847,
+      1.0
+    ]
+  ],
+  "cka_support": [
+    [
+      32,
+      18,
+      24,
+      30,
+      8
+    ],
+    [
+      18,
+      18,
+      18,
+      18,
+      8
+    ],
+    [
+      24,
+      18,
+      24,
+      24,
+      8
+    ],
+    [
+      30,
+      18,
+      24,
+      30,
+      8
+    ],
+    [
+      8,
+      8,
+      8,
+      8,
+      8
+    ]
+  ],
+  "cka_strata": "age group x sex x BMI category; pairs with the cross-hospital ICU view use age group x sex (it has no BMI)",
+  "CKA (alignment)": 0.6641548156738282,
+  "Macro-F1 (preservation)": 0.6164407253241974,
+  "Silhouette (structure)": 0.07139328156772536,
+  "NMI (domain)": 0.04735945147533586,
+  "ARI (domain)": 0.031249332159445822,
+  "contingency": [
+    [
+      241,
+      429,
+      482,
+      217,
+      631
+    ],
+    [
+      61,
+      362,
+      231,
+      260,
+      265
+    ],
+    [
+      393,
+      448,
+      349,
+      336,
+      474
+    ],
+    [
+      13,
+      704,
+      121,
+      828,
+      334
+    ],
+    [
+      209,
+      484,
+      299,
+      463,
+      545
+    ]
+  ],
+  "history": [
+    {
+      "step": 250,
+      "train_loss": 4.499979496002197,
+      "validation_objective": 4.579381048679352
+    },
+    {
+      "step": 500,
+      "train_loss": 4.40086555480957,
+      "validation_objective": 4.5138800740242
+    },
+    {
+      "step": 750,
+      "train_loss": 4.405392646789551,
+      "validation_objective": 4.472874462604523
+    },
+    {
+      "step": 1000,
+      "train_loss": 4.343732833862305,
+      "validation_objective": 4.442934155464172
+    },
+    {
+      "step": 1250,
+      "train_loss": 4.329098224639893,
+      "validation_objective": 4.430244982242584
+    },
+    {
+      "step": 1500,
+      "train_loss": 4.372530460357666,
+      "validation_objective": 4.413167715072632
+    },
+    {
+      "step": 1750,
+      "train_loss": 4.321663856506348,
+      "validation_objective": 4.406139075756073
+    },
+    {
+      "step": 2000,
+      "train_loss": 4.319485664367676,
+      "validation_objective": 4.396532356739044
+    },
+    {
+      "step": 2250,
+      "train_loss": 4.325479984283447,
+      "validation_objective": 4.3872241377830505
+    },
+    {
+      "step": 2500,
+      "train_loss": 4.3001861572265625,
+      "validation_objective": 4.385498046875
+    },
+    {
+      "step": 2750,
+      "train_loss": 4.340288162231445,
+      "validation_objective": 4.373511791229248
+    },
+    {
+      "step": 3000,
+      "train_loss": 4.252264022827148,
+      "validation_objective": 4.372410833835602
+    }
+  ]
+}
