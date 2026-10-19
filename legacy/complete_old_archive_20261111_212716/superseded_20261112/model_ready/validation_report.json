@@ -1,0 +1,163 @@
+{
+  "heart": {
+    "rows": 440111,
+    "features": 16,
+    "positive_rate": 0.0903,
+    "predictor_missing_cells_pct": 4.37,
+    "sens_group_counts": {
+      "sens_sex": {
+        "Female": 233462,
+        "Male": 206649
+      },
+      "sens_age_group": {
+        "40-64": 178376,
+        "65-79": 123546,
+        "18-39": 102898,
+        "80+": 35291
+      },
+      "sens_race_ethnicity": {
+        "White": 317345,
+        "Hispanic": 42380,
+        "Black": 34945,
+        "Other": 31822,
+        "NaN": 13619
+      }
+    },
+    "smoke_test_baseline": {
+      "model": "HistGradientBoosting (native NaN handling), default settings",
+      "split": "stratified 80/20",
+      "test_auroc": 0.8341,
+      "test_auprc": 0.3291
+    },
+    "top_single_feature_auroc": {
+      "age": 0.744,
+      "general_health": 0.7109,
+      "poor_physical_health_days": 0.6192,
+      "income_category": 0.6032,
+      "diabetes_status": 0.5989
+    },
+    "issues": [],
+    "status": "PASS"
+  },
+  "hypertension": {
+    "rows": 29471,
+    "features": 32,
+    "positive_rate": 0.3764,
+    "predictor_missing_cells_pct": 1.58,
+    "sens_group_counts": {
+      "sens_sex": {
+        "Female": 16033,
+        "Male": 13432,
+        "NaN": 6
+      },
+      "sens_age_group": {
+        "40-64": 11315,
+        "18-39": 8441,
+        "65-79": 7353,
+        "80+": 2303,
+        "NaN": 59
+      },
+      "sens_race_ethnicity": {
+        "White": 19463,
+        "Hispanic": 4414,
+        "Black": 3206,
+        "Other": 2388
+      }
+    },
+    "smoke_test_baseline": {
+      "model": "HistGradientBoosting (native NaN handling), default settings",
+      "split": "stratified 80/20",
+      "test_auroc": 0.8315,
+      "test_auprc": 0.7475
+    },
+    "top_single_feature_auroc": {
+      "age": 0.7599,
+      "general_health": 0.6831,
+      "high_cholesterol_ever": 0.6796,
+      "worked_last_week": 0.6335,
+      "arthritis_ever": 0.6266
+    },
+    "issues": [],
+    "status": "PASS"
+  },
+  "diabetes": {
+    "rows": 7876,
+    "features": 7,
+    "positive_rate": 0.1362,
+    "predictor_missing_cells_pct": 10.28,
+    "sens_group_counts": {
+      "sens_sex": {
+        "Female": 4343,
+        "Male": 3533
+      },
+      "sens_age_group": {
+        "40-64": 3024,
+        "18-39": 2395,
+        "65-79": 1957,
+        "80+": 500
+      },
+      "sens_race_ethnicity": {
+        "White": 4566,
+        "Hispanic": 1367,
+        "Black": 1007,
+        "Other": 936
+      }
+    },
+    "smoke_test_baseline": {
+      "model": "HistGradientBoosting (native NaN handling), default settings",
+      "split": "stratified 80/20",
+      "test_auroc": 0.7666,
+      "test_auprc": 0.3077
+    },
+    "top_single_feature_auroc": {
+      "age": 0.7064,
+      "waist_cm": 0.6692,
+      "bmi": 0.6388,
+      "education": 0.6181,
+      "income_poverty_ratio": 0.569
+    },
+    "issues": [],
+    "status": "PASS"
+  },
+  "respiratory": {
+    "rows": 28842,
+    "features": 112,
+    "positive_rate": 0.1363,
+    "predictor_missing_cells_pct": 20.57,
+    "sens_group_counts": {
+      "sens_sex": {
+        "Male": 14873,
+        "Female": 13965,
+        "NaN": 4
+      },
+      "sens_age_group": {
+        "40-64": 10665,
+        "65-79": 10592,
+        "80+": 5520,
+        "18-39": 2065
+      },
+      "sens_race_ethnicity": {
+        "White": 22531,
+        "Black": 3279,
+        "NaN": 1427,
+        "Hispanic": 1017,
+        "Other": 588
+      }
+    },
+    "smoke_test_baseline": {
+      "model": "HistGradientBoosting (native NaN handling), default settings",
+      "split": "patient-grouped 80/20",
+      "test_auroc": 0.8086,
+      "test_auprc": 0.4419
+    },
+    "top_single_feature_auroc": {
+      "bun_max": 0.6468,
+      "bun_min": 0.6423,
+      "nibp_sbp_min": 0.6379,
+      "nibp_map_min": 0.6335,
+      "albumin_min": 0.628
+    },
+    "issues": [],
+    "status": "PASS"
+  }
+}
