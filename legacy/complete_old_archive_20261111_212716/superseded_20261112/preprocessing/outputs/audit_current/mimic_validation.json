@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "rows": 73990,
+  "patients": 53931,
+  "directions": {
+    "mimic_to_eicu": {
+      "passed": true,
+      "fit_rows": 52229,
+      "partitions": {
+        "train": {
+          "rows": 52229,
+          "features": 24,
+          "all_finite": true,
+          "matches_independent_train_only_transformation": true,
+          "ids_and_labels_match": true,
+          "saved_hashes_match": true
+        },
+        "validation": {
+          "rows": 10829,
+          "features": 24,
+          "all_finite": true,
+          "matches_independent_train_only_transformation": true,
+          "ids_and_labels_match": true,
+          "saved_hashes_match": true
+        },
+        "test": {
+          "rows": 10932,
+          "features": 24,
+          "all_finite": true,
+          "matches_independent_train_only_transformation": true,
+          "ids_and_labels_match": true,
+          "saved_hashes_match": true
+        },
+        "external": {
+          "rows": 109378,
+          "features": 24,
+          "all_finite": true,
+          "matches_independent_train_only_transformation": true,
+          "ids_and_labels_match": true,
+          "saved_hashes_match": true
+        }
+      }
+    },
+    "eicu_to_mimic": {
+      "passed": true,
+      "fit_rows": 80606,
+      "partitions": {
+        "train": {
+          "rows": 80606,
+          "features": 25,
+          "all_finite": true,
+          "matches_independent_train_only_transformation": true,
+          "ids_and_labels_match": true,
+          "saved_hashes_match": true
+        },
+        "validation": {
+          "rows": 20318,
+          "features": 25,
+          "all_finite": true,
+          "matches_independent_train_only_transformation": true,
+          "ids_and_labels_match": true,
+          "saved_hashes_match": true
+        },
+        "test": {
+          "rows": 8454,
+          "features": 25,
+          "all_finite": true,
+          "matches_independent_train_only_transformation": true,
+          "ids_and_labels_match": true,
+          "saved_hashes_match": true
+        },
+        "external": {
+          "rows": 73990,
+          "features": 25,
+          "all_finite": true,
+          "matches_independent_train_only_transformation": true,
+          "ids_and_labels_match": true,
+          "saved_hashes_match": true
+        }
+      }
+    }
+  },
+  "clinical_outputs_match_previous_full_stream_audit": true,
+  "raw_archives_restreamed_this_run": false,
+  "patient_partitions_disjoint": true,
+  "status": "existing baseline preprocessing verified; no rebuild needed",
+  "eight_bias_mitigation_experiment": "not completed; development fragments and fixture previews are not patient results"
+}
