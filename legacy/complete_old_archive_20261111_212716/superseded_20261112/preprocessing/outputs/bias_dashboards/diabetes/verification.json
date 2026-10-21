@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "partitions": {
+    "train": {
+      "rows": 5513,
+      "missing_input_cells": 3971,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 751,
+          "negative": 4762,
+          "minority_share": 0.1362234717939416
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "validation": {
+      "rows": 1181,
+      "missing_input_cells": 870,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 161,
+          "negative": 1020,
+          "minority_share": 0.1363251481795089
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "test": {
+      "rows": 1182,
+      "missing_input_cells": 825,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 161,
+          "negative": 1021,
+          "minority_share": 0.1362098138747885
+        }
+      ],
+      "transform_and_labels_checked": true
+    }
+  },
+  "pages": [
+    "preprocessing/outputs/bias_dashboards/diabetes/missing_data.json",
+    "preprocessing/outputs/bias_dashboards/diabetes/class_imbalance.json",
+    "preprocessing/outputs/bias_dashboards/diabetes/outlier.json",
+    "preprocessing/outputs/bias_dashboards/diabetes/feature_scale.json",
+    "preprocessing/outputs/bias_dashboards/diabetes/demographic.json",
+    "preprocessing/outputs/bias_dashboards/diabetes/duplicate.json",
+    "preprocessing/outputs/bias_dashboards/diabetes/noise.json",
+    "preprocessing/outputs/bias_dashboards/diabetes/encoding_domain.json"
+  ]
+}
