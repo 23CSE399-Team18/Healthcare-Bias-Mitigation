@@ -1,0 +1,2532 @@
+{
+  "stage": "preprocessing",
+  "dataset": "eicu_hospital",
+  "title": "Demographic outcome differences",
+  "kind": "demographic",
+  "states": {
+    "train": {
+      "default": {
+        "rows": 80606,
+        "numeric_features": 9,
+        "input_features": 11,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.4862982145450946,
+          "limit": 0.1,
+          "rule": "Supported group outcome-prevalence range >0.10"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.4862982145450946,
+          "limit": 0.1,
+          "rule": "Labels and group metadata unchanged"
+        },
+        "panels": [
+          {
+            "title": "Supported group outcome prevalence",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.14444833059807904,
+                  0.20412252418240442,
+                  0.5145954962468724,
+                  0.47397512666973746,
+                  0.31184589308294547,
+                  0.30257945647167206,
+                  0.5824746428475343,
+                  0.5745969599263012,
+                  0.02809573361082206,
+                  0.1576983503534957,
+                  0.22259983007646558,
+                  0.20738803530565544,
+                  0.3688865764828304,
+                  0.4832089552238806,
+                  0.5330796793616785,
+                  0.5025825433148088,
+                  0.20772632674297606,
+                  0.30469363707776903,
+                  0.35820619851501606,
+                  0.26995750245178163,
+                  0.2090270551508845,
+                  0.5347604084838963,
+                  0.6658786154925935,
+                  0.6953252696959791,
+                  0.18506788749176883,
+                  0.13527208636263494,
+                  0.13700947225981056,
+                  0.15120967741935484,
+                  0.5013169859835063,
+                  0.46111478299184844,
+                  0.4891745602165088,
+                  0.47580645161290325,
+                  0.29404847762691666,
+                  0.3645076007931262,
+                  0.3646820027063599,
+                  0.4435483870967742,
+                  0.5710074942773823,
+                  0.663802599691562,
+                  0.5686738836265224,
+                  0.44556451612903225
+                ],
+                "y": [
+                  "target_heart: sens_sex / Female",
+                  "target_heart: sens_sex / Male",
+                  "target_respiratory: sens_sex / Female",
+                  "target_respiratory: sens_sex / Male",
+                  "target_diabetes: sens_sex / Female",
+                  "target_diabetes: sens_sex / Male",
+                  "target_hypertension: sens_sex / Female",
+                  "target_hypertension: sens_sex / Male",
+                  "target_heart: sens_age_group / 18-39",
+                  "target_heart: sens_age_group / 40-64",
+                  "target_heart: sens_age_group / 65-79",
+                  "target_heart: sens_age_group / 80+",
+                  "target_respiratory: sens_age_group / 18-39",
+                  "target_respiratory: sens_age_group / 40-64",
+                  "target_respiratory: sens_age_group / 65-79",
+                  "target_respiratory: sens_age_group / 80+",
+                  "target_diabetes: sens_age_group / 18-39",
+                  "target_diabetes: sens_age_group / 40-64",
+                  "target_diabetes: sens_age_group / 65-79",
+                  "target_diabetes: sens_age_group / 80+",
+                  "target_hypertension: sens_age_group / 18-39",
+                  "target_hypertension: sens_age_group / 40-64",
+                  "target_hypertension: sens_age_group / 65-79",
+                  "target_hypertension: sens_age_group / 80+",
+                  "target_heart: sens_race_ethnicity / Asian",
+                  "target_heart: sens_race_ethnicity / Black",
+                  "target_heart: sens_race_ethnicity / Hispanic",
+                  "target_heart: sens_race_ethnicity / Other",
+                  "target_respiratory: sens_race_ethnicity / Asian",
+                  "target_respiratory: sens_race_ethnicity / Black",
+                  "target_respiratory: sens_race_ethnicity / Hispanic",
+                  "target_respiratory: sens_race_ethnicity / Other",
+                  "target_diabetes: sens_race_ethnicity / Asian",
+                  "target_diabetes: sens_race_ethnicity / Black",
+                  "target_diabetes: sens_race_ethnicity / Hispanic",
+                  "target_diabetes: sens_race_ethnicity / Other",
+                  "target_hypertension: sens_race_ethnicity / Asian",
+                  "target_hypertension: sens_race_ethnicity / Black",
+                  "target_hypertension: sens_race_ethnicity / Hispanic",
+                  "target_hypertension: sens_race_ethnicity / Other"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.14444833059807904,
+                  0.20412252418240442,
+                  0.5145954962468724,
+                  0.47397512666973746,
+                  0.31184589308294547,
+                  0.30257945647167206,
+                  0.5824746428475343,
+                  0.5745969599263012,
+                  0.02809573361082206,
+                  0.1576983503534957,
+                  0.22259983007646558,
+                  0.20738803530565544,
+                  0.3688865764828304,
+                  0.4832089552238806,
+                  0.5330796793616785,
+                  0.5025825433148088,
+                  0.20772632674297606,
+                  0.30469363707776903,
+                  0.35820619851501606,
+                  0.26995750245178163,
+                  0.2090270551508845,
+                  0.5347604084838963,
+                  0.6658786154925935,
+                  0.6953252696959791,
+                  0.18506788749176883,
+                  0.13527208636263494,
+                  0.13700947225981056,
+                  0.15120967741935484,
+                  0.5013169859835063,
+                  0.46111478299184844,
+                  0.4891745602165088,
+                  0.47580645161290325,
+                  0.29404847762691666,
+                  0.3645076007931262,
+                  0.3646820027063599,
+                  0.4435483870967742,
+                  0.5710074942773823,
+                  0.663802599691562,
+                  0.5686738836265224,
+                  0.44556451612903225
+                ],
+                "y": [
+                  "target_heart: sens_sex / Female",
+                  "target_heart: sens_sex / Male",
+                  "target_respiratory: sens_sex / Female",
+                  "target_respiratory: sens_sex / Male",
+                  "target_diabetes: sens_sex / Female",
+                  "target_diabetes: sens_sex / Male",
+                  "target_hypertension: sens_sex / Female",
+                  "target_hypertension: sens_sex / Male",
+                  "target_heart: sens_age_group / 18-39",
+                  "target_heart: sens_age_group / 40-64",
+                  "target_heart: sens_age_group / 65-79",
+                  "target_heart: sens_age_group / 80+",
+                  "target_respiratory: sens_age_group / 18-39",
+                  "target_respiratory: sens_age_group / 40-64",
+                  "target_respiratory: sens_age_group / 65-79",
+                  "target_respiratory: sens_age_group / 80+",
+                  "target_diabetes: sens_age_group / 18-39",
+                  "target_diabetes: sens_age_group / 40-64",
+                  "target_diabetes: sens_age_group / 65-79",
+                  "target_diabetes: sens_age_group / 80+",
+                  "target_hypertension: sens_age_group / 18-39",
+                  "target_hypertension: sens_age_group / 40-64",
+                  "target_hypertension: sens_age_group / 65-79",
+                  "target_hypertension: sens_age_group / 80+",
+                  "target_heart: sens_race_ethnicity / Asian",
+                  "target_heart: sens_race_ethnicity / Black",
+                  "target_heart: sens_race_ethnicity / Hispanic",
+                  "target_heart: sens_race_ethnicity / Other",
+                  "target_respiratory: sens_race_ethnicity / Asian",
+                  "target_respiratory: sens_race_ethnicity / Black",
+                  "target_respiratory: sens_race_ethnicity / Hispanic",
+                  "target_respiratory: sens_race_ethnicity / Other",
+                  "target_diabetes: sens_race_ethnicity / Asian",
+                  "target_diabetes: sens_race_ethnicity / Black",
+                  "target_diabetes: sens_race_ethnicity / Hispanic",
+                  "target_diabetes: sens_race_ethnicity / Other",
+                  "target_hypertension: sens_race_ethnicity / Asian",
+                  "target_hypertension: sens_race_ethnicity / Black",
+                  "target_hypertension: sens_race_ethnicity / Hispanic",
+                  "target_hypertension: sens_race_ethnicity / Other"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Recorded outcome prevalence"
+                },
+                "automargin": true
+              },
+              "height": 1140
+            }
+          },
+          {
+            "title": "All groups with support flags",
+            "table": [
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Female",
+                "rows": 37169,
+                "prevalence": 0.14444833059807904,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Male",
+                "rows": 43420,
+                "prevalence": 0.20412252418240442,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Unknown",
+                "rows": 17,
+                "prevalence": 0,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Female",
+                "rows": 37169,
+                "prevalence": 0.5145954962468724,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Male",
+                "rows": 43420,
+                "prevalence": 0.47397512666973746,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Unknown",
+                "rows": 17,
+                "prevalence": 0.5882352941176471,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Female",
+                "rows": 37169,
+                "prevalence": 0.31184589308294547,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Male",
+                "rows": 43420,
+                "prevalence": 0.30257945647167206,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Unknown",
+                "rows": 17,
+                "prevalence": 0.17647058823529413,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Female",
+                "rows": 37169,
+                "prevalence": 0.5824746428475343,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Male",
+                "rows": 43420,
+                "prevalence": 0.5745969599263012,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Unknown",
+                "rows": 17,
+                "prevalence": 0.4117647058823529,
+                "supported": false
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "18-39",
+                "rows": 7688,
+                "prevalence": 0.02809573361082206,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "40-64",
+                "rows": 30552,
+                "prevalence": 0.1576983503534957,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "65-79",
+                "rows": 27071,
+                "prevalence": 0.22259983007646558,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "80+",
+                "rows": 15295,
+                "prevalence": 0.20738803530565544,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "18-39",
+                "rows": 7688,
+                "prevalence": 0.3688865764828304,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "40-64",
+                "rows": 30552,
+                "prevalence": 0.4832089552238806,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "65-79",
+                "rows": 27071,
+                "prevalence": 0.5330796793616785,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "80+",
+                "rows": 15295,
+                "prevalence": 0.5025825433148088,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "18-39",
+                "rows": 7688,
+                "prevalence": 0.20772632674297606,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "40-64",
+                "rows": 30552,
+                "prevalence": 0.30469363707776903,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "65-79",
+                "rows": 27071,
+                "prevalence": 0.35820619851501606,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "80+",
+                "rows": 15295,
+                "prevalence": 0.26995750245178163,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "18-39",
+                "rows": 7688,
+                "prevalence": 0.2090270551508845,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "40-64",
+                "rows": 30552,
+                "prevalence": 0.5347604084838963,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "65-79",
+                "rows": 27071,
+                "prevalence": 0.6658786154925935,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "80+",
+                "rows": 15295,
+                "prevalence": 0.6953252696959791,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Asian",
+                "rows": 63782,
+                "prevalence": 0.18506788749176883,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Black",
+                "rows": 9078,
+                "prevalence": 0.13527208636263494,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Hispanic",
+                "rows": 2956,
+                "prevalence": 0.13700947225981056,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Other",
+                "rows": 496,
+                "prevalence": 0.15120967741935484,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Unknown",
+                "rows": 4294,
+                "prevalence": 0.16767582673497905,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Asian",
+                "rows": 63782,
+                "prevalence": 0.5013169859835063,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Black",
+                "rows": 9078,
+                "prevalence": 0.46111478299184844,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Hispanic",
+                "rows": 2956,
+                "prevalence": 0.4891745602165088,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Other",
+                "rows": 496,
+                "prevalence": 0.47580645161290325,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Unknown",
+                "rows": 4294,
+                "prevalence": 0.43642291569632047,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Asian",
+                "rows": 63782,
+                "prevalence": 0.29404847762691666,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Black",
+                "rows": 9078,
+                "prevalence": 0.3645076007931262,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Hispanic",
+                "rows": 2956,
+                "prevalence": 0.3646820027063599,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Other",
+                "rows": 496,
+                "prevalence": 0.4435483870967742,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Unknown",
+                "rows": 4294,
+                "prevalence": 0.31904983698183514,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Asian",
+                "rows": 63782,
+                "prevalence": 0.5710074942773823,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Black",
+                "rows": 9078,
+                "prevalence": 0.663802599691562,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Hispanic",
+                "rows": 2956,
+                "prevalence": 0.5686738836265224,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Other",
+                "rows": 496,
+                "prevalence": 0.44556451612903225,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Unknown",
+                "rows": 4294,
+                "prevalence": 0.5258500232883093,
+                "supported": false
+              }
+            ]
+          }
+        ],
+        "note": "This is descriptive outcome/case-mix disparity, not model fairness or proof of discrimination. Minimum 30 rows; unknown groups do not enter the screen."
+      }
+    },
+    "validation": {
+      "default": {
+        "rows": 20318,
+        "numeric_features": 9,
+        "input_features": 11,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.48751248751248755,
+          "limit": 0.1,
+          "rule": "Supported group outcome-prevalence range >0.10"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.48751248751248755,
+          "limit": 0.1,
+          "rule": "Labels and group metadata unchanged"
+        },
+        "panels": [
+          {
+            "title": "Supported group outcome prevalence",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.16498535632931988,
+                  0.24776926543488056,
+                  0.5068879488013884,
+                  0.46723749436683193,
+                  0.32259464150124745,
+                  0.31915277151870214,
+                  0.5779368695086234,
+                  0.5594411897251014,
+                  0.03632589517384536,
+                  0.21318938605619148,
+                  0.257946923301254,
+                  0.20598179453836152,
+                  0.3907628437986507,
+                  0.46774193548387094,
+                  0.5246427529892097,
+                  0.4967490247074122,
+                  0.18578100674623768,
+                  0.32947450572320497,
+                  0.3795567220764071,
+                  0.2655396618985696,
+                  0.21224701608718216,
+                  0.5222424557752341,
+                  0.6447944006999126,
+                  0.6996098829648895,
+                  0.2155875140831069,
+                  0.2055944055944056,
+                  0.21574344023323616,
+                  0.07692307692307693,
+                  0.48624826032208895,
+                  0.49895104895104897,
+                  0.511175898931001,
+                  0.45054945054945056,
+                  0.29955596792365297,
+                  0.40174825174825174,
+                  0.3430515063168124,
+                  0.4725274725274725,
+                  0.5511299622241368,
+                  0.6853146853146853,
+                  0.6297376093294461,
+                  0.1978021978021978
+                ],
+                "y": [
+                  "target_heart: sens_sex / Female",
+                  "target_heart: sens_sex / Male",
+                  "target_respiratory: sens_sex / Female",
+                  "target_respiratory: sens_sex / Male",
+                  "target_diabetes: sens_sex / Female",
+                  "target_diabetes: sens_sex / Male",
+                  "target_hypertension: sens_sex / Female",
+                  "target_hypertension: sens_sex / Male",
+                  "target_heart: sens_age_group / 18-39",
+                  "target_heart: sens_age_group / 40-64",
+                  "target_heart: sens_age_group / 65-79",
+                  "target_heart: sens_age_group / 80+",
+                  "target_respiratory: sens_age_group / 18-39",
+                  "target_respiratory: sens_age_group / 40-64",
+                  "target_respiratory: sens_age_group / 65-79",
+                  "target_respiratory: sens_age_group / 80+",
+                  "target_diabetes: sens_age_group / 18-39",
+                  "target_diabetes: sens_age_group / 40-64",
+                  "target_diabetes: sens_age_group / 65-79",
+                  "target_diabetes: sens_age_group / 80+",
+                  "target_hypertension: sens_age_group / 18-39",
+                  "target_hypertension: sens_age_group / 40-64",
+                  "target_hypertension: sens_age_group / 65-79",
+                  "target_hypertension: sens_age_group / 80+",
+                  "target_heart: sens_race_ethnicity / Asian",
+                  "target_heart: sens_race_ethnicity / Black",
+                  "target_heart: sens_race_ethnicity / Hispanic",
+                  "target_heart: sens_race_ethnicity / Other",
+                  "target_respiratory: sens_race_ethnicity / Asian",
+                  "target_respiratory: sens_race_ethnicity / Black",
+                  "target_respiratory: sens_race_ethnicity / Hispanic",
+                  "target_respiratory: sens_race_ethnicity / Other",
+                  "target_diabetes: sens_race_ethnicity / Asian",
+                  "target_diabetes: sens_race_ethnicity / Black",
+                  "target_diabetes: sens_race_ethnicity / Hispanic",
+                  "target_diabetes: sens_race_ethnicity / Other",
+                  "target_hypertension: sens_race_ethnicity / Asian",
+                  "target_hypertension: sens_race_ethnicity / Black",
+                  "target_hypertension: sens_race_ethnicity / Hispanic",
+                  "target_hypertension: sens_race_ethnicity / Other"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.16498535632931988,
+                  0.24776926543488056,
+                  0.5068879488013884,
+                  0.46723749436683193,
+                  0.32259464150124745,
+                  0.31915277151870214,
+                  0.5779368695086234,
+                  0.5594411897251014,
+                  0.03632589517384536,
+                  0.21318938605619148,
+                  0.257946923301254,
+                  0.20598179453836152,
+                  0.3907628437986507,
+                  0.46774193548387094,
+                  0.5246427529892097,
+                  0.4967490247074122,
+                  0.18578100674623768,
+                  0.32947450572320497,
+                  0.3795567220764071,
+                  0.2655396618985696,
+                  0.21224701608718216,
+                  0.5222424557752341,
+                  0.6447944006999126,
+                  0.6996098829648895,
+                  0.2155875140831069,
+                  0.2055944055944056,
+                  0.21574344023323616,
+                  0.07692307692307693,
+                  0.48624826032208895,
+                  0.49895104895104897,
+                  0.511175898931001,
+                  0.45054945054945056,
+                  0.29955596792365297,
+                  0.40174825174825174,
+                  0.3430515063168124,
+                  0.4725274725274725,
+                  0.5511299622241368,
+                  0.6853146853146853,
+                  0.6297376093294461,
+                  0.1978021978021978
+                ],
+                "y": [
+                  "target_heart: sens_sex / Female",
+                  "target_heart: sens_sex / Male",
+                  "target_respiratory: sens_sex / Female",
+                  "target_respiratory: sens_sex / Male",
+                  "target_diabetes: sens_sex / Female",
+                  "target_diabetes: sens_sex / Male",
+                  "target_hypertension: sens_sex / Female",
+                  "target_hypertension: sens_sex / Male",
+                  "target_heart: sens_age_group / 18-39",
+                  "target_heart: sens_age_group / 40-64",
+                  "target_heart: sens_age_group / 65-79",
+                  "target_heart: sens_age_group / 80+",
+                  "target_respiratory: sens_age_group / 18-39",
+                  "target_respiratory: sens_age_group / 40-64",
+                  "target_respiratory: sens_age_group / 65-79",
+                  "target_respiratory: sens_age_group / 80+",
+                  "target_diabetes: sens_age_group / 18-39",
+                  "target_diabetes: sens_age_group / 40-64",
+                  "target_diabetes: sens_age_group / 65-79",
+                  "target_diabetes: sens_age_group / 80+",
+                  "target_hypertension: sens_age_group / 18-39",
+                  "target_hypertension: sens_age_group / 40-64",
+                  "target_hypertension: sens_age_group / 65-79",
+                  "target_hypertension: sens_age_group / 80+",
+                  "target_heart: sens_race_ethnicity / Asian",
+                  "target_heart: sens_race_ethnicity / Black",
+                  "target_heart: sens_race_ethnicity / Hispanic",
+                  "target_heart: sens_race_ethnicity / Other",
+                  "target_respiratory: sens_race_ethnicity / Asian",
+                  "target_respiratory: sens_race_ethnicity / Black",
+                  "target_respiratory: sens_race_ethnicity / Hispanic",
+                  "target_respiratory: sens_race_ethnicity / Other",
+                  "target_diabetes: sens_race_ethnicity / Asian",
+                  "target_diabetes: sens_race_ethnicity / Black",
+                  "target_diabetes: sens_race_ethnicity / Hispanic",
+                  "target_diabetes: sens_race_ethnicity / Other",
+                  "target_hypertension: sens_race_ethnicity / Asian",
+                  "target_hypertension: sens_race_ethnicity / Black",
+                  "target_hypertension: sens_race_ethnicity / Hispanic",
+                  "target_hypertension: sens_race_ethnicity / Other"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Recorded outcome prevalence"
+                },
+                "automargin": true
+              },
+              "height": 1140
+            }
+          },
+          {
+            "title": "All groups with support flags",
+            "table": [
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Female",
+                "rows": 9219,
+                "prevalence": 0.16498535632931988,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Male",
+                "rows": 11095,
+                "prevalence": 0.24776926543488056,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Unknown",
+                "rows": 4,
+                "prevalence": 0,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Female",
+                "rows": 9219,
+                "prevalence": 0.5068879488013884,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Male",
+                "rows": 11095,
+                "prevalence": 0.46723749436683193,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Unknown",
+                "rows": 4,
+                "prevalence": 0,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Female",
+                "rows": 9219,
+                "prevalence": 0.32259464150124745,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Male",
+                "rows": 11095,
+                "prevalence": 0.31915277151870214,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Unknown",
+                "rows": 4,
+                "prevalence": 0,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Female",
+                "rows": 9219,
+                "prevalence": 0.5779368695086234,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Male",
+                "rows": 11095,
+                "prevalence": 0.5594411897251014,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Unknown",
+                "rows": 4,
+                "prevalence": 0.25,
+                "supported": false
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "18-39",
+                "rows": 1927,
+                "prevalence": 0.03632589517384536,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "40-64",
+                "rows": 7688,
+                "prevalence": 0.21318938605619148,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "65-79",
+                "rows": 6858,
+                "prevalence": 0.257946923301254,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "80+",
+                "rows": 3845,
+                "prevalence": 0.20598179453836152,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "18-39",
+                "rows": 1927,
+                "prevalence": 0.3907628437986507,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "40-64",
+                "rows": 7688,
+                "prevalence": 0.46774193548387094,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "65-79",
+                "rows": 6858,
+                "prevalence": 0.5246427529892097,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "80+",
+                "rows": 3845,
+                "prevalence": 0.4967490247074122,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "18-39",
+                "rows": 1927,
+                "prevalence": 0.18578100674623768,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "40-64",
+                "rows": 7688,
+                "prevalence": 0.32947450572320497,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "65-79",
+                "rows": 6858,
+                "prevalence": 0.3795567220764071,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "80+",
+                "rows": 3845,
+                "prevalence": 0.2655396618985696,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "18-39",
+                "rows": 1927,
+                "prevalence": 0.21224701608718216,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "40-64",
+                "rows": 7688,
+                "prevalence": 0.5222424557752341,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "65-79",
+                "rows": 6858,
+                "prevalence": 0.6447944006999126,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "80+",
+                "rows": 3845,
+                "prevalence": 0.6996098829648895,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Asian",
+                "rows": 15089,
+                "prevalence": 0.2155875140831069,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Black",
+                "rows": 2860,
+                "prevalence": 0.2055944055944056,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Hispanic",
+                "rows": 1029,
+                "prevalence": 0.21574344023323616,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Other",
+                "rows": 182,
+                "prevalence": 0.07692307692307693,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Unknown",
+                "rows": 1158,
+                "prevalence": 0.16666666666666666,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Asian",
+                "rows": 15089,
+                "prevalence": 0.48624826032208895,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Black",
+                "rows": 2860,
+                "prevalence": 0.49895104895104897,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Hispanic",
+                "rows": 1029,
+                "prevalence": 0.511175898931001,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Other",
+                "rows": 182,
+                "prevalence": 0.45054945054945056,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Unknown",
+                "rows": 1158,
+                "prevalence": 0.41882556131260795,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Asian",
+                "rows": 15089,
+                "prevalence": 0.29955596792365297,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Black",
+                "rows": 2860,
+                "prevalence": 0.40174825174825174,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Hispanic",
+                "rows": 1029,
+                "prevalence": 0.3430515063168124,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Other",
+                "rows": 182,
+                "prevalence": 0.4725274725274725,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Unknown",
+                "rows": 1158,
+                "prevalence": 0.35146804835924006,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Asian",
+                "rows": 15089,
+                "prevalence": 0.5511299622241368,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Black",
+                "rows": 2860,
+                "prevalence": 0.6853146853146853,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Hispanic",
+                "rows": 1029,
+                "prevalence": 0.6297376093294461,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Other",
+                "rows": 182,
+                "prevalence": 0.1978021978021978,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Unknown",
+                "rows": 1158,
+                "prevalence": 0.49740932642487046,
+                "supported": false
+              }
+            ]
+          }
+        ],
+        "note": "This is descriptive outcome/case-mix disparity, not model fairness or proof of discrimination. Minimum 30 rows; unknown groups do not enter the screen."
+      }
+    },
+    "test": {
+      "default": {
+        "rows": 8454,
+        "numeric_features": 9,
+        "input_features": 11,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.5253504243333481,
+          "limit": 0.1,
+          "rule": "Supported group outcome-prevalence range >0.10"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.5253504243333481,
+          "limit": 0.1,
+          "rule": "Labels and group metadata unchanged"
+        },
+        "panels": [
+          {
+            "title": "Supported group outcome prevalence",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.12615465822116653,
+                  0.17367066895368782,
+                  0.5025072578516759,
+                  0.463336192109777,
+                  0.30931644233306943,
+                  0.3136792452830189,
+                  0.5661124307205068,
+                  0.5422384219554031,
+                  0.028901734104046242,
+                  0.12991880074953155,
+                  0.20035523978685613,
+                  0.1806615776081425,
+                  0.37109826589595374,
+                  0.46533416614615863,
+                  0.5257548845470693,
+                  0.49236641221374045,
+                  0.20578034682080926,
+                  0.3048094940662086,
+                  0.3783303730017762,
+                  0.26463104325699743,
+                  0.1699421965317919,
+                  0.4990630855715178,
+                  0.6525754884547069,
+                  0.69529262086514,
+                  0.16016109045848823,
+                  0.10531803962460896,
+                  0.12933753943217666,
+                  0.22580645161290322,
+                  0.4834262701363073,
+                  0.4410844629822732,
+                  0.6466876971608833,
+                  0.5161290322580645,
+                  0.27927509293680297,
+                  0.41605839416058393,
+                  0.34069400630914826,
+                  0.5161290322580645,
+                  0.5269516728624535,
+                  0.6840458811261731,
+                  0.637223974763407,
+                  0.3548387096774194
+                ],
+                "y": [
+                  "target_heart: sens_sex / Female",
+                  "target_heart: sens_sex / Male",
+                  "target_respiratory: sens_sex / Female",
+                  "target_respiratory: sens_sex / Male",
+                  "target_diabetes: sens_sex / Female",
+                  "target_diabetes: sens_sex / Male",
+                  "target_hypertension: sens_sex / Female",
+                  "target_hypertension: sens_sex / Male",
+                  "target_heart: sens_age_group / 18-39",
+                  "target_heart: sens_age_group / 40-64",
+                  "target_heart: sens_age_group / 65-79",
+                  "target_heart: sens_age_group / 80+",
+                  "target_respiratory: sens_age_group / 18-39",
+                  "target_respiratory: sens_age_group / 40-64",
+                  "target_respiratory: sens_age_group / 65-79",
+                  "target_respiratory: sens_age_group / 80+",
+                  "target_diabetes: sens_age_group / 18-39",
+                  "target_diabetes: sens_age_group / 40-64",
+                  "target_diabetes: sens_age_group / 65-79",
+                  "target_diabetes: sens_age_group / 80+",
+                  "target_hypertension: sens_age_group / 18-39",
+                  "target_hypertension: sens_age_group / 40-64",
+                  "target_hypertension: sens_age_group / 65-79",
+                  "target_hypertension: sens_age_group / 80+",
+                  "target_heart: sens_race_ethnicity / Asian",
+                  "target_heart: sens_race_ethnicity / Black",
+                  "target_heart: sens_race_ethnicity / Hispanic",
+                  "target_heart: sens_race_ethnicity / Other",
+                  "target_respiratory: sens_race_ethnicity / Asian",
+                  "target_respiratory: sens_race_ethnicity / Black",
+                  "target_respiratory: sens_race_ethnicity / Hispanic",
+                  "target_respiratory: sens_race_ethnicity / Other",
+                  "target_diabetes: sens_race_ethnicity / Asian",
+                  "target_diabetes: sens_race_ethnicity / Black",
+                  "target_diabetes: sens_race_ethnicity / Hispanic",
+                  "target_diabetes: sens_race_ethnicity / Other",
+                  "target_hypertension: sens_race_ethnicity / Asian",
+                  "target_hypertension: sens_race_ethnicity / Black",
+                  "target_hypertension: sens_race_ethnicity / Hispanic",
+                  "target_hypertension: sens_race_ethnicity / Other"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.12615465822116653,
+                  0.17367066895368782,
+                  0.5025072578516759,
+                  0.463336192109777,
+                  0.30931644233306943,
+                  0.3136792452830189,
+                  0.5661124307205068,
+                  0.5422384219554031,
+                  0.028901734104046242,
+                  0.12991880074953155,
+                  0.20035523978685613,
+                  0.1806615776081425,
+                  0.37109826589595374,
+                  0.46533416614615863,
+                  0.5257548845470693,
+                  0.49236641221374045,
+                  0.20578034682080926,
+                  0.3048094940662086,
+                  0.3783303730017762,
+                  0.26463104325699743,
+                  0.1699421965317919,
+                  0.4990630855715178,
+                  0.6525754884547069,
+                  0.69529262086514,
+                  0.16016109045848823,
+                  0.10531803962460896,
+                  0.12933753943217666,
+                  0.22580645161290322,
+                  0.4834262701363073,
+                  0.4410844629822732,
+                  0.6466876971608833,
+                  0.5161290322580645,
+                  0.27927509293680297,
+                  0.41605839416058393,
+                  0.34069400630914826,
+                  0.5161290322580645,
+                  0.5269516728624535,
+                  0.6840458811261731,
+                  0.637223974763407,
+                  0.3548387096774194
+                ],
+                "y": [
+                  "target_heart: sens_sex / Female",
+                  "target_heart: sens_sex / Male",
+                  "target_respiratory: sens_sex / Female",
+                  "target_respiratory: sens_sex / Male",
+                  "target_diabetes: sens_sex / Female",
+                  "target_diabetes: sens_sex / Male",
+                  "target_hypertension: sens_sex / Female",
+                  "target_hypertension: sens_sex / Male",
+                  "target_heart: sens_age_group / 18-39",
+                  "target_heart: sens_age_group / 40-64",
+                  "target_heart: sens_age_group / 65-79",
+                  "target_heart: sens_age_group / 80+",
+                  "target_respiratory: sens_age_group / 18-39",
+                  "target_respiratory: sens_age_group / 40-64",
+                  "target_respiratory: sens_age_group / 65-79",
+                  "target_respiratory: sens_age_group / 80+",
+                  "target_diabetes: sens_age_group / 18-39",
+                  "target_diabetes: sens_age_group / 40-64",
+                  "target_diabetes: sens_age_group / 65-79",
+                  "target_diabetes: sens_age_group / 80+",
+                  "target_hypertension: sens_age_group / 18-39",
+                  "target_hypertension: sens_age_group / 40-64",
+                  "target_hypertension: sens_age_group / 65-79",
+                  "target_hypertension: sens_age_group / 80+",
+                  "target_heart: sens_race_ethnicity / Asian",
+                  "target_heart: sens_race_ethnicity / Black",
+                  "target_heart: sens_race_ethnicity / Hispanic",
+                  "target_heart: sens_race_ethnicity / Other",
+                  "target_respiratory: sens_race_ethnicity / Asian",
+                  "target_respiratory: sens_race_ethnicity / Black",
+                  "target_respiratory: sens_race_ethnicity / Hispanic",
+                  "target_respiratory: sens_race_ethnicity / Other",
+                  "target_diabetes: sens_race_ethnicity / Asian",
+                  "target_diabetes: sens_race_ethnicity / Black",
+                  "target_diabetes: sens_race_ethnicity / Hispanic",
+                  "target_diabetes: sens_race_ethnicity / Other",
+                  "target_hypertension: sens_race_ethnicity / Asian",
+                  "target_hypertension: sens_race_ethnicity / Black",
+                  "target_hypertension: sens_race_ethnicity / Hispanic",
+                  "target_hypertension: sens_race_ethnicity / Other"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Recorded outcome prevalence"
+                },
+                "automargin": true
+              },
+              "height": 1140
+            }
+          },
+          {
+            "title": "All groups with support flags",
+            "table": [
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Female",
+                "rows": 3789,
+                "prevalence": 0.12615465822116653,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Male",
+                "rows": 4664,
+                "prevalence": 0.17367066895368782,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Unknown",
+                "rows": 1,
+                "prevalence": 1,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Female",
+                "rows": 3789,
+                "prevalence": 0.5025072578516759,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Male",
+                "rows": 4664,
+                "prevalence": 0.463336192109777,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Unknown",
+                "rows": 1,
+                "prevalence": 0,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Female",
+                "rows": 3789,
+                "prevalence": 0.30931644233306943,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Male",
+                "rows": 4664,
+                "prevalence": 0.3136792452830189,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Unknown",
+                "rows": 1,
+                "prevalence": 0,
+                "supported": false
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Female",
+                "rows": 3789,
+                "prevalence": 0.5661124307205068,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Male",
+                "rows": 4664,
+                "prevalence": 0.5422384219554031,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Unknown",
+                "rows": 1,
+                "prevalence": 1,
+                "supported": false
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "18-39",
+                "rows": 865,
+                "prevalence": 0.028901734104046242,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "40-64",
+                "rows": 3202,
+                "prevalence": 0.12991880074953155,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "65-79",
+                "rows": 2815,
+                "prevalence": 0.20035523978685613,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "80+",
+                "rows": 1572,
+                "prevalence": 0.1806615776081425,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "18-39",
+                "rows": 865,
+                "prevalence": 0.37109826589595374,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "40-64",
+                "rows": 3202,
+                "prevalence": 0.46533416614615863,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "65-79",
+                "rows": 2815,
+                "prevalence": 0.5257548845470693,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "80+",
+                "rows": 1572,
+                "prevalence": 0.49236641221374045,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "18-39",
+                "rows": 865,
+                "prevalence": 0.20578034682080926,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "40-64",
+                "rows": 3202,
+                "prevalence": 0.3048094940662086,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "65-79",
+                "rows": 2815,
+                "prevalence": 0.3783303730017762,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "80+",
+                "rows": 1572,
+                "prevalence": 0.26463104325699743,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "18-39",
+                "rows": 865,
+                "prevalence": 0.1699421965317919,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "40-64",
+                "rows": 3202,
+                "prevalence": 0.4990630855715178,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "65-79",
+                "rows": 2815,
+                "prevalence": 0.6525754884547069,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "80+",
+                "rows": 1572,
+                "prevalence": 0.69529262086514,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Asian",
+                "rows": 6456,
+                "prevalence": 0.16016109045848823,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Black",
+                "rows": 959,
+                "prevalence": 0.10531803962460896,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Hispanic",
+                "rows": 317,
+                "prevalence": 0.12933753943217666,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Other",
+                "rows": 31,
+                "prevalence": 0.22580645161290322,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Unknown",
+                "rows": 691,
+                "prevalence": 0.15340086830680175,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Asian",
+                "rows": 6456,
+                "prevalence": 0.4834262701363073,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Black",
+                "rows": 959,
+                "prevalence": 0.4410844629822732,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Hispanic",
+                "rows": 317,
+                "prevalence": 0.6466876971608833,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Other",
+                "rows": 31,
+                "prevalence": 0.5161290322580645,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Unknown",
+                "rows": 691,
+                "prevalence": 0.4341534008683068,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Asian",
+                "rows": 6456,
+                "prevalence": 0.27927509293680297,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Black",
+                "rows": 959,
+                "prevalence": 0.41605839416058393,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Hispanic",
+                "rows": 317,
+                "prevalence": 0.34069400630914826,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Other",
+                "rows": 31,
+                "prevalence": 0.5161290322580645,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Unknown",
+                "rows": 691,
+                "prevalence": 0.447178002894356,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Asian",
+                "rows": 6456,
+                "prevalence": 0.5269516728624535,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Black",
+                "rows": 959,
+                "prevalence": 0.6840458811261731,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Hispanic",
+                "rows": 317,
+                "prevalence": 0.637223974763407,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Other",
+                "rows": 31,
+                "prevalence": 0.3548387096774194,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Unknown",
+                "rows": 691,
+                "prevalence": 0.5846599131693199,
+                "supported": false
+              }
+            ]
+          }
+        ],
+        "note": "This is descriptive outcome/case-mix disparity, not model fairness or proof of discrimination. Minimum 30 rows; unknown groups do not enter the screen."
+      }
+    },
+    "external": {
+      "default": {
+        "rows": 73990,
+        "numeric_features": 9,
+        "input_features": 11,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.6193139119254869,
+          "limit": 0.1,
+          "rule": "Supported group outcome-prevalence range >0.10"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.6193139119254869,
+          "limit": 0.1,
+          "rule": "Labels and group metadata unchanged"
+        },
+        "panels": [
+          {
+            "title": "Supported group outcome prevalence",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.2847328482653093,
+                  0.4173279004932447,
+                  0.6068450800986791,
+                  0.5717587628374675,
+                  0.3061237235736814,
+                  0.32828174518073727,
+                  0.6403522468225963,
+                  0.6622107846641409,
+                  0.044752349100175184,
+                  0.26346516007532955,
+                  0.46145581520279344,
+                  0.48543046357615893,
+                  0.4910017518713171,
+                  0.5662146892655368,
+                  0.6169371858332374,
+                  0.611523178807947,
+                  0.14429049211657907,
+                  0.303879472693032,
+                  0.38317792870572887,
+                  0.30596026490066225,
+                  0.1960503264851091,
+                  0.5651600753295668,
+                  0.7577990100149649,
+                  0.815364238410596,
+                  0.2814451382694023,
+                  0.2891031333248763,
+                  0.2917714696370823,
+                  0.3203517587939699,
+                  0.3769964146023468,
+                  0.5352363960749331,
+                  0.5971077001141697,
+                  0.5591088753144089,
+                  0.5643844221105527,
+                  0.5833197522816167,
+                  0.360392506690455,
+                  0.4735506786756311,
+                  0.42939274164570607,
+                  0.34861809045226133,
+                  0.29133393089960885,
+                  0.6115075825156111,
+                  0.7622732462260561,
+                  0.614804168163852,
+                  0.6344221105527639,
+                  0.648121740547588
+                ],
+                "y": [
+                  "target_heart: sens_sex / Female",
+                  "target_heart: sens_sex / Male",
+                  "target_respiratory: sens_sex / Female",
+                  "target_respiratory: sens_sex / Male",
+                  "target_diabetes: sens_sex / Female",
+                  "target_diabetes: sens_sex / Male",
+                  "target_hypertension: sens_sex / Female",
+                  "target_hypertension: sens_sex / Male",
+                  "target_heart: sens_age_group / 18-39",
+                  "target_heart: sens_age_group / 40-64",
+                  "target_heart: sens_age_group / 65-79",
+                  "target_heart: sens_age_group / 80+",
+                  "target_respiratory: sens_age_group / 18-39",
+                  "target_respiratory: sens_age_group / 40-64",
+                  "target_respiratory: sens_age_group / 65-79",
+                  "target_respiratory: sens_age_group / 80+",
+                  "target_diabetes: sens_age_group / 18-39",
+                  "target_diabetes: sens_age_group / 40-64",
+                  "target_diabetes: sens_age_group / 65-79",
+                  "target_diabetes: sens_age_group / 80+",
+                  "target_hypertension: sens_age_group / 18-39",
+                  "target_hypertension: sens_age_group / 40-64",
+                  "target_hypertension: sens_age_group / 65-79",
+                  "target_hypertension: sens_age_group / 80+",
+                  "target_heart: sens_race_ethnicity / Asian",
+                  "target_heart: sens_race_ethnicity / Black",
+                  "target_heart: sens_race_ethnicity / Hispanic",
+                  "target_heart: sens_race_ethnicity / Other",
+                  "target_heart: sens_race_ethnicity / White",
+                  "target_respiratory: sens_race_ethnicity / Asian",
+                  "target_respiratory: sens_race_ethnicity / Black",
+                  "target_respiratory: sens_race_ethnicity / Hispanic",
+                  "target_respiratory: sens_race_ethnicity / Other",
+                  "target_respiratory: sens_race_ethnicity / White",
+                  "target_diabetes: sens_race_ethnicity / Asian",
+                  "target_diabetes: sens_race_ethnicity / Black",
+                  "target_diabetes: sens_race_ethnicity / Hispanic",
+                  "target_diabetes: sens_race_ethnicity / Other",
+                  "target_diabetes: sens_race_ethnicity / White",
+                  "target_hypertension: sens_race_ethnicity / Asian",
+                  "target_hypertension: sens_race_ethnicity / Black",
+                  "target_hypertension: sens_race_ethnicity / Hispanic",
+                  "target_hypertension: sens_race_ethnicity / Other",
+                  "target_hypertension: sens_race_ethnicity / White"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.2847328482653093,
+                  0.4173279004932447,
+                  0.6068450800986791,
+                  0.5717587628374675,
+                  0.3061237235736814,
+                  0.32828174518073727,
+                  0.6403522468225963,
+                  0.6622107846641409,
+                  0.044752349100175184,
+                  0.26346516007532955,
+                  0.46145581520279344,
+                  0.48543046357615893,
+                  0.4910017518713171,
+                  0.5662146892655368,
+                  0.6169371858332374,
+                  0.611523178807947,
+                  0.14429049211657907,
+                  0.303879472693032,
+                  0.38317792870572887,
+                  0.30596026490066225,
+                  0.1960503264851091,
+                  0.5651600753295668,
+                  0.7577990100149649,
+                  0.815364238410596,
+                  0.2814451382694023,
+                  0.2891031333248763,
+                  0.2917714696370823,
+                  0.3203517587939699,
+                  0.3769964146023468,
+                  0.5352363960749331,
+                  0.5971077001141697,
+                  0.5591088753144089,
+                  0.5643844221105527,
+                  0.5833197522816167,
+                  0.360392506690455,
+                  0.4735506786756311,
+                  0.42939274164570607,
+                  0.34861809045226133,
+                  0.29133393089960885,
+                  0.6115075825156111,
+                  0.7622732462260561,
+                  0.614804168163852,
+                  0.6344221105527639,
+                  0.648121740547588
+                ],
+                "y": [
+                  "target_heart: sens_sex / Female",
+                  "target_heart: sens_sex / Male",
+                  "target_respiratory: sens_sex / Female",
+                  "target_respiratory: sens_sex / Male",
+                  "target_diabetes: sens_sex / Female",
+                  "target_diabetes: sens_sex / Male",
+                  "target_hypertension: sens_sex / Female",
+                  "target_hypertension: sens_sex / Male",
+                  "target_heart: sens_age_group / 18-39",
+                  "target_heart: sens_age_group / 40-64",
+                  "target_heart: sens_age_group / 65-79",
+                  "target_heart: sens_age_group / 80+",
+                  "target_respiratory: sens_age_group / 18-39",
+                  "target_respiratory: sens_age_group / 40-64",
+                  "target_respiratory: sens_age_group / 65-79",
+                  "target_respiratory: sens_age_group / 80+",
+                  "target_diabetes: sens_age_group / 18-39",
+                  "target_diabetes: sens_age_group / 40-64",
+                  "target_diabetes: sens_age_group / 65-79",
+                  "target_diabetes: sens_age_group / 80+",
+                  "target_hypertension: sens_age_group / 18-39",
+                  "target_hypertension: sens_age_group / 40-64",
+                  "target_hypertension: sens_age_group / 65-79",
+                  "target_hypertension: sens_age_group / 80+",
+                  "target_heart: sens_race_ethnicity / Asian",
+                  "target_heart: sens_race_ethnicity / Black",
+                  "target_heart: sens_race_ethnicity / Hispanic",
+                  "target_heart: sens_race_ethnicity / Other",
+                  "target_heart: sens_race_ethnicity / White",
+                  "target_respiratory: sens_race_ethnicity / Asian",
+                  "target_respiratory: sens_race_ethnicity / Black",
+                  "target_respiratory: sens_race_ethnicity / Hispanic",
+                  "target_respiratory: sens_race_ethnicity / Other",
+                  "target_respiratory: sens_race_ethnicity / White",
+                  "target_diabetes: sens_race_ethnicity / Asian",
+                  "target_diabetes: sens_race_ethnicity / Black",
+                  "target_diabetes: sens_race_ethnicity / Hispanic",
+                  "target_diabetes: sens_race_ethnicity / Other",
+                  "target_diabetes: sens_race_ethnicity / White",
+                  "target_hypertension: sens_race_ethnicity / Asian",
+                  "target_hypertension: sens_race_ethnicity / Black",
+                  "target_hypertension: sens_race_ethnicity / Hispanic",
+                  "target_hypertension: sens_race_ethnicity / Other",
+                  "target_hypertension: sens_race_ethnicity / White"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Recorded outcome prevalence"
+                },
+                "automargin": true
+              },
+              "height": 1236
+            }
+          },
+          {
+            "title": "All groups with support flags",
+            "table": [
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Female",
+                "rows": 32023,
+                "prevalence": 0.2847328482653093,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_heart",
+                "group": "Male",
+                "rows": 41967,
+                "prevalence": 0.4173279004932447,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Female",
+                "rows": 32023,
+                "prevalence": 0.6068450800986791,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_respiratory",
+                "group": "Male",
+                "rows": 41967,
+                "prevalence": 0.5717587628374675,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Female",
+                "rows": 32023,
+                "prevalence": 0.3061237235736814,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_diabetes",
+                "group": "Male",
+                "rows": 41967,
+                "prevalence": 0.32828174518073727,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Female",
+                "rows": 32023,
+                "prevalence": 0.6403522468225963,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target_hypertension",
+                "group": "Male",
+                "rows": 41967,
+                "prevalence": 0.6622107846641409,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "18-39",
+                "rows": 6279,
+                "prevalence": 0.044752349100175184,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "40-64",
+                "rows": 26550,
+                "prevalence": 0.26346516007532955,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "65-79",
+                "rows": 26061,
+                "prevalence": 0.46145581520279344,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_heart",
+                "group": "80+",
+                "rows": 15100,
+                "prevalence": 0.48543046357615893,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "18-39",
+                "rows": 6279,
+                "prevalence": 0.4910017518713171,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "40-64",
+                "rows": 26550,
+                "prevalence": 0.5662146892655368,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "65-79",
+                "rows": 26061,
+                "prevalence": 0.6169371858332374,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_respiratory",
+                "group": "80+",
+                "rows": 15100,
+                "prevalence": 0.611523178807947,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "18-39",
+                "rows": 6279,
+                "prevalence": 0.14429049211657907,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "40-64",
+                "rows": 26550,
+                "prevalence": 0.303879472693032,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "65-79",
+                "rows": 26061,
+                "prevalence": 0.38317792870572887,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_diabetes",
+                "group": "80+",
+                "rows": 15100,
+                "prevalence": 0.30596026490066225,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "18-39",
+                "rows": 6279,
+                "prevalence": 0.1960503264851091,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "40-64",
+                "rows": 26550,
+                "prevalence": 0.5651600753295668,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "65-79",
+                "rows": 26061,
+                "prevalence": 0.7577990100149649,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target_hypertension",
+                "group": "80+",
+                "rows": 15100,
+                "prevalence": 0.815364238410596,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Asian",
+                "rows": 2242,
+                "prevalence": 0.2814451382694023,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Black",
+                "rows": 7883,
+                "prevalence": 0.2891031333248763,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Hispanic",
+                "rows": 2783,
+                "prevalence": 0.2917714696370823,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Other",
+                "rows": 3184,
+                "prevalence": 0.3203517587939699,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "Unknown",
+                "rows": 8810,
+                "prevalence": 0.3841089670828604,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_heart",
+                "group": "White",
+                "rows": 49088,
+                "prevalence": 0.3769964146023468,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Asian",
+                "rows": 2242,
+                "prevalence": 0.5352363960749331,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Black",
+                "rows": 7883,
+                "prevalence": 0.5971077001141697,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Hispanic",
+                "rows": 2783,
+                "prevalence": 0.5591088753144089,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Other",
+                "rows": 3184,
+                "prevalence": 0.5643844221105527,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "Unknown",
+                "rows": 8810,
+                "prevalence": 0.6281498297389331,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_respiratory",
+                "group": "White",
+                "rows": 49088,
+                "prevalence": 0.5833197522816167,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Asian",
+                "rows": 2242,
+                "prevalence": 0.360392506690455,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Black",
+                "rows": 7883,
+                "prevalence": 0.4735506786756311,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Hispanic",
+                "rows": 2783,
+                "prevalence": 0.42939274164570607,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Other",
+                "rows": 3184,
+                "prevalence": 0.34861809045226133,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "Unknown",
+                "rows": 8810,
+                "prevalence": 0.2761634506242906,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_diabetes",
+                "group": "White",
+                "rows": 49088,
+                "prevalence": 0.29133393089960885,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Asian",
+                "rows": 2242,
+                "prevalence": 0.6115075825156111,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Black",
+                "rows": 7883,
+                "prevalence": 0.7622732462260561,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Hispanic",
+                "rows": 2783,
+                "prevalence": 0.614804168163852,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Other",
+                "rows": 3184,
+                "prevalence": 0.6344221105527639,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "Unknown",
+                "rows": 8810,
+                "prevalence": 0.6096481271282633,
+                "supported": false
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target_hypertension",
+                "group": "White",
+                "rows": 49088,
+                "prevalence": 0.648121740547588,
+                "supported": true
+              }
+            ]
+          }
+        ],
+        "note": "This is descriptive outcome/case-mix disparity, not model fairness or proof of discrimination. Minimum 30 rows; unknown groups do not enter the screen."
+      }
+    }
+  },
+  "default_split": "train",
+  "methods": {
+    "default": "Saved fixed baseline"
+  },
+  "default_method": "default",
+  "protocol": "No fitting or changes to patient rows. Before = model-ready rows; after = saved preprocessing.",
+  "input_checks": {
+    "train": {
+      "X_sha256": "6c8478681a93422042d13581fe380a34a2d5568a6eedd38fc3be6aac5ff453b6",
+      "rows_sha256": "453f10e52cf6b33ece1de3523e47ca831ef3b1342da9c53449d4f9efbd68c756",
+      "transform_reproduced": true
+    },
+    "validation": {
+      "X_sha256": "27cf1e2eb5231911f46cdb5d1cd67e64d985edadcfd4dc62454e2689bdf4f792",
+      "rows_sha256": "e51d86a4ade006e8f2d7d1ce705b1134cfe46917adc8049059e0b05f38b5f9a3",
+      "transform_reproduced": true
+    },
+    "test": {
+      "X_sha256": "6e42b39eeda80d35c55ac4684e808010940040fe8b3a4bd7aba1d0b0effb705b",
+      "rows_sha256": "d103cdc9198af7c765f5f145da3859bd0f00403872b514840ea217428a3123ed",
+      "transform_reproduced": true
+    },
+    "external": {
+      "X_sha256": "3cb179da6eb8e8dd6717f82d995e8637c2557b28b099da195a320de63afbcb2c",
+      "rows_sha256": "9ff32a44d8068031b0dfa1c19e58d8bf28b147be2de01d30c0d1e37af5195191",
+      "transform_reproduced": true
+    }
+  }
+}
