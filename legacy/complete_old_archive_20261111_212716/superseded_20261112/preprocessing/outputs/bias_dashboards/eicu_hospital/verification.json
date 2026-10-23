@@ -1,0 +1,147 @@
+{
+  "passed": true,
+  "partitions": {
+    "train": {
+      "rows": 80606,
+      "missing_input_cells": 27468,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target_heart",
+          "positive": 14232,
+          "negative": 66374,
+          "minority_share": 0.17656253876882613
+        },
+        {
+          "target": "target_respiratory",
+          "positive": 39717,
+          "negative": 40889,
+          "minority_share": 0.49273006972185696
+        },
+        {
+          "target": "target_diabetes",
+          "positive": 24732,
+          "negative": 55874,
+          "minority_share": 0.3068257946058606
+        },
+        {
+          "target": "target_hypertension",
+          "positive": 46606,
+          "negative": 34000,
+          "minority_share": 0.42180482842468303
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "validation": {
+      "rows": 20318,
+      "missing_input_cells": 8472,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target_heart",
+          "positive": 4270,
+          "negative": 16048,
+          "minority_share": 0.21015848016537061
+        },
+        {
+          "target": "target_respiratory",
+          "positive": 9857,
+          "negative": 10461,
+          "minority_share": 0.48513633231617287
+        },
+        {
+          "target": "target_diabetes",
+          "positive": 6515,
+          "negative": 13803,
+          "minority_share": 0.32065163894084064
+        },
+        {
+          "target": "target_hypertension",
+          "positive": 11536,
+          "negative": 8782,
+          "minority_share": 0.4322275814548676
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "test": {
+      "rows": 8454,
+      "missing_input_cells": 3804,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target_heart",
+          "positive": 1289,
+          "negative": 7165,
+          "minority_share": 0.15247220250768867
+        },
+        {
+          "target": "target_respiratory",
+          "positive": 4065,
+          "negative": 4389,
+          "minority_share": 0.4808374733853797
+        },
+        {
+          "target": "target_diabetes",
+          "positive": 2635,
+          "negative": 5819,
+          "minority_share": 0.3116867754908919
+        },
+        {
+          "target": "target_hypertension",
+          "positive": 4675,
+          "negative": 3779,
+          "minority_share": 0.44700733380648217
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "external": {
+      "rows": 73990,
+      "missing_input_cells": 1140,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target_heart",
+          "positive": 26632,
+          "negative": 47358,
+          "minority_share": 0.3599405325043925
+        },
+        {
+          "target": "target_respiratory",
+          "positive": 43428,
+          "negative": 30562,
+          "minority_share": 0.41305581835383165
+        },
+        {
+          "target": "target_diabetes",
+          "positive": 23580,
+          "negative": 50410,
+          "minority_share": 0.3186917150966347
+        },
+        {
+          "target": "target_hypertension",
+          "positive": 48297,
+          "negative": 25693,
+          "minority_share": 0.3472496283281524
+        }
+      ],
+      "transform_and_labels_checked": true
+    }
+  },
+  "pages": [
+    "preprocessing/outputs/bias_dashboards/eicu_hospital/missing_data.json",
+    "preprocessing/outputs/bias_dashboards/eicu_hospital/class_imbalance.json",
+    "preprocessing/outputs/bias_dashboards/eicu_hospital/outlier.json",
+    "preprocessing/outputs/bias_dashboards/eicu_hospital/feature_scale.json",
+    "preprocessing/outputs/bias_dashboards/eicu_hospital/demographic.json",
+    "preprocessing/outputs/bias_dashboards/eicu_hospital/duplicate.json",
+    "preprocessing/outputs/bias_dashboards/eicu_hospital/noise.json",
+    "preprocessing/outputs/bias_dashboards/eicu_hospital/encoding_domain.json"
+  ]
+}
