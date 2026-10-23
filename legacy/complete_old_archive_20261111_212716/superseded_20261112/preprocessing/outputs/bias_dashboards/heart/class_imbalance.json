@@ -1,0 +1,289 @@
+{
+  "stage": "preprocessing",
+  "dataset": "heart",
+  "title": "Class imbalance bias",
+  "kind": "class_imbalance",
+  "states": {
+    "train": {
+      "default": {
+        "rows": 308077,
+        "numeric_features": 14,
+        "input_features": 16,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.10967842454970674,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.10967842454970674,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "panels": [
+          {
+            "title": "Minority class share: before and after",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "target"
+                ],
+                "y": [
+                  9.032157545029328
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "target"
+                ],
+                "y": [
+                  9.032157545029328
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Minority share (%)"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Unchanged target counts",
+            "table": [
+              {
+                "target": "target",
+                "positive": 27826,
+                "negative": 280251,
+                "minority_share": 0.09032157545029328
+              }
+            ]
+          }
+        ],
+        "note": "The verified baseline does not resample. Counts and labels are unchanged; this page does not claim imbalance was removed."
+      }
+    },
+    "validation": {
+      "default": {
+        "rows": 66017,
+        "numeric_features": 14,
+        "input_features": 16,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.10968992835178819,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.10968992835178819,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "panels": [
+          {
+            "title": "Minority class share: before and after",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "target"
+                ],
+                "y": [
+                  9.031007164821183
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "target"
+                ],
+                "y": [
+                  9.031007164821183
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Minority share (%)"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Unchanged target counts",
+            "table": [
+              {
+                "target": "target",
+                "positive": 5962,
+                "negative": 60055,
+                "minority_share": 0.09031007164821182
+              }
+            ]
+          }
+        ],
+        "note": "The verified baseline does not resample. Counts and labels are unchanged; this page does not claim imbalance was removed."
+      }
+    },
+    "test": {
+      "default": {
+        "rows": 66017,
+        "numeric_features": 14,
+        "input_features": 16,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.10967478073829469,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.10967478073829469,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "panels": [
+          {
+            "title": "Minority class share: before and after",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "target"
+                ],
+                "y": [
+                  9.032521926170531
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "target"
+                ],
+                "y": [
+                  9.032521926170531
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Minority share (%)"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Unchanged target counts",
+            "table": [
+              {
+                "target": "target",
+                "positive": 5963,
+                "negative": 60054,
+                "minority_share": 0.09032521926170532
+              }
+            ]
+          }
+        ],
+        "note": "The verified baseline does not resample. Counts and labels are unchanged; this page does not claim imbalance was removed."
+      }
+    }
+  },
+  "default_split": "train",
+  "methods": {
+    "default": "Saved fixed baseline"
+  },
+  "default_method": "default",
+  "protocol": "No fitting or changes to patient rows. Before = model-ready rows; after = saved preprocessing.",
+  "input_checks": {
+    "train": {
+      "X_sha256": "94fcc62d24fccf61f5e339ea72a70ba053f9412b22200e04e6a0867ec53873bb",
+      "rows_sha256": "8f0b4385b822f7a22ef178f5c17c4b721f10a0e813042ec5eb1970d9816c61fc",
+      "transform_reproduced": true
+    },
+    "validation": {
+      "X_sha256": "3c8a7ef23ae30b37e7809d13c750761676e13e2f27b91b66d3c83bbe0ab9f40d",
+      "rows_sha256": "0be0749f7c2505510a7f351a3c33f34a15b71bb628e239cd7332833ff64384e8",
+      "transform_reproduced": true
+    },
+    "test": {
+      "X_sha256": "c9f29435bdaa1a940dcc6e411c7801f0dc5cc28e4e21beb0c4b55c8046a91481",
+      "rows_sha256": "141f62a797cbe9bb6d7ec34524ef0293bb14df0cd2f053ec3306208e5ef042ac",
+      "transform_reproduced": true
+    }
+  }
+}
