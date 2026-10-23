@@ -1,0 +1,643 @@
+{
+  "stage": "preprocessing",
+  "dataset": "heart",
+  "title": "Demographic outcome differences",
+  "kind": "demographic",
+  "states": {
+    "train": {
+      "default": {
+        "rows": 308077,
+        "numeric_features": 14,
+        "input_features": 16,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.2234327311068267,
+          "limit": 0.1,
+          "rule": "Supported group outcome-prevalence range >0.10"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.2234327311068267,
+          "limit": 0.1,
+          "rule": "Labels and group metadata unchanged"
+        },
+        "panels": [
+          {
+            "title": "Supported group outcome prevalence",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.07120521809231821,
+                  0.112007149834764,
+                  0.01152242857340701,
+                  0.06311399815549942,
+                  0.1540932834096057,
+                  0.23495515968023373,
+                  0.07687920146669383,
+                  0.05637420575909152,
+                  0.07316745124411567,
+                  0.09779735286037892
+                ],
+                "y": [
+                  "target: sens_sex / Female",
+                  "target: sens_sex / Male",
+                  "target: sens_age_group / 18-39",
+                  "target: sens_age_group / 40-64",
+                  "target: sens_age_group / 65-79",
+                  "target: sens_age_group / 80+",
+                  "target: sens_race_ethnicity / Black",
+                  "target: sens_race_ethnicity / Hispanic",
+                  "target: sens_race_ethnicity / Other",
+                  "target: sens_race_ethnicity / White"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.07120521809231821,
+                  0.112007149834764,
+                  0.01152242857340701,
+                  0.06311399815549942,
+                  0.1540932834096057,
+                  0.23495515968023373,
+                  0.07687920146669383,
+                  0.05637420575909152,
+                  0.07316745124411567,
+                  0.09779735286037892
+                ],
+                "y": [
+                  "target: sens_sex / Female",
+                  "target: sens_sex / Male",
+                  "target: sens_age_group / 18-39",
+                  "target: sens_age_group / 40-64",
+                  "target: sens_age_group / 65-79",
+                  "target: sens_age_group / 80+",
+                  "target: sens_race_ethnicity / Black",
+                  "target: sens_race_ethnicity / Hispanic",
+                  "target: sens_race_ethnicity / Other",
+                  "target: sens_race_ethnicity / White"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Recorded outcome prevalence"
+                },
+                "automargin": true
+              },
+              "height": 420
+            }
+          },
+          {
+            "title": "All groups with support flags",
+            "table": [
+              {
+                "attribute": "sens_sex",
+                "target": "target",
+                "group": "Female",
+                "rows": 163738,
+                "prevalence": 0.07120521809231821,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target",
+                "group": "Male",
+                "rows": 144339,
+                "prevalence": 0.112007149834764,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "18-39",
+                "rows": 72207,
+                "prevalence": 0.01152242857340701,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "40-64",
+                "rows": 124695,
+                "prevalence": 0.06311399815549942,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "65-79",
+                "rows": 86532,
+                "prevalence": 0.1540932834096057,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "80+",
+                "rows": 24643,
+                "prevalence": 0.23495515968023373,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Black",
+                "rows": 24545,
+                "prevalence": 0.07687920146669383,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Hispanic",
+                "rows": 29588,
+                "prevalence": 0.05637420575909152,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Other",
+                "rows": 22305,
+                "prevalence": 0.07316745124411567,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "White",
+                "rows": 222051,
+                "prevalence": 0.09779735286037892,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "nan",
+                "rows": 9588,
+                "prevalence": 0.09626616604088443,
+                "supported": false
+              }
+            ]
+          }
+        ],
+        "note": "This is descriptive outcome/case-mix disparity, not model fairness or proof of discrimination. Minimum 30 rows; unknown groups do not enter the screen."
+      }
+    },
+    "validation": {
+      "default": {
+        "rows": 66017,
+        "numeric_features": 14,
+        "input_features": 16,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.2167170525845335,
+          "limit": 0.1,
+          "rule": "Supported group outcome-prevalence range >0.10"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.2167170525845335,
+          "limit": 0.1,
+          "rule": "Labels and group metadata unchanged"
+        },
+        "panels": [
+          {
+            "title": "Supported group outcome prevalence",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.07148188551415284,
+                  0.11134271878908379,
+                  0.011761664727930722,
+                  0.06414233917691474,
+                  0.15454692469408657,
+                  0.22847871731246422,
+                  0.07625314495838978,
+                  0.06269397889509622,
+                  0.07016060862214708,
+                  0.09704907022625194
+                ],
+                "y": [
+                  "target: sens_sex / Female",
+                  "target: sens_sex / Male",
+                  "target: sens_age_group / 18-39",
+                  "target: sens_age_group / 40-64",
+                  "target: sens_age_group / 65-79",
+                  "target: sens_age_group / 80+",
+                  "target: sens_race_ethnicity / Black",
+                  "target: sens_race_ethnicity / Hispanic",
+                  "target: sens_race_ethnicity / Other",
+                  "target: sens_race_ethnicity / White"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.07148188551415284,
+                  0.11134271878908379,
+                  0.011761664727930722,
+                  0.06414233917691474,
+                  0.15454692469408657,
+                  0.22847871731246422,
+                  0.07625314495838978,
+                  0.06269397889509622,
+                  0.07016060862214708,
+                  0.09704907022625194
+                ],
+                "y": [
+                  "target: sens_sex / Female",
+                  "target: sens_sex / Male",
+                  "target: sens_age_group / 18-39",
+                  "target: sens_age_group / 40-64",
+                  "target: sens_age_group / 65-79",
+                  "target: sens_age_group / 80+",
+                  "target: sens_race_ethnicity / Black",
+                  "target: sens_race_ethnicity / Hispanic",
+                  "target: sens_race_ethnicity / Other",
+                  "target: sens_race_ethnicity / White"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Recorded outcome prevalence"
+                },
+                "automargin": true
+              },
+              "height": 420
+            }
+          },
+          {
+            "title": "All groups with support flags",
+            "table": [
+              {
+                "attribute": "sens_sex",
+                "target": "target",
+                "group": "Female",
+                "rows": 34834,
+                "prevalence": 0.07148188551415284,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target",
+                "group": "Male",
+                "rows": 31183,
+                "prevalence": 0.11134271878908379,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "18-39",
+                "rows": 15474,
+                "prevalence": 0.011761664727930722,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "40-64",
+                "rows": 26753,
+                "prevalence": 0.06414233917691474,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "65-79",
+                "rows": 18551,
+                "prevalence": 0.15454692469408657,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "80+",
+                "rows": 5239,
+                "prevalence": 0.22847871731246422,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Black",
+                "rows": 5167,
+                "prevalence": 0.07625314495838978,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Hispanic",
+                "rows": 6444,
+                "prevalence": 0.06269397889509622,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Other",
+                "rows": 4732,
+                "prevalence": 0.07016060862214708,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "White",
+                "rows": 47646,
+                "prevalence": 0.09704907022625194,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "nan",
+                "rows": 2028,
+                "prevalence": 0.10256410256410256,
+                "supported": false
+              }
+            ]
+          }
+        ],
+        "note": "This is descriptive outcome/case-mix disparity, not model fairness or proof of discrimination. Minimum 30 rows; unknown groups do not enter the screen."
+      }
+    },
+    "test": {
+      "default": {
+        "rows": 66017,
+        "numeric_features": 14,
+        "input_features": 16,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 0.2149784604317842,
+          "limit": 0.1,
+          "rule": "Supported group outcome-prevalence range >0.10"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 0.2149784604317842,
+          "limit": 0.1,
+          "rule": "Labels and group metadata unchanged"
+        },
+        "panels": [
+          {
+            "title": "Supported group outcome prevalence",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.0706506162224133,
+                  0.11237832107173837,
+                  0.01242031937964119,
+                  0.062240047534165184,
+                  0.1553377024318908,
+                  0.2273987798114254,
+                  0.07395375501624307,
+                  0.054820415879017016,
+                  0.07314524555903866,
+                  0.09805238415043653
+                ],
+                "y": [
+                  "target: sens_sex / Female",
+                  "target: sens_sex / Male",
+                  "target: sens_age_group / 18-39",
+                  "target: sens_age_group / 40-64",
+                  "target: sens_age_group / 65-79",
+                  "target: sens_age_group / 80+",
+                  "target: sens_race_ethnicity / Black",
+                  "target: sens_race_ethnicity / Hispanic",
+                  "target: sens_race_ethnicity / Other",
+                  "target: sens_race_ethnicity / White"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  0.0706506162224133,
+                  0.11237832107173837,
+                  0.01242031937964119,
+                  0.062240047534165184,
+                  0.1553377024318908,
+                  0.2273987798114254,
+                  0.07395375501624307,
+                  0.054820415879017016,
+                  0.07314524555903866,
+                  0.09805238415043653
+                ],
+                "y": [
+                  "target: sens_sex / Female",
+                  "target: sens_sex / Male",
+                  "target: sens_age_group / 18-39",
+                  "target: sens_age_group / 40-64",
+                  "target: sens_age_group / 65-79",
+                  "target: sens_age_group / 80+",
+                  "target: sens_race_ethnicity / Black",
+                  "target: sens_race_ethnicity / Hispanic",
+                  "target: sens_race_ethnicity / Other",
+                  "target: sens_race_ethnicity / White"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Recorded outcome prevalence"
+                },
+                "automargin": true
+              },
+              "height": 420
+            }
+          },
+          {
+            "title": "All groups with support flags",
+            "table": [
+              {
+                "attribute": "sens_sex",
+                "target": "target",
+                "group": "Female",
+                "rows": 34890,
+                "prevalence": 0.0706506162224133,
+                "supported": true
+              },
+              {
+                "attribute": "sens_sex",
+                "target": "target",
+                "group": "Male",
+                "rows": 31127,
+                "prevalence": 0.11237832107173837,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "18-39",
+                "rows": 15217,
+                "prevalence": 0.01242031937964119,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "40-64",
+                "rows": 26928,
+                "prevalence": 0.062240047534165184,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "65-79",
+                "rows": 18463,
+                "prevalence": 0.1553377024318908,
+                "supported": true
+              },
+              {
+                "attribute": "sens_age_group",
+                "target": "target",
+                "group": "80+",
+                "rows": 5409,
+                "prevalence": 0.2273987798114254,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Black",
+                "rows": 5233,
+                "prevalence": 0.07395375501624307,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Hispanic",
+                "rows": 6348,
+                "prevalence": 0.054820415879017016,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "Other",
+                "rows": 4785,
+                "prevalence": 0.07314524555903866,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "White",
+                "rows": 47648,
+                "prevalence": 0.09805238415043653,
+                "supported": true
+              },
+              {
+                "attribute": "sens_race_ethnicity",
+                "target": "target",
+                "group": "nan",
+                "rows": 2003,
+                "prevalence": 0.10284573140289566,
+                "supported": false
+              }
+            ]
+          }
+        ],
+        "note": "This is descriptive outcome/case-mix disparity, not model fairness or proof of discrimination. Minimum 30 rows; unknown groups do not enter the screen."
+      }
+    }
+  },
+  "default_split": "train",
+  "methods": {
+    "default": "Saved fixed baseline"
+  },
+  "default_method": "default",
+  "protocol": "No fitting or changes to patient rows. Before = model-ready rows; after = saved preprocessing.",
+  "input_checks": {
+    "train": {
+      "X_sha256": "94fcc62d24fccf61f5e339ea72a70ba053f9412b22200e04e6a0867ec53873bb",
+      "rows_sha256": "8f0b4385b822f7a22ef178f5c17c4b721f10a0e813042ec5eb1970d9816c61fc",
+      "transform_reproduced": true
+    },
+    "validation": {
+      "X_sha256": "3c8a7ef23ae30b37e7809d13c750761676e13e2f27b91b66d3c83bbe0ab9f40d",
+      "rows_sha256": "0be0749f7c2505510a7f351a3c33f34a15b71bb628e239cd7332833ff64384e8",
+      "transform_reproduced": true
+    },
+    "test": {
+      "X_sha256": "c9f29435bdaa1a940dcc6e411c7801f0dc5cc28e4e21beb0c4b55c8046a91481",
+      "rows_sha256": "141f62a797cbe9bb6d7ec34524ef0293bb14df0cd2f053ec3306208e5ef042ac",
+      "transform_reproduced": true
+    }
+  }
+}
