@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interactive EDA Dashboard – Outlier Bias (Before vs After Preprocessing)</title>
+<style>
+  :root{
+    --navy:#0d1b4c; --blue:#3d7dc4; --blue-fill:rgba(61,125,196,0.85);
+    --green:#5f9a3a; --green-fill:rgba(95,154,58,0.75);
+    --card:#ffffff; --bg:#eef1f7; --border:#e1e5ee; --text:#1f2a44; --muted:#65708a;
+    --heat-hi:#c0392b; --heat-mid:#f4b6a5; --heat-none:#f2f4f8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);}
+  header{background:var(--navy);color:#fff;padding:18px 24px;text-align:center;font-size:22px;font-weight:700;letter-spacing:.3px;}
+  .layout{display:grid;grid-template-columns:250px 1fr;gap:16px;padding:16px;align-items:start;}
+  .sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:16px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;box-shadow:0 1px 3px rgba(20,30,60,0.06);}
+  .card h3{margin:0 0 10px 0;font-size:14px;color:var(--navy);}
+  select{width:100%;padding:8px;border-radius:6px;border:1px solid #c7cde0;font-size:13px;background:#fff;}
+  label.small{font-size:12px;color:var(--muted);display:block;margin-bottom:6px;font-weight:600;}
+  .info-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px dashed var(--border);}
+  .info-row:last-child{border-bottom:none;}
+  .legend-item{display:flex;align-items:center;gap:8px;font-size:13px;margin:6px 0;}
+  .swatch{width:14px;height:14px;border-radius:3px;display:inline-block;}
+  .section-title{font-size:15px;font-weight:700;color:var(--navy);margin:0 0 10px 2px;}
+  .panel-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+  .hist-stack{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+  @media(max-width:1400px){.hist-stack{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:900px){.hist-stack{grid-template-columns:repeat(2,1fr);}}
+  .hist-panel{border:1px solid var(--border);border-radius:10px;padding:12px 10px 10px;background:#fff;}
+  .hist-panel-title{text-align:center;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .hist-panel-caption{text-align:center;font-size:10.5px;line-height:1.3;color:#7a8296;font-style:italic;margin-top:6px;}
+  #tooltip{position:fixed;background:#20263b;color:#fff;font-size:12px;padding:4px 9px;border-radius:6px;pointer-events:none;display:none;z-index:1000;font-weight:600;}
+  .grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  @media(max-width:1100px){.grid8{grid-template-columns:repeat(2,1fr);}}
+  .mini-card{background:#fbfcfe;border:1px solid var(--border);border-radius:8px;padding:8px;}
+  .mini-title{font-size:12px;font-weight:700;text-align:center;color:var(--text);margin-bottom:2px;}
+  .mini-sub{font-size:10px;text-align:center;color:var(--muted);margin-bottom:4px;}
+  .badge{font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700;}
+  .badge-before{background:rgba(192,57,43,0.12);color:#c0392b;}
+  .badge-after{background:rgba(112,173,71,0.15);color:#4b7a2c;}
+  .top-legend{display:flex;gap:18px;justify-content:flex-end;font-size:12px;align-items:center;}
+  .qq-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .heat-wrap{display:flex;gap:16px;}
+  .heat-table{border-collapse:collapse;font-size:10px;width:100%;table-layout:fixed;}
+  .heat-table th{font-size:10px;color:var(--muted);font-weight:600;padding:2px 4px;text-align:center;}
+  .heat-table td{height:16px;border:1px solid #f3f4f8;}
+  .row-label{font-size:10px;text-align:right;padding-right:6px;color:var(--text);white-space:nowrap;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  @media(max-width:900px){.two-col{grid-template-columns:1fr;}}
+  .corr-table{border-collapse:collapse;font-size:9.5px;}
+  .corr-table th, .corr-table td{padding:3px 5px;text-align:center;border:1px solid #fff;}
+  .corr-table th{background:#f4f5f9;color:var(--text);font-weight:600;}
+  .stat-strip{display:flex;justify-content:space-around;background:#f8f9fc;border-radius:6px;padding:6px 0;margin-top:6px;font-size:11px;}
+  .stat-strip b{display:block;font-size:14px;}
+</style>
+</head>
+<body>
+<div id="tooltip"></div>
+<header>Interactive EDA Dashboard – Outlier Bias, All Variables, Before vs After Preprocessing</header>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="card">
+      <h3>1. Select Plot Type</h3>
+      <select id="plotType">
+        <option value="histogram">Histogram</option>
+        <option value="box">Box Plot</option>
+      </select>
+    </div>
+    <div class="card">
+      <h3>2. Select Variable (Q-Q Plot)</h3>
+      <select id="varSelect"></select>
+    </div>
+    <div class="card" id="datasetInfo">
+      <h3>&#9432; Dataset Info</h3>
+    </div>
+    <div class="card">
+      <h3>&#128220; Legend</h3>
+      <div class="legend-item"><span class="swatch" style="background:var(--blue-fill);border:1.5px solid var(--blue);"></span>Before Preprocessing</div>
+      <div class="legend-item"><span class="swatch" style="background:var(--green-fill);border:1.5px solid var(--green);"></span>After Preprocessing</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card" style="margin-bottom:16px;">
+      <div class="panel-header">
+        <div class="section-title" style="margin:0;">Distribution Comparison — Before vs After (overlaid, relative position across each variable's own range)</div>
+        <div class="top-legend">
+          <span><span class="swatch" style="background:var(--blue-fill);border:1px solid var(--blue);"></span> Before</span>
+          <span><span class="swatch" style="background:var(--green-fill);border:1px solid var(--green);"></span> After</span>
+        </div>
+      </div>
+      <div class="hist-stack" id="histGrid"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <div class="section-title">Box Plot Comparison (Before vs After Outlier Treatment)</div>
+      <div class="grid8" id="boxGrid"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <div class="section-title">Correlation Heatmap</div>
+      <div class="two-col">
+        <div>
+          <div class="mini-title">Before Preprocessing</div>
+          <div id="corrBefore"></div>
+        </div>
+        <div>
+          <div class="mini-title">After Preprocessing</div>
+          <div id="corrAfter"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="section-title">Q-Q Plot (Normality Check)</div>
+        <div class="mini-sub" style="text-align:left;margin-bottom:8px;">Variable: use the dropdown in the sidebar</div>
+        <div class="qq-row">
+          <div>
+            <div class="mini-title">Before</div>
+            <svg id="qqBefore" viewBox="0 0 220 220" width="100%"></svg>
+          </div>
+          <div>
+            <div class="mini-title">After</div>
+            <svg id="qqAfter" viewBox="0 0 220 220" width="100%"></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Outlier Heatmap</div>
+        <div class="mini-sub" style="text-align:left;margin-bottom:6px;">Rows = variables · Columns = record groups (20 bins across all patients)</div>
+        <div class="heat-wrap">
+          <div style="flex:1;">
+            <div class="mini-title">Before</div>
+            <div id="heatBefore"></div>
+          </div>
+          <div style="flex:1;">
+            <div class="mini-title">After</div>
+            <div id="heatAfter"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;margin-top:10px;font-size:11px;align-items:center;flex-wrap:wrap;">
+          <span style="display:flex;align-items:center;gap:4px;"><span class="swatch" style="background:var(--heat-hi);width:10px;height:10px;"></span>Outliers present</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span class="swatch" style="background:var(--heat-none);width:10px;height:10px;border:1px solid #ddd;"></span>None</span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<script>
+const D = {"columns": {"Age": {"label": "Age (years)", "hist_edges": [23.46, 28.53, 33.59, 38.66, 43.73, 48.8, 53.86, 58.93, 64.0, 69.07, 74.13, 79.2, 84.27], "hist_before": [8, 11, 12, 10, 20, 32, 42, 36, 54, 18, 14, 11], "hist_after": [8, 11, 12, 10, 20, 32, 42, 36, 54, 18, 14, 11], "box_before": {"q1": 49.25, "median": 58.0, "q3": 67.0, "whisk_lo": 24.0, "whisk_hi": 87.0, "outliers": [20.0, 20.0, 22.0]}, "box_after": {"q1": 49.25, "median": 58.0, "q3": 67.0, "whisk_lo": 22.62, "whisk_hi": 87.0, "outliers": []}, "qq_before": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-2.456, -2.314, -2.101, -2.03, -1.817, -1.817, -1.817, -1.604, -1.604, -1.604, -1.604, -1.462, -1.39, -1.39, -1.319, -1.248, -1.248, -1.248, -1.248, -1.035, -0.964, -0.964, -0.893, -0.822, -0.822, -0.751, -0.751, -0.751, -0.751, -0.609, -0.609, -0.609, -0.609, -0.538, -0.467, -0.467, -0.396, -0.396, -0.325, -0.325, -0.253, -0.253, -0.253, -0.182, -0.182, -0.182, -0.182, -0.182, -0.182, -0.182, -0.182, -0.111, -0.111, -0.111, -0.111, -0.04, -0.04, -0.04, -0.04, 0.031, 0.031, 0.031, 0.031, 0.031, 0.102, 0.102, 0.173, 0.173, 0.244, 0.315, 0.315, 0.315, 0.386, 0.386, 0.386, 0.457, 0.457, 0.457, 0.457, 0.528, 0.528, 0.528, 0.599, 0.599, 0.599, 0.599, 0.599, 0.67, 0.67, 0.67, 0.67, 0.741, 0.812, 0.812, 0.812, 0.812, 0.884, 0.884, 0.884, 0.884, 0.955, 0.955, 1.026, 1.026, 1.097, 1.097, 1.239, 1.31, 1.31, 1.381, 1.381, 1.381, 1.452, 1.452, 1.523, 1.665, 1.736, 1.878, 2.163, 2.305]}, "qq_after": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-2.35, -2.35, -2.35, -2.185, -2.115, -2.115, -1.976, -1.906, -1.698, -1.698, -1.628, -1.489, -1.489, -1.419, -1.349, -1.21, -1.141, -1.141, -1.071, -1.071, -1.001, -0.932, -0.862, -0.862, -0.862, -0.792, -0.792, -0.723, -0.653, -0.584, -0.584, -0.584, -0.444, -0.375, -0.375, -0.375, -0.305, -0.305, -0.305, -0.305, -0.305, -0.305, -0.305, -0.235, -0.235, -0.166, -0.166, -0.166, -0.096, -0.096, -0.096, -0.096, -0.027, -0.027, 0.043, 0.043, 0.043, 0.113, 0.113, 0.113, 0.113, 0.113, 0.182, 0.182, 0.182, 0.252, 0.252, 0.321, 0.321, 0.321, 0.391, 0.391, 0.391, 0.391, 0.461, 0.461, 0.461, 0.461, 0.53, 0.53, 0.6, 0.67, 0.67, 0.67, 0.67, 0.739, 0.739, 0.739, 0.739, 0.739, 0.739, 0.739, 0.739, 0.809, 0.809, 0.809, 0.809, 0.809, 0.809, 0.878, 0.878, 0.878, 0.878, 0.948, 0.948, 1.087, 1.157, 1.157, 1.157, 1.227, 1.227, 1.227, 1.296, 1.296, 1.366, 1.575, 1.644, 1.923, 1.992, 2.132]}}, "Systolic_BP": {"label": "Systolic BP (mmHg)", "hist_edges": [100.0, 104.17, 108.33, 112.5, 116.67, 120.83, 125.0, 129.17, 133.33, 137.5, 141.67, 145.83, 150.0], "hist_before": [14, 0, 16, 4, 62, 87, 62, 10, 0, 12, 0, 5], "hist_after": [0, 0, 0, 34, 62, 87, 62, 29, 0, 0, 0, 0], "box_before": {"q1": 120.0, "median": 123.0, "q3": 125.0, "whisk_lo": 115.0, "whisk_hi": 130.0, "outliers": [140.0, 140.0, 140.0, 140.0, 110.0, 110.0, 140.0, 110.0, 140.0, 150.0, 110.0, 100.0, 100.0, 140.0, 160.0]}, "box_after": {"q1": 120.0, "median": 123.0, "q3": 125.0, "whisk_lo": 112.5, "whisk_hi": 132.5, "outliers": []}, "qq_before": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-2.869, -2.869, -2.869, -2.869, -2.869, -2.869, -1.521, -1.521, -1.521, -1.521, -1.521, -1.521, -1.521, -1.521, -0.846, -0.577, -0.577, -0.577, -0.577, -0.442, -0.442, -0.442, -0.442, -0.307, -0.307, -0.307, -0.307, -0.307, -0.307, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.172, -0.037, -0.037, -0.037, -0.037, -0.037, -0.037, -0.037, -0.037, 0.098, 0.098, 0.098, 0.098, 0.098, 0.098, 0.098, 0.098, 0.098, 0.098, 0.233, 0.233, 0.233, 0.233, 0.233, 0.233, 0.233, 0.233, 0.233, 0.233, 0.367, 0.367, 0.367, 0.367, 0.367, 0.367, 0.367, 0.367, 0.367, 0.367, 0.367, 0.367, 0.502, 0.502, 0.502, 0.502, 0.502, 0.502, 0.502, 0.637, 0.637, 0.637, 0.637, 0.637, 0.637, 0.637, 0.637, 0.637, 0.637, 0.637, 0.637, 0.637, 0.772, 0.772, 0.772, 0.907, 0.907, 1.042, 1.042, 1.177, 2.525, 2.525, 2.525, 2.525, 2.525]}, "qq_after": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-1.96, -1.96, -1.96, -1.96, -1.96, -1.96, -1.96, -1.96, -1.96, -1.96, -1.96, -1.462, -1.462, -1.263, -1.064, -1.064, -1.064, -0.865, -0.865, -0.865, -0.865, -0.865, -0.665, -0.665, -0.665, -0.665, -0.665, -0.665, -0.665, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.466, -0.267, -0.267, -0.267, -0.267, -0.267, -0.068, -0.068, -0.068, -0.068, -0.068, -0.068, -0.068, -0.068, -0.068, -0.068, 0.131, 0.131, 0.131, 0.131, 0.131, 0.131, 0.131, 0.131, 0.33, 0.33, 0.33, 0.33, 0.33, 0.33, 0.33, 0.529, 0.529, 0.529, 0.529, 0.529, 0.529, 0.529, 0.529, 0.529, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.728, 0.928, 0.928, 0.928, 0.928, 1.127, 1.127, 1.326, 1.326, 1.525, 1.525, 1.525, 2.023, 2.023, 2.023, 2.023, 2.023, 2.023, 2.023]}}, "Diastolic_BP": {"label": "Diastolic BP (mmHg)", "hist_edges": [60.0, 62.72, 65.45, 68.17, 70.9, 73.62, 76.35, 79.07, 81.8, 84.52, 87.25, 89.97, 92.7], "hist_before": [18, 1, 0, 26, 48, 112, 35, 18, 0, 1, 0, 12], "hist_after": [0, 0, 19, 26, 48, 112, 35, 18, 16, 0, 0, 0], "box_before": {"q1": 73.0, "median": 74.0, "q3": 76.75, "whisk_lo": 70.0, "whisk_hi": 80.0, "outliers": [90.0, 60.0, 90.0, 60.0, 60.0, 60.0, 90.0, 100.0, 60.0, 90.0, 65.0, 90.0, 100.0, 85.0, 90.0]}, "box_after": {"q1": 73.0, "median": 74.0, "q3": 76.75, "whisk_lo": 67.38, "whisk_hi": 82.38, "outliers": []}, "qq_before": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-2.369, -2.369, -2.369, -2.369, -2.369, -2.369, -2.369, -2.369, -2.369, -2.369, -1.51, -0.651, -0.651, -0.651, -0.651, -0.651, -0.651, -0.651, -0.651, -0.651, -0.651, -0.651, -0.651, -0.651, -0.479, -0.479, -0.479, -0.308, -0.308, -0.308, -0.308, -0.308, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, -0.136, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.036, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.208, 0.379, 0.379, 0.379, 0.379, 0.379, 0.379, 0.551, 0.551, 0.551, 0.551, 0.551, 0.551, 0.723, 0.723, 0.723, 0.723, 0.723, 0.723, 0.723, 0.723, 1.066, 1.066, 1.066, 1.066, 1.066, 1.066, 1.066, 2.784, 2.784, 2.784, 2.784, 2.784]}, "qq_after": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-1.935, -1.935, -1.935, -1.935, -1.935, -1.935, -1.935, -1.935, -1.223, -1.223, -1.223, -1.223, -1.223, -1.223, -1.223, -1.223, -1.223, -1.223, -1.223, -0.952, -0.952, -0.952, -0.952, -0.681, -0.681, -0.681, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.409, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, -0.138, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.133, 0.405, 0.405, 0.405, 0.405, 0.405, 0.405, 0.405, 0.676, 0.676, 0.676, 0.676, 0.676, 0.676, 0.947, 0.947, 0.947, 0.947, 0.947, 1.49, 1.49, 1.49, 1.49, 1.49, 1.49, 1.49, 1.49, 1.49, 2.134, 2.134, 2.134, 2.134, 2.134, 2.134, 2.134, 2.134]}}, "Duration_Sec": {"label": "ECG Duration (sec)", "hist_edges": [60.0, 65.0, 70.0, 75.0, 80.0, 85.0, 90.0, 95.0, 100.0, 105.0, 110.0, 115.0, 120.0], "hist_before": [41, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 232], "hist_after": [0, 0, 0, 0, 0, 0, 0, 0, 0, 42, 0, 232], "box_before": {"q1": 115.0, "median": 115.0, "q3": 120.0, "whisk_lo": 115.0, "whisk_hi": 120.0, "outliers": [97.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0]}, "box_after": {"q1": 115.0, "median": 115.0, "q3": 120.0, "whisk_lo": 107.5, "whisk_hi": 120.0, "outliers": []}, "qq_before": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, -2.366, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.294, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536, 0.536]}, "qq_after": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -2.198, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, -0.249, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05]}}, "Vessels_Involved": {"label": "Vessels Involved", "hist_edges": [0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0], "hist_before": [15, 0, 0, 0, 143, 0, 0, 0, 92, 0, 0, 24], "hist_after": [15, 0, 0, 0, 143, 0, 0, 0, 92, 0, 0, 24], "box_before": {"q1": 1.0, "median": 1.0, "q3": 2.0, "whisk_lo": 0.0, "whisk_hi": 3.0, "outliers": []}, "box_after": {"q1": 1.0, "median": 1.0, "q3": 2.0, "whisk_lo": 0.0, "whisk_hi": 3.0, "outliers": []}, "qq_before": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-2.064, -2.064, -2.064, -2.064, -2.064, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, -0.673, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 2.111, 2.111, 2.111, 2.111, 2.111, 2.111, 2.111, 2.111, 2.111, 2.111, 2.111]}, "qq_after": {"theoretical": [-2.527, -2.198, -2.009, -1.872, -1.764, -1.673, -1.594, -1.523, -1.46, -1.402, -1.348, -1.298, -1.252, -1.207, -1.165, -1.125, -1.087, -1.05, -1.014, -0.98, -0.947, -0.915, -0.884, -0.853, -0.824, -0.795, -0.767, -0.739, -0.712, -0.685, -0.659, -0.633, -0.608, -0.583, -0.559, -0.535, -0.511, -0.487, -0.464, -0.441, -0.418, -0.395, -0.373, -0.351, -0.329, -0.307, -0.285, -0.263, -0.242, -0.22, -0.199, -0.178, -0.157, -0.136, -0.115, -0.094, -0.073, -0.052, -0.031, -0.01, 0.01, 0.031, 0.052, 0.073, 0.094, 0.115, 0.136, 0.157, 0.178, 0.199, 0.22, 0.242, 0.263, 0.285, 0.307, 0.329, 0.351, 0.373, 0.395, 0.418, 0.441, 0.464, 0.487, 0.511, 0.535, 0.559, 0.583, 0.608, 0.633, 0.659, 0.685, 0.712, 0.739, 0.767, 0.795, 0.824, 0.853, 0.884, 0.915, 0.947, 0.98, 1.014, 1.05, 1.087, 1.125, 1.165, 1.207, 1.252, 1.298, 1.348, 1.402, 1.46, 1.523, 1.594, 1.673, 1.764, 1.872, 2.009, 2.198, 2.527], "sample": [-2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, -0.571, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 0.857, 2.286, 2.286, 2.286, 2.286, 2.286, 2.286, 2.286, 2.286]}}}, "show_cols": ["Age", "Systolic_BP", "Diastolic_BP", "Duration_Sec", "Vessels_Involved"], "labels": {"Age": "Age (years)", "Systolic_BP": "Systolic BP (mmHg)", "Diastolic_BP": "Diastolic BP (mmHg)", "Duration_Sec": "ECG Duration (sec)", "Vessels_Involved": "Vessels Involved"}, "corr_cols": ["Age", "Systolic_BP", "Diastolic_BP", "Duration_Sec", "Vessels_Involved"], "corr_before": [[1.0, 0.3, -0.27, -0.35, 0.47], [0.3, 1.0, 0.51, 0.01, 0.18], [-0.27, 0.51, 1.0, 0.15, -0.12], [-0.35, 0.01, 0.15, 1.0, -0.0], [0.47, 0.18, -0.12, -0.0, 1.0]], "corr_after": [[1.0, 0.3, -0.27, -0.35, 0.47], [0.3, 1.0, 0.51, 0.01, 0.18], [-0.27, 0.51, 1.0, 0.15, -0.12], [-0.35, 0.01, 0.15, 1.0, -0.0], [0.47, 0.18, -0.12, -0.0, 1.0]], "heat_before": [[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0], [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0], [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0]], "heat_after": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], "n_bins": 20, "dataset_info": {"total_patients": 274, "total_variables": 5, "total_outliers_before": 22, "total_outliers_after": 0}};
+const showCols = D.show_cols;
+
+// ---------- Dataset info ----------
+const infoDiv = document.getElementById('datasetInfo');
+const info = D.dataset_info;
+infoDiv.innerHTML += `
+  <div class="info-row"><span>Total Patients</span><b>${info.total_patients}</b></div>
+  <div class="info-row"><span>Outliers (Before)</span><b style="color:#c0392b">${info.total_outliers_before}</b></div>
+  <div class="info-row"><span>Outliers (After)</span><b style="color:#4b7a2c">${info.total_outliers_after}</b></div>
+`;
+
+// ---------- Variable dropdown ----------
+const varSelect = document.getElementById('varSelect');
+showCols.forEach(c=>{
+  const o = document.createElement('option');
+  o.value = c; o.textContent = D.labels[c];
+  varSelect.appendChild(o);
+});
+
+// ================= SVG helpers =================
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+const tooltip = document.getElementById('tooltip');
+function showTip(e, text){
+  tooltip.textContent = text;
+  tooltip.style.display = 'block';
+  tooltip.style.left = (e.clientX + 12) + 'px';
+  tooltip.style.top = (e.clientY - 10) + 'px';
+}
+function hideTip(){ tooltip.style.display='none'; }
+
+function drawHistogram(svg, edges, before, after){
+  svg.innerHTML="";
+  const W=280,H=200,padL=30,padB=8,padT=8,padR=8;
+  const maxY = Math.max(...before, ...after, 1);
+  const plotW = W-padL-padR, plotH = H-padT-padB;
+  const n = before.length;
+  const bw = plotW/n;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  // horizontal gridlines + y ticks
+  const divisions = 4;
+  for(let i=0;i<=divisions;i++){
+    const v = Math.round(maxY*i/divisions);
+    const yy = H-padB - (i/divisions)*plotH;
+    svg.appendChild(el('line',{x1:padL,y1:yy,x2:W-padR,y2:yy,stroke:'#eef0f6','stroke-width':1}));
+    const t = el('text',{x:padL-5,y:yy+3,'font-size':8.5,fill:'#8b93a8','text-anchor':'end'}); t.textContent=v; svg.appendChild(t);
+  }
+  svg.appendChild(el('line',{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:'#c8cede'}));
+  svg.appendChild(el('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#c8cede'}));
+  // Nested bars, same slot (keeps the "overlaid" look): whichever value is TALLER becomes the
+  // full-width outer bar, and the SHORTER one is drawn as a narrower bar nested on top of it.
+  // This avoids a thin disconnected "spike" when After > Before, and always keeps both colors
+  // clearly visible — the taller one as the full column, the shorter as a nested inner column.
+  for(let i=0;i<n;i++){
+    const xb = padL + i*bw;
+    const hB = (before[i]/maxY)*plotH;
+    const hA = (after[i]/maxY)*plotH;
+    const outerW = Math.max(bw-2,1);
+    const x0 = xb + 1;
+    const innerW = Math.max(outerW*0.55, 1);
+    const xInner = x0 + (outerW-innerW)/2;
+
+    const beforeIsTaller = hB >= hA;
+    const outer = beforeIsTaller
+      ? {h:hB, val:before[i], label:'Before', fill:'var(--blue-fill)', stroke:'var(--blue)'}
+      : {h:hA, val:after[i], label:'After', fill:'var(--green-fill)', stroke:'var(--green)'};
+    const inner = beforeIsTaller
+      ? {h:hA, val:after[i], label:'After', fill:'var(--green-fill)', stroke:'var(--green)'}
+      : {h:hB, val:before[i], label:'Before', fill:'var(--blue-fill)', stroke:'var(--blue)'};
+
+    const rectOuter = el('rect',{x:x0, y:H-padB-outer.h, width:outerW, height:outer.h, fill:outer.fill, stroke:outer.stroke, 'stroke-width':1.2, style:'cursor:pointer;'});
+    rectOuter.addEventListener('mouseenter', (e)=>showTip(e, `${outer.label}: ${outer.val}`));
+    rectOuter.addEventListener('mousemove', (e)=>showTip(e, `${outer.label}: ${outer.val}`));
+    rectOuter.addEventListener('mouseleave', hideTip);
+    svg.appendChild(rectOuter);
+
+    const rectInner = el('rect',{x:xInner, y:H-padB-inner.h, width:innerW, height:inner.h, fill:inner.fill, stroke:inner.stroke, 'stroke-width':1.2, style:'cursor:pointer;'});
+    rectInner.addEventListener('mouseenter', (e)=>showTip(e, `${inner.label}: ${inner.val}`));
+    rectInner.addEventListener('mousemove', (e)=>showTip(e, `${inner.label}: ${inner.val}`));
+    rectInner.addEventListener('mouseleave', hideTip);
+    svg.appendChild(rectInner);
+  }
+}
+
+function drawBox(svg, statsB, statsA, allOutliers){
+  svg.innerHTML="";
+  const W=260,H=150,padL=30,padB=20,padT=10,padR=10;
+  const vals = [statsB.whisk_lo, statsB.whisk_hi, statsA.whisk_lo, statsA.whisk_hi, ...statsB.outliers, ...statsA.outliers];
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const range = (hi-lo)||1;
+  const plotH = H-padT-padB;
+  const y = v => H-padB - ((v-lo)/range)*plotH;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.appendChild(el('line',{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:'#c8cede'}));
+
+  function box(cx, s, color, fill){
+    const bw=44;
+    // whisker line
+    svg.appendChild(el('line',{x1:cx,y1:y(s.whisk_lo),x2:cx,y2:y(s.q1),stroke:color,'stroke-width':1.2}));
+    svg.appendChild(el('line',{x1:cx,y1:y(s.q3),x2:cx,y2:y(s.whisk_hi),stroke:color,'stroke-width':1.2}));
+    svg.appendChild(el('line',{x1:cx-bw/4,y1:y(s.whisk_lo),x2:cx+bw/4,y2:y(s.whisk_lo),stroke:color,'stroke-width':1.2}));
+    svg.appendChild(el('line',{x1:cx-bw/4,y1:y(s.whisk_hi),x2:cx+bw/4,y2:y(s.whisk_hi),stroke:color,'stroke-width':1.2}));
+    // box
+    svg.appendChild(el('rect',{x:cx-bw/2,y:y(s.q3),width:bw,height:Math.max(y(s.q1)-y(s.q3),1),fill:fill,stroke:color,'stroke-width':1.3}));
+    // median
+    svg.appendChild(el('line',{x1:cx-bw/2,y1:y(s.median),x2:cx+bw/2,y2:y(s.median),stroke:color,'stroke-width':1.6}));
+    // outliers as dots
+    s.outliers.forEach(v=>{
+      svg.appendChild(el('circle',{cx:cx, cy:y(v), r:2.1, fill:'none', stroke:color, 'stroke-width':1}));
+    });
+  }
+  box(padL+55, statsB, 'var(--blue)', 'var(--blue-fill)');
+  box(padL+150, statsA, 'var(--green)', 'var(--green-fill)');
+  const lb = el('text',{x:padL+55,y:H-4,'font-size':8,fill:'#666','text-anchor':'middle'}); lb.textContent='Before'; svg.appendChild(lb);
+  const la = el('text',{x:padL+150,y:H-4,'font-size':8,fill:'#666','text-anchor':'middle'}); la.textContent='After'; svg.appendChild(la);
+}
+
+function drawQQ(svg, qq, color){
+  svg.innerHTML="";
+  const W=200,H=200,pad=22;
+  const allX = qq.theoretical, allY = qq.sample;
+  const minV = Math.min(...allX, ...allY), maxV = Math.max(...allX, ...allY);
+  const range = (maxV-minV)||1;
+  const sx = v => pad + ((v-minV)/range)*(W-2*pad);
+  const sy = v => H-pad - ((v-minV)/range)*(H-2*pad);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.appendChild(el('line',{x1:sx(minV),y1:sy(minV),x2:sx(maxV),y2:sy(maxV),stroke:'#e06666','stroke-width':1}));
+  svg.appendChild(el('line',{x1:pad,y1:pad,x2:pad,y2:H-pad,stroke:'#c8cede'}));
+  svg.appendChild(el('line',{x1:pad,y1:H-pad,x2:W-pad,y2:H-pad,stroke:'#c8cede'}));
+  for(let i=0;i<allX.length;i++){
+    svg.appendChild(el('circle',{cx:sx(allX[i]),cy:sy(allY[i]),r:1.8,fill:color,opacity:0.75}));
+  }
+}
+
+function corrColor(v){
+  // -1..1 -> blue..white..red like the reference
+  if(v>=0){
+    const t = v;
+    const r = Math.round(255 - t*(255-192));
+    const g = Math.round(255 - t*(255-57));
+    const b = Math.round(255 - t*(255-43));
+    return `rgb(${r},${g},${b})`;
+  } else {
+    const t = -v;
+    const r = Math.round(255 - t*(255-70));
+    const g = Math.round(255 - t*(255-110));
+    const b = Math.round(255 - t*(255-200));
+    return `rgb(${r},${g},${b})`;
+  }
+}
+
+function buildCorrTable(container, cols, matrix){
+  container.innerHTML="";
+  const table = document.createElement('table');
+  table.className='corr-table';
+  const head = document.createElement('tr');
+  head.appendChild(document.createElement('th'));
+  cols.forEach(c=>{ const th=document.createElement('th'); th.textContent=c; head.appendChild(th); });
+  table.appendChild(head);
+  matrix.forEach((row,i)=>{
+    const tr = document.createElement('tr');
+    const th = document.createElement('th'); th.textContent=cols[i]; tr.appendChild(th);
+    row.forEach(v=>{
+      const td = document.createElement('td');
+      td.textContent = v.toFixed(2);
+      td.style.background = corrColor(v);
+      td.style.color = Math.abs(v)>0.6 ? '#fff' : '#333';
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  container.appendChild(table);
+}
+
+function buildOutlierHeat(container, cols, heat){
+  container.innerHTML="";
+  const table = document.createElement('table');
+  table.className='heat-table';
+  heat.forEach((row,i)=>{
+    const tr = document.createElement('tr');
+    const th = document.createElement('td'); th.className='row-label'; th.textContent=cols[i];
+    tr.appendChild(th);
+    row.forEach(v=>{
+      const td = document.createElement('td');
+      td.style.background = v>0 ? (v>2? 'var(--heat-hi)':'var(--heat-mid)') : 'var(--heat-none)';
+      td.title = v+' outlier(s)';
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  container.appendChild(table);
+}
+
+// ================= Render everything =================
+function renderHist(){
+  const grid = document.getElementById('histGrid');
+  grid.innerHTML="";
+  showCols.forEach(c=>{
+    const col = D.columns[c];
+    const wrap = document.createElement('div'); wrap.className='hist-panel';
+    const title = document.createElement('div');
+    title.className='hist-panel-title';
+    title.textContent = col.label;
+    wrap.appendChild(title);
+    const svg = el('svg',{width:'100%'});
+    wrap.appendChild(svg);
+    const cap = document.createElement('div');
+    cap.className = 'hist-panel-caption';
+    cap.textContent = "x = relative position across each variable's own range (%)";
+    wrap.appendChild(cap);
+    grid.appendChild(wrap);
+    drawHistogram(svg, col.hist_edges, col.hist_before, col.hist_after);
+  });
+}
+function renderBox(){
+  const grid = document.getElementById('boxGrid');
+  grid.innerHTML="";
+  showCols.forEach(c=>{
+    const col = D.columns[c];
+    const wrap = document.createElement('div'); wrap.className='mini-card';
+    wrap.innerHTML = `<div class="mini-title">${col.label}</div>`;
+    const svg = el('svg',{width:'100%'});
+    wrap.appendChild(svg);
+    grid.appendChild(wrap);
+    drawBox(svg, col.box_before, col.box_after);
+  });
+}
+
+function renderQQ(){
+  const c = varSelect.value || showCols[0];
+  const col = D.columns[c];
+  drawQQ(document.getElementById('qqBefore'), col.qq_before, 'var(--blue)');
+  drawQQ(document.getElementById('qqAfter'), col.qq_after, 'var(--green)');
+}
+
+function renderCorr(){
+  buildCorrTable(document.getElementById('corrBefore'), D.corr_cols, D.corr_before);
+  buildCorrTable(document.getElementById('corrAfter'), D.corr_cols, D.corr_after);
+}
+
+function renderHeat(){
+  buildOutlierHeat(document.getElementById('heatBefore'), showCols, D.heat_before);
+  buildOutlierHeat(document.getElementById('heatAfter'), showCols, D.heat_after);
+}
+
+varSelect.value = showCols[0];
+renderHist(); renderBox(); renderQQ(); renderCorr(); renderHeat();
+varSelect.addEventListener('change', renderQQ);
+document.getElementById('plotType').addEventListener('change', (e)=>{
+  document.getElementById('histGrid').parentElement.style.display = e.target.value==='histogram' ? '' : 'none';
+  document.getElementById('boxGrid').parentElement.style.display = e.target.value==='box' ? '' : 'none';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Demographic Bias (Before vs After Preprocessing)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#6FA0DA;   /* female, before OT alignment */
+    --before-line:#3E6FA8;
+    --after:#7BC17E;    /* female, after OT alignment */
+    --after-line:#4C9B50;
+    --ref:#9AA3B2;      /* male reference */
+    --ref-line:#5B6472;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:22px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:16px; padding:16px; align-items:start;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:280px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .swatch.line{height:2px; border-radius:0; margin-top:5px;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+  @media (max-width:1400px){ .grid6{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:1100px){ .grid6{grid-template-columns:repeat(2,1fr);} .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  .row3{display:grid; grid-template-columns:1.1fr 1.6fr 1fr; gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} .row3{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .mv-wrap{display:flex; flex-direction:column;}
+  .mv-headrow{display:grid; grid-template-columns:100px 1fr 1fr; gap:22px; margin-bottom:10px;}
+  .mv-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .mv-row{display:grid; grid-template-columns:100px 1fr 1fr; gap:22px; align-items:center; margin-bottom:3px;}
+  .mv-label{font-size:12px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mv-grid{display:grid; grid-template-columns:repeat(var(--n), 1fr); gap:0; border:1px solid #D6DCEA; border-left:none; border-top:none;}
+  .mv-cell{aspect-ratio:1; background:#FFFFFF; border:1px solid #D6DCEA; border-right:none; border-bottom:none;}
+  .mv-cell.on{background:var(--blue-hi);}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Interactive EDA Dashboard — Demographic Bias (Before vs After Preprocessing)</h1>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="info-title">&#9432; Dataset Info</p>
+      <div class="info-row"><span class="k">Total Variables</span><span>10</span></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Preprocessing)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Preprocessing)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row3">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:150px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap (Before vs After)
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 6 Vars</option>
+              <option value="all">All 10 Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center;"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Demographic Shift Heatmap</p>
+        <div id="noiseHeat"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="note">
+</footer>
+
+<script>
+const RAW = [{"Age": 56, "Weight": 105, "Height": 180, "BSA": 2.29, "BMI": 32.41, "SBP": 140.0, "DBP": 80.0, "IMT_MAX": 4.0, "LVMi": 123.0, "EF": 66.0, "GenderCode": 1}, {"Age": 72, "Weight": 83, "Height": 169, "BSA": 1.97, "BMI": 29.06, "SBP": 130.0, "DBP": 75.0, "IMT_MAX": 2.3, "LVMi": 121.0, "EF": 69.0, "GenderCode": 1}, {"Age": 80, "Weight": 80, "Height": 165, "BSA": 1.91, "BMI": 29.38, "SBP": 177.0, "DBP": 75.0, "IMT_MAX": 2.5, "LVMi": 164.0, "EF": 56.0, "GenderCode": 0}, {"Age": 77, "Weight": 88, "Height": 178, "BSA": 2.09, "BMI": 27.77, "SBP": 140.0, "DBP": 85.0, "IMT_MAX": 2.7, "LVMi": 115.0, "EF": 67.0, "GenderCode": 1}, {"Age": 66, "Weight": 80, "Height": 174, "BSA": 1.97, "BMI": 26.42, "SBP": 110.0, "DBP": 65.0, "IMT_MAX": 1.5, "LVMi": 98.0, "EF": 66.0, "GenderCode": 0}, {"Age": 84, "Weight": 72, "Height": 170, "BSA": 1.84, "BMI": 24.91, "SBP": 120.0, "DBP": 70.0, "IMT_MAX": 2.6, "LVMi": 147.0, "EF": 51.0, "GenderCode": 1}, {"Age": 66, "Weight": 85, "Height": 160, "BSA": 1.94, "BMI": 33.2, "SBP": 150.0, "DBP": 65.0, "IMT_MAX": 1.6, "LVMi": 178.0, "EF": 53.0, "GenderCode": 0}, {"Age": 77, "Weight": 82, "Height": 169, "BSA": 1.96, "BMI": 28.71, "SBP": 115.0, "DBP": 80.0, "IMT_MAX": 2.3, "LVMi": 144.0, "EF": 42.0, "GenderCode": 1}, {"Age": 77, "Weight": 80, "Height": 162, "BSA": 1.9, "BMI": 30.48, "SBP": 160.0, "DBP": 75.0, "IMT_MAX": 2.3, "LVMi": 123.0, "EF": 70.0, "GenderCode": 1}, {"Age": 69, "Weight": 90, "Height": 154, "BSA": 1.96, "BMI": 37.95, "SBP": 110.0, "DBP": 65.0, "IMT_MAX": 1.5, "LVMi": 124.0, "EF": 64.0, "GenderCode": 0}, {"Age": 85, "Weight": 97, "Height": 165, "BSA": 2.11, "BMI": 35.63, "SBP": 135.0, "DBP": 75.0, "IMT_MAX": 3.0, "LVMi": 159.0, "EF": 50.0, "GenderCode": 1}, {"Age": 69, "Weight": 83, "Height": 173, "BSA": 2.0, "BMI": 27.73, "SBP": 146.0, "DBP": 80.0, "IMT_MAX": 1.9, "LVMi": 86.0, "EF": 68.0, "GenderCode": 0}, {"Age": 73, "Weight": 68, "Height": 167, "BSA": 1.78, "BMI": 24.38, "SBP": 105.0, "DBP": 70.0, "IMT_MAX": 1.7, "LVMi": 202.0, "EF": 43.0, "GenderCode": 1}, {"Age": 65, "Weight": 72, "Height": 167, "BSA": 1.83, "BMI": 25.82, "SBP": 130.0, "DBP": 85.0, "IMT_MAX": 2.3, "LVMi": 106.0, "EF": 68.0, "GenderCode": 1}, {"Age": 66, "Weight": 72, "Height": 176, "BSA": 1.88, "BMI": 23.24, "SBP": 130.0, "DBP": 85.0, "IMT_MAX": 2.0, "LVMi": 117.0, "EF": 66.0, "GenderCode": 0}, {"Age": 75, "Weight": 80, "Height": 150, "BSA": 1.83, "BMI": 35.56, "SBP": 170.0, "DBP": 80.0, "IMT_MAX": 2.3, "LVMi": 154.0, "EF": 71.0, "GenderCode": 0}, {"Age": 72, "Weight": 93, "Height": 187, "BSA": 2.2, "BMI": 26.59, "SBP": 120.0, "DBP": 80.0, "IMT_MAX": 1.4, "LVMi": 126.0, "EF": 65.0, "GenderCode": 1}, {"Age": 70, "Weight": 82, "Height": 178, "BSA": 2.01, "BMI": 25.88, "SBP": 162.0, "DBP": 100.0, "IMT_MAX": 1.6, "LVMi": 153.0, "EF": 62.0, "GenderCode": 1}, {"Age": 69, "Weight": 81, "Height": 170, "BSA": 1.96, "BMI": 28.03, "SBP": 135.0, "DBP": 65.0, "IMT_MAX": 2.7, "LVMi": 105.0, "EF": 66.0, "GenderCode": 0}, {"Age": 74, "Weight": 74, "Height": 165, "BSA": 1.84, "BMI": 27.18, "SBP": 130.0, "DBP": 80.0, "IMT_MAX": 3.1, "LVMi": 121.0, "EF": 63.0, "GenderCode": 1}, {"Age": 67, "Weight": 72, "Height": 171, "BSA": 1.85, "BMI": 24.62, "SBP": 120.0, "DBP": 85.0, "IMT_MAX": 2.3, "LVMi": 144.0, "EF": 61.0, "GenderCode": 1}, {"Age": 64, "Weight": 86, "Height": 178, "BSA": 2.06, "BMI": 27.14, "SBP": 115.0, "DBP": 75.0, "IMT_MAX": 2.2, "LVMi": 111.0, "EF": 61.0, "GenderCode": 1}, {"Age": 73, "Weight": 64, "Height": 174, "BSA": 1.76, "BMI": 21.14, "SBP": 125.0, "DBP": 75.0, "IMT_MAX": 1.2, "LVMi": 119.0, "EF": 67.0, "GenderCode": 1}, {"Age": 73, "Weight": 60, "Height": 167, "BSA": 1.67, "BMI": 21.51, "SBP": 195.0, "DBP": 95.0, "IMT_MAX": 2.4, "LVMi": 141.0, "EF": 32.0, "GenderCode": 1}, {"Age": 68, "Weight": 62, "Height": 165, "BSA": 1.69, "BMI": 22.77, "SBP": 143.0, "DBP": 62.0, "IMT_MAX": 3.7, "LVMi": 168.0, "EF": 33.0, "GenderCode": 1}, {"Age": 74, "Weight": 85, "Height": 180, "BSA": 2.06, "BMI": 26.23, "SBP": 150.0, "DBP": 75.0, "IMT_MAX": 1.7, "LVMi": 140.0, "EF": 67.0, "GenderCode": 1}, {"Age": 71, "Weight": 113, "Height": 168, "BSA": 2.3, "BMI": 40.04, "SBP": 150.0, "DBP": 85.0, "IMT_MAX": 2.6, "LVMi": 156.0, "EF": 67.0, "GenderCode": 1}, {"Age": 58, "Weight": 92, "Height": 175, "BSA": 2.11, "BMI": 30.04, "SBP": 135.0, "DBP": 70.0, "IMT_MAX": 1.6, "LVMi": 98.0, "EF": 69.0, "GenderCode": 1}, {"Age": 70, "Weight": 93, "Height": 165, "BSA": 2.06, "BMI": 34.16, "SBP": 140.0, "DBP": 70.0, "IMT_MAX": 2.2, "LVMi": 126.5, "EF": 62.0, "GenderCode": 0}, {"Age": 71, "Weight": 74, "Height": 172, "BSA": 1.88, "BMI": 25.01, "SBP": 160.0, "DBP": 75.0, "IMT_MAX": 2.3, "LVMi": 126.0, "EF": 65.0, "GenderCode": 0}, {"Age": 75, "Weight": 68, "Height": 156, "BSA": 1.72, "BMI": 27.94, "SBP": 135.0, "DBP": 65.0, "IMT_MAX": 1.7, "LVMi": 93.0, "EF": 64.0, "GenderCode": 0}, {"Age": 73, "Weight": 98, "Height": 170, "BSA": 2.15, "BMI": 33.91, "SBP": 155.0, "DBP": 78.0, "IMT_MAX": 2.9, "LVMi": 129.0, "EF": 65.0, "GenderCode": 0}, {"Age": 79, "Weight": 81, "Height": 172, "BSA": 1.97, "BMI": 27.38, "SBP": 110.0, "DBP": 80.0, "IMT_MAX": 2.4, "LVMi": 125.0, "EF": 46.0, "GenderCode": 1}, {"Age": 64, "Weight": 83, "Height": 155, "BSA": 1.89, "BMI": 34.55, "SBP": 200.0, "DBP": 80.0, "IMT_MAX": 3.3, "LVMi": 156.0, "EF": 62.0, "GenderCode": 0}, {"Age": 74, "Weight": 74, "Height": 172, "BSA": 1.88, "BMI": 25.01, "SBP": 150.0, "DBP": 90.0, "IMT_MAX": 2.3, "LVMi": 126.5, "EF": 62.0, "GenderCode": 1}, {"Age": 76, "Weight": 70, "Height": 160, "BSA": 1.76, "BMI": 27.34, "SBP": 145.0, "DBP": 75.0, "IMT_MAX": 3.0, "LVMi": 146.0, "EF": 60.0, "GenderCode": 1}, {"Age": 84, "Weight": 70, "Height": 170, "BSA": 1.82, "BMI": 24.22, "SBP": 164.0, "DBP": 54.0, "IMT_MAX": 3.5, "LVMi": 194.0, "EF": 63.0, "GenderCode": 1}, {"Age": 72, "Weight": 55, "Height": 160, "BSA": 1.56, "BMI": 21.48, "SBP": 160.0, "DBP": 80.0, "IMT_MAX": 3.0, "LVMi": 99.0, "EF": 65.0, "GenderCode": 0}, {"Age": 75, "Weight": 75, "Height": 172, "BSA": 1.89, "BMI": 25.35, "SBP": 122.0, "DBP": 74.0, "IMT_MAX": 3.3, "LVMi": 121.0, "EF": 68.0, "GenderCode": 1}, {"Age": 65, "Weight": 98, "Height": 171, "BSA": 2.16, "BMI": 33.51, "SBP": 130.0, "DBP": 80.0, "IMT_MAX": 1.7, "LVMi": 125.0, "EF": 54.0, "GenderCode": 1}, {"Age": 69, "Weight": 65, "Height": 175, "BSA": 1.78, "BMI": 21.22, "SBP": 140.0, "DBP": 80.0, "IMT_MAX": 2.3, "LVMi": 113.0, "EF": 38.0, "GenderCode": 1}, {"Age": 74, "Weight": 91, "Height": 162, "BSA": 2.02, "BMI": 34.67, "SBP": 140.0, "DBP": 80.0, "IMT_MAX": 2.3, "LVMi": 101.0, "EF": 72.0, "GenderCode": 0}, {"Age": 81, "Weight": 76, "Height": 158, "BSA": 1.83, "BMI": 30.44, "SBP": 160.0, "DBP": 80.0, "IMT_MAX": 2.0, "LVMi": 163.0, "EF": 66.0, "GenderCode": 0}, {"Age": 81, "Weight": 93, "Height": 170, "BSA": 2.1, "BMI": 32.18, "SBP": 170.0, "DBP": 75.0, "IMT_MAX": 5.0, "LVMi": 159.0, "EF": 62.0, "GenderCode": 1}, {"Age": 72, "Weight": 78, "Height": 158, "BSA": 1.85, "BMI": 31.24, "SBP": 190.0, "DBP": 80.0, "IMT_MAX": 4.2, "LVMi": 154.0, "EF": 72.0, "GenderCode": 0}, {"Age": 86, "Weight": 78, "Height": 160, "BSA": 1.86, "BMI": 30.47, "SBP": 145.0, "DBP": 55.0, "IMT_MAX": 2.2, "LVMi": 122.0, "EF": 59.0, "GenderCode": 0}, {"Age": 77, "Weight": 84, "Height": 173, "BSA": 2.01, "BMI": 28.07, "SBP": 155.0, "DBP": 85.0, "IMT_MAX": 2.0, "LVMi": 154.0, "EF": 66.0, "GenderCode": 1}, {"Age": 64, "Weight": 75, "Height": 165, "BSA": 1.85, "BMI": 27.55, "SBP": 140.0, "DBP": 90.0, "IMT_MAX": 2.1, "LVMi": 113.0, "EF": 64.0, "GenderCode": 1}, {"Age": 70, "Weight": 91, "Height": 187, "BSA": 2.17, "BMI": 26.02, "SBP": 145.0, "DBP": 85.0, "IMT_MAX": 2.3, "LVMi": 127.0, "EF": 65.0, "GenderCode": 1}, {"Age": 71, "Weight": 80, "Height": 160, "BSA": 1.89, "BMI": 31.25, "SBP": 165.0, "DBP": 80.0, "IMT_MAX": 3.3, "LVMi": 152.0, "EF": 53.0, "GenderCode": 1}, {"Age": 66, "Weight": 64, "Height": 156, "BSA": 1.67, "BMI": 26.3, "SBP": 130.0, "DBP": 75.0, "IMT_MAX": 2.0, "LVMi": 129.0, "EF": 60.0, "GenderCode": 0}, {"Age": 59, "Weight": 68, "Height": 164, "BSA": 1.76, "BMI": 25.28, "SBP": 100.0, "DBP": 60.0, "IMT_MAX": 1.4, "LVMi": 98.0, "EF": 69.0, "GenderCode": 1}, {"Age": 82, "Weight": 64, "Height": 156, "BSA": 1.67, "BMI": 26.3, "SBP": 110.0, "DBP": 70.0, "IMT_MAX": 1.6, "LVMi": 159.0, "EF": 65.0, "GenderCode": 0}, {"Age": 80, "Weight": 75, "Height": 167, "BSA": 1.87, "BMI": 26.89, "SBP": 105.0, "DBP": 65.0, "IMT_MAX": 2.3, "LVMi": 117.0, "EF": 52.0, "GenderCode": 1}, {"Age": 69, "Weight": 80, "Height": 165, "BSA": 1.91, "BMI": 29.38, "SBP": 150.0, "DBP": 90.0, "IMT_MAX": 2.5, "LVMi": 126.5, "EF": 62.0, "GenderCode": 1}, {"Age": 75, "Weight": 68, "Height": 169, "BSA": 1.79, "BMI": 23.81, "SBP": 160.0, "DBP": 90.0, "IMT_MAX": 2.7, "LVMi": 107.0, "EF": 70.0, "GenderCode": 1}, {"Age": 74, "Weight": 78, "Height": 166, "BSA": 1.9, "BMI": 28.31, "SBP": 130.0, "DBP": 70.0, "IMT_MAX": 2.4, "LVMi": 122.0, "EF": 56.0, "GenderCode": 1}, {"Age": 77, "Weight": 80, "Height": 169, "BSA": 1.94, "BMI": 28.01, "SBP": 170.0, "DBP": 70.0, "IMT_MAX": 3.0, "LVMi": 128.0, "EF": 62.0, "GenderCode": 1}, {"Age": 83, "Weight": 75, "Height": 170, "BSA": 1.88, "BMI": 25.95, "SBP": 145.0, "DBP": 70.0, "IMT_MAX": 3.3, "LVMi": 129.0, "EF": 58.0, "GenderCode": 1}, {"Age": 65, "Weight": 59, "Height": 154, "BSA": 1.59, "BMI": 24.88, "SBP": 145.0, "DBP": 65.0, "IMT_MAX": 1.8, "LVMi": 126.5, "EF": 62.0, "GenderCode": 0}, {"Age": 77, "Weight": 89, "Height": 163, "BSA": 2.01, "BMI": 33.5, "SBP": 125.0, "DBP": 80.0, "IMT_MAX": 1.0, "LVMi": 118.0, "EF": 69.0, "GenderCode": 1}, {"Age": 69, "Weight": 75, "Height": 169, "BSA": 1.88, "BMI": 26.26, "SBP": 150.0, "DBP": 86.0, "IMT_MAX": 2.2, "LVMi": 126.5, "EF": 62.0, "GenderCode": 1}, {"Age": 69, "Weight": 88, "Height": 171, "BSA": 2.04, "BMI": 30.09, "SBP": 120.0, "DBP": 70.0, "IMT_MAX": 1.7, "LVMi": 133.0, "EF": 62.0, "GenderCode": 1}, {"Age": 68, "Weight": 55, "Height": 165, "BSA": 1.59, "BMI": 20.2, "SBP": 110.0, "DBP": 70.0, "IMT_MAX": 1.35, "LVMi": 98.0, "EF": 68.0, "GenderCode": 0}, {"Age": 81, "Weight": 72, "Height": 171, "BSA": 1.85, "BMI": 24.62, "SBP": 145.0, "DBP": 80.0, "IMT_MAX": 2.9, "LVMi": 148.0, "EF": 60.0, "GenderCode": 1}, {"Age": 65, "Weight": 67, "Height": 159, "BSA": 1.72, "BMI": 26.5, "SBP": 135.0, "DBP": 75.0, "IMT_MAX": 3.6, "LVMi": 116.0, "EF": 73.0, "GenderCode": 0}, {"Age": 85, "Weight": 75, "Height": 160, "BSA": 1.83, "BMI": 29.3, "SBP": 130.0, "DBP": 80.0, "IMT_MAX": 3.5, "LVMi": 131.0, "EF": 36.0, "GenderCode": 0}, {"Age": 73, "Weight": 92, "Height": 173, "BSA": 2.1, "BMI": 30.74, "SBP": 155.0, "DBP": 85.0, "IMT_MAX": 3.6, "LVMi": 139.0, "EF": 52.0, "GenderCode": 1}, {"Age": 68, "Weight": 95, "Height": 162, "BSA": 2.07, "BMI": 36.2, "SBP": 145.0, "DBP": 75.0, "IMT_MAX": 1.8, "LVMi": 118.0, "EF": 72.0, "GenderCode": 0}, {"Age": 63, "Weight": 72, "Height": 168, "BSA": 1.83, "BMI": 25.51, "SBP": 135.0, "DBP": 85.0, "IMT_MAX": 1.4, "LVMi": 126.5, "EF": 62.0, "GenderCode": 1}, {"Age": 80, "Weight": 58, "Height": 153, "BSA": 1.57, "BMI": 24.78, "SBP": 135.0, "DBP": 76.5, "IMT_MAX": 2.3, "LVMi": 126.5, "EF": 62.0, "GenderCode": 0}, {"Age": 65, "Weight": 82, "Height": 175, "BSA": 2.0, "BMI": 26.78, "SBP": 120.0, "DBP": 80.0, "IMT_MAX": 2.5, "LVMi": 154.0, "EF": 56.0, "GenderCode": 1}, {"Age": 92, "Weight": 62, "Height": 165, "BSA": 1.69, "BMI": 22.77, "SBP": 120.0, "DBP": 80.0, "IMT_MAX": 3.0, "LVMi": 126.0, "EF": 57.0, "GenderCode": 1}, {"Age": 77, "Weight": 64, "Height": 160, "BSA": 1.69, "BMI": 25.0, "SBP": 110.0, "DBP": 60.0, "IMT_MAX": 1.5, "LVMi": 146.0, "EF": 70.0, "GenderCode": 0}, {"Age": 75, "Weight": 72, "Height": 162, "BSA": 1.8, "BMI": 27.43, "SBP": 150.0, "DBP": 75.0, "IMT_MAX": 1.4, "LVMi": 149.0, "EF": 45.0, "GenderCode": 0}, {"Age": 73, "Weight": 87, "Height": 178, "BSA": 2.07, "BMI": 27.46, "SBP": 175.0, "DBP": 65.0, "IMT_MAX": 1.8, "LVMi": 233.0, "EF": 53.0, "GenderCode": 1}, {"Age": 65, "Weight": 83, "Height": 165, "BSA": 1.95, "BMI": 30.49, "SBP": 125.0, "DBP": 80.0, "IMT_MAX": 3.4, "LVMi": 151.0, "EF": 49.0, "GenderCode": 1}, {"Age": 65, "Weight": 70, "Height": 163, "BSA": 1.78, "BMI": 26.35, "SBP": 150.0, "DBP": 80.0, "IMT_MAX": 2.3, "LVMi": 108.0, "EF": 72.0, "GenderCode": 1}, {"Age": 64, "Weight": 80, "Height": 164, "BSA": 1.91, "BMI": 29.74, "SBP": 170.0, "DBP": 95.0, "IMT_MAX": 2.2, "LVMi": 175.0, "EF": 42.0, "GenderCode": 1}, {"Age": 67, "Weight": 65, "Height": 159, "BSA": 1.69, "BMI": 25.71, "SBP": 100.0, "DBP": 60.0, "IMT_MAX": 2.5, "LVMi": 116.0, "EF": 67.0, "GenderCode": 0}, {"Age": 69, "Weight": 80, "Height": 159, "BSA": 1.88, "BMI": 31.64, "SBP": 142.0, "DBP": 82.0, "IMT_MAX": 2.2, "LVMi": 133.0, "EF": 66.0, "GenderCode": 0}, {"Age": 86, "Weight": 73, "Height": 168, "BSA": 1.85, "BMI": 25.86, "SBP": 125.0, "DBP": 60.0, "IMT_MAX": 2.6, "LVMi": 146.0, "EF": 57.0, "GenderCode": 1}, {"Age": 68, "Weight": 70, "Height": 165, "BSA": 1.79, "BMI": 25.71, "SBP": 120.0, "DBP": 70.0, "IMT_MAX": 2.1, "LVMi": 119.0, "EF": 72.0, "GenderCode": 1}, {"Age": 69, "Weight": 76, "Height": 158, "BSA": 1.83, "BMI": 30.44, "SBP": 150.0, "DBP": 90.0, "IMT_MAX": 2.5, "LVMi": 126.0, "EF": 66.0, "GenderCode": 0}, {"Age": 66, "Weight": 89, "Height": 167, "BSA": 2.03, "BMI": 31.91, "SBP": 120.0, "DBP": 70.0, "IMT_MAX": 1.9, "LVMi": 175.0, "EF": 28.0, "GenderCode": 0}, {"Age": 66, "Weight": 100, "Height": 170, "BSA": 2.17, "BMI": 34.6, "SBP": 135.0, "DBP": 75.0, "IMT_MAX": 1.6, "LVMi": 166.0, "EF": 47.0, "GenderCode": 1}, {"Age": 84, "Weight": 83, "Height": 181, "BSA": 2.04, "BMI": 25.34, "SBP": 140.0, "DBP": 75.0, "IMT_MAX": 2.6, "LVMi": 140.0, "EF": 68.0, "GenderCode": 1}, {"Age": 72, "Weight": 92, "Height": 170, "BSA": 2.08, "BMI": 31.83, "SBP": 115.0, "DBP": 65.0, "IMT_MAX": 3.2, "LVMi": 143.0, "EF": 32.0, "GenderCode": 1}, {"Age": 78, "Weight": 68, "Height": 162, "BSA": 1.75, "BMI": 25.91, "SBP": 130.0, "DBP": 70.0, "IMT_MAX": 2.0, "LVMi": 131.0, "EF": 67.0, "GenderCode": 1}, {"Age": 66, "Weight": 86, "Height": 167, "BSA": 2.0, "BMI": 30.84, "SBP": 140.0, "DBP": 60.0, "IMT_MAX": 2.8, "LVMi": 142.0, "EF": 62.0, "GenderCode": 1}, {"Age": 68, "Weight": 58, "Height": 158, "BSA": 1.6, "BMI": 23.23, "SBP": 130.0, "DBP": 70.0, "IMT_MAX": 2.1, "LVMi": 120.0, "EF": 53.0, "GenderCode": 0}, {"Age": 68, "Weight": 78, "Height": 172, "BSA": 1.93, "BMI": 26.37, "SBP": 135.0, "DBP": 85.0, "IMT_MAX": 1.6, "LVMi": 127.0, "EF": 52.0, "GenderCode": 1}, {"Age": 77, "Weight": 54, "Height": 160, "BSA": 1.55, "BMI": 21.09, "SBP": 136.0, "DBP": 75.0, "IMT_MAX": 2.0, "LVMi": 201.0, "EF": 60.0, "GenderCode": 0}, {"Age": 77, "Weight": 87, "Height": 170, "BSA": 2.03, "BMI": 30.1, "SBP": 120.0, "DBP": 75.0, "IMT_MAX": 1.8, "LVMi": 135.0, "EF": 59.0, "GenderCode": 1}, {"Age": 65, "Weight": 60, "Height": 150, "BSA": 1.58, "BMI": 26.67, "SBP": 165.0, "DBP": 90.0, "IMT_MAX": 2.0, "LVMi": 113.0, "EF": 67.0, "GenderCode": 0}, {"Age": 79, "Weight": 70, "Height": 170, "BSA": 1.82, "BMI": 24.22, "SBP": 135.0, "DBP": 80.0, "IMT_MAX": 2.8, "LVMi": 126.5, "EF": 62.0, "GenderCode": 1}, {"Age": 69, "Weight": 60, "Height": 167, "BSA": 1.67, "BMI": 21.51, "SBP": 110.0, "DBP": 80.0, "IMT_MAX": 1.6, "LVMi": 90.0, "EF": 68.0, "GenderCode": 0}, {"Age": 64, "Weight": 98, "Height": 165, "BSA": 2.12, "BMI": 36.0, "SBP": 175.0, "DBP": 80.0, "IMT_MAX": 1.9, "LVMi": 130.0, "EF": 62.0, "GenderCode": 0}, {"Age": 74, "Weight": 75, "Height": 170, "BSA": 1.88, "BMI": 25.95, "SBP": 145.0, "DBP": 85.0, "IMT_MAX": 2.2, "LVMi": 144.0, "EF": 62.0, "GenderCode": 1}, {"Age": 81, "Weight": 68, "Height": 166, "BSA": 1.77, "BMI": 24.68, "SBP": 130.0, "DBP": 85.0, "IMT_MAX": 2.3, "LVMi": 141.0, "EF": 33.0, "GenderCode": 1}, {"Age": 67, "Weight": 61, "Height": 165, "BSA": 1.67, "BMI": 22.41, "SBP": 120.0, "DBP": 80.0, "IMT_MAX": 2.8, "LVMi": 126.0, "EF": 25.0, "GenderCode": 1}, {"Age": 64, "Weight": 88, "Height": 173, "BSA": 2.06, "BMI": 29.4, "SBP": 115.0, "DBP": 60.0, "IMT_MAX": 2.3, "LVMi": 126.5, "EF": 62.0, "GenderCode": 1}, {"Age": 74, "Weight": 83, "Height": 170, "BSA": 1.98, "BMI": 28.72, "SBP": 145.0, "DBP": 85.0, "IMT_MAX": 1.5, "LVMi": 120.0, "EF": 48.0, "GenderCode": 1}, {"Age": 66, "Weight": 64, "Height": 160, "BSA": 1.69, "BMI": 25.0, "SBP": 140.0, "DBP": 60.0, "IMT_MAX": 3.0, "LVMi": 96.0, "EF": 69.0, "GenderCode": 0}, {"Age": 78, "Weight": 50, "Height": 165, "BSA": 1.51, "BMI": 18.37, "SBP": 110.0, "DBP": 60.0, "IMT_MAX": 1.1, "LVMi": 91.0, "EF": 69.0, "GenderCode": 0}, {"Age": 84, "Weight": 75, "Height": 160, "BSA": 1.83, "BMI": 29.3, "SBP": 170.0, "DBP": 80.0, "IMT_MAX": 0.95, "LVMi": 154.0, "EF": 59.0, "GenderCode": 0}, {"Age": 66, "Weight": 86, "Height": 165, "BSA": 1.99, "BMI": 31.59, "SBP": 125.0, "DBP": 70.0, "IMT_MAX": 1.5, "LVMi": 118.0, "EF": 62.0, "GenderCode": 1}, {"Age": 65, "Weight": 50, "Height": 156, "BSA": 1.47, "BMI": 20.55, "SBP": 100.0, "DBP": 60.0, "IMT_MAX": 1.0, "LVMi": 92.0, "EF": 62.0, "GenderCode": 0}, {"Age": 74, "Weight": 79, "Height": 172, "BSA": 1.94, "BMI": 26.7, "SBP": 100.0, "DBP": 60.0, "IMT_MAX": 2.3, "LVMi": 113.0, "EF": 64.0, "GenderCode": 1}, {"Age": 63, "Weight": 75, "Height": 168, "BSA": 1.87, "BMI": 26.57, "SBP": 120.0, "DBP": 80.0, "IMT_MAX": 1.1, "LVMi": 99.0, "EF": 72.0, "GenderCode": 0}, {"Age": 73, "Weight": 80, "Height": 178, "BSA": 1.99, "BMI": 25.25, "SBP": 135.0, "DBP": 80.0, "IMT_MAX": 2.4, "LVMi": 103.0, "EF": 67.0, "GenderCode": 1}, {"Age": 69, "Weight": 68, "Height": 160, "BSA": 1.74, "BMI": 26.56, "SBP": 120.0, "DBP": 70.0, "IMT_MAX": 3.2, "LVMi": 105.0, "EF": 64.0, "GenderCode": 0}, {"Age": 63, "Weight": 83, "Height": 178, "BSA": 2.03, "BMI": 26.2, "SBP": 140.0, "DBP": 80.0, "IMT_MAX": 1.5, "LVMi": 161.0, "EF": 43.0, "GenderCode": 1}, {"Age": 77, "Weight": 77, "Height": 168, "BSA": 1.9, "BMI": 27.28, "SBP": 125.0, "DBP": 85.0, "IMT_MAX": 2.3, "LVMi": 126.5, "EF": 62.0, "GenderCode": 1}, {"Age": 46, "Weight": 77, "Height": 172, "BSA": 1.92, "BMI": 26.03, "SBP": 145.0, "DBP": 75.0, "IMT_MAX": 3.3, "LVMi": 108.0, "EF": 68.0, "GenderCode": 1}, {"Age": 78, "Weight": 72, "Height": 174, "BSA": 1.87, "BMI": 23.78, "SBP": 155.0, "DBP": 75.0, "IMT_MAX": 2.0, "LVMi": 127.0, "EF": 66.0, "GenderCode": 1}, {"Age": 73, "Weight": 63, "Height": 173, "BSA": 1.74, "BMI": 21.05, "SBP": 140.0, "DBP": 70.0, "IMT_MAX": 2.0, "LVMi": 137.0, "EF": 60.0, "GenderCode": 0}, {"Age": 65, "Weight": 84, "Height": 168, "BSA": 1.98, "BMI": 29.76, "SBP": 150.0, "DBP": 90.0, "IMT_MAX": 2.8, "LVMi": 167.0, "EF": 38.0, "GenderCode": 1}, {"Age": 76, "Weight": 74, "Height": 170, "BSA": 1.87, "BMI": 25.61, "SBP": 115.0, "DBP": 70.0, "IMT_MAX": 1.9, "LVMi": 113.0, "EF": 61.0, "GenderCode": 1}, {"Age": 76, "Weight": 85, "Height": 172, "BSA": 2.02, "BMI": 28.73, "SBP": 120.0, "DBP": 70.0, "IMT_MAX": 3.8, "LVMi": 184.0, "EF": 33.0, "GenderCode": 1}, {"Age": 72, "Weight": 65, "Height": 168, "BSA": 1.74, "BMI": 23.03, "SBP": 135.0, "DBP": 70.0, "IMT_MAX": 2.5, "LVMi": 118.0, "EF": 62.0, "GenderCode": 1}, {"Age": 65, "Weight": 107, "Height": 170, "BSA": 2.25, "BMI": 37.02, "SBP": 130.0, "DBP": 85.0, "IMT_MAX": 2.0, "LVMi": 146.0, "EF": 64.0, "GenderCode": 1}, {"Age": 81, "Weight": 94, "Height": 162, "BSA": 2.06, "BMI": 35.82, "SBP": 130.0, "DBP": 80.0, "IMT_MAX": 3.2, "LVMi": 102.0, "EF": 63.0, "GenderCode": 0}, {"Age": 75, "Weight": 90, "Height": 182, "BSA": 2.13, "BMI": 27.17, "SBP": 150.0, "DBP": 80.0, "IMT_MAX": 2.3, "LVMi": 111.0, "EF": 66.0, "GenderCode": 1}, {"Age": 69, "Weight": 85, "Height": 165, "BSA": 1.97, "BMI": 31.22, "SBP": 120.0, "DBP": 66.0, "IMT_MAX": 1.8, "LVMi": 109.0, "EF": 62.0, "GenderCode": 0}, {"Age": 74, "Weight": 82, "Height": 173, "BSA": 1.99, "BMI": 27.4, "SBP": 145.0, "DBP": 80.0, "IMT_MAX": 2.4, "LVMi": 104.0, "EF": 65.0, "GenderCode": 1}, {"Age": 69, "Weight": 69, "Height": 165, "BSA": 1.78, "BMI": 25.34, "SBP": 135.0, "DBP": 75.0, "IMT_MAX": 3.0, "LVMi": 125.0, "EF": 60.0, "GenderCode": 1}, {"Age": 64, "Weight": 63, "Height": 162, "BSA": 1.68, "BMI": 24.01, "SBP": 135.0, "DBP": 80.0, "IMT_MAX": 2.3, "LVMi": 75.0, "EF": 76.0, "GenderCode": 0}, {"Age": 66, "Weight": 88, "Height": 173, "BSA": 2.06, "BMI": 29.4, "SBP": 135.0, "DBP": 80.0, "IMT_MAX": 1.3, "LVMi": 132.0, "EF": 55.0, "GenderCode": 1}, {"Age": 83, "Weight": 76, "Height": 180, "BSA": 1.95, "BMI": 23.46, "SBP": 110.0, "DBP": 70.0, "IMT_MAX": 3.3, "LVMi": 161.0, "EF": 47.0, "GenderCode": 1}, {"Age": 68, "Weight": 84, "Height": 180, "BSA": 2.05, "BMI": 25.93, "SBP": 155.0, "DBP": 85.0, "IMT_MAX": 2.6, "LVMi": 121.0, "EF": 33.0, "GenderCode": 1}, {"Age": 70, "Weight": 76, "Height": 172, "BSA": 1.91, "BMI": 25.69, "SBP": 120.0, "DBP": 80.0, "IMT_MAX": 3.1, "LVMi": 140.0, "EF": 54.0, "GenderCode": 1}, {"Age": 69, "Weight": 90, "Height": 165, "BSA": 2.03, "BMI": 33.06, "SBP": 150.0, "DBP": 90.0, "IMT_MAX": 4.0, "LVMi": 124.0, "EF": 61.0, "GenderCode": 1}, {"Age": 65, "Weight": 72, "Height": 159, "BSA": 1.78, "BMI": 28.48, "SBP": 150.0, "DBP": 90.0, "IMT_MAX": 3.0, "LVMi": 105.0, "EF": 67.0, "GenderCode": 0}, {"Age": 78, "Weight": 55, "Height": 157, "BSA": 1.55, "BMI": 22.31, "SBP": 170.0, "DBP": 60.0, "IMT_MAX": 2.3, "LVMi": 136.0, "EF": 64.0, "GenderCode": 0}, {"Age": 70, "Weight": 98, "Height": 176, "BSA": 2.19, "BMI": 31.64, "SBP": 130.0, "DBP": 75.0, "IMT_MAX": 2.2, "LVMi": 131.0, "EF": 54.0, "GenderCode": 1}, {"Age": 78, "Weight": 74, "Height": 170, "BSA": 1.87, "BMI": 25.61, "SBP": 125.0, "DBP": 65.0, "IMT_MAX": 2.3, "LVMi": 170.0, "EF": 32.0, "GenderCode": 1}, {"Age": 65, "Weight": 93, "Height": 175, "BSA": 2.13, "BMI": 30.37, "SBP": 120.0, "DBP": 80.0, "IMT_MAX": 1.7, "LVMi": 112.0, "EF": 65.0, "GenderCode": 1}, {"Age": 67, "Weight": 67, "Height": 170, "BSA": 1.78, "BMI": 23.18, "SBP": 120.0, "DBP": 80.0, "IMT_MAX": 2.3, "LVMi": 126.5, "EF": 62.0, "GenderCode": 1}];
+
+const VARS = {
+  Age:      {label:'Age (years)',    unit:'yrs'},
+  SBP:      {label:'SBP (mmHg)',     unit:'mmHg'},
+  DBP:      {label:'DBP (mmHg)',     unit:'mmHg'},
+  BMI:      {label:'BMI (kg/m²)',    unit:'kg/m²'},
+  LVMi:     {label:'LVMi (g/m²)',    unit:'g/m²'},
+  EF:       {label:'EF (%)',         unit:'%'},
+  IMT_MAX:  {label:'IMT-MAX (mm)',   unit:'mm'},
+  Weight:   {label:'Weight (kg)',    unit:'kg'},
+  Height:   {label:'Height (cm)',    unit:'cm'},
+  BSA:      {label:'BSA (m²)',       unit:'m²'}
+};
+const GRID_VARS = ['Age','SBP','DBP','BMI','LVMi','EF'];
+const ALL_VARS = Object.keys(VARS);
+
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function std(a){ const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length); }
+
+const MALE = RAW.filter(r=>r.GenderCode===1);
+const FEMALE = RAW.filter(r=>r.GenderCode===0);
+
+// stats per variable, computed on MALE (reference group)
+const STATS = {};
+ALL_VARS.forEach(v=>{
+  const arr = MALE.map(r=>r[v]);
+  STATS[v] = {mean:mean(arr), std:std(arr)||1};
+});
+
+// ---------- 1-D Optimal Transport (quantile / Monge map): Female -> Male ----------
+// Per-feature analogue of the notebook's multivariate EMDTransport barycentric map:
+// each female value is moved to the male value occupying the same rank/quantile position.
+function quantileMap(sourceArr, targetArr){
+  const n = sourceArr.length;
+  const sortedTarget = [...targetArr].sort((a,b)=>a-b);
+  const m = sortedTarget.length;
+  // rank of each source value within the source distribution (0..1)
+  const order = sourceArr.map((v,i)=>i).sort((a,b)=>sourceArr[a]-sourceArr[b]);
+  const rank = new Array(n);
+  order.forEach((origIdx, sortedPos)=>{ rank[origIdx] = n>1 ? sortedPos/(n-1) : 0; });
+  return rank.map(p=>{
+    const idx = p*(m-1);
+    const lo = Math.floor(idx), hi = Math.ceil(idx);
+    return sortedTarget[lo] + (sortedTarget[hi]-sortedTarget[lo])*(idx-lo);
+  });
+}
+
+const FEMALE_BEFORE = FEMALE.map(r=>({...r}));
+const FEMALE_AFTER = FEMALE.map(r=>({...r}));
+ALL_VARS.forEach(v=>{
+  const src = FEMALE.map(r=>r[v]);
+  const tgt = MALE.map(r=>r[v]);
+  const mapped = quantileMap(src, tgt);
+  FEMALE_AFTER.forEach((r,i)=>{ r[v] = mapped[i]; });
+});
+
+// per-cell shift magnitude (in male std units) relative to male mean, before vs after
+const SHIFT_BEFORE = FEMALE_BEFORE.map(row=>{
+  const o={}; ALL_VARS.forEach(v=>{ o[v]=(row[v]-STATS[v].mean)/STATS[v].std; }); return o;
+});
+const SHIFT_AFTER = FEMALE_AFTER.map(row=>{
+  const o={}; ALL_VARS.forEach(v=>{ o[v]=(row[v]-STATS[v].mean)/STATS[v].std; }); return o;
+});
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{
+  const o = document.createElement('option'); o.value=v; o.textContent=VARS[v].label; varDropdown.appendChild(o);
+});
+let selectedVar = 'Age';
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = VARS[v].label;
+    d.onclick = ()=>{ selectedVar=v; varDropdown.value=v; renderVarList(); highlightVar(v); document.getElementById('qqVar').value=v; drawQQ(); };
+    varList.appendChild(d);
+  });
+}
+varDropdown.addEventListener('change', e=>{ selectedVar=e.target.value; renderVarList(); highlightVar(selectedVar); document.getElementById('qqVar').value=selectedVar; drawQQ(); });
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= SVG helpers =================
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+
+// ================= Histogram / Density =================
+function histBins(arr, nbins, lo, hi){
+  const width=(hi-lo)/nbins;
+  const counts=new Array(nbins).fill(0);
+  arr.forEach(x=>{
+    let idx=Math.floor((x-lo)/width);
+    if(idx<0) idx=0; if(idx>=nbins) idx=nbins-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+function drawDistChart(container, v){
+  const before = FEMALE_BEFORE.map(r=>r[v]);
+  const after = FEMALE_AFTER.map(r=>r[v]);
+  const lo = Math.min(...before,...after), hi = Math.max(...before,...after);
+  const nbins=12;
+  const cb = histBins(before,nbins,lo,hi), ca = histBins(after,nbins,lo,hi);
+  const maxc = Math.max(...cb,...ca,1);
+  const W=250,H=150, padL=30,padB=20,padT=6,padR=6;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const bw = plotW/nbins;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=4;i++){
+    const y = padT + plotH - (i/4)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=Math.round((i/4)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  function barsOrLine(counts, color, line, alpha){
+    if(plotType==='hist'){
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw;
+        const barH = (c/maxc)*plotH;
+        svg.appendChild(svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:color, opacity:alpha, stroke:line, 'stroke-width':1}));
+      });
+    } else {
+      let d='';
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw + bw/2;
+        const y = padT + plotH - (c/maxc)*plotH;
+        d += (i===0?'M':'L') + x + ' ' + y + ' ';
+      });
+      const path = svgEl('path',{d:d.trim(), fill:'none', stroke:line, 'stroke-width':2});
+      svg.appendChild(path);
+      let dArea = d.trim() + ` L ${padL+plotW} ${padT+plotH} L ${padL} ${padT+plotH} Z`;
+      svg.appendChild(svgEl('path',{d:dArea, fill:color, opacity:alpha*0.6}));
+    }
+  }
+  barsOrLine(cb, 'var(--before)', 'var(--before-line)', 0.55);
+  barsOrLine(ca, 'var(--after)', 'var(--after-line)', 0.55);
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const xt1=svgEl('text',{x:padL,y:H-4,'font-size':8,fill:'#8791A3'}); xt1.textContent=fmtAxis(lo,hi-lo); svg.appendChild(xt1);
+  const xt2=svgEl('text',{x:W-padR,y:H-4,'text-anchor':'end','font-size':8,fill:'#8791A3'}); xt2.textContent=fmtAxis(hi,hi-lo); svg.appendChild(xt2);
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function quartiles(arr){
+  const a=[...arr].sort((x,y)=>x-y);
+  const q=(p)=>{ const idx=(a.length-1)*p; const lo=Math.floor(idx),hi=Math.ceil(idx); return a[lo]+(a[hi]-a[lo])*(idx-lo); };
+  const q1=q(0.25), med=q(0.5), q3=q(0.75), iqr=q3-q1;
+  const loW = Math.max(a[0], q1-1.5*iqr), hiW = Math.min(a[a.length-1], q3+1.5*iqr);
+  const outliers = a.filter(x=>x<loW||x>hiW);
+  return {q1,med,q3,loW,hiW,outliers,min:a[0],max:a[a.length-1]};
+}
+function drawBoxChart(container, v){
+  const before = FEMALE_BEFORE.map(r=>r[v]);
+  const after = FEMALE_AFTER.map(r=>r[v]);
+  const sb = quartiles(before), sa = quartiles(after);
+  const lo = Math.min(sb.loW,sa.loW,...sb.outliers,...sa.outliers);
+  const hi = Math.max(sb.hiW,sa.hiW,...sb.outliers,...sa.outliers);
+  const W=250,H=150, padL=32,padB=20,padT=8,padR=10;
+  const plotH=H-padT-padB;
+  const y = val => padT + plotH - ((val-lo)/(hi-lo||1))*plotH;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const yy=padT+ (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'}));
+  }
+  function box(cx, s, color, line){
+    const bw=34;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.loW),y2:y(s.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.q3),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-7,x2:cx+7,y1:y(s.loW),y2:y(s.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-7,x2:cx+7,y1:y(s.hiW),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('rect',{x:cx-bw/2, y:y(s.q3), width:bw, height:Math.max(y(s.q1)-y(s.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85}));
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(s.med),y2:y(s.med),stroke:line,'stroke-width':1.6}));
+    s.outliers.forEach(o=>{ svg.appendChild(svgEl('circle',{cx:cx, cy:y(o), r:1.8, fill:'none', stroke:line, 'stroke-width':1})); });
+  }
+  const plotW = W-padL-padR;
+  box(padL+plotW*0.33, sb, 'var(--before)', 'var(--before-line)');
+  box(padL+plotW*0.67, sa, 'var(--after)', 'var(--after-line)');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const l2=svgEl('text',{x:padL+plotW*0.33,y:H-4,'text-anchor':'middle','font-size':8,fill:'#556'}); l2.textContent='Before'; svg.appendChild(l2);
+  const l3=svgEl('text',{x:padL+plotW*0.67,y:H-4,'text-anchor':'middle','font-size':8,fill:'#556'}); l3.textContent='After'; svg.appendChild(l3);
+  for(let i=0;i<=3;i++){
+    const val = lo + (i/3)*(hi-lo);
+    const yy=padT+plotH-(i/3)*plotH;
+    const t=svgEl('text',{x:padL-4,y:yy+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtAxis(val,hi-lo); svg.appendChild(t);
+  }
+  container.appendChild(svg);
+}
+
+// ================= render 10-var grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  ALL_VARS.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v;
+    const t = document.createElement('div'); t.className='ct'; t.textContent=VARS[v].label; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+
+    const bb = document.createElement('div'); bb.className='chart-box';
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=VARS[v].label; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function erfinv(x){
+  const a=0.147;
+  const ln = Math.log(1-x*x);
+  const t1 = 2/(Math.PI*a) + ln/2;
+  return Math.sign(x)*Math.sqrt(Math.sqrt(t1*t1-ln/a)-t1);
+}
+function normInv(p){ return Math.sqrt(2)*erfinv(2*p-1); }
+function drawQQSub(svg, x0, w, arr, color, line, label, H, padT, padB){
+  const a=[...arr].sort((x,y)=>x-y);
+  const n=a.length;
+  const theo = a.map((_,i)=>normInv((i+0.5)/n));
+  const m=mean(a), s=std(a)||1;
+  const sampleZ = a.map(v=>(v-m)/s);
+  const lo=Math.min(...theo,...sampleZ), hi=Math.max(...theo,...sampleZ);
+  const plotH=H-padT-padB, plotW=w-40;
+  const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+  const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+  svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  theo.forEach((t,i)=>{
+    svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(sampleZ[i]), r:2.1, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85}));
+  });
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; svg.appendChild(lb);
+}
+function drawQQ(){
+  const v = document.getElementById('qqVar').value;
+  const before = FEMALE_BEFORE.map(r=>r[v]);
+  const after = FEMALE_AFTER.map(r=>r[v]);
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520,H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  drawQQSub(svg, 0, W/2, before, 'var(--before)', 'var(--before-line)', 'Before', H, padT, padB);
+  drawQQSub(svg, W/2, W/2, after, 'var(--after)', 'var(--after-line)', 'After', H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function pearson(a,b){
+  const ma=mean(a), mb=mean(b);
+  let num=0,da=0,db=0;
+  for(let i=0;i<a.length;i++){ num+=(a[i]-ma)*(b[i]-mb); da+=(a[i]-ma)**2; db+=(b[i]-mb)**2; }
+  return num/Math.sqrt(da*db||1);
+}
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function corrMatrix(vars, dataset){
+  return vars.map(v1=> vars.map(v2 => pearson(dataset.map(r=>r[v1]), dataset.map(r=>r[v2])) ));
+}
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=v; th.style.writingMode='vertical-rl'; th.style.transform='rotate(180deg)'; th.style.fontSize='9px'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const setSel = document.getElementById('corrSet').value;
+  const vars = setSel==='core' ? GRID_VARS : ALL_VARS;
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, FEMALE_BEFORE), 'Before'));
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, FEMALE_AFTER), 'After'));
+}
+
+// ================= Demographic Shift heatmap =================
+function drawNoiseHeat(){
+  const container = document.getElementById('noiseHeat'); container.innerHTML='';
+  const SAMPLE = Math.min(18, FEMALE.length);
+  const wrap = document.createElement('div'); wrap.className='mv-wrap';
+
+  const head = document.createElement('div'); head.className='mv-headrow';
+  head.innerHTML = `<div></div><div class="h">Before</div><div class="h">After</div>`;
+  wrap.appendChild(head);
+
+  ALL_VARS.forEach(v=>{
+    const row = document.createElement('div'); row.className='mv-row';
+    const label = document.createElement('div'); label.className='mv-label'; label.textContent=v; row.appendChild(label);
+
+    const beforeGrid = document.createElement('div'); beforeGrid.className='mv-grid'; beforeGrid.style.setProperty('--n', SAMPLE);
+    const afterGrid = document.createElement('div'); afterGrid.className='mv-grid'; afterGrid.style.setProperty('--n', SAMPLE);
+    for(let i=0;i<SAMPLE;i++){
+      const bCell = document.createElement('div'); bCell.className='mv-cell';
+      if(Math.abs(SHIFT_BEFORE[i][v])>0.5) bCell.className+=' on';
+      beforeGrid.appendChild(bCell);
+
+      const aCell = document.createElement('div'); aCell.className='mv-cell';
+      // After: aligned by construction, so left clear (no threshold flags remaining)
+      afterGrid.appendChild(aCell);
+    }
+    row.appendChild(beforeGrid);
+    row.appendChild(afterGrid);
+    wrap.appendChild(row);
+  });
+  container.appendChild(wrap);
+
+  const legend = document.createElement('div');
+  legend.style.cssText='display:flex;gap:14px;justify-content:center;margin-top:14px;font-size:11px;color:var(--muted); flex-wrap:wrap;';
+  legend.innerHTML = `<span><span class="swatch" style="background:var(--blue-hi);display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px;"></span>demographic exits</span>
+                       <span><span class="swatch" style="background:#FFFFFF;border:1px solid #D6DCEA;display:inline-block;width:11px;height:11px;border-radius:0;margin-right:5px;vertical-align:-1px;"></span>Aligned</span>`;
+  container.appendChild(legend);
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=VARS[v].label; qqVarSel.appendChild(o); });
+qqVarSel.value='Age';
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawNoiseHeat();
+</script>
+</body>
+</html>

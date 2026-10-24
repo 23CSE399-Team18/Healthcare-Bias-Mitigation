@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Missing Data Bias (Before vs After Imputation)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#AECBEE;
+    --before-line:#6FA0DA;
+    --after:#BEE0BF;
+    --after-line:#7BC17E;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:22px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:16px; padding:16px; align-items:start;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+  @media (max-width:1500px){ .grid6{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:1100px){ .grid6{grid-template-columns:repeat(2,1fr);} .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .mv-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .mv-inner{min-width:max-content;}
+  .mv-headrow{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; margin-bottom:10px;}
+  .mv-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .mv-row{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; align-items:center; margin-bottom:4px;}
+  .mv-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mv-grid{display:grid; grid-template-columns:repeat(var(--n), 12px); grid-auto-rows:12px; gap:2px;}
+  .mv-cell{width:12px; height:12px; border-radius:2px; box-sizing:border-box; background:#fff; border:1px solid #D7DEEC;}
+  .mv-cell.missing{background:#4C6FA8; border:1px solid #3A5885;}
+  .mv-cell.observed{background:#fff; border:1px solid #D7DEEC;}
+  .mv-pct{font-size:9.5px; color:var(--muted); text-align:right; margin-top:2px;}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+  .kpi-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:2px;}
+  .kpi{flex:1 1 100px; background:#F6F8FC; border:1px solid var(--border); border-radius:8px; padding:8px 10px; text-align:center;}
+  .kpi .val{font-size:16px; font-weight:800; color:var(--navy);}
+  .kpi .lbl{font-size:10px; color:var(--muted); margin-top:2px;}
+  .method-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:8px;}
+  .method-table th, .method-table td{padding:5px 6px; text-align:center; border-bottom:1px solid var(--border);}
+  .method-table th{color:var(--muted); font-weight:600; font-size:10.5px;}
+  .method-table tr.winner td{background:#EAF3FF; font-weight:700; color:var(--blue-hi);}
+  .bias-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:8px;}
+  .bias-table th, .bias-table td{padding:6px 6px; text-align:center; border-bottom:1px solid var(--border);}
+  .bias-table th{color:var(--muted); font-weight:600; font-size:10px;}
+  .bias-table td.var-name{text-align:left; font-weight:600;}
+  .bias-table td.improved{color:#2E8B4F; font-weight:700;}
+  .bias-table td.worsened{color:var(--red-hi); font-weight:700;}
+  .bar-cell{position:relative; height:10px; background:#F0F2F7; border-radius:3px; overflow:hidden; width:90px; margin:0 auto;}
+  .bar-fill{position:absolute; top:0; bottom:0; border-radius:3px;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Interactive EDA Dashboard — Missing Data Bias (Before vs After Imputation)</h1>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="info-title">&#9432; Dataset Info</p>
+      <div class="info-row"><span class="k">Subjects</span><span id="infoN"></span></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before (missing dropped)</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After (imputed, complete)</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Imputation)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Imputation)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:150px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 8 Vars</option>
+              <option value="all">All 8 Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Missingness Heatmap
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:#4C6FA8"></span>Missing</span>
+          <span class="lg"><span class="swatch" style="background:#fff;border:1px solid #D7DEEC"></span>Observed</span>
+        </span>
+      </p>
+      <div id="classGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const DATA = {"vars":["Age","Diagnose","Smoker","Systolic BP","Diastolic BP","Cardiac output (at rest)","Cardiac index (at rest)","Stroke volume index (at rest)"],"gridVars":["Age","Diagnose","Smoker","Systolic BP","Diastolic BP","Cardiac output (at rest)","Cardiac index (at rest)","Stroke volume index (at rest)"],"before":[{"Age":57.33,"Diagnose":null,"Smoker":0.13,"Systolic BP":151.45,"Diastolic BP":88.56,"Cardiac output (at rest)":5.31,"Cardiac index (at rest)":2.7,"Stroke volume index (at rest)":31.41},{"Age":64.24,"Diagnose":0.338,"Smoker":0.588,"Systolic BP":140.23,"Diastolic BP":83.67,"Cardiac output (at rest)":5.96,"Cardiac index (at rest)":3.25,"Stroke volume index (at rest)":41.71},{"Age":52.77,"Diagnose":0.511,"Smoker":0.681,"Systolic BP":110.46,"Diastolic BP":65.78,"Cardiac output (at rest)":4.72,"Cardiac index (at rest)":2.27,"Stroke volume index (at rest)":null},{"Age":47.41,"Diagnose":0.097,"Smoker":0.285,"Systolic BP":121.81,"Diastolic BP":78.25,"Cardiac output (at rest)":5.9,"Cardiac index (at rest)":3.15,"Stroke volume index (at rest)":39.71},{"Age":51.33,"Diagnose":0.01,"Smoker":0.181,"Systolic BP":122.82,"Diastolic BP":57.24,"Cardiac output (at rest)":7.13,"Cardiac index (at rest)":3.19,"Stroke volume index (at rest)":51.03},{"Age":46.4,"Diagnose":0.227,"Smoker":null,"Systolic BP":128.62,"Diastolic BP":72.81,"Cardiac output (at rest)":5.23,"Cardiac index (at rest)":3.01,"Stroke volume index (at rest)":48.28},{"Age":null,"Diagnose":null,"Smoker":null,"Systolic BP":null,"Diastolic BP":null,"Cardiac output (at rest)":6.68,"Cardiac index (at rest)":3.7,"Stroke volume index (at rest)":55.28},{"Age":58.5,"Diagnose":0.468,"Smoker":null,"Systolic BP":153.09,"Diastolic BP":75.01,"Cardiac output (at rest)":4.3,"Cardiac index (at rest)":2.62,"Stroke volume index (at rest)":31.18},{"Age":70.41,"Diagnose":null,"Smoker":null,"Systolic BP":149.82,"Diastolic BP":102.32,"Cardiac output (at rest)":4.25,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":50.66,"Diagnose":0.34,"Smoker":0.254,"Systolic BP":111.88,"Diastolic BP":92.43,"Cardiac output (at rest)":5.2,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":42.02},{"Age":57.15,"Diagnose":0.653,"Smoker":0.294,"Systolic BP":140.45,"Diastolic BP":96.6,"Cardiac output (at rest)":4.08,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":51.33,"Diagnose":0.164,"Smoker":0.568,"Systolic BP":127.38,"Diastolic BP":82.01,"Cardiac output (at rest)":5.89,"Cardiac index (at rest)":2.93,"Stroke volume index (at rest)":40.86},{"Age":53.26,"Diagnose":0.326,"Smoker":null,"Systolic BP":null,"Diastolic BP":76.09,"Cardiac output (at rest)":4.86,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":35.59},{"Age":60.15,"Diagnose":0.265,"Smoker":0.341,"Systolic BP":133.45,"Diastolic BP":81.3,"Cardiac output (at rest)":5.78,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":23.75},{"Age":57.71,"Diagnose":0.492,"Smoker":0.936,"Systolic BP":150.27,"Diastolic BP":60.17,"Cardiac output (at rest)":4.58,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":57.03,"Diagnose":0.592,"Smoker":0.406,"Systolic BP":140.15,"Diastolic BP":83.88,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":34.8},{"Age":50.47,"Diagnose":0.142,"Smoker":null,"Systolic BP":103.36,"Diastolic BP":63.09,"Cardiac output (at rest)":6.04,"Cardiac index (at rest)":2.88,"Stroke volume index (at rest)":45.5},{"Age":54.96,"Diagnose":0.342,"Smoker":0.254,"Systolic BP":116.05,"Diastolic BP":89.18,"Cardiac output (at rest)":5.23,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":40.28},{"Age":57.31,"Diagnose":0.313,"Smoker":0.448,"Systolic BP":120.19,"Diastolic BP":84.08,"Cardiac output (at rest)":5.53,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":72.88,"Diagnose":0.647,"Smoker":0.503,"Systolic BP":145.93,"Diastolic BP":88.73,"Cardiac output (at rest)":4.44,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":28.03},{"Age":74.81,"Diagnose":0.767,"Smoker":0.362,"Systolic BP":163.62,"Diastolic BP":null,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":22.69},{"Age":66.76,"Diagnose":0.885,"Smoker":0.659,"Systolic BP":156.55,"Diastolic BP":94.85,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":64.24,"Diagnose":0.588,"Smoker":0.586,"Systolic BP":132.31,"Diastolic BP":91.17,"Cardiac output (at rest)":4.2,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":19.43},{"Age":null,"Diagnose":0.948,"Smoker":0.281,"Systolic BP":165.44,"Diastolic BP":null,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":null,"Diagnose":null,"Smoker":0.76,"Systolic BP":123.28,"Diastolic BP":69.89,"Cardiac output (at rest)":5.6,"Cardiac index (at rest)":3.32,"Stroke volume index (at rest)":45.1},{"Age":64.42,"Diagnose":0.535,"Smoker":null,"Systolic BP":150.41,"Diastolic BP":78.53,"Cardiac output (at rest)":6.15,"Cardiac index (at rest)":2.67,"Stroke volume index (at rest)":28.27},{"Age":59.59,"Diagnose":0.99,"Smoker":0.362,"Systolic BP":167.12,"Diastolic BP":111.37,"Cardiac output (at rest)":3.85,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":75.26,"Diagnose":0.539,"Smoker":0.503,"Systolic BP":136.39,"Diastolic BP":84.69,"Cardiac output (at rest)":5.95,"Cardiac index (at rest)":3.34,"Stroke volume index (at rest)":null},{"Age":53.94,"Diagnose":0.01,"Smoker":0.101,"Systolic BP":116.71,"Diastolic BP":72.91,"Cardiac output (at rest)":6.04,"Cardiac index (at rest)":2.88,"Stroke volume index (at rest)":52.38},{"Age":62.34,"Diagnose":0.446,"Smoker":null,"Systolic BP":173.83,"Diastolic BP":93.19,"Cardiac output (at rest)":null,"Cardiac index (at rest)":2.36,"Stroke volume index (at rest)":null},{"Age":64.64,"Diagnose":null,"Smoker":0.468,"Systolic BP":119.57,"Diastolic BP":83.34,"Cardiac output (at rest)":null,"Cardiac index (at rest)":2.61,"Stroke volume index (at rest)":null},{"Age":64.76,"Diagnose":0.01,"Smoker":0.01,"Systolic BP":104.76,"Diastolic BP":80.6,"Cardiac output (at rest)":6.82,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":55.28},{"Age":null,"Diagnose":0.01,"Smoker":0.802,"Systolic BP":115.59,"Diastolic BP":58.65,"Cardiac output (at rest)":6.83,"Cardiac index (at rest)":3.62,"Stroke volume index (at rest)":null},{"Age":69.87,"Diagnose":0.456,"Smoker":0.626,"Systolic BP":133.38,"Diastolic BP":86.2,"Cardiac output (at rest)":5.37,"Cardiac index (at rest)":2.97,"Stroke volume index (at rest)":null},{"Age":60.24,"Diagnose":0.304,"Smoker":0.928,"Systolic BP":129.87,"Diastolic BP":80.2,"Cardiac output (at rest)":4.7,"Cardiac index (at rest)":3.22,"Stroke volume index (at rest)":35.44},{"Age":75.38,"Diagnose":0.694,"Smoker":null,"Systolic BP":151.45,"Diastolic BP":96.72,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":71.19,"Diagnose":0.751,"Smoker":0.366,"Systolic BP":144.13,"Diastolic BP":88.35,"Cardiac output (at rest)":null,"Cardiac index (at rest)":2.69,"Stroke volume index (at rest)":21.55},{"Age":null,"Diagnose":0.487,"Smoker":0.486,"Systolic BP":127.45,"Diastolic BP":79.18,"Cardiac output (at rest)":4.58,"Cardiac index (at rest)":2.56,"Stroke volume index (at rest)":46.38},{"Age":69.9,"Diagnose":0.523,"Smoker":null,"Systolic BP":null,"Diastolic BP":84.73,"Cardiac output (at rest)":5.31,"Cardiac index (at rest)":2.54,"Stroke volume index (at rest)":null},{"Age":51.36,"Diagnose":0.168,"Smoker":0.44,"Systolic BP":103.36,"Diastolic BP":79.05,"Cardiac output (at rest)":6.05,"Cardiac index (at rest)":3.91,"Stroke volume index (at rest)":49.28},{"Age":69.25,"Diagnose":0.912,"Smoker":0.99,"Systolic BP":160.25,"Diastolic BP":92.13,"Cardiac output (at rest)":null,"Cardiac index (at rest)":2.02,"Stroke volume index (at rest)":null},{"Age":65.72,"Diagnose":0.415,"Smoker":null,"Systolic BP":119.5,"Diastolic BP":94.09,"Cardiac output (at rest)":null,"Cardiac index (at rest)":2.52,"Stroke volume index (at rest)":null},{"Age":64.06,"Diagnose":0.275,"Smoker":0.588,"Systolic BP":137.61,"Diastolic BP":102.42,"Cardiac output (at rest)":6.15,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":53.21,"Diagnose":0.453,"Smoker":0.489,"Systolic BP":116.76,"Diastolic BP":68.73,"Cardiac output (at rest)":5.4,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":42.49},{"Age":56.14,"Diagnose":0.268,"Smoker":0.268,"Systolic BP":103.36,"Diastolic BP":86.92,"Cardiac output (at rest)":5.13,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":39.38},{"Age":59.65,"Diagnose":0.311,"Smoker":null,"Systolic BP":131.42,"Diastolic BP":84.57,"Cardiac output (at rest)":null,"Cardiac index (at rest)":3.28,"Stroke volume index (at rest)":43.98},{"Age":82.8,"Diagnose":0.429,"Smoker":0.125,"Systolic BP":144.18,"Diastolic BP":73.17,"Cardiac output (at rest)":4.54,"Cardiac index (at rest)":2.62,"Stroke volume index (at rest)":null},{"Age":70.12,"Diagnose":0.19,"Smoker":0.01,"Systolic BP":142.61,"Diastolic BP":71.19,"Cardiac output (at rest)":null,"Cardiac index (at rest)":3.18,"Stroke volume index (at rest)":41.24},{"Age":69.21,"Diagnose":0.476,"Smoker":0.787,"Systolic BP":121.91,"Diastolic BP":76.78,"Cardiac output (at rest)":4.6,"Cardiac index (at rest)":1.99,"Stroke volume index (at rest)":39.58},{"Age":61.96,"Diagnose":0.99,"Smoker":0.405,"Systolic BP":163.67,"Diastolic BP":102.88,"Cardiac output (at rest)":null,"Cardiac index (at rest)":1.84,"Stroke volume index (at rest)":14.41},{"Age":58.42,"Diagnose":0.01,"Smoker":0.593,"Systolic BP":120.57,"Diastolic BP":68.88,"Cardiac output (at rest)":5.77,"Cardiac index (at rest)":2.96,"Stroke volume index (at rest)":null},{"Age":72.99,"Diagnose":0.143,"Smoker":0.516,"Systolic BP":115.67,"Diastolic BP":65.66,"Cardiac output (at rest)":5.62,"Cardiac index (at rest)":3.04,"Stroke volume index (at rest)":41.82},{"Age":null,"Diagnose":0.557,"Smoker":0.576,"Systolic BP":140.88,"Diastolic BP":92.71,"Cardiac output (at rest)":3.97,"Cardiac index (at rest)":2.42,"Stroke volume index (at rest)":null},{"Age":59.02,"Diagnose":0.566,"Smoker":0.544,"Systolic BP":135.23,"Diastolic BP":90.6,"Cardiac output (at rest)":4.49,"Cardiac index (at rest)":2.67,"Stroke volume index (at rest)":30.49},{"Age":64.59,"Diagnose":0.01,"Smoker":0.238,"Systolic BP":119.53,"Diastolic BP":71.68,"Cardiac output (at rest)":6.88,"Cardiac index (at rest)":4.14,"Stroke volume index (at rest)":null},{"Age":53.79,"Diagnose":0.255,"Smoker":null,"Systolic BP":105.09,"Diastolic BP":74.82,"Cardiac output (at rest)":5.12,"Cardiac index (at rest)":2.92,"Stroke volume index (at rest)":55.28},{"Age":64.38,"Diagnose":0.766,"Smoker":0.587,"Systolic BP":null,"Diastolic BP":102.38,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":33.49},{"Age":50.03,"Diagnose":0.08,"Smoker":0.71,"Systolic BP":116.51,"Diastolic BP":72.77,"Cardiac output (at rest)":7.15,"Cardiac index (at rest)":4.14,"Stroke volume index (at rest)":35.28},{"Age":61.56,"Diagnose":0.184,"Smoker":0.442,"Systolic BP":152.98,"Diastolic BP":81.41,"Cardiac output (at rest)":null,"Cardiac index (at rest)":2.87,"Stroke volume index (at rest)":27.47},{"Age":56.12,"Diagnose":0.01,"Smoker":0.547,"Systolic BP":109.25,"Diastolic BP":64.74,"Cardiac output (at rest)":6.16,"Cardiac index (at rest)":3.35,"Stroke volume index (at rest)":46.97},{"Age":67.69,"Diagnose":0.905,"Smoker":0.912,"Systolic BP":150.87,"Diastolic BP":88.58,"Cardiac output (at rest)":3.66,"Cardiac index (at rest)":2.3,"Stroke volume index (at rest)":null},{"Age":58.83,"Diagnose":0.01,"Smoker":0.294,"Systolic BP":116.56,"Diastolic BP":66.9,"Cardiac output (at rest)":7.45,"Cardiac index (at rest)":4.14,"Stroke volume index (at rest)":null},{"Age":62.89,"Diagnose":0.668,"Smoker":0.74,"Systolic BP":134.71,"Diastolic BP":null,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":54.79,"Diagnose":0.01,"Smoker":0.16,"Systolic BP":103.36,"Diastolic BP":77.65,"Cardiac output (at rest)":5.62,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":67.05,"Diagnose":0.392,"Smoker":null,"Systolic BP":131.02,"Diastolic BP":null,"Cardiac output (at rest)":5.95,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":72.03,"Diagnose":0.295,"Smoker":0.184,"Systolic BP":148.97,"Diastolic BP":81.22,"Cardiac output (at rest)":4.64,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":32.07},{"Age":82.25,"Diagnose":0.834,"Smoker":null,"Systolic BP":184.5,"Diastolic BP":90.9,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":13.44},{"Age":54.34,"Diagnose":0.532,"Smoker":0.186,"Systolic BP":null,"Diastolic BP":null,"Cardiac output (at rest)":5.33,"Cardiac index (at rest)":2.48,"Stroke volume index (at rest)":35.15},{"Age":61.01,"Diagnose":0.01,"Smoker":0.596,"Systolic BP":122.66,"Diastolic BP":69.51,"Cardiac output (at rest)":5.97,"Cardiac index (at rest)":3.87,"Stroke volume index (at rest)":32.45},{"Age":60.2,"Diagnose":0.512,"Smoker":0.446,"Systolic BP":null,"Diastolic BP":null,"Cardiac output (at rest)":5.31,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":57.41,"Diagnose":0.727,"Smoker":0.48,"Systolic BP":127.01,"Diastolic BP":89.62,"Cardiac output (at rest)":null,"Cardiac index (at rest)":2.15,"Stroke volume index (at rest)":30.13},{"Age":68.56,"Diagnose":0.82,"Smoker":0.928,"Systolic BP":154.07,"Diastolic BP":93.56,"Cardiac output (at rest)":3.48,"Cardiac index (at rest)":2.03,"Stroke volume index (at rest)":28.77},{"Age":42.67,"Diagnose":0.037,"Smoker":0.679,"Systolic BP":113.84,"Diastolic BP":57.3,"Cardiac output (at rest)":7.64,"Cardiac index (at rest)":4.14,"Stroke volume index (at rest)":48.15},{"Age":47.99,"Diagnose":0.425,"Smoker":0.99,"Systolic BP":112.98,"Diastolic BP":77.61,"Cardiac output (at rest)":5.21,"Cardiac index (at rest)":3.54,"Stroke volume index (at rest)":42.03},{"Age":61.58,"Diagnose":0.01,"Smoker":0.353,"Systolic BP":null,"Diastolic BP":75.18,"Cardiac output (at rest)":7.02,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":49.19},{"Age":63.95,"Diagnose":0.858,"Smoker":0.715,"Systolic BP":166.15,"Diastolic BP":null,"Cardiac output (at rest)":3.42,"Cardiac index (at rest)":1.91,"Stroke volume index (at rest)":null},{"Age":69.07,"Diagnose":0.56,"Smoker":null,"Systolic BP":143.24,"Diastolic BP":91.12,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":30.27},{"Age":48.53,"Diagnose":0.276,"Smoker":0.18,"Systolic BP":104.8,"Diastolic BP":79.65,"Cardiac output (at rest)":5.9,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":45.46},{"Age":59.68,"Diagnose":0.176,"Smoker":0.209,"Systolic BP":127.92,"Diastolic BP":57.24,"Cardiac output (at rest)":6.67,"Cardiac index (at rest)":3.62,"Stroke volume index (at rest)":null},{"Age":59.99,"Diagnose":0.47,"Smoker":0.363,"Systolic BP":136.96,"Diastolic BP":null,"Cardiac output (at rest)":null,"Cardiac index (at rest)":3.07,"Stroke volume index (at rest)":33.85},{"Age":67.76,"Diagnose":0.269,"Smoker":null,"Systolic BP":113.49,"Diastolic BP":86.79,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":42.33},{"Age":69.77,"Diagnose":0.46,"Smoker":0.625,"Systolic BP":164.48,"Diastolic BP":85.03,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":null},{"Age":54.23,"Diagnose":0.35,"Smoker":0.364,"Systolic BP":null,"Diastolic BP":null,"Cardiac output (at rest)":5.31,"Cardiac index (at rest)":3.58,"Stroke volume index (at rest)":41.39},{"Age":79.64,"Diagnose":0.589,"Smoker":null,"Systolic BP":165.3,"Diastolic BP":76.28,"Cardiac output (at rest)":2.83,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":26.69},{"Age":55.38,"Diagnose":0.283,"Smoker":0.541,"Systolic BP":130.88,"Diastolic BP":69.48,"Cardiac output (at rest)":4.81,"Cardiac index (at rest)":2.94,"Stroke volume index (at rest)":38.75},{"Age":42.2,"Diagnose":0.01,"Smoker":null,"Systolic BP":103.36,"Diastolic BP":57.24,"Cardiac output (at rest)":7.05,"Cardiac index (at rest)":3.32,"Stroke volume index (at rest)":55.28},{"Age":57.0,"Diagnose":0.684,"Smoker":0.438,"Systolic BP":137.2,"Diastolic BP":78.68,"Cardiac output (at rest)":null,"Cardiac index (at rest)":2.68,"Stroke volume index (at rest)":null},{"Age":52.44,"Diagnose":0.517,"Smoker":0.552,"Systolic BP":149.79,"Diastolic BP":95.08,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":36.32},{"Age":50.86,"Diagnose":0.015,"Smoker":0.149,"Systolic BP":128.74,"Diastolic BP":81.07,"Cardiac output (at rest)":5.33,"Cardiac index (at rest)":2.73,"Stroke volume index (at rest)":42.29},{"Age":52.45,"Diagnose":0.948,"Smoker":0.557,"Systolic BP":160.4,"Diastolic BP":87.23,"Cardiac output (at rest)":null,"Cardiac index (at rest)":null,"Stroke volume index (at rest)":20.76}],"after":[{"Age":57.33,"Diagnose":0.488,"Smoker":0.13,"Systolic BP":151.45,"Diastolic BP":88.56,"Cardiac output (at rest)":5.31,"Cardiac index (at rest)":2.7,"Stroke volume index (at rest)":31.41},{"Age":64.24,"Diagnose":0.338,"Smoker":0.588,"Systolic BP":140.23,"Diastolic BP":83.67,"Cardiac output (at rest)":5.96,"Cardiac index (at rest)":3.25,"Stroke volume index (at rest)":41.71},{"Age":52.77,"Diagnose":0.511,"Smoker":0.681,"Systolic BP":110.46,"Diastolic BP":65.78,"Cardiac output (at rest)":4.72,"Cardiac index (at rest)":2.27,"Stroke volume index (at rest)":48.24},{"Age":47.41,"Diagnose":0.097,"Smoker":0.285,"Systolic BP":121.81,"Diastolic BP":78.25,"Cardiac output (at rest)":5.9,"Cardiac index (at rest)":3.15,"Stroke volume index (at rest)":39.71},{"Age":51.33,"Diagnose":0.01,"Smoker":0.181,"Systolic BP":122.82,"Diastolic BP":57.24,"Cardiac output (at rest)":7.13,"Cardiac index (at rest)":3.19,"Stroke volume index (at rest)":51.03},{"Age":46.4,"Diagnose":0.227,"Smoker":0.461,"Systolic BP":128.62,"Diastolic BP":72.81,"Cardiac output (at rest)":5.23,"Cardiac index (at rest)":3.01,"Stroke volume index (at rest)":48.28},{"Age":52.15,"Diagnose":-0.03,"Smoker":0.416,"Systolic BP":101.16,"Diastolic BP":65.67,"Cardiac output (at rest)":6.68,"Cardiac index (at rest)":3.7,"Stroke volume index (at rest)":55.28},{"Age":58.5,"Diagnose":0.468,"Smoker":0.514,"Systolic BP":153.09,"Diastolic BP":75.01,"Cardiac output (at rest)":4.3,"Cardiac index (at rest)":2.62,"Stroke volume index (at rest)":31.18},{"Age":70.41,"Diagnose":0.71,"Smoker":0.498,"Systolic BP":149.82,"Diastolic BP":102.32,"Cardiac output (at rest)":4.25,"Cardiac index (at rest)":2.47,"Stroke volume index (at rest)":24.28},{"Age":50.66,"Diagnose":0.34,"Smoker":0.254,"Systolic BP":111.88,"Diastolic BP":92.43,"Cardiac output (at rest)":5.2,"Cardiac index (at rest)":3.0,"Stroke volume index (at rest)":42.02},{"Age":57.15,"Diagnose":0.653,"Smoker":0.294,"Systolic BP":140.45,"Diastolic BP":96.6,"Cardiac output (at rest)":4.08,"Cardiac index (at rest)":2.37,"Stroke volume index (at rest)":29.92},{"Age":51.33,"Diagnose":0.164,"Smoker":0.568,"Systolic BP":127.38,"Diastolic BP":82.01,"Cardiac output (at rest)":5.89,"Cardiac index (at rest)":2.93,"Stroke volume index (at rest)":40.86},{"Age":53.26,"Diagnose":0.326,"Smoker":0.482,"Systolic BP":133.49,"Diastolic BP":76.09,"Cardiac output (at rest)":4.86,"Cardiac index (at rest)":2.74,"Stroke volume index (at rest)":35.59},{"Age":60.15,"Diagnose":0.265,"Smoker":0.341,"Systolic BP":133.45,"Diastolic BP":81.3,"Cardiac output (at rest)":5.78,"Cardiac index (at rest)":3.29,"Stroke volume index (at rest)":23.75},{"Age":57.71,"Diagnose":0.492,"Smoker":0.936,"Systolic BP":150.27,"Diastolic BP":60.17,"Cardiac output (at rest)":4.58,"Cardiac index (at rest)":2.47,"Stroke volume index (at rest)":35.76},{"Age":57.03,"Diagnose":0.592,"Smoker":0.406,"Systolic BP":140.15,"Diastolic BP":83.88,"Cardiac output (at rest)":4.81,"Cardiac index (at rest)":2.62,"Stroke volume index (at rest)":34.8},{"Age":50.47,"Diagnose":0.142,"Smoker":0.436,"Systolic BP":103.36,"Diastolic BP":63.09,"Cardiac output (at rest)":6.04,"Cardiac index (at rest)":2.88,"Stroke volume index (at rest)":45.5},{"Age":54.96,"Diagnose":0.342,"Smoker":0.254,"Systolic BP":116.05,"Diastolic BP":89.18,"Cardiac output (at rest)":5.23,"Cardiac index (at rest)":2.99,"Stroke volume index (at rest)":40.28},{"Age":57.31,"Diagnose":0.313,"Smoker":0.448,"Systolic BP":120.19,"Diastolic BP":84.08,"Cardiac output (at rest)":5.53,"Cardiac index (at rest)":3.11,"Stroke volume index (at rest)":40.06},{"Age":72.88,"Diagnose":0.647,"Smoker":0.503,"Systolic BP":145.93,"Diastolic BP":88.73,"Cardiac output (at rest)":4.44,"Cardiac index (at rest)":2.52,"Stroke volume index (at rest)":28.03},{"Age":74.81,"Diagnose":0.767,"Smoker":0.362,"Systolic BP":163.62,"Diastolic BP":91.36,"Cardiac output (at rest)":4.01,"Cardiac index (at rest)":2.2,"Stroke volume index (at rest)":22.69},{"Age":66.76,"Diagnose":0.885,"Smoker":0.659,"Systolic BP":156.55,"Diastolic BP":94.85,"Cardiac output (at rest)":3.72,"Cardiac index (at rest)":2.15,"Stroke volume index (at rest)":24.11},{"Age":64.24,"Diagnose":0.588,"Smoker":0.586,"Systolic BP":132.31,"Diastolic BP":91.17,"Cardiac output (at rest)":4.2,"Cardiac index (at rest)":2.66,"Stroke volume index (at rest)":19.43},{"Age":68.65,"Diagnose":0.948,"Smoker":0.281,"Systolic BP":165.44,"Diastolic BP":92.54,"Cardiac output (at rest)":3.79,"Cardiac index (at rest)":2.06,"Stroke volume index (at rest)":21.55},{"Age":57.41,"Diagnose":0.227,"Smoker":0.76,"Systolic BP":123.28,"Diastolic BP":69.89,"Cardiac output (at rest)":5.6,"Cardiac index (at rest)":3.32,"Stroke volume index (at rest)":45.1},{"Age":64.42,"Diagnose":0.535,"Smoker":0.51,"Systolic BP":150.41,"Diastolic BP":78.53,"Cardiac output (at rest)":6.15,"Cardiac index (at rest)":2.67,"Stroke volume index (at rest)":28.27},{"Age":59.59,"Diagnose":0.99,"Smoker":0.362,"Systolic BP":167.12,"Diastolic BP":111.37,"Cardiac output (at rest)":3.85,"Cardiac index (at rest)":2.18,"Stroke volume index (at rest)":16.94},{"Age":75.26,"Diagnose":0.539,"Smoker":0.503,"Systolic BP":136.39,"Diastolic BP":84.69,"Cardiac output (at rest)":5.95,"Cardiac index (at rest)":3.34,"Stroke volume index (at rest)":33.04},{"Age":53.94,"Diagnose":0.01,"Smoker":0.101,"Systolic BP":116.71,"Diastolic BP":72.91,"Cardiac output (at rest)":6.04,"Cardiac index (at rest)":2.88,"Stroke volume index (at rest)":52.38},{"Age":62.34,"Diagnose":0.446,"Smoker":0.547,"Systolic BP":173.83,"Diastolic BP":93.19,"Cardiac output (at rest)":4.28,"Cardiac index (at rest)":2.36,"Stroke volume index (at rest)":19.08},{"Age":64.64,"Diagnose":0.415,"Smoker":0.468,"Systolic BP":119.57,"Diastolic BP":83.34,"Cardiac output (at rest)":4.81,"Cardiac index (at rest)":2.61,"Stroke volume index (at rest)":39.82},{"Age":64.76,"Diagnose":0.01,"Smoker":0.01,"Systolic BP":104.76,"Diastolic BP":80.6,"Cardiac output (at rest)":6.82,"Cardiac index (at rest)":3.6,"Stroke volume index (at rest)":55.28},{"Age":55.14,"Diagnose":0.01,"Smoker":0.802,"Systolic BP":115.59,"Diastolic BP":58.65,"Cardiac output (at rest)":6.83,"Cardiac index (at rest)":3.62,"Stroke volume index (at rest)":48.31},{"Age":69.87,"Diagnose":0.456,"Smoker":0.626,"Systolic BP":133.38,"Diastolic BP":86.2,"Cardiac output (at rest)":5.37,"Cardiac index (at rest)":2.97,"Stroke volume index (at rest)":34.05},{"Age":60.24,"Diagnose":0.304,"Smoker":0.928,"Systolic BP":129.87,"Diastolic BP":80.2,"Cardiac output (at rest)":4.7,"Cardiac index (at rest)":3.22,"Stroke volume index (at rest)":35.44},{"Age":75.38,"Diagnose":0.694,"Smoker":0.502,"Systolic BP":151.45,"Diastolic BP":96.72,"Cardiac output (at rest)":4.06,"Cardiac index (at rest)":2.36,"Stroke volume index (at rest)":24.73},{"Age":71.19,"Diagnose":0.751,"Smoker":0.366,"Systolic BP":144.13,"Diastolic BP":88.35,"Cardiac output (at rest)":4.53,"Cardiac index (at rest)":2.69,"Stroke volume index (at rest)":21.55},{"Age":58.41,"Diagnose":0.487,"Smoker":0.486,"Systolic BP":127.45,"Diastolic BP":79.18,"Cardiac output (at rest)":4.58,"Cardiac index (at rest)":2.56,"Stroke volume index (at rest)":46.38},{"Age":69.9,"Diagnose":0.523,"Smoker":0.49,"Systolic BP":142.61,"Diastolic BP":84.73,"Cardiac output (at rest)":5.31,"Cardiac index (at rest)":2.54,"Stroke volume index (at rest)":31.29},{"Age":51.36,"Diagnose":0.168,"Smoker":0.44,"Systolic BP":103.36,"Diastolic BP":79.05,"Cardiac output (at rest)":6.05,"Cardiac index (at rest)":3.91,"Stroke volume index (at rest)":49.28},{"Age":69.25,"Diagnose":0.912,"Smoker":0.99,"Systolic BP":160.25,"Diastolic BP":92.13,"Cardiac output (at rest)":3.4,"Cardiac index (at rest)":2.02,"Stroke volume index (at rest)":23.3},{"Age":65.72,"Diagnose":0.415,"Smoker":0.445,"Systolic BP":119.5,"Diastolic BP":94.09,"Cardiac output (at rest)":4.54,"Cardiac index (at rest)":2.52,"Stroke volume index (at rest)":37.02},{"Age":64.06,"Diagnose":0.275,"Smoker":0.588,"Systolic BP":137.61,"Diastolic BP":102.42,"Cardiac output (at rest)":6.15,"Cardiac index (at rest)":3.45,"Stroke volume index (at rest)":29.06},{"Age":53.21,"Diagnose":0.453,"Smoker":0.489,"Systolic BP":116.76,"Diastolic BP":68.73,"Cardiac output (at rest)":5.4,"Cardiac index (at rest)":2.99,"Stroke volume index (at rest)":42.49},{"Age":56.14,"Diagnose":0.268,"Smoker":0.268,"Systolic BP":103.36,"Diastolic BP":86.92,"Cardiac output (at rest)":5.13,"Cardiac index (at rest)":3.08,"Stroke volume index (at rest)":39.38},{"Age":59.65,"Diagnose":0.311,"Smoker":0.459,"Systolic BP":131.42,"Diastolic BP":84.57,"Cardiac output (at rest)":5.77,"Cardiac index (at rest)":3.28,"Stroke volume index (at rest)":43.98},{"Age":82.8,"Diagnose":0.429,"Smoker":0.125,"Systolic BP":144.18,"Diastolic BP":73.17,"Cardiac output (at rest)":4.54,"Cardiac index (at rest)":2.62,"Stroke volume index (at rest)":32.62},{"Age":70.12,"Diagnose":0.19,"Smoker":0.01,"Systolic BP":142.61,"Diastolic BP":71.19,"Cardiac output (at rest)":6.1,"Cardiac index (at rest)":3.18,"Stroke volume index (at rest)":41.24},{"Age":69.21,"Diagnose":0.476,"Smoker":0.787,"Systolic BP":121.91,"Diastolic BP":76.78,"Cardiac output (at rest)":4.6,"Cardiac index (at rest)":1.99,"Stroke volume index (at rest)":39.58},{"Age":61.96,"Diagnose":0.99,"Smoker":0.405,"Systolic BP":163.67,"Diastolic BP":102.88,"Cardiac output (at rest)":3.21,"Cardiac index (at rest)":1.84,"Stroke volume index (at rest)":14.41},{"Age":58.42,"Diagnose":0.01,"Smoker":0.593,"Systolic BP":120.57,"Diastolic BP":68.88,"Cardiac output (at rest)":5.77,"Cardiac index (at rest)":2.96,"Stroke volume index (at rest)":43.71},{"Age":72.99,"Diagnose":0.143,"Smoker":0.516,"Systolic BP":115.67,"Diastolic BP":65.66,"Cardiac output (at rest)":5.62,"Cardiac index (at rest)":3.04,"Stroke volume index (at rest)":41.82},{"Age":63.39,"Diagnose":0.557,"Smoker":0.576,"Systolic BP":140.88,"Diastolic BP":92.71,"Cardiac output (at rest)":3.97,"Cardiac index (at rest)":2.42,"Stroke volume index (at rest)":30.25},{"Age":59.02,"Diagnose":0.566,"Smoker":0.544,"Systolic BP":135.23,"Diastolic BP":90.6,"Cardiac output (at rest)":4.49,"Cardiac index (at rest)":2.67,"Stroke volume index (at rest)":30.49},{"Age":64.59,"Diagnose":0.01,"Smoker":0.238,"Systolic BP":119.53,"Diastolic BP":71.68,"Cardiac output (at rest)":6.88,"Cardiac index (at rest)":4.14,"Stroke volume index (at rest)":42.98},{"Age":53.79,"Diagnose":0.255,"Smoker":0.416,"Systolic BP":105.09,"Diastolic BP":74.82,"Cardiac output (at rest)":5.12,"Cardiac index (at rest)":2.92,"Stroke volume index (at rest)":55.28},{"Age":64.38,"Diagnose":0.766,"Smoker":0.587,"Systolic BP":135.99,"Diastolic BP":102.38,"Cardiac output (at rest)":4.04,"Cardiac index (at rest)":2.39,"Stroke volume index (at rest)":33.49},{"Age":50.03,"Diagnose":0.08,"Smoker":0.71,"Systolic BP":116.51,"Diastolic BP":72.77,"Cardiac output (at rest)":7.15,"Cardiac index (at rest)":4.14,"Stroke volume index (at rest)":35.28},{"Age":61.56,"Diagnose":0.184,"Smoker":0.442,"Systolic BP":152.98,"Diastolic BP":81.41,"Cardiac output (at rest)":5.26,"Cardiac index (at rest)":2.87,"Stroke volume index (at rest)":27.47},{"Age":56.12,"Diagnose":0.01,"Smoker":0.547,"Systolic BP":109.25,"Diastolic BP":64.74,"Cardiac output (at rest)":6.16,"Cardiac index (at rest)":3.35,"Stroke volume index (at rest)":46.97},{"Age":67.69,"Diagnose":0.905,"Smoker":0.912,"Systolic BP":150.87,"Diastolic BP":88.58,"Cardiac output (at rest)":3.66,"Cardiac index (at rest)":2.3,"Stroke volume index (at rest)":27.52},{"Age":58.83,"Diagnose":0.01,"Smoker":0.294,"Systolic BP":116.56,"Diastolic BP":66.9,"Cardiac output (at rest)":7.45,"Cardiac index (at rest)":4.14,"Stroke volume index (at rest)":45.69},{"Age":62.89,"Diagnose":0.668,"Smoker":0.74,"Systolic BP":134.71,"Diastolic BP":83.58,"Cardiac output (at rest)":4.51,"Cardiac index (at rest)":2.58,"Stroke volume index (at rest)":34.72},{"Age":54.79,"Diagnose":0.01,"Smoker":0.16,"Systolic BP":103.36,"Diastolic BP":77.65,"Cardiac output (at rest)":5.62,"Cardiac index (at rest)":3.2,"Stroke volume index (at rest)":47.61},{"Age":67.05,"Diagnose":0.392,"Smoker":0.47,"Systolic BP":131.02,"Diastolic BP":79.43,"Cardiac output (at rest)":5.95,"Cardiac index (at rest)":3.22,"Stroke volume index (at rest)":36.84},{"Age":72.03,"Diagnose":0.295,"Smoker":0.184,"Systolic BP":148.97,"Diastolic BP":81.22,"Cardiac output (at rest)":4.64,"Cardiac index (at rest)":2.52,"Stroke volume index (at rest)":32.07},{"Age":82.25,"Diagnose":0.834,"Smoker":0.565,"Systolic BP":184.5,"Diastolic BP":90.9,"Cardiac output (at rest)":3.49,"Cardiac index (at rest)":1.93,"Stroke volume index (at rest)":13.44},{"Age":54.34,"Diagnose":0.532,"Smoker":0.186,"Systolic BP":133.29,"Diastolic BP":82.05,"Cardiac output (at rest)":5.33,"Cardiac index (at rest)":2.48,"Stroke volume index (at rest)":35.15},{"Age":61.01,"Diagnose":0.01,"Smoker":0.596,"Systolic BP":122.66,"Diastolic BP":69.51,"Cardiac output (at rest)":5.97,"Cardiac index (at rest)":3.87,"Stroke volume index (at rest)":32.45},{"Age":60.2,"Diagnose":0.512,"Smoker":0.446,"Systolic BP":132.07,"Diastolic BP":80.71,"Cardiac output (at rest)":5.31,"Cardiac index (at rest)":2.91,"Stroke volume index (at rest)":36.64},{"Age":57.41,"Diagnose":0.727,"Smoker":0.48,"Systolic BP":127.01,"Diastolic BP":89.62,"Cardiac output (at rest)":3.94,"Cardiac index (at rest)":2.15,"Stroke volume index (at rest)":30.13},{"Age":68.56,"Diagnose":0.82,"Smoker":0.928,"Systolic BP":154.07,"Diastolic BP":93.56,"Cardiac output (at rest)":3.48,"Cardiac index (at rest)":2.03,"Stroke volume index (at rest)":28.77},{"Age":42.67,"Diagnose":0.037,"Smoker":0.679,"Systolic BP":113.84,"Diastolic BP":57.3,"Cardiac output (at rest)":7.64,"Cardiac index (at rest)":4.14,"Stroke volume index (at rest)":48.15},{"Age":47.99,"Diagnose":0.425,"Smoker":0.99,"Systolic BP":112.98,"Diastolic BP":77.61,"Cardiac output (at rest)":5.21,"Cardiac index (at rest)":3.54,"Stroke volume index (at rest)":42.03},{"Age":61.58,"Diagnose":0.01,"Smoker":0.353,"Systolic BP":110.61,"Diastolic BP":75.18,"Cardiac output (at rest)":7.02,"Cardiac index (at rest)":3.75,"Stroke volume index (at rest)":49.19},{"Age":63.95,"Diagnose":0.858,"Smoker":0.715,"Systolic BP":166.15,"Diastolic BP":92.78,"Cardiac output (at rest)":3.42,"Cardiac index (at rest)":1.91,"Stroke volume index (at rest)":21.56},{"Age":69.07,"Diagnose":0.56,"Smoker":0.488,"Systolic BP":143.24,"Diastolic BP":91.12,"Cardiac output (at rest)":4.53,"Cardiac index (at rest)":2.57,"Stroke volume index (at rest)":30.27},{"Age":48.53,"Diagnose":0.276,"Smoker":0.18,"Systolic BP":104.8,"Diastolic BP":79.65,"Cardiac output (at rest)":5.9,"Cardiac index (at rest)":3.29,"Stroke volume index (at rest)":45.46},{"Age":59.68,"Diagnose":0.176,"Smoker":0.209,"Systolic BP":127.92,"Diastolic BP":57.24,"Cardiac output (at rest)":6.67,"Cardiac index (at rest)":3.62,"Stroke volume index (at rest)":44.14},{"Age":59.99,"Diagnose":0.47,"Smoker":0.363,"Systolic BP":136.96,"Diastolic BP":82.13,"Cardiac output (at rest)":5.4,"Cardiac index (at rest)":3.07,"Stroke volume index (at rest)":33.85},{"Age":67.76,"Diagnose":0.269,"Smoker":0.433,"Systolic BP":113.49,"Diastolic BP":86.79,"Cardiac output (at rest)":5.46,"Cardiac index (at rest)":3.13,"Stroke volume index (at rest)":42.33},{"Age":69.77,"Diagnose":0.46,"Smoker":0.625,"Systolic BP":164.48,"Diastolic BP":85.03,"Cardiac output (at rest)":4.48,"Cardiac index (at rest)":2.47,"Stroke volume index (at rest)":23.74},{"Age":54.23,"Diagnose":0.35,"Smoker":0.364,"Systolic BP":122.62,"Diastolic BP":77.4,"Cardiac output (at rest)":5.31,"Cardiac index (at rest)":3.58,"Stroke volume index (at rest)":41.39},{"Age":79.64,"Diagnose":0.589,"Smoker":0.531,"Systolic BP":165.3,"Diastolic BP":76.28,"Cardiac output (at rest)":2.83,"Cardiac index (at rest)":1.64,"Stroke volume index (at rest)":26.69},{"Age":55.38,"Diagnose":0.283,"Smoker":0.541,"Systolic BP":130.88,"Diastolic BP":69.48,"Cardiac output (at rest)":4.81,"Cardiac index (at rest)":2.94,"Stroke volume index (at rest)":38.75},{"Age":42.2,"Diagnose":0.01,"Smoker":0.428,"Systolic BP":103.36,"Diastolic BP":57.24,"Cardiac output (at rest)":7.05,"Cardiac index (at rest)":3.32,"Stroke volume index (at rest)":55.28},{"Age":57.0,"Diagnose":0.684,"Smoker":0.438,"Systolic BP":137.2,"Diastolic BP":78.68,"Cardiac output (at rest)":4.88,"Cardiac index (at rest)":2.68,"Stroke volume index (at rest)":35.61},{"Age":52.44,"Diagnose":0.517,"Smoker":0.552,"Systolic BP":149.79,"Diastolic BP":95.08,"Cardiac output (at rest)":4.53,"Cardiac index (at rest)":2.47,"Stroke volume index (at rest)":36.32},{"Age":50.86,"Diagnose":0.015,"Smoker":0.149,"Systolic BP":128.74,"Diastolic BP":81.07,"Cardiac output (at rest)":5.33,"Cardiac index (at rest)":2.73,"Stroke volume index (at rest)":42.29},{"Age":52.45,"Diagnose":0.948,"Smoker":0.557,"Systolic BP":160.4,"Diastolic BP":87.23,"Cardiac output (at rest)":3.88,"Cardiac index (at rest)":2.18,"Stroke volume index (at rest)":20.76}],"classBefore":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"classAfter":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"missingBefore":{"Age":[false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"Diagnose":[true,false,false,false,false,false,true,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"Smoker":[false,false,false,false,false,true,true,true,true,false,false,false,true,false,false,false,true,false,false,false,false,false,false,false,false,true,false,false,false,true,false,false,false,false,false,true,false,false,true,false,false,true,false,false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,true,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,true,false,false,true,false,true,false,false,false,false],"Systolic BP":[false,false,false,false,false,false,true,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,true,false,true,false,false,false,false,true,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],"Diastolic BP":[false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,false,false,true,false,true,false,false,false,false,false,true,false,false,false,true,false,false,true,false,false,false,false,false,false,false],"Cardiac output (at rest)":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,true,false,true,false,false,false,false,false,true,true,false,false,false,false,true,true,false,false,false,true,true,false,false,false,true,false,true,false,true,false,false,false,false,false,false,true,false,true,false,false,false,true,false,false,false,true,false,false,false,true,false,false,false,false,false,true,false,false,true,true,true,false,false,false,false,true,true,false,true],"Cardiac index (at rest)":[false,false,false,false,false,false,false,false,true,true,true,false,true,true,true,true,false,true,true,true,true,true,true,true,false,false,true,false,false,false,false,true,false,false,false,true,false,false,false,false,false,false,true,true,true,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true,true,true,true,false,false,true,false,false,false,false,true,false,true,true,false,false,true,true,false,true,false,false,false,true,false,true],"Stroke volume index (at rest)":[false,false,true,false,false,false,false,false,true,false,true,false,false,false,true,false,false,false,true,false,false,true,false,true,false,false,true,true,false,true,true,false,true,true,false,true,false,false,true,false,true,true,true,false,false,false,true,false,false,false,true,false,true,false,true,false,false,false,false,false,true,true,true,true,true,false,false,false,false,true,false,false,false,false,false,true,false,false,true,false,false,true,false,false,false,false,true,false,false,false]},"nSubjects":90,"pctMissing":{"Age":6.7,"Diagnose":5.6,"Smoker":21.1,"Systolic BP":8.9,"Diastolic BP":11.1,"Cardiac output (at rest)":27.8,"Cardiac index (at rest)":38.9,"Stroke volume index (at rest)":35.6},"biasBefore":{"Age":0.183,"Diagnose":0.001,"Smoker":0.007,"Systolic BP":0.23,"Diastolic BP":-0.227,"Cardiac output (at rest)":0.222,"Cardiac index (at rest)":0.142,"Stroke volume index (at rest)":1.079},"biasAfter":{"Age":0.069,"Diagnose":-0.002,"Smoker":0.007,"Systolic BP":-0.422,"Diastolic BP":-0.04,"Cardiac output (at rest)":-0.045,"Cardiac index (at rest)":0.041,"Stroke volume index (at rest)":-0.472},"trueMean":{"Age":60.714,"Diagnose":0.411,"Smoker":0.468,"Systolic BP":133.585,"Diastolic BP":81.306,"Cardiac output (at rest)":5.197,"Cardiac index (at rest)":2.819,"Stroke volume index (at rest)":36.54},"naiveMean":{"Age":60.896,"Diagnose":0.412,"Smoker":0.474,"Systolic BP":133.815,"Diastolic BP":81.079,"Cardiac output (at rest)":5.418,"Cardiac index (at rest)":2.961,"Stroke volume index (at rest)":37.619},"afterMean":{"Age":60.783,"Diagnose":0.409,"Smoker":0.475,"Systolic BP":133.163,"Diastolic BP":81.266,"Cardiac output (at rest)":5.151,"Cardiac index (at rest)":2.86,"Stroke volume index (at rest)":36.068},"winnerMethod":"Regression (MICE)","overallMeanAbsBiasBefore":0.2613,"overallMeanAbsBiasAfter":0.1373,"overallPctMissing":19.4,"summaryMethods":[{"Method":"Regression (MICE)","rmse":5.0289,"bias":-0.1079,"mean_abs_bias":0.1373,"combined_score":0.1077},{"Method":"KNN Imputation (k=5)","rmse":6.4974,"bias":0.2015,"mean_abs_bias":0.2018,"combined_score":0.0664},{"Method":"Mean Imputation","rmse":7.6457,"bias":0.2045,"mean_abs_bias":0.2613,"combined_score":0.0572},{"Method":"Median Imputation","rmse":7.8245,"bias":0.2568,"mean_abs_bias":0.3086,"combined_score":0.0496},{"Method":"Hot-Deck Imputation","rmse":10.5649,"bias":0.3049,"mean_abs_bias":0.5005,"combined_score":0.0342}]};
+const VARS_META = {"Age": ["Age (years)", "yrs"], "Diagnose": ["Diagnose risk score (0=Control, 1=Disease)", ""], "Smoker": ["Smoker propensity score (0=No, 1=Yes)", ""], "Systolic BP": ["Systolic BP (mmHg)", "mmHg"], "Diastolic BP": ["Diastolic BP (mmHg)", "mmHg"], "Cardiac output (at rest)": ["Cardiac output at rest (L/min)", "L/min"], "Cardiac index (at rest)": ["Cardiac index at rest (L/min/m\u00b2)", "L/min/m\u00b2"], "Stroke volume index (at rest)": ["Stroke volume index at rest (mL/m\u00b2)", "mL/m\u00b2"]};
+const ALL_VARS = DATA.vars;
+const GRID_VARS = DATA.gridVars;
+
+const BEFORE = DATA.before;
+const AFTER = DATA.after;
+const MISSING_BEFORE = DATA.missingBefore;
+const N = DATA.nSubjects;
+
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function std(a){ const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+
+const CATEGORY_LABELS = {
+  "Diagnose": {0:"Control", 1:"Disease"},
+  "Smoker": {0:"No", 1:"Yes"}
+};
+function fmtTick(v, val, range){
+  const cats = CATEGORY_LABELS[v];
+  if(cats){
+    const r = Math.round(val);
+    if(r===0 || r===1) return cats[r];
+  }
+  return fmtAxis(val, range);
+}
+
+function beforeArr(v){ return BEFORE.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+function afterArr(v){ return AFTER.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+
+document.getElementById('infoN').textContent = N;
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{
+  const o = document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; varDropdown.appendChild(o);
+});
+let selectedVar = ALL_VARS[0];
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = VARS_META[v][0];
+    d.onclick = ()=>{ selectedVar=v; varDropdown.value=v; renderVarList(); highlightVar(v); document.getElementById('qqVar').value=v; drawQQ(); };
+    varList.appendChild(d);
+  });
+}
+varDropdown.addEventListener('change', e=>{ selectedVar=e.target.value; renderVarList(); highlightVar(selectedVar); document.getElementById('qqVar').value=selectedVar; drawQQ(); });
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= SVG helpers =================
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+
+// ================= Histogram / Density =================
+function histBins(arr, nbins, lo, hi){
+  const width=(hi-lo)/nbins || 1;
+  const counts=new Array(nbins).fill(0);
+  arr.forEach(x=>{
+    let idx=Math.floor((x-lo)/width);
+    if(idx<0) idx=0; if(idx>=nbins) idx=nbins-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+function drawDistChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const lo = Math.min(...before,...after), hi = Math.max(...before,...after);
+  const nbins=10;
+  const cb = histBins(before,nbins,lo,hi), ca = histBins(after,nbins,lo,hi);
+  const maxc = Math.max(...cb,...ca,1);
+  const W=250,H=150, padL=30,padB=20,padT=6,padR=6;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const bw = plotW/nbins;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=4;i++){
+    const y = padT + plotH - (i/4)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=Math.round((i/4)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  const tipBg = svgEl('rect', {x:padL, y:0, width:70, height:14, rx:3, fill:'#fff', stroke:'#D7DEEC', 'stroke-width':1, style:'display:none;'});
+  const tip = svgEl('text', {x:padL+4, y:10, 'font-size':9.5, 'font-weight':700, fill:'var(--before-line)'});
+  tip.textContent = '';
+  function showTip(label, val, colorVar){
+    tip.textContent = label + ': ' + val;
+    tip.setAttribute('fill', colorVar);
+    tipBg.setAttribute('stroke', colorVar);
+    tipBg.style.display='block';
+  }
+  if(plotType==='hist'){
+    for(let i=0;i<cb.length;i++){
+      const x = padL + i*bw;
+      const bH = (cb[i]/maxc)*plotH;
+      const aH = (ca[i]/maxc)*plotH;
+      const rectB = {x:x+1, y:padT+plotH-bH, width:Math.max(bw-2,1), height:bH, fill:'var(--before)', opacity:0.9, stroke:'var(--before-line)', 'stroke-width':1.2, style:'cursor:pointer;'};
+      const rectA = {x:x+1, y:padT+plotH-aH, width:Math.max(bw-2,1), height:aH, fill:'var(--after)', opacity:0.9, stroke:'var(--after-line)', 'stroke-width':1.2, style:'cursor:pointer;'};
+      const elB = svgEl('rect', rectB);
+      const elA = svgEl('rect', rectA);
+      const tipB = ()=>showTip('Before', cb[i], 'var(--before-line)');
+      const tipA = ()=>showTip('After', ca[i], 'var(--after-line)');
+      if(bH >= aH){
+        svg.appendChild(elB);
+        if(ca[i] > 0) svg.appendChild(elA);
+      } else {
+        svg.appendChild(elA);
+        if(cb[i] > 0) svg.appendChild(elB);
+      }
+    }
+    svg.appendChild(tipBg);
+    svg.appendChild(tip);
+  } else {
+    function densityLine(counts, color, line, alpha){
+      let d='';
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw + bw/2;
+        const y = padT + plotH - (c/maxc)*plotH;
+        d += (i===0?'M':'L') + x + ' ' + y + ' ';
+      });
+      const path = svgEl('path',{d:d.trim(), fill:'none', stroke:line, 'stroke-width':2});
+      svg.appendChild(path);
+      let dArea = d.trim() + ` L ${padL+plotW} ${padT+plotH} L ${padL} ${padT+plotH} Z`;
+      svg.appendChild(svgEl('path',{d:dArea, fill:color, opacity:alpha*0.6}));
+    }
+    densityLine(cb, 'var(--before)', 'var(--before-line)', 0.55);
+    densityLine(ca, 'var(--after)', 'var(--after-line)', 0.55);
+  }
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const xt1=svgEl('text',{x:padL,y:H-4,'font-size':8,fill:'#8791A3'}); xt1.textContent=fmtTick(v,lo,hi-lo); svg.appendChild(xt1);
+  const xt2=svgEl('text',{x:W-padR,y:H-4,'text-anchor':'end','font-size':8,fill:'#8791A3'}); xt2.textContent=fmtTick(v,hi,hi-lo); svg.appendChild(xt2);
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function quartiles(arr){
+  const a=[...arr].sort((x,y)=>x-y);
+  const q=(p)=>{ const idx=(a.length-1)*p; const lo=Math.floor(idx),hi=Math.ceil(idx); return a[lo]+(a[hi]-a[lo])*(idx-lo); };
+  const q1=q(0.25), med=q(0.5), q3=q(0.75), iqr=q3-q1;
+  const loW = Math.max(a[0], q1-1.5*iqr), hiW = Math.min(a[a.length-1], q3+1.5*iqr);
+  const outliers = a.filter(x=>x<loW||x>hiW);
+  return {q1,med,q3,loW,hiW,outliers,min:a[0],max:a[a.length-1]};
+}
+function drawBoxChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const sb = quartiles(before), sa = quartiles(after);
+  const lo = Math.min(sb.loW,sa.loW,...sb.outliers,...sa.outliers);
+  const hi = Math.max(sb.hiW,sa.hiW,...sb.outliers,...sa.outliers);
+  const W=250,H=150, padL=32,padB=20,padT=8,padR=10;
+  const plotH=H-padT-padB;
+  const y = val => padT + plotH - ((val-lo)/(hi-lo||1))*plotH;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const yy=padT+ (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'}));
+  }
+  const tipBg = svgEl('rect', {x:padL-2, y:1, width:150, height:14, rx:3, fill:'#fff', stroke:'#D7DEEC', 'stroke-width':1, style:'display:none;'});
+  const tip = svgEl('text', {x:padL+2, y:padT+2, 'font-size':8.5, 'font-weight':700, fill:'var(--before-line)'});
+  function box(cx, s, color, line, label){
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.loW),y2:y(s.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.q3),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.loW),y2:y(s.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.hiW),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    const rectEl = svgEl('rect',{x:cx-bw/2, y:y(s.q3), width:bw, height:Math.max(y(s.q1)-y(s.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85, style:'cursor:pointer;'});
+    const showBoxTip = ()=>{
+      tip.textContent = label+': med '+s.med.toFixed(1)+', IQR '+s.q1.toFixed(1)+'\u2013'+s.q3.toFixed(1);
+      tip.setAttribute('fill', line);
+      tipBg.setAttribute('stroke', line);
+      tipBg.style.display='block';
+    };
+    svg.appendChild(rectEl);
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(s.med),y2:y(s.med),stroke:line,'stroke-width':1.6}));
+    s.outliers.forEach(o=>{ svg.appendChild(svgEl('circle',{cx:cx, cy:y(o), r:2, fill:'none', stroke:line, 'stroke-width':1})); });
+  }
+  box(padL+ (W-padL-padR)*0.28, sb, 'var(--before)', 'var(--before-line)', 'Before');
+  box(padL+ (W-padL-padR)*0.72, sa, 'var(--after)', 'var(--after-line)', 'After');
+  svg.appendChild(tipBg);
+  svg.appendChild(tip);
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const lb=svgEl('text',{x:padL+(W-padL-padR)*0.28,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); lb.textContent='Before'; svg.appendChild(lb);
+  const la=svgEl('text',{x:padL+(W-padL-padR)*0.72,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); la.textContent='After'; svg.appendChild(la);
+  for(let i=0;i<=3;i++){
+    const val = lo + (i/3)*(hi-lo);
+    const yy=padT+plotH-(i/3)*plotH;
+    const t=svgEl('text',{x:padL-4,y:yy+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtAxis(val,hi-lo); svg.appendChild(t);
+  }
+  container.appendChild(svg);
+}
+
+// ================= render var grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  GRID_VARS.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v;
+    const t = document.createElement('div'); t.className='ct'; t.textContent=VARS_META[v][0]; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+
+    const bb = document.createElement('div'); bb.className='chart-box';
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=VARS_META[v][0]; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function erfinv(x){
+  const a=0.147;
+  const ln = Math.log(1-x*x);
+  const t1 = 2/(Math.PI*a) + ln/2;
+  return Math.sign(x)*Math.sqrt(Math.sqrt(t1*t1-ln/a)-t1);
+}
+function normInv(p){ return Math.sqrt(2)*erfinv(2*p-1); }
+function drawQQSub(svg, x0, w, arr, color, line, label, H, padT, padB){
+  const a=[...arr].sort((x,y)=>x-y);
+  const n=a.length;
+  const theo = a.map((_,i)=>normInv((i+0.5)/n));
+  const m=mean(a), s=std(a)||1;
+  const sampleZ = a.map(v=>(v-m)/s);
+  const lo=Math.min(...theo,...sampleZ), hi=Math.max(...theo,...sampleZ);
+  const plotH=H-padT-padB, plotW=w-40;
+  const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+  const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+  svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  theo.forEach((t,i)=>{
+    svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(sampleZ[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85}));
+  });
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; svg.appendChild(lb);
+}
+function drawQQ(){
+  const v = document.getElementById('qqVar').value;
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520,H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  drawQQSub(svg, 0, W/2, before, 'var(--before)', 'var(--before-line)', 'Before (available cases)', H, padT, padB);
+  drawQQSub(svg, W/2, W/2, after, 'var(--after)', 'var(--after-line)', 'After (imputed)', H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function pearsonPairwise(a,b){
+  const xa=[],xb=[];
+  for(let i=0;i<a.length;i++){
+    if(a[i]!==null && b[i]!==null && a[i]!==undefined && b[i]!==undefined && !isNaN(a[i]) && !isNaN(b[i])){
+      xa.push(a[i]); xb.push(b[i]);
+    }
+  }
+  if(xa.length<3) return 0;
+  const ma=mean(xa), mb=mean(xb);
+  let num=0,da=0,db=0;
+  for(let i=0;i<xa.length;i++){ num+=(xa[i]-ma)*(xb[i]-mb); da+=(xa[i]-ma)**2; db+=(xb[i]-mb)**2; }
+  return num/Math.sqrt(da*db||1);
+}
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function corrMatrix(vars, dataset){
+  return vars.map(v1=> vars.map(v2 => pearsonPairwise(dataset.map(r=>r[v1]), dataset.map(r=>r[v2])) ));
+}
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=v.length>8?v.slice(0,6)+'…':v; th.style.writingMode='vertical-rl'; th.style.transform='rotate(180deg)'; th.style.fontSize='9px'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=v1.length>8?v1.slice(0,6)+'…':v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const setSel = document.getElementById('corrSet').value;
+  const vars = setSel==='core' ? GRID_VARS : ALL_VARS;
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, BEFORE), 'Before (missing = excluded pairwise)'));
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, AFTER), 'After (imputed, complete)'));
+}
+
+// ================= Missingness Grid =================
+function drawClassGrid(){
+  const container = document.getElementById('classGrid'); container.innerHTML='';
+  const outer = document.createElement('div'); outer.className='mv-wrap';
+  const wrap = document.createElement('div'); wrap.className='mv-inner';
+  outer.appendChild(wrap);
+
+  const head = document.createElement('div'); head.className='mv-headrow';
+  head.innerHTML = `<div></div><div class="h">Before</div><div class="h">After</div>`;
+  wrap.appendChild(head);
+
+  const MAX_BLUE = 25; // cap on how many "observed" cells to show per row, to keep the grid readable
+
+  GRID_VARS.forEach(v=>{
+    const row = document.createElement('div'); row.className='mv-row';
+    const label = document.createElement('div'); label.className='mv-label'; label.textContent=VARS_META[v][0];
+    row.appendChild(label);
+
+    const missIdx = [];
+    const obsIdx = [];
+    for(let i=0;i<N;i++){
+      const isMissing = MISSING_BEFORE[v] && MISSING_BEFORE[v][i];
+      if(isMissing) missIdx.push(i); else obsIdx.push(i);
+    }
+    const step = Math.max(1, Math.round(obsIdx.length / MAX_BLUE));
+    const keepObs = obsIdx.filter((_,k)=>k % step === 0);
+    const shown = [...missIdx, ...keepObs].sort((a,b)=>a-b);
+
+    const beforeGrid = document.createElement('div'); beforeGrid.className='mv-grid'; beforeGrid.style.setProperty('--n', shown.length);
+    shown.forEach(i=>{
+      const isMissing = MISSING_BEFORE[v] && MISSING_BEFORE[v][i];
+      const c = document.createElement('div');
+      c.className = 'mv-cell ' + (isMissing ? 'missing' : 'observed');
+      c.title = 'Subject ' + (i+1) + ' — ' + VARS_META[v][0] + ': ' + (isMissing ? 'MISSING (dropped in naive analysis)' : BEFORE[i][v]);
+      beforeGrid.appendChild(c);
+    });
+    row.appendChild(beforeGrid);
+
+    const afterGrid = document.createElement('div'); afterGrid.className='mv-grid'; afterGrid.style.setProperty('--n', shown.length);
+    shown.forEach(()=>{
+      const c = document.createElement('div');
+      c.className = 'mv-cell';
+      afterGrid.appendChild(c);
+    });
+    row.appendChild(afterGrid);
+    wrap.appendChild(row);
+  });
+  container.appendChild(outer);
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawClassGrid();
+</script>
+</body>
+</html>

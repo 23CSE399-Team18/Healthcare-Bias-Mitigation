@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Outlier Bias (Before vs After)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#AECBEE;
+    --before-line:#6FA0DA;
+    --after:#BEE0BF;
+    --after-line:#7BC17E;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:21px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:16px; padding:16px; align-items:start;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'6\'><path d=\'M0 0l5 6 5-6z\' fill=\'%236B7686\'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .swatch.synth{background:#fff; border:2px dashed #C0533E;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:6px;}
+  @media (max-width:1100px){ .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .mv-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .mv-inner{min-width:max-content;}
+  .mv-headrow{display:grid; grid-template-columns:170px 678px 678px; gap:26px; margin-bottom:10px;}
+  .mv-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .mv-row{display:grid; grid-template-columns:170px 678px 678px; gap:26px; align-items:center; margin-bottom:4px;}
+  .mv-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mv-grid{display:grid; grid-template-columns:repeat(var(--n), 15px); grid-auto-rows:15px; gap:2px;}
+  .mv-cell{width:15px; height:15px; border-radius:2px; box-sizing:border-box; background:#fff; border:1px solid #D7DEEC;}
+  .mv-cell.outlier{background:var(--before); border:1px solid var(--before-line);}
+  .mv-cell.synth{border:2px dashed #C0533E !important; box-shadow: inset 0 0 0 1px #fff;}
+  .mv-cell.normal{background:#EEF3FB; border:1px solid #D7DEEC;}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+  .kpi-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:2px;}
+  .kpi{flex:1 1 150px; background:#F6F8FC; border:1px solid var(--border); border-radius:8px; padding:8px 10px; text-align:center;}
+  .kpi .val{font-size:15px; font-weight:800; color:var(--navy);}
+  .kpi .lbl{font-size:10px; color:var(--muted); margin-top:2px;}
+  .method-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:12px;}
+  .method-table th, .method-table td{padding:5px 6px; text-align:center; border-bottom:1px solid var(--border);}
+  .method-table th{color:var(--muted); font-weight:600; font-size:10.5px;}
+  .method-table tr.winner td{background:#EAF6EC; font-weight:700; color:#2E8B39;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Interactive EDA Dashboard — Outlier Bias (Before vs After)</h1>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before (raw, with outliers)</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:150px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 8 Vars</option>
+              <option value="all">All 8 Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Outlier Treatment Grid (per-subject, per-variable)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Outlier (Before)</span>
+          <span class="lg"><span class="swatch" style="background:#EEF3FB;border:1px solid #D7DEEC"></span>Normal value</span>
+        </span>
+      </p>
+      <div id="classGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="note">
+</footer>
+
+<script>
+const DATA = {"vars":["Age","Gender_Enc","Ethnicity_Enc","ICU_LOS","TV_IBW","PEEP","PaO2","Lactate"],"gridVars":["Age","Gender_Enc","Ethnicity_Enc","ICU_LOS","TV_IBW","PEEP","PaO2","Lactate"],"before":[{"Age":62.6,"Gender_Enc":0.459,"Ethnicity_Enc":0.397,"ICU_LOS":65.9,"TV_IBW":4.09,"PEEP":8.2,"PaO2":88.3,"Lactate":2.05},{"Age":53.6,"Gender_Enc":0.625,"Ethnicity_Enc":0.07,"ICU_LOS":57.4,"TV_IBW":9.06,"PEEP":5.8,"PaO2":88.4,"Lactate":0.9},{"Age":56.3,"Gender_Enc":0.125,"Ethnicity_Enc":0.649,"ICU_LOS":78.3,"TV_IBW":6.72,"PEEP":6.3,"PaO2":82.1,"Lactate":1.36},{"Age":58.7,"Gender_Enc":0.647,"Ethnicity_Enc":0.272,"ICU_LOS":139.8,"TV_IBW":6.1,"PEEP":7.1,"PaO2":137.1,"Lactate":0.79},{"Age":84.4,"Gender_Enc":0.218,"Ethnicity_Enc":0.564,"ICU_LOS":34.8,"TV_IBW":7.84,"PEEP":7.2,"PaO2":82.6,"Lactate":0.49},{"Age":61.0,"Gender_Enc":0.273,"Ethnicity_Enc":0.609,"ICU_LOS":190.2,"TV_IBW":8.63,"PEEP":4.4,"PaO2":87.8,"Lactate":2.18},{"Age":40.6,"Gender_Enc":0.63,"Ethnicity_Enc":0.309,"ICU_LOS":34.5,"TV_IBW":4.88,"PEEP":7.9,"PaO2":83.0,"Lactate":1.09},{"Age":48.2,"Gender_Enc":0.602,"Ethnicity_Enc":0.246,"ICU_LOS":130.3,"TV_IBW":8.37,"PEEP":12.6,"PaO2":89.7,"Lactate":1.09},{"Age":65.8,"Gender_Enc":0.955,"Ethnicity_Enc":0.408,"ICU_LOS":41.8,"TV_IBW":4.0,"PEEP":8.7,"PaO2":82.5,"Lactate":1.09},{"Age":39.2,"Gender_Enc":0.775,"Ethnicity_Enc":0.492,"ICU_LOS":60.0,"TV_IBW":6.44,"PEEP":9.9,"PaO2":75.4,"Lactate":2.95},{"Age":56.9,"Gender_Enc":0.208,"Ethnicity_Enc":0.663,"ICU_LOS":53.0,"TV_IBW":5.84,"PEEP":5.4,"PaO2":69.0,"Lactate":1.03},{"Age":41.2,"Gender_Enc":0.411,"Ethnicity_Enc":0.608,"ICU_LOS":120.8,"TV_IBW":6.62,"PEEP":7.3,"PaO2":88.3,"Lactate":0.99},{"Age":42.7,"Gender_Enc":0.706,"Ethnicity_Enc":0.67,"ICU_LOS":27.6,"TV_IBW":6.59,"PEEP":11.8,"PaO2":94.9,"Lactate":3.42},{"Age":81.5,"Gender_Enc":0.511,"Ethnicity_Enc":0.414,"ICU_LOS":130.5,"TV_IBW":6.29,"PEEP":6.1,"PaO2":88.3,"Lactate":1.0},{"Age":62.9,"Gender_Enc":0.577,"Ethnicity_Enc":0.225,"ICU_LOS":73.5,"TV_IBW":6.99,"PEEP":7.1,"PaO2":110.9,"Lactate":2.31},{"Age":63.6,"Gender_Enc":0.828,"Ethnicity_Enc":0.831,"ICU_LOS":70.0,"TV_IBW":5.34,"PEEP":8.8,"PaO2":133.6,"Lactate":0.7},{"Age":55.1,"Gender_Enc":0.612,"Ethnicity_Enc":0.769,"ICU_LOS":74.6,"TV_IBW":7.84,"PEEP":6.2,"PaO2":107.7,"Lactate":0.5},{"Age":64.6,"Gender_Enc":0.131,"Ethnicity_Enc":0.09,"ICU_LOS":69.8,"TV_IBW":8.83,"PEEP":6.1,"PaO2":91.3,"Lactate":0.65},{"Age":49.8,"Gender_Enc":0.329,"Ethnicity_Enc":0.38,"ICU_LOS":32.8,"TV_IBW":6.46,"PEEP":7.5,"PaO2":107.1,"Lactate":0.49},{"Age":76.9,"Gender_Enc":0.576,"Ethnicity_Enc":0.563,"ICU_LOS":30.9,"TV_IBW":6.43,"PEEP":8.6,"PaO2":107.0,"Lactate":1.5},{"Age":61.9,"Gender_Enc":0.387,"Ethnicity_Enc":0.037,"ICU_LOS":106.3,"TV_IBW":6.66,"PEEP":10.0,"PaO2":46.5,"Lactate":1.1},{"Age":77.3,"Gender_Enc":0.187,"Ethnicity_Enc":0.432,"ICU_LOS":73.7,"TV_IBW":5.56,"PEEP":6.0,"PaO2":116.4,"Lactate":0.52},{"Age":54.9,"Gender_Enc":0.583,"Ethnicity_Enc":0.683,"ICU_LOS":93.5,"TV_IBW":6.03,"PEEP":11.3,"PaO2":88.3,"Lactate":1.03},{"Age":47.7,"Gender_Enc":0.509,"Ethnicity_Enc":0.132,"ICU_LOS":65.9,"TV_IBW":6.43,"PEEP":5.0,"PaO2":61.7,"Lactate":1.27},{"Age":65.7,"Gender_Enc":0.505,"Ethnicity_Enc":0.498,"ICU_LOS":119.0,"TV_IBW":7.04,"PEEP":7.9,"PaO2":85.7,"Lactate":2.3},{"Age":70.2,"Gender_Enc":0.649,"Ethnicity_Enc":0.471,"ICU_LOS":101.1,"TV_IBW":6.51,"PEEP":5.9,"PaO2":85.6,"Lactate":1.08},{"Age":48.8,"Gender_Enc":0.425,"Ethnicity_Enc":0.299,"ICU_LOS":83.6,"TV_IBW":6.13,"PEEP":7.8,"PaO2":115.8,"Lactate":1.09},{"Age":80.0,"Gender_Enc":0.381,"Ethnicity_Enc":0.564,"ICU_LOS":127.1,"TV_IBW":6.92,"PEEP":6.6,"PaO2":101.1,"Lactate":1.29},{"Age":36.1,"Gender_Enc":0.336,"Ethnicity_Enc":0.38,"ICU_LOS":39.2,"TV_IBW":5.61,"PEEP":7.0,"PaO2":78.3,"Lactate":1.19},{"Age":49.7,"Gender_Enc":0.656,"Ethnicity_Enc":0.432,"ICU_LOS":81.5,"TV_IBW":8.72,"PEEP":9.3,"PaO2":88.3,"Lactate":1.78},{"Age":78.0,"Gender_Enc":0.166,"Ethnicity_Enc":0.599,"ICU_LOS":73.7,"TV_IBW":9.08,"PEEP":9.6,"PaO2":91.0,"Lactate":0.9},{"Age":70.3,"Gender_Enc":0.649,"Ethnicity_Enc":0.386,"ICU_LOS":33.3,"TV_IBW":5.51,"PEEP":9.2,"PaO2":95.4,"Lactate":0.81},{"Age":71.2,"Gender_Enc":0.786,"Ethnicity_Enc":0.644,"ICU_LOS":116.2,"TV_IBW":8.51,"PEEP":9.1,"PaO2":88.3,"Lactate":1.09},{"Age":82.2,"Gender_Enc":0.254,"Ethnicity_Enc":0.514,"ICU_LOS":81.1,"TV_IBW":8.91,"PEEP":9.3,"PaO2":88.3,"Lactate":0.84},{"Age":74.4,"Gender_Enc":0.462,"Ethnicity_Enc":0.434,"ICU_LOS":61.0,"TV_IBW":7.87,"PEEP":8.7,"PaO2":73.5,"Lactate":3.53},{"Age":95.0,"Gender_Enc":0.197,"Ethnicity_Enc":0.407,"ICU_LOS":42.8,"TV_IBW":8.11,"PEEP":14.5,"PaO2":88.3,"Lactate":1.09},{"Age":83.3,"Gender_Enc":0.766,"Ethnicity_Enc":0.912,"ICU_LOS":66.0,"TV_IBW":8.99,"PEEP":11.4,"PaO2":50.8,"Lactate":2.93},{"Age":63.2,"Gender_Enc":0.43,"Ethnicity_Enc":0.657,"ICU_LOS":63.6,"TV_IBW":10.03,"PEEP":13.1,"PaO2":88.3,"Lactate":1.09},{"Age":77.4,"Gender_Enc":0.767,"Ethnicity_Enc":0.392,"ICU_LOS":86.4,"TV_IBW":7.39,"PEEP":8.3,"PaO2":63.8,"Lactate":3.2},{"Age":57.3,"Gender_Enc":0.825,"Ethnicity_Enc":0.295,"ICU_LOS":133.0,"TV_IBW":8.61,"PEEP":7.0,"PaO2":88.3,"Lactate":1.09}],"after":[{"Age":62.841,"Gender_Enc":0.467,"Ethnicity_Enc":0.39,"ICU_LOS":65.745,"TV_IBW":4.258,"PEEP":8.505,"PaO2":88.175,"Lactate":2.115},{"Age":52.099,"Gender_Enc":0.6,"Ethnicity_Enc":0.099,"ICU_LOS":52.634,"TV_IBW":8.89,"PEEP":6.13,"PaO2":89.889,"Lactate":0.956},{"Age":56.779,"Gender_Enc":0.142,"Ethnicity_Enc":0.651,"ICU_LOS":81.183,"TV_IBW":6.499,"PEEP":6.337,"PaO2":83.582,"Lactate":1.294},{"Age":60.362,"Gender_Enc":0.622,"Ethnicity_Enc":0.3,"ICU_LOS":142.741,"TV_IBW":6.062,"PEEP":7.245,"PaO2":86.9,"Lactate":0.778},{"Age":81.75,"Gender_Enc":0.209,"Ethnicity_Enc":0.585,"ICU_LOS":30.689,"TV_IBW":7.798,"PEEP":6.97,"PaO2":81.325,"Lactate":0.49},{"Age":62.642,"Gender_Enc":0.31,"Ethnicity_Enc":0.58,"ICU_LOS":76.814,"TV_IBW":8.612,"PEEP":4.4,"PaO2":86.943,"Lactate":2.1},{"Age":41.664,"Gender_Enc":0.641,"Ethnicity_Enc":0.322,"ICU_LOS":34.227,"TV_IBW":5.005,"PEEP":8.212,"PaO2":82.298,"Lactate":1.134},{"Age":47.342,"Gender_Enc":0.606,"Ethnicity_Enc":0.257,"ICU_LOS":130.851,"TV_IBW":8.465,"PEEP":12.653,"PaO2":90.995,"Lactate":1.112},{"Age":63.95,"Gender_Enc":0.955,"Ethnicity_Enc":0.41,"ICU_LOS":39.201,"TV_IBW":4.265,"PEEP":8.728,"PaO2":83.638,"Lactate":1.052},{"Age":41.655,"Gender_Enc":0.801,"Ethnicity_Enc":0.478,"ICU_LOS":64.121,"TV_IBW":6.22,"PEEP":10.065,"PaO2":76.533,"Lactate":0.996},{"Age":56.023,"Gender_Enc":0.229,"Ethnicity_Enc":0.671,"ICU_LOS":52.15,"TV_IBW":5.787,"PEEP":5.105,"PaO2":68.61,"Lactate":1.069},{"Age":39.013,"Gender_Enc":0.391,"Ethnicity_Enc":0.585,"ICU_LOS":117.611,"TV_IBW":6.532,"PEEP":7.356,"PaO2":87.277,"Lactate":0.998},{"Age":40.534,"Gender_Enc":0.671,"Ethnicity_Enc":0.666,"ICU_LOS":28.035,"TV_IBW":6.788,"PEEP":11.802,"PaO2":95.897,"Lactate":1.092},{"Age":83.366,"Gender_Enc":0.497,"Ethnicity_Enc":0.411,"ICU_LOS":133.044,"TV_IBW":6.152,"PEEP":6.335,"PaO2":88.908,"Lactate":0.988},{"Age":63.457,"Gender_Enc":0.559,"Ethnicity_Enc":0.252,"ICU_LOS":70.194,"TV_IBW":6.82,"PEEP":6.872,"PaO2":111.234,"Lactate":2.231},{"Age":65.249,"Gender_Enc":0.806,"Ethnicity_Enc":0.853,"ICU_LOS":67.917,"TV_IBW":5.312,"PEEP":9.107,"PaO2":86.577,"Lactate":0.632},{"Age":56.334,"Gender_Enc":0.645,"Ethnicity_Enc":0.755,"ICU_LOS":80.078,"TV_IBW":7.797,"PEEP":5.92,"PaO2":109.156,"Lactate":0.562},{"Age":64.795,"Gender_Enc":0.159,"Ethnicity_Enc":0.09,"ICU_LOS":71.458,"TV_IBW":8.709,"PEEP":5.891,"PaO2":91.76,"Lactate":0.715},{"Age":52.341,"Gender_Enc":0.315,"Ethnicity_Enc":0.361,"ICU_LOS":32.115,"TV_IBW":6.323,"PEEP":7.563,"PaO2":105.629,"Lactate":0.497},{"Age":76.248,"Gender_Enc":0.588,"Ethnicity_Enc":0.587,"ICU_LOS":31.094,"TV_IBW":6.662,"PEEP":8.717,"PaO2":107.948,"Lactate":1.554},{"Age":62.179,"Gender_Enc":0.379,"Ethnicity_Enc":0.059,"ICU_LOS":102.107,"TV_IBW":6.629,"PEEP":9.824,"PaO2":89.772,"Lactate":1.113},{"Age":79.069,"Gender_Enc":0.218,"Ethnicity_Enc":0.42,"ICU_LOS":70.654,"TV_IBW":5.758,"PEEP":5.747,"PaO2":89.4,"Lactate":0.49},{"Age":55.536,"Gender_Enc":0.58,"Ethnicity_Enc":0.691,"ICU_LOS":91.709,"TV_IBW":6.058,"PEEP":11.56,"PaO2":87.701,"Lactate":0.97},{"Age":49.642,"Gender_Enc":0.491,"Ethnicity_Enc":0.138,"ICU_LOS":66.877,"TV_IBW":6.184,"PEEP":4.831,"PaO2":90.741,"Lactate":1.239},{"Age":66.115,"Gender_Enc":0.486,"Ethnicity_Enc":0.478,"ICU_LOS":116.014,"TV_IBW":7.314,"PEEP":7.963,"PaO2":86.188,"Lactate":2.364},{"Age":71.299,"Gender_Enc":0.654,"Ethnicity_Enc":0.486,"ICU_LOS":98.004,"TV_IBW":6.694,"PEEP":5.98,"PaO2":86.912,"Lactate":1.128},{"Age":46.361,"Gender_Enc":0.407,"Ethnicity_Enc":0.301,"ICU_LOS":78.853,"TV_IBW":6.387,"PEEP":7.746,"PaO2":85.729,"Lactate":1.148},{"Age":78.539,"Gender_Enc":0.387,"Ethnicity_Enc":0.58,"ICU_LOS":128.551,"TV_IBW":7.154,"PEEP":6.656,"PaO2":100.007,"Lactate":1.354},{"Age":36.1,"Gender_Enc":0.366,"Ethnicity_Enc":0.382,"ICU_LOS":36.201,"TV_IBW":5.801,"PEEP":7.015,"PaO2":77.151,"Lactate":1.143},{"Age":47.443,"Gender_Enc":0.648,"Ethnicity_Enc":0.403,"ICU_LOS":85.986,"TV_IBW":8.537,"PEEP":9.59,"PaO2":87.126,"Lactate":1.74},{"Age":76.565,"Gender_Enc":0.145,"Ethnicity_Enc":0.589,"ICU_LOS":77.679,"TV_IBW":9.072,"PEEP":9.403,"PaO2":91.159,"Lactate":0.836},{"Age":68.157,"Gender_Enc":0.687,"Ethnicity_Enc":0.358,"ICU_LOS":28.552,"TV_IBW":5.353,"PEEP":9.344,"PaO2":94.72,"Lactate":0.855},{"Age":70.008,"Gender_Enc":0.787,"Ethnicity_Enc":0.669,"ICU_LOS":113.301,"TV_IBW":8.456,"PEEP":8.926,"PaO2":88.613,"Lactate":1.152},{"Age":82.929,"Gender_Enc":0.223,"Ethnicity_Enc":0.536,"ICU_LOS":82.97,"TV_IBW":8.668,"PEEP":9.231,"PaO2":88.95,"Lactate":0.825},{"Age":73.674,"Gender_Enc":0.428,"Ethnicity_Enc":0.454,"ICU_LOS":57.838,"TV_IBW":7.804,"PEEP":8.814,"PaO2":72.614,"Lactate":0.931},{"Age":94.303,"Gender_Enc":0.168,"Ethnicity_Enc":0.396,"ICU_LOS":38.732,"TV_IBW":8.376,"PEEP":7.241,"PaO2":88.701,"Lactate":1.109},{"Age":81.74,"Gender_Enc":0.776,"Ethnicity_Enc":0.886,"ICU_LOS":70.819,"TV_IBW":8.861,"PEEP":11.267,"PaO2":87.814,"Lactate":0.989},{"Age":61.949,"Gender_Enc":0.452,"Ethnicity_Enc":0.679,"ICU_LOS":64.386,"TV_IBW":10.03,"PEEP":12.978,"PaO2":87.595,"Lactate":1.034},{"Age":79.745,"Gender_Enc":0.761,"Ethnicity_Enc":0.418,"ICU_LOS":86.098,"TV_IBW":7.365,"PEEP":8.468,"PaO2":85.373,"Lactate":1.14},{"Age":58.095,"Gender_Enc":0.792,"Ethnicity_Enc":0.271,"ICU_LOS":136.149,"TV_IBW":8.568,"PEEP":6.715,"PaO2":88.266,"Lactate":1.159}],"classBefore":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1],"classAfter":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1],"outlierBefore":{"Age":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"Gender_Enc":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"Ethnicity_Enc":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"ICU_LOS":[false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"TV_IBW":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"PEEP":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false],"PaO2":[false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,true,false,true,false,false,true,false,false,false,false,false,false,false,false,false,true,false,true,false],"Lactate":[false,false,false,false,false,false,false,false,false,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,false,true,false]},"synthAfter":{"Age":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"Gender_Enc":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"Ethnicity_Enc":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"ICU_LOS":[false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"TV_IBW":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],"PEEP":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false],"PaO2":[false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,true,false,true,false,false,true,false,false,false,false,false,false,false,false,false,true,false,true,false],"Lactate":[false,false,false,false,false,false,false,false,false,true,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,false,true,false]},"nBefore":40,"nAfter":40,"nOutliersBefore":15,"nOutliersAfter":0,"perVar":{"Age":{"nOutliersBefore":0,"nOutliersAfter":0,"meanBefore":62.755,"meanAfter":62.697,"stdBefore":14.214,"stdAfter":14.158},"Gender_Enc":{"nOutliersBefore":0,"nOutliersAfter":0,"meanBefore":0.503,"meanAfter":0.501,"stdBefore":0.217,"stdAfter":0.215},"Ethnicity_Enc":{"nOutliersBefore":0,"nOutliersAfter":0,"meanBefore":0.46,"meanAfter":0.462,"stdBefore":0.2,"stdAfter":0.197},"ICU_LOS":{"nOutliersBefore":1,"nOutliersAfter":0,"meanBefore":79.112,"meanAfter":75.835,"stdBefore":36.427,"stdAfter":32.497},"TV_IBW":{"nOutliersBefore":0,"nOutliersAfter":0,"meanBefore":7.05,"meanAfter":7.051,"stdBefore":1.43,"stdAfter":1.382},"PEEP":{"nOutliersBefore":1,"nOutliersAfter":0,"meanBefore":8.25,"meanAfter":8.08,"stdBefore":2.261,"stdAfter":2.065},"PaO2":{"nOutliersBefore":8,"nOutliersAfter":0,"meanBefore":89.468,"meanAfter":88.945,"stdBefore":18.205,"stdAfter":8.608},"Lactate":{"nOutliersBefore":5,"nOutliersAfter":0,"meanBefore":1.395,"meanAfter":1.127,"stdBefore":0.82,"stdAfter":0.442}}};
+const VARS_META = {"Age": ["Age (years)", "yrs"], "Gender_Enc": ["Gender \u2014 value", ""], "Ethnicity_Enc": ["Ethnicity \u2014 value", ""], "ICU_LOS": ["ICU length of stay (hours)", "hrs"], "TV_IBW": ["Tidal volume (mL/kg IBW)", "mL/kg"], "PEEP": ["PEEP (cmH\u2082O)", "cmH2O"], "PaO2": ["PaO\u2082 (mmHg)", "mmHg"], "Lactate": ["Lactate (mmol/L)", "mmol/L"]};
+const ALL_VARS = DATA.vars;
+const GRID_VARS = DATA.gridVars;
+
+const BEFORE = DATA.before;
+const AFTER = DATA.after;
+const CLASS_BEFORE = DATA.classBefore;
+const CLASS_AFTER = DATA.classAfter;
+const OUTLIER_BEFORE = DATA.outlierBefore;
+const SYNTH_AFTER = DATA.synthAfter;
+
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function std(a){ const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+function fmtTick(v, val, range){ return fmtAxis(val, range); }
+
+function beforeArr(v){ return BEFORE.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+function afterArr(v){ return AFTER.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+
+
+// ---------- KPI row + summary table ----------
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{
+  const o = document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; varDropdown.appendChild(o);
+});
+let selectedVar = ALL_VARS[0];
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = VARS_META[v][0];
+    d.onclick = ()=>{ selectedVar=v; varDropdown.value=v; renderVarList(); highlightVar(v); document.getElementById('qqVar').value=v; drawQQ(); };
+    varList.appendChild(d);
+  });
+}
+varDropdown.addEventListener('change', e=>{ selectedVar=e.target.value; renderVarList(); highlightVar(selectedVar); document.getElementById('qqVar').value=selectedVar; drawQQ(); });
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= SVG helpers =================
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+
+// ================= Histogram / Density =================
+function histBins(arr, nbins, lo, hi){
+  const width=(hi-lo)/nbins || 1;
+  const counts=new Array(nbins).fill(0);
+  arr.forEach(x=>{
+    let idx=Math.floor((x-lo)/width);
+    if(idx<0) idx=0; if(idx>=nbins) idx=nbins-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+function drawDistChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const lo = Math.min(...before,...after), hi = Math.max(...before,...after);
+  const nbins=10;
+  const cb = histBins(before,nbins,lo,hi), ca = histBins(after,nbins,lo,hi);
+  const maxc = Math.max(...cb,...ca,1);
+  const W=250,H=150, padL=30,padB=20,padT=6,padR=6;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const bw = plotW/nbins;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=4;i++){
+    const y = padT + plotH - (i/4)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=Math.round((i/4)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  if(plotType==='hist'){
+    for(let i=0;i<cb.length;i++){
+      const x = padL + i*bw;
+      const bH = (cb[i]/maxc)*plotH;
+      const aH = (ca[i]/maxc)*plotH;
+      // fixed two-tone stacking: green always forms the base (up to the
+      // shorter of the two bars) and blue always forms the top cap (the
+      // extra height of the taller bar) - consistent regardless of
+      // whether "before" or "after" happens to be taller in this bin
+      const loH = Math.min(bH, aH);
+      const hiH = Math.max(bH, aH);
+      if(loH > 0){
+        const rectBase = {x:x+1, y:padT+plotH-loH, width:Math.max(bw-2,1), height:loH, fill:'var(--after)', opacity:0.9, stroke:'var(--after-line)', 'stroke-width':1.2};
+        const elBase = svgEl('rect', rectBase);
+        const titleBase = svgEl('title', {}); titleBase.textContent = 'Before: ' + cb[i] + ' / After: ' + ca[i]; elBase.appendChild(titleBase);
+        svg.appendChild(elBase);
+      }
+      if(hiH > loH){
+        const rectCap = {x:x+1, y:padT+plotH-hiH, width:Math.max(bw-2,1), height:hiH-loH, fill:'var(--before)', opacity:0.9, stroke:'var(--before-line)', 'stroke-width':1.2};
+        const elCap = svgEl('rect', rectCap);
+        const titleCap = svgEl('title', {}); titleCap.textContent = 'Before: ' + cb[i] + ' / After: ' + ca[i]; elCap.appendChild(titleCap);
+        svg.appendChild(elCap);
+      }
+    }
+  } else {
+    function densityLine(counts, color, line, alpha){
+      let d='';
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw + bw/2;
+        const y = padT + plotH - (c/maxc)*plotH;
+        d += (i===0?'M':'L') + x + ' ' + y + ' ';
+      });
+      const path = svgEl('path',{d:d.trim(), fill:'none', stroke:line, 'stroke-width':2});
+      svg.appendChild(path);
+      let dArea = d.trim() + ` L ${padL+plotW} ${padT+plotH} L ${padL} ${padT+plotH} Z`;
+      svg.appendChild(svgEl('path',{d:dArea, fill:color, opacity:alpha*0.6}));
+    }
+    densityLine(cb, 'var(--before)', 'var(--before-line)', 0.55);
+    densityLine(ca, 'var(--after)', 'var(--after-line)', 0.55);
+  }
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const xt1=svgEl('text',{x:padL,y:H-4,'font-size':8,fill:'#8791A3'}); xt1.textContent=fmtTick(v,lo,hi-lo); svg.appendChild(xt1);
+  const xt2=svgEl('text',{x:W-padR,y:H-4,'text-anchor':'end','font-size':8,fill:'#8791A3'}); xt2.textContent=fmtTick(v,hi,hi-lo); svg.appendChild(xt2);
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function quartiles(arr){
+  const a=[...arr].sort((x,y)=>x-y);
+  const q=(p)=>{ const idx=(a.length-1)*p; const lo=Math.floor(idx),hi=Math.ceil(idx); return a[lo]+(a[hi]-a[lo])*(idx-lo); };
+  const q1=q(0.25), med=q(0.5), q3=q(0.75), iqr=q3-q1;
+  const loW = Math.max(a[0], q1-1.5*iqr), hiW = Math.min(a[a.length-1], q3+1.5*iqr);
+  const outliers = a.filter(x=>x<loW||x>hiW);
+  return {q1,med,q3,loW,hiW,outliers,min:a[0],max:a[a.length-1]};
+}
+function drawBoxChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const sb = quartiles(before), sa = quartiles(after);
+  const lo = Math.min(sb.loW,sa.loW,...sb.outliers,...sa.outliers);
+  const hi = Math.max(sb.hiW,sa.hiW,...sb.outliers,...sa.outliers);
+  const W=250,H=150, padL=32,padB=20,padT=8,padR=10;
+  const plotH=H-padT-padB;
+  const y = val => padT + plotH - ((val-lo)/(hi-lo||1))*plotH;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const yy=padT+ (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'}));
+  }
+  function box(cx, s, color, line, label){
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.loW),y2:y(s.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.q3),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.loW),y2:y(s.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.hiW),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    const rectEl = svgEl('rect',{x:cx-bw/2, y:y(s.q3), width:bw, height:Math.max(y(s.q1)-y(s.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85});
+    const titleEl = svgEl('title', {});
+    titleEl.textContent = label+': med '+s.med.toFixed(1)+', IQR '+s.q1.toFixed(1)+'\u2013'+s.q3.toFixed(1)+', outliers '+s.outliers.length;
+    rectEl.appendChild(titleEl);
+    svg.appendChild(rectEl);
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(s.med),y2:y(s.med),stroke:line,'stroke-width':1.6}));
+    s.outliers.forEach(o=>{ /* outlier markers removed */ });
+  }
+  box(padL+ (W-padL-padR)*0.28, sb, 'var(--before)', 'var(--before-line)', 'Before');
+  box(padL+ (W-padL-padR)*0.72, sa, 'var(--after)', 'var(--after-line)', 'After');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const lb=svgEl('text',{x:padL+(W-padL-padR)*0.28,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); lb.textContent='Before'; svg.appendChild(lb);
+  const la=svgEl('text',{x:padL+(W-padL-padR)*0.72,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); la.textContent='After'; svg.appendChild(la);
+  for(let i=0;i<=3;i++){
+    const val = lo + (i/3)*(hi-lo);
+    const yy=padT+plotH-(i/3)*plotH;
+    const t=svgEl('text',{x:padL-4,y:yy+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtAxis(val,hi-lo); svg.appendChild(t);
+  }
+  container.appendChild(svg);
+}
+
+// ================= render var grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  GRID_VARS.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v;
+    const t = document.createElement('div'); t.className='ct'; t.textContent=VARS_META[v][0]; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+
+    const bb = document.createElement('div'); bb.className='chart-box';
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=VARS_META[v][0]; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function erfinv(x){
+  const a=0.147;
+  const ln = Math.log(1-x*x);
+  const t1 = 2/(Math.PI*a) + ln/2;
+  return Math.sign(x)*Math.sqrt(Math.sqrt(t1*t1-ln/a)-t1);
+}
+function normInv(p){ return Math.sqrt(2)*erfinv(2*p-1); }
+function drawQQSub(svg, x0, w, arr, color, line, label, H, padT, padB){
+  const a=[...arr].sort((x,y)=>x-y);
+  const n=a.length;
+  const theo = a.map((_,i)=>normInv((i+0.5)/n));
+  const m=mean(a), s=std(a)||1;
+  const sampleZ = a.map(v=>(v-m)/s);
+  const lo=Math.min(...theo,...sampleZ), hi=Math.max(...theo,...sampleZ);
+  const plotH=H-padT-padB, plotW=w-40;
+  const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+  const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+  svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  theo.forEach((t,i)=>{
+    svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(sampleZ[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85}));
+  });
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; svg.appendChild(lb);
+}
+function drawQQ(){
+  const v = document.getElementById('qqVar').value;
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520,H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  drawQQSub(svg, 0, W/2, before, 'var(--before)', 'var(--before-line)', 'Before', H, padT, padB);
+  drawQQSub(svg, W/2, W/2, after, 'var(--after)', 'var(--after-line)', 'After', H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function pearsonPairwise(a,b){
+  const xa=[],xb=[];
+  for(let i=0;i<a.length;i++){
+    if(a[i]!==null && b[i]!==null && a[i]!==undefined && b[i]!==undefined && !isNaN(a[i]) && !isNaN(b[i])){
+      xa.push(a[i]); xb.push(b[i]);
+    }
+  }
+  if(xa.length<3) return 0;
+  const ma=mean(xa), mb=mean(xb);
+  let num=0,da=0,db=0;
+  for(let i=0;i<xa.length;i++){ num+=(xa[i]-ma)*(xb[i]-mb); da+=(xa[i]-ma)**2; db+=(xb[i]-mb)**2; }
+  return num/Math.sqrt(da*db||1);
+}
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function corrMatrix(vars, dataset){
+  return vars.map(v1=> vars.map(v2 => pearsonPairwise(dataset.map(r=>r[v1]), dataset.map(r=>r[v2])) ));
+}
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=v.length>8?v.slice(0,6)+'\u2026':v; th.style.fontSize='8.5px'; th.style.whiteSpace='nowrap'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=v1.length>8?v1.slice(0,6)+'\u2026':v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const setSel = document.getElementById('corrSet').value;
+  const vars = setSel==='core' ? GRID_VARS : ALL_VARS;
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, BEFORE), 'Before'));
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, AFTER), 'After'));
+}
+
+// ================= Outlier Treatment Grid =================
+function drawClassGrid(){
+  const container = document.getElementById('classGrid'); container.innerHTML='';
+  const NB = DATA.nBefore, NA = DATA.nAfter;
+  const outer = document.createElement('div'); outer.className='mv-wrap';
+  const wrap = document.createElement('div'); wrap.className='mv-inner';
+  outer.appendChild(wrap);
+
+  const head = document.createElement('div'); head.className='mv-headrow';
+  head.innerHTML = `<div></div><div class="h">Before</div><div class="h">After</div>`;
+  wrap.appendChild(head);
+
+  GRID_VARS.forEach(v=>{
+    const row = document.createElement('div'); row.className='mv-row';
+    const label = document.createElement('div'); label.className='mv-label'; label.textContent=VARS_META[v][0];
+    row.appendChild(label);
+
+    const beforeGrid = document.createElement('div'); beforeGrid.className='mv-grid'; beforeGrid.style.setProperty('--n', NB);
+    const afterGrid = document.createElement('div'); afterGrid.className='mv-grid'; afterGrid.style.setProperty('--n', NA);
+    for(let i=0;i<NB;i++){
+      const c = document.createElement('div');
+      const isOutlier = OUTLIER_BEFORE[v] && OUTLIER_BEFORE[v][i];
+      c.className = 'mv-cell ' + (isOutlier ? 'outlier' : 'normal');
+      c.title = 'Subject ' + (i+1) + ' (' + (CLASS_BEFORE[i]===1?'Died':'Survived') + ') \u2014 ' + VARS_META[v][0] + ': ' + BEFORE[i][v] + (isOutlier?' (outlier)':'');
+      beforeGrid.appendChild(c);
+    }
+    for(let i=0;i<NA;i++){
+      const c = document.createElement('div');
+      const isSynth = SYNTH_AFTER[v] && SYNTH_AFTER[v][i];
+      c.className = 'mv-cell normal';
+      c.title = 'Subject ' + (i+1) + ' (' + (CLASS_AFTER[i]===1?'Died':'Survived') + ') \u2014 ' + VARS_META[v][0] + ': ' + AFTER[i][v];
+      afterGrid.appendChild(c);
+    }
+    row.appendChild(beforeGrid);
+    row.appendChild(afterGrid);
+    wrap.appendChild(row);
+  });
+  container.appendChild(outer);
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawClassGrid();
+</script>
+</body>
+</html>

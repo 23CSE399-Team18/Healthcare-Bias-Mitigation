@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Encoding / Domain Bias (Before vs After Domain Alignment)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#6FA0DA;
+    --before-line:#3E6FA8;
+    --after:#7BC17E;
+    --after-line:#4C9B50;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:22px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:16px; padding:16px; align-items:start;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+  @media (max-width:1500px){ .grid6{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:1100px){ .grid6{grid-template-columns:repeat(2,1fr);} .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .mv-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .mv-inner{min-width:max-content;}
+  .mv-headrow{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; margin-bottom:10px;}
+  .mv-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .mv-row{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; align-items:center; margin-bottom:4px;}
+  .mv-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mv-grid{display:grid; grid-template-columns:repeat(var(--n), 15px); grid-auto-rows:15px; gap:2px;}
+  .mv-cell{width:15px; height:15px; background:#FFFFFF; border:1px solid #D7DEEC; border-radius:2px; box-sizing:border-box;}
+  .mv-cell.on{background:#C0533E; border-color:#9B4230;}
+  .mv-cell.on.dm{background:#C0533E; border-color:#9B4230;}
+  .mv-pct{font-size:9.5px; color:var(--muted); text-align:right; margin-top:2px;}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+  .kpi-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:2px;}
+  .kpi{flex:1 1 100px; background:#F6F8FC; border:1px solid var(--border); border-radius:8px; padding:8px 10px; text-align:center;}
+  .kpi .val{font-size:16px; font-weight:800; color:var(--navy);}
+  .kpi .lbl{font-size:10px; color:var(--muted); margin-top:2px;}
+  .method-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:8px;}
+  .method-table th, .method-table td{padding:5px 6px; text-align:center; border-bottom:1px solid var(--border);}
+  .method-table th{color:var(--muted); font-weight:600; font-size:10.5px;}
+  .method-table tr.winner td{background:#EAF3FF; font-weight:700; color:var(--blue-hi);}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Interactive EDA Dashboard — Encoding / Domain Bias (Before vs After Domain Alignment)</h1>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Domain Alignment)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Domain Alignment)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:150px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 6 Vars</option>
+              <option value="all">All 12 Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Domain Leakage Heatmap
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:#C0533E"></span>Domain leaked</span>
+        </span>
+      </p>
+      <div id="mvHeat"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="note">
+</footer>
+
+<script>
+const DATA = {"vars":["Age","DBP II","Cholest mg/dL","Glucose mg/dL","BMI","Hgb g/dL","HbA1c","WBC K/uL","Triglyc mg/dL"],"gridVars":["Age","DBP II","Cholest mg/dL","Glucose mg/dL","BMI","Hgb g/dL","HbA1c","WBC K/uL","Triglyc mg/dL"],"heatVars":["Age","DBP II","Cholest mg/dL","Glucose mg/dL","BMI","Hgb g/dL","HbA1c","WBC K/uL"],"before":[{"Age":0.5011,"DBP II":-0.0294,"Cholest mg/dL":0.3881,"Glucose mg/dL":0.5837,"BMI":-0.3474,"Hgb g/dL":0.2265,"HbA1c":-0.5862,"WBC K/uL":0.0925,"Triglyc mg/dL":0.7438},{"Age":0.5011,"DBP II":-0.0294,"Cholest mg/dL":0.3881,"Glucose mg/dL":0.5837,"BMI":-0.3474,"Hgb g/dL":0.2265,"HbA1c":-0.5862,"WBC K/uL":0.0925,"Triglyc mg/dL":0.7438},{"Age":1.5341,"DBP II":-0.4749,"Cholest mg/dL":0.3332,"Glucose mg/dL":-0.6915,"BMI":-0.6123,"Hgb g/dL":-0.8497,"HbA1c":0.1839,"WBC K/uL":-0.8785,"Triglyc mg/dL":-3.1748},{"Age":1.5341,"DBP II":-0.4749,"Cholest mg/dL":0.3332,"Glucose mg/dL":-0.6915,"BMI":-0.6123,"Hgb g/dL":-0.8497,"HbA1c":0.1839,"WBC K/uL":-0.8785,"Triglyc mg/dL":-3.1748},{"Age":3.5648,"DBP II":0.1731,"Cholest mg/dL":1.1043,"Glucose mg/dL":-0.9069,"BMI":-0.8645,"Hgb g/dL":0.2183,"HbA1c":-0.0798,"WBC K/uL":-0.4645,"Triglyc mg/dL":-0.7612},{"Age":1.7391,"DBP II":0.1731,"Cholest mg/dL":1.1043,"Glucose mg/dL":-0.9069,"BMI":-0.8645,"Hgb g/dL":0.2183,"HbA1c":-0.0798,"WBC K/uL":-0.4645,"Triglyc mg/dL":-0.7612},{"Age":0.6593,"DBP II":-0.7434,"Cholest mg/dL":0.8135,"Glucose mg/dL":-0.5409,"BMI":-0.4172,"Hgb g/dL":-0.0608,"HbA1c":-3.6393,"WBC K/uL":-0.0705,"Triglyc mg/dL":-0.6123},{"Age":0.6593,"DBP II":-0.7434,"Cholest mg/dL":0.8135,"Glucose mg/dL":-0.5409,"BMI":-0.4172,"Hgb g/dL":-0.0608,"HbA1c":-1.5077,"WBC K/uL":-0.0705,"Triglyc mg/dL":-0.6123},{"Age":-0.5837,"DBP II":0.6552,"Cholest mg/dL":-0.7178,"Glucose mg/dL":-0.9359,"BMI":-0.3795,"Hgb g/dL":0.9033,"HbA1c":-0.3211,"WBC K/uL":-0.3004,"Triglyc mg/dL":-1.2109},{"Age":-0.5837,"DBP II":0.6552,"Cholest mg/dL":-0.7178,"Glucose mg/dL":-0.9359,"BMI":-0.3795,"Hgb g/dL":0.9033,"HbA1c":-0.3211,"WBC K/uL":-0.3004,"Triglyc mg/dL":-1.2109},{"Age":-0.7793,"DBP II":0.7147,"Cholest mg/dL":0.5063,"Glucose mg/dL":-0.9333,"BMI":-0.3669,"Hgb g/dL":-0.0959,"HbA1c":-0.1837,"WBC K/uL":0.0131,"Triglyc mg/dL":0.0283},{"Age":-0.7793,"DBP II":0.7147,"Cholest mg/dL":0.5063,"Glucose mg/dL":-0.9333,"BMI":-0.3669,"Hgb g/dL":-0.0959,"HbA1c":-0.1837,"WBC K/uL":0.0131,"Triglyc mg/dL":0.0283},{"Age":-0.39,"DBP II":-0.0357,"Cholest mg/dL":0.8015,"Glucose mg/dL":-0.5419,"BMI":-0.1201,"Hgb g/dL":1.7352,"HbA1c":-1.3024,"WBC K/uL":-0.7279,"Triglyc mg/dL":0.0807},{"Age":-0.39,"DBP II":-0.0357,"Cholest mg/dL":0.8015,"Glucose mg/dL":-0.5419,"BMI":-0.1201,"Hgb g/dL":3.2269,"HbA1c":-1.3024,"WBC K/uL":-0.7279,"Triglyc mg/dL":0.0807},{"Age":-0.9979,"DBP II":-0.339,"Cholest mg/dL":0.6683,"Glucose mg/dL":0.0131,"BMI":-3.3924,"Hgb g/dL":-3.2269,"HbA1c":-0.5156,"WBC K/uL":-0.476,"Triglyc mg/dL":0.0},{"Age":-0.9979,"DBP II":-0.339,"Cholest mg/dL":0.6683,"Glucose mg/dL":0.0131,"BMI":-2.5485,"Hgb g/dL":-1.6538,"HbA1c":-0.5156,"WBC K/uL":-0.476,"Triglyc mg/dL":0.0},{"Age":0.9682,"DBP II":0.9132,"Cholest mg/dL":3.986,"Glucose mg/dL":-3.9432,"BMI":0.0791,"Hgb g/dL":1.2031,"HbA1c":-1.5457,"WBC K/uL":0.8236,"Triglyc mg/dL":0.0818},{"Age":0.9682,"DBP II":0.9132,"Cholest mg/dL":2.0256,"Glucose mg/dL":-1.8352,"BMI":0.0791,"Hgb g/dL":1.2031,"HbA1c":-1.5457,"WBC K/uL":0.8236,"Triglyc mg/dL":0.0818},{"Age":-1.01,"DBP II":-0.0807,"Cholest mg/dL":-0.3669,"Glucose mg/dL":0.1258,"BMI":0.187,"Hgb g/dL":0.6421,"HbA1c":-0.8341,"WBC K/uL":-1.4671,"Triglyc mg/dL":-0.4645},{"Age":-1.01,"DBP II":-0.0807,"Cholest mg/dL":-0.3669,"Glucose mg/dL":0.1258,"BMI":0.187,"Hgb g/dL":0.6421,"HbA1c":-0.8341,"WBC K/uL":-1.4671,"Triglyc mg/dL":-0.4645},{"Age":0.253,"DBP II":0.316,"Cholest mg/dL":-3.986,"Glucose mg/dL":-0.5131,"BMI":-0.2393,"Hgb g/dL":0.3722,"HbA1c":-1.4544,"WBC K/uL":-1.3892,"Triglyc mg/dL":-0.0},{"Age":0.253,"DBP II":0.316,"Cholest mg/dL":0.1696,"Glucose mg/dL":-0.5131,"BMI":-0.2393,"Hgb g/dL":0.3722,"HbA1c":-1.4544,"WBC K/uL":-1.3892,"Triglyc mg/dL":-0.0},{"Age":-1.01,"DBP II":0.5339,"Cholest mg/dL":-0.8803,"Glucose mg/dL":1.1505,"BMI":1.1777,"Hgb g/dL":-1.2582,"HbA1c":0.3185,"WBC K/uL":-0.0204,"Triglyc mg/dL":0.3708},{"Age":-1.01,"DBP II":0.5339,"Cholest mg/dL":-0.8803,"Glucose mg/dL":1.1505,"BMI":1.1777,"Hgb g/dL":-1.2582,"HbA1c":0.3185,"WBC K/uL":-0.0204,"Triglyc mg/dL":0.3708},{"Age":-0.1422,"DBP II":0.4168,"Cholest mg/dL":-0.459,"Glucose mg/dL":0.1057,"BMI":-0.1743,"Hgb g/dL":-1.5234,"HbA1c":0.5049,"WBC K/uL":-0.0144,"Triglyc mg/dL":-0.3447},{"Age":-0.1422,"DBP II":0.4168,"Cholest mg/dL":-0.459,"Glucose mg/dL":0.278,"BMI":-0.1743,"Hgb g/dL":-1.5234,"HbA1c":0.5049,"WBC K/uL":-0.0144,"Triglyc mg/dL":-0.3447},{"Age":-0.5485,"DBP II":-0.187,"Cholest mg/dL":0.9398,"Glucose mg/dL":-1.3291,"BMI":0.4486,"Hgb g/dL":0.3847,"HbA1c":0.4829,"WBC K/uL":1.3961,"Triglyc mg/dL":0.1018},{"Age":-0.5485,"DBP II":-0.187,"Cholest mg/dL":0.9398,"Glucose mg/dL":-1.3291,"BMI":0.4486,"Hgb g/dL":0.3847,"HbA1c":0.4829,"WBC K/uL":1.3961,"Triglyc mg/dL":0.1018},{"Age":-0.0522,"DBP II":-1.0445,"Cholest mg/dL":0.0898,"Glucose mg/dL":0.9033,"BMI":-0.4137,"Hgb g/dL":0.4376,"HbA1c":0.1384,"WBC K/uL":-0.074,"Triglyc mg/dL":1.3953},{"Age":-0.0522,"DBP II":-1.0445,"Cholest mg/dL":0.0898,"Glucose mg/dL":0.9033,"BMI":-0.4137,"Hgb g/dL":0.4376,"HbA1c":0.1384,"WBC K/uL":-0.074,"Triglyc mg/dL":3.0624},{"Age":0.0691,"DBP II":2.2527,"Cholest mg/dL":-1.6329,"Glucose mg/dL":-0.7807,"BMI":1.1128,"Hgb g/dL":0.4383,"HbA1c":1.4554,"WBC K/uL":-0.0204,"Triglyc mg/dL":-1.098},{"Age":0.0691,"DBP II":2.9467,"Cholest mg/dL":-1.6329,"Glucose mg/dL":0.1269,"BMI":1.1128,"Hgb g/dL":3.2269,"HbA1c":3.6393,"WBC K/uL":-0.0204,"Triglyc mg/dL":-1.098},{"Age":-3.0889,"DBP II":0.6788,"Cholest mg/dL":-0.2154,"Glucose mg/dL":0.2856,"BMI":0.7487,"Hgb g/dL":-0.2045,"HbA1c":0.3009,"WBC K/uL":0.929,"Triglyc mg/dL":1.462},{"Age":-3.5648,"DBP II":0.6788,"Cholest mg/dL":-0.2154,"Glucose mg/dL":0.2856,"BMI":0.7487,"Hgb g/dL":-0.2045,"HbA1c":0.3009,"WBC K/uL":0.929,"Triglyc mg/dL":1.462},{"Age":0.253,"DBP II":-0.9445,"Cholest mg/dL":-0.067,"Glucose mg/dL":0.298,"BMI":0.58,"Hgb g/dL":0.7343,"HbA1c":-0.2677,"WBC K/uL":2.0993,"Triglyc mg/dL":0.0614},{"Age":0.253,"DBP II":-0.9445,"Cholest mg/dL":-0.067,"Glucose mg/dL":0.298,"BMI":0.58,"Hgb g/dL":0.7343,"HbA1c":-0.2677,"WBC K/uL":3.2574,"Triglyc mg/dL":0.0614},{"Age":3.5648,"DBP II":0.6625,"Cholest mg/dL":0.2252,"Glucose mg/dL":0.9111,"BMI":-0.4431,"Hgb g/dL":0.8161,"HbA1c":0.5768,"WBC K/uL":0.5495,"Triglyc mg/dL":1.441},{"Age":2.183,"DBP II":0.6625,"Cholest mg/dL":0.2252,"Glucose mg/dL":0.9111,"BMI":-0.4431,"Hgb g/dL":0.8161,"HbA1c":0.5768,"WBC K/uL":0.5495,"Triglyc mg/dL":1.441},{"Age":0.2705,"DBP II":0.5889,"Cholest mg/dL":0.2645,"Glucose mg/dL":0.3464,"BMI":3.3924,"Hgb g/dL":-0.107,"HbA1c":1.6329,"WBC K/uL":0.4613,"Triglyc mg/dL":0.2373},{"Age":0.2705,"DBP II":0.5889,"Cholest mg/dL":0.2645,"Glucose mg/dL":0.3464,"BMI":1.9642,"Hgb g/dL":-0.107,"HbA1c":1.6329,"WBC K/uL":0.4613,"Triglyc mg/dL":0.2373},{"Age":0.2107,"DBP II":-1.1982,"Cholest mg/dL":-0.2828,"Glucose mg/dL":0.2705,"BMI":-0.4959,"Hgb g/dL":0.1503,"HbA1c":0.0851,"WBC K/uL":0.3277,"Triglyc mg/dL":-0.5286},{"Age":0.2107,"DBP II":-2.9467,"Cholest mg/dL":-0.2828,"Glucose mg/dL":0.2705,"BMI":-0.4959,"Hgb g/dL":0.1503,"HbA1c":0.0851,"WBC K/uL":0.3277,"Triglyc mg/dL":-0.5286},{"Age":-3.5648,"DBP II":-0.8444,"Cholest mg/dL":-0.0,"Glucose mg/dL":3.9432,"BMI":0.0988,"Hgb g/dL":-0.708,"HbA1c":1.5234,"WBC K/uL":-2.1524,"Triglyc mg/dL":1.2721},{"Age":-0.96,"DBP II":-0.8444,"Cholest mg/dL":-0.0,"Glucose mg/dL":2.9878,"BMI":0.0988,"Hgb g/dL":-0.708,"HbA1c":1.5234,"WBC K/uL":-3.2574,"Triglyc mg/dL":1.2721},{"Age":0.9333,"DBP II":-0.7808,"Cholest mg/dL":-1.2628,"Glucose mg/dL":0.0135,"BMI":0.1264,"Hgb g/dL":-0.6236,"HbA1c":0.0742,"WBC K/uL":0.5347,"Triglyc mg/dL":0.0898},{"Age":0.9333,"DBP II":-0.7808,"Cholest mg/dL":-1.2628,"Glucose mg/dL":0.0135,"BMI":0.1264,"Hgb g/dL":-0.6236,"HbA1c":0.0742,"WBC K/uL":0.5347,"Triglyc mg/dL":0.0898},{"Age":-0.4063,"DBP II":-0.3381,"Cholest mg/dL":-0.6552,"Glucose mg/dL":0.8144,"BMI":0.9124,"Hgb g/dL":-0.7606,"HbA1c":1.1965,"WBC K/uL":0.9979,"Triglyc mg/dL":0.0525},{"Age":-0.4063,"DBP II":-0.3381,"Cholest mg/dL":-0.6552,"Glucose mg/dL":0.8144,"BMI":0.9124,"Hgb g/dL":-0.7606,"HbA1c":1.1965,"WBC K/uL":0.9979,"Triglyc mg/dL":0.0525},{"Age":0.6745,"DBP II":-0.6745,"Cholest mg/dL":-1.383,"Glucose mg/dL":0.6103,"BMI":-0.6103,"Hgb g/dL":-0.4023,"HbA1c":0.2913,"WBC K/uL":-0.1573,"Triglyc mg/dL":-0.1046}],"after":[{"Age":0.2462,"DBP II":-0.1266,"Cholest mg/dL":-0.0326,"Glucose mg/dL":1.2438,"BMI":0.2027,"Hgb g/dL":0.0542,"HbA1c":0.2533,"WBC K/uL":0.5377,"Triglyc mg/dL":1.2248},{"Age":0.2462,"DBP II":-0.1266,"Cholest mg/dL":-0.0326,"Glucose mg/dL":1.2438,"BMI":0.2027,"Hgb g/dL":0.0542,"HbA1c":0.2533,"WBC K/uL":0.5377,"Triglyc mg/dL":1.2248},{"Age":1.2792,"DBP II":-0.5721,"Cholest mg/dL":-0.0875,"Glucose mg/dL":-0.0314,"BMI":-0.0622,"Hgb g/dL":-1.022,"HbA1c":1.0233,"WBC K/uL":-0.4333,"Triglyc mg/dL":-2.6938},{"Age":1.2792,"DBP II":-0.5721,"Cholest mg/dL":-0.0875,"Glucose mg/dL":-0.0314,"BMI":-0.0622,"Hgb g/dL":-1.022,"HbA1c":1.0233,"WBC K/uL":-0.4333,"Triglyc mg/dL":-2.6938},{"Age":3.3099,"DBP II":0.0759,"Cholest mg/dL":0.6836,"Glucose mg/dL":-0.2467,"BMI":-0.3143,"Hgb g/dL":0.046,"HbA1c":0.7597,"WBC K/uL":-0.0193,"Triglyc mg/dL":-0.2801},{"Age":1.4842,"DBP II":0.0759,"Cholest mg/dL":0.6836,"Glucose mg/dL":-0.2467,"BMI":-0.3143,"Hgb g/dL":0.046,"HbA1c":0.7597,"WBC K/uL":-0.0193,"Triglyc mg/dL":-0.2801},{"Age":0.4044,"DBP II":-0.8405,"Cholest mg/dL":0.3928,"Glucose mg/dL":0.1193,"BMI":0.1329,"Hgb g/dL":-0.2331,"HbA1c":-2.7999,"WBC K/uL":0.3748,"Triglyc mg/dL":-0.1313},{"Age":0.4044,"DBP II":-0.8405,"Cholest mg/dL":0.3928,"Glucose mg/dL":0.1193,"BMI":0.1329,"Hgb g/dL":-0.2331,"HbA1c":-0.6683,"WBC K/uL":0.3748,"Triglyc mg/dL":-0.1313},{"Age":-0.8386,"DBP II":0.558,"Cholest mg/dL":-1.1386,"Glucose mg/dL":-0.2758,"BMI":0.1707,"Hgb g/dL":0.731,"HbA1c":0.5183,"WBC K/uL":0.1448,"Triglyc mg/dL":-0.7299},{"Age":-0.8386,"DBP II":0.558,"Cholest mg/dL":-1.1386,"Glucose mg/dL":-0.2758,"BMI":0.1707,"Hgb g/dL":0.731,"HbA1c":0.5183,"WBC K/uL":0.1448,"Triglyc mg/dL":-0.7299},{"Age":-1.0342,"DBP II":0.6176,"Cholest mg/dL":0.0856,"Glucose mg/dL":-0.2732,"BMI":0.1832,"Hgb g/dL":-0.2682,"HbA1c":0.6557,"WBC K/uL":0.4583,"Triglyc mg/dL":0.5093},{"Age":-1.0342,"DBP II":0.6176,"Cholest mg/dL":0.0856,"Glucose mg/dL":-0.2732,"BMI":0.1832,"Hgb g/dL":-0.2682,"HbA1c":0.6557,"WBC K/uL":0.4583,"Triglyc mg/dL":0.5093},{"Age":-0.6449,"DBP II":-0.1329,"Cholest mg/dL":0.3808,"Glucose mg/dL":0.1182,"BMI":0.43,"Hgb g/dL":1.5629,"HbA1c":-0.4629,"WBC K/uL":-0.2826,"Triglyc mg/dL":0.5617},{"Age":-0.6449,"DBP II":-0.1329,"Cholest mg/dL":0.3808,"Glucose mg/dL":0.1182,"BMI":0.43,"Hgb g/dL":3.0546,"HbA1c":-0.4629,"WBC K/uL":-0.2826,"Triglyc mg/dL":0.5617},{"Age":-1.2528,"DBP II":-0.4362,"Cholest mg/dL":0.2476,"Glucose mg/dL":0.6732,"BMI":-2.8423,"Hgb g/dL":-3.3992,"HbA1c":0.3238,"WBC K/uL":-0.0308,"Triglyc mg/dL":0.481},{"Age":-1.2528,"DBP II":-0.4362,"Cholest mg/dL":0.2476,"Glucose mg/dL":0.6732,"BMI":-1.9984,"Hgb g/dL":-1.8261,"HbA1c":0.3238,"WBC K/uL":-0.0308,"Triglyc mg/dL":0.481},{"Age":0.7133,"DBP II":0.816,"Cholest mg/dL":3.5652,"Glucose mg/dL":-3.2831,"BMI":0.6292,"Hgb g/dL":1.0308,"HbA1c":-0.7062,"WBC K/uL":1.2688,"Triglyc mg/dL":0.5629},{"Age":0.7133,"DBP II":0.816,"Cholest mg/dL":1.6049,"Glucose mg/dL":-1.1751,"BMI":0.6292,"Hgb g/dL":1.0308,"HbA1c":-0.7062,"WBC K/uL":1.2688,"Triglyc mg/dL":0.5629},{"Age":-1.2649,"DBP II":-0.1778,"Cholest mg/dL":-0.7876,"Glucose mg/dL":0.7859,"BMI":0.7372,"Hgb g/dL":0.4698,"HbA1c":0.0054,"WBC K/uL":-1.0219,"Triglyc mg/dL":0.0166},{"Age":-1.2649,"DBP II":-0.1778,"Cholest mg/dL":-0.7876,"Glucose mg/dL":0.7859,"BMI":0.7372,"Hgb g/dL":0.4698,"HbA1c":0.0054,"WBC K/uL":-1.0219,"Triglyc mg/dL":0.0166},{"Age":-0.0019,"DBP II":0.2188,"Cholest mg/dL":-4.4067,"Glucose mg/dL":0.147,"BMI":0.3108,"Hgb g/dL":0.1999,"HbA1c":-0.615,"WBC K/uL":-0.944,"Triglyc mg/dL":0.481},{"Age":-0.0019,"DBP II":0.2188,"Cholest mg/dL":-0.2511,"Glucose mg/dL":0.147,"BMI":0.3108,"Hgb g/dL":0.1999,"HbA1c":-0.615,"WBC K/uL":-0.944,"Triglyc mg/dL":0.481},{"Age":-0.8023,"DBP II":0.613,"Cholest mg/dL":-0.5375,"Glucose mg/dL":0.6126,"BMI":0.7295,"Hgb g/dL":-1.1178,"HbA1c":-0.3655,"WBC K/uL":-0.3832,"Triglyc mg/dL":-0.0211},{"Age":-0.8023,"DBP II":0.613,"Cholest mg/dL":-0.5375,"Glucose mg/dL":0.6126,"BMI":0.7295,"Hgb g/dL":-1.1178,"HbA1c":-0.3655,"WBC K/uL":-0.3832,"Triglyc mg/dL":-0.0211},{"Age":0.0655,"DBP II":0.496,"Cholest mg/dL":-0.1162,"Glucose mg/dL":-0.4321,"BMI":-0.6226,"Hgb g/dL":-1.383,"HbA1c":-0.1791,"WBC K/uL":-0.3772,"Triglyc mg/dL":-0.7366},{"Age":0.0655,"DBP II":0.496,"Cholest mg/dL":-0.1162,"Glucose mg/dL":-0.2599,"BMI":-0.6226,"Hgb g/dL":-1.383,"HbA1c":-0.1791,"WBC K/uL":-0.3772,"Triglyc mg/dL":-0.7366},{"Age":-0.3408,"DBP II":-0.1078,"Cholest mg/dL":1.2826,"Glucose mg/dL":-1.867,"BMI":0.0003,"Hgb g/dL":0.5251,"HbA1c":-0.2011,"WBC K/uL":1.0334,"Triglyc mg/dL":-0.2901},{"Age":-0.3408,"DBP II":-0.1078,"Cholest mg/dL":1.2826,"Glucose mg/dL":-1.867,"BMI":0.0003,"Hgb g/dL":0.5251,"HbA1c":-0.2011,"WBC K/uL":1.0334,"Triglyc mg/dL":-0.2901},{"Age":0.1555,"DBP II":-0.9654,"Cholest mg/dL":0.4326,"Glucose mg/dL":0.3655,"BMI":-0.862,"Hgb g/dL":0.578,"HbA1c":-0.5456,"WBC K/uL":-0.4368,"Triglyc mg/dL":1.0034},{"Age":0.1555,"DBP II":-0.9654,"Cholest mg/dL":0.4326,"Glucose mg/dL":0.3655,"BMI":-0.862,"Hgb g/dL":0.578,"HbA1c":-0.5456,"WBC K/uL":-0.4368,"Triglyc mg/dL":2.6705},{"Age":0.2768,"DBP II":2.3318,"Cholest mg/dL":-1.2901,"Glucose mg/dL":-1.3186,"BMI":0.6645,"Hgb g/dL":0.5787,"HbA1c":0.7714,"WBC K/uL":-0.3832,"Triglyc mg/dL":-1.4899},{"Age":0.2768,"DBP II":3.0259,"Cholest mg/dL":-1.2901,"Glucose mg/dL":-0.411,"BMI":0.6645,"Hgb g/dL":3.3673,"HbA1c":2.9554,"WBC K/uL":-0.3832,"Triglyc mg/dL":-1.4899},{"Age":-2.8812,"DBP II":0.758,"Cholest mg/dL":0.1274,"Glucose mg/dL":-0.2523,"BMI":0.3005,"Hgb g/dL":-0.0641,"HbA1c":-0.3831,"WBC K/uL":0.5662,"Triglyc mg/dL":1.07},{"Age":-3.3571,"DBP II":0.758,"Cholest mg/dL":0.1274,"Glucose mg/dL":-0.2523,"BMI":0.3005,"Hgb g/dL":-0.0641,"HbA1c":-0.3831,"WBC K/uL":0.5662,"Triglyc mg/dL":1.07},{"Age":0.4607,"DBP II":-0.8653,"Cholest mg/dL":0.2758,"Glucose mg/dL":-0.2398,"BMI":0.1317,"Hgb g/dL":0.8747,"HbA1c":-0.9517,"WBC K/uL":1.7365,"Triglyc mg/dL":-0.3305},{"Age":0.4607,"DBP II":-0.8653,"Cholest mg/dL":0.2758,"Glucose mg/dL":-0.2398,"BMI":0.1317,"Hgb g/dL":0.8747,"HbA1c":-0.9517,"WBC K/uL":2.8946,"Triglyc mg/dL":-0.3305},{"Age":3.7726,"DBP II":0.7416,"Cholest mg/dL":0.568,"Glucose mg/dL":0.3732,"BMI":-0.8914,"Hgb g/dL":0.9565,"HbA1c":-0.1072,"WBC K/uL":0.1868,"Triglyc mg/dL":1.0491},{"Age":2.3907,"DBP II":0.7416,"Cholest mg/dL":0.568,"Glucose mg/dL":0.3732,"BMI":-0.8914,"Hgb g/dL":0.9565,"HbA1c":-0.1072,"WBC K/uL":0.1868,"Triglyc mg/dL":1.0491},{"Age":0.4782,"DBP II":0.6681,"Cholest mg/dL":0.6073,"Glucose mg/dL":-0.1915,"BMI":2.9442,"Hgb g/dL":0.0334,"HbA1c":0.9489,"WBC K/uL":0.0985,"Triglyc mg/dL":-0.1547},{"Age":0.4782,"DBP II":0.6681,"Cholest mg/dL":0.6073,"Glucose mg/dL":-0.1915,"BMI":1.516,"Hgb g/dL":0.0334,"HbA1c":0.9489,"WBC K/uL":0.0985,"Triglyc mg/dL":-0.1547},{"Age":0.4184,"DBP II":-1.119,"Cholest mg/dL":0.06,"Glucose mg/dL":-0.2674,"BMI":-0.9442,"Hgb g/dL":0.2907,"HbA1c":-0.5989,"WBC K/uL":-0.0351,"Triglyc mg/dL":-0.9205},{"Age":0.4184,"DBP II":-2.8675,"Cholest mg/dL":0.06,"Glucose mg/dL":-0.2674,"BMI":-0.9442,"Hgb g/dL":0.2907,"HbA1c":-0.5989,"WBC K/uL":-0.0351,"Triglyc mg/dL":-0.9205},{"Age":-3.3571,"DBP II":-0.7653,"Cholest mg/dL":0.3428,"Glucose mg/dL":3.4054,"BMI":-0.3495,"Hgb g/dL":-0.5676,"HbA1c":0.8394,"WBC K/uL":-2.5151,"Triglyc mg/dL":0.8801},{"Age":-0.7523,"DBP II":-0.7653,"Cholest mg/dL":0.3428,"Glucose mg/dL":2.4499,"BMI":-0.3495,"Hgb g/dL":-0.5676,"HbA1c":0.8394,"WBC K/uL":-3.6202,"Triglyc mg/dL":0.8801},{"Age":1.1411,"DBP II":-0.7016,"Cholest mg/dL":-0.92,"Glucose mg/dL":-0.5244,"BMI":-0.3219,"Hgb g/dL":-0.4832,"HbA1c":-0.6098,"WBC K/uL":0.1719,"Triglyc mg/dL":-0.3022},{"Age":1.1411,"DBP II":-0.7016,"Cholest mg/dL":-0.92,"Glucose mg/dL":-0.5244,"BMI":-0.3219,"Hgb g/dL":-0.4832,"HbA1c":-0.6098,"WBC K/uL":0.1719,"Triglyc mg/dL":-0.3022},{"Age":-0.1986,"DBP II":-0.2589,"Cholest mg/dL":-0.3124,"Glucose mg/dL":0.2765,"BMI":0.4642,"Hgb g/dL":-0.6202,"HbA1c":0.5125,"WBC K/uL":0.6351,"Triglyc mg/dL":-0.3394},{"Age":-0.1986,"DBP II":-0.2589,"Cholest mg/dL":-0.3124,"Glucose mg/dL":0.2765,"BMI":0.4642,"Hgb g/dL":-0.6202,"HbA1c":0.5125,"WBC K/uL":0.6351,"Triglyc mg/dL":-0.3394},{"Age":0.8822,"DBP II":-0.5953,"Cholest mg/dL":-1.0402,"Glucose mg/dL":0.0724,"BMI":-1.0586,"Hgb g/dL":-0.2618,"HbA1c":-0.3927,"WBC K/uL":-0.5201,"Triglyc mg/dL":-0.4966}],"domain":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"subjectIds":["S0030","S0044","S0058","S0063","S0064","S0070","S0078","S0085","S0087","S0088","S0091","S0097","S0098","S0101","S0103","S0112","S0125","S0127","S0135","S0142","S0152","S0170","S0073","S0075","S0076","S0080","S0082","S0084","S0093","S0094","S0096","S0104","S0105","S0107","S0108","S0109","S0126","S0128","S0129","S0131","S0133","S0137","S0149","S0150","S0168","S0171","S0173","S0198","S0202"],"beforeLeak":{"Age":[true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,true,true,false,false,true,true,true,true,true,true,true,true,true,true,false,false,true,true,false,false,false,false,false,false,false,false,true,true,false,false,true,true,false],"DBP II":[false,false,false,false,true,true,false,false,true,true,true,true,false,false,false,false,true,true,false,false,true,true,false,false,false,false,true,true,true,true,false,false,false,false,true,true,false,false,false,false,true,true,true,true,true,true,true,true,true],"Cholest mg/dL":[true,true,true,true,true,true,true,true,false,false,true,true,true,true,true,true,true,true,false,false,false,true,true,true,true,true,false,false,false,false,true,true,true,true,true,true,false,false,false,false,true,true,true,true,true,true,true,true,true],"Glucose mg/dL":[false,false,true,true,true,true,true,true,true,true,true,true,true,true,false,false,true,true,false,false,true,true,true,true,true,true,false,false,true,true,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"BMI":[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,true,true,true,true,false,false,true,true,false,false,true,true,true,true,true,true,false,false,true,true,false,false,true,true,true,true,true,true,false],"Hgb g/dL":[true,true,false,false,true,true,false,false,true,true,false,false,true,true,false,false,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,true,true,false,false,false,false,true,true,false,false,true,true,true,true,true,true,true],"HbA1c":[true,true,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true],"WBC K/uL":[false,false,true,true,true,true,true,true,true,true,false,false,true,true,true,true,false,false,true,true,true,true,true,true,true,true,true,true,false,false,true,true,true,true,true,true,true,true,true,true,true,true,false,false,true,true,true,true,false]},"afterLeak":{"Age":[true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,true,true,false,false,false,false,true,true,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,true,true,false],"DBP II":[false,false,true,true,true,true,true,true,true,true,true,true,false,false,true,true,true,true,false,false,true,true,false,false,false,false,true,true,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false],"Cholest mg/dL":[true,true,true,true,true,true,false,false,true,true,false,false,false,false,false,false,true,false,true,true,true,true,false,false,false,false,true,true,true,true,false,false,true,true,true,true,false,false,false,false,true,true,true,true,false,false,false,false,false],"Glucose mg/dL":[false,false,true,true,true,true,false,false,true,true,true,true,false,false,false,false,true,true,false,false,false,false,true,true,false,false,false,false,true,true,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,false,true,true,true],"BMI":[true,true,false,false,false,false,true,true,true,true,true,true,true,true,false,false,true,true,true,true,true,true,false,false,true,true,false,false,true,true,false,false,false,false,false,false,true,true,false,false,true,true,true,true,true,true,false,false,true],"Hgb g/dL":[true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,true,true,false,false,false,false,true,true,false,false,false,false,false,false,false],"HbA1c":[false,false,false,false,false,false,true,true,false,false,false,false,true,true,false,false,true,true,false,false,true,true,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,true,true,false,false,true,true,false,false,true,true,false],"WBC K/uL":[true,true,false,false,false,false,true,true,true,true,true,true,false,false,false,false,true,true,false,false,true,true,true,true,true,true,false,false,true,true,true,true,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false]},"beforeLeakPct":{"Age":53.06122448979592,"DBP II":51.02040816326531,"Cholest mg/dL":73.46938775510205,"Glucose mg/dL":81.63265306122449,"BMI":73.46938775510205,"Hgb g/dL":59.183673469387756,"HbA1c":91.83673469387756,"WBC K/uL":77.55102040816327},"afterLeakPct":{"Age":34.69387755102041,"DBP II":38.775510204081634,"Cholest mg/dL":51.02040816326531,"Glucose mg/dL":38.775510204081634,"BMI":59.183673469387756,"Hgb g/dL":42.857142857142854,"HbA1c":30.612244897959183,"WBC K/uL":44.89795918367347},"nSubjects":49,"nControl":22,"nDM":27,"nVars":303,"bestMethod":"MMD","mmdBefore":0.15559813277934315,"mmdAfter":0.10146711502376243,"aucBefore":1.0,"aucAfter":0.07070707070707069,"summaryDomain":[{"Method":"DANN","MMD":0.1426294996651334,"AUC":1.0,"combined_score":0.23467057415492432},{"Method":"CORAL","MMD":0.24190886173757933,"AUC":0.10942760942760942,"combined_score":0.47916666905282485},{"Method":"MMD","MMD":0.10146711502376243,"AUC":0.07070707070707069,"combined_score":0.8319677370583952},{"Method":"Autoencoder","MMD":0.030379650654670964,"AUC":0.9141414141414141,"combined_score":0.546195652662246}]};
+const VARS_META = {"Age":["Age (years)","yrs"],"DBP II":["Diastolic BP (mmHg)","mmHg"],"Cholest mg/dL":["Cholesterol (mg/dL)","mg/dL"],"Glucose mg/dL":["Glucose (mg/dL)","mg/dL"],"BMI":["BMI (kg/m\u00b2)","kg/m\u00b2"],"Hgb g/dL":["Hemoglobin (g/dL)","g/dL"],"HbA1c":["HbA1c (%)","%"],"WBC K/uL":["WBC (K/uL)","K/uL"],"Triglyc mg/dL":["Triglycerides (mg/dL)","mg/dL"]};
+const ALL_VARS = DATA.vars;
+const GRID_VARS = DATA.gridVars;
+const HEAT_VARS = DATA.heatVars;
+
+const BEFORE = DATA.before;
+const AFTER = DATA.after;
+const DOMAIN = DATA.domain; // 0=Control,1=DM per subject, aligned with BEFORE/AFTER row order
+
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function std(a){ const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+
+function beforeArr(v){ return BEFORE.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+function afterArr(v){ return AFTER.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{
+  const o = document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; varDropdown.appendChild(o);
+});
+let selectedVar = ALL_VARS[0];
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = VARS_META[v][0];
+    d.onclick = ()=>{ selectedVar=v; varDropdown.value=v; renderVarList(); highlightVar(v); document.getElementById('qqVar').value=v; drawQQ(); };
+    varList.appendChild(d);
+  });
+}
+varDropdown.addEventListener('change', e=>{ selectedVar=e.target.value; renderVarList(); highlightVar(selectedVar); document.getElementById('qqVar').value=selectedVar; drawQQ(); });
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= SVG helpers =================
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+
+// ================= Histogram / Density =================
+function histBins(arr, nbins, lo, hi){
+  const width=(hi-lo)/nbins || 1;
+  const counts=new Array(nbins).fill(0);
+  arr.forEach(x=>{
+    let idx=Math.floor((x-lo)/width);
+    if(idx<0) idx=0; if(idx>=nbins) idx=nbins-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+function drawDistChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const lo = Math.min(...before,...after), hi = Math.max(...before,...after);
+  const nbins=10;
+  const cb = histBins(before,nbins,lo,hi), ca = histBins(after,nbins,lo,hi);
+  const maxc = Math.max(...cb,...ca,1);
+  const W=250,H=150, padL=30,padB=20,padT=6,padR=6;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const bw = plotW/nbins;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=4;i++){
+    const y = padT + plotH - (i/4)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=Math.round((i/4)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  function barsOrLine(counts, color, line, alpha){
+    if(plotType==='hist'){
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw;
+        const barH = (c/maxc)*plotH;
+        svg.appendChild(svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:color, opacity:alpha, stroke:line, 'stroke-width':1}));
+      });
+    } else {
+      let d='';
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw + bw/2;
+        const y = padT + plotH - (c/maxc)*plotH;
+        d += (i===0?'M':'L') + x + ' ' + y + ' ';
+      });
+      const path = svgEl('path',{d:d.trim(), fill:'none', stroke:line, 'stroke-width':2});
+      svg.appendChild(path);
+      let dArea = d.trim() + ` L ${padL+plotW} ${padT+plotH} L ${padL} ${padT+plotH} Z`;
+      svg.appendChild(svgEl('path',{d:dArea, fill:color, opacity:alpha*0.6}));
+    }
+  }
+  barsOrLine(cb, 'var(--before)', 'var(--before-line)', 0.55);
+  barsOrLine(ca, 'var(--after)', 'var(--after-line)', 0.55);
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const xt1=svgEl('text',{x:padL,y:H-4,'font-size':8,fill:'#8791A3'}); xt1.textContent=fmtAxis(lo,hi-lo); svg.appendChild(xt1);
+  const xt2=svgEl('text',{x:W-padR,y:H-4,'text-anchor':'end','font-size':8,fill:'#8791A3'}); xt2.textContent=fmtAxis(hi,hi-lo); svg.appendChild(xt2);
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function quartiles(arr){
+  const a=[...arr].sort((x,y)=>x-y);
+  const q=(p)=>{ const idx=(a.length-1)*p; const lo=Math.floor(idx),hi=Math.ceil(idx); return a[lo]+(a[hi]-a[lo])*(idx-lo); };
+  const q1=q(0.25), med=q(0.5), q3=q(0.75), iqr=q3-q1;
+  const loW = Math.max(a[0], q1-1.5*iqr), hiW = Math.min(a[a.length-1], q3+1.5*iqr);
+  const outliers = a.filter(x=>x<loW||x>hiW);
+  return {q1,med,q3,loW,hiW,outliers,min:a[0],max:a[a.length-1]};
+}
+function drawBoxChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const sb = quartiles(before), sa = quartiles(after);
+  const lo = Math.min(sb.loW,sa.loW,...sb.outliers,...sa.outliers);
+  const hi = Math.max(sb.hiW,sa.hiW,...sb.outliers,...sa.outliers);
+  const W=250,H=150, padL=32,padB=20,padT=8,padR=10;
+  const plotH=H-padT-padB;
+  const y = val => padT + plotH - ((val-lo)/(hi-lo||1))*plotH;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const yy=padT+ (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'}));
+  }
+  function box(cx, s, color, line){
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.loW),y2:y(s.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.q3),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.loW),y2:y(s.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.hiW),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('rect',{x:cx-bw/2, y:y(s.q3), width:bw, height:Math.max(y(s.q1)-y(s.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85}));
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(s.med),y2:y(s.med),stroke:line,'stroke-width':1.6}));
+    s.outliers.forEach(o=>{ svg.appendChild(svgEl('circle',{cx:cx, cy:y(o), r:2, fill:'none', stroke:line, 'stroke-width':1})); });
+  }
+  box(padL+ (W-padL-padR)*0.28, sb, 'var(--before)', 'var(--before-line)');
+  box(padL+ (W-padL-padR)*0.72, sa, 'var(--after)', 'var(--after-line)');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const lb=svgEl('text',{x:padL+(W-padL-padR)*0.28,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); lb.textContent='Before'; svg.appendChild(lb);
+  const la=svgEl('text',{x:padL+(W-padL-padR)*0.72,y:H-4,'text-anchor':'middle','font-size':9,fill:'#556'}); la.textContent='After'; svg.appendChild(la);
+  for(let i=0;i<=3;i++){
+    const val = lo + (i/3)*(hi-lo);
+    const yy=padT+plotH-(i/3)*plotH;
+    const t=svgEl('text',{x:padL-4,y:yy+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtAxis(val,hi-lo); svg.appendChild(t);
+  }
+  container.appendChild(svg);
+}
+
+// ================= render 6-var grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  GRID_VARS.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v;
+    const t = document.createElement('div'); t.className='ct'; t.textContent=VARS_META[v][0]; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+
+    const bb = document.createElement('div'); bb.className='chart-box';
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=VARS_META[v][0]; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function erfinv(x){
+  const a=0.147;
+  const ln = Math.log(1-x*x);
+  const t1 = 2/(Math.PI*a) + ln/2;
+  return Math.sign(x)*Math.sqrt(Math.sqrt(t1*t1-ln/a)-t1);
+}
+function normInv(p){ return Math.sqrt(2)*erfinv(2*p-1); }
+function drawQQSub(svg, x0, w, arr, color, line, label, H, padT, padB){
+  const a=[...arr].sort((x,y)=>x-y);
+  const n=a.length;
+  const theo = a.map((_,i)=>normInv((i+0.5)/n));
+  const m=mean(a), s=std(a)||1;
+  const sampleZ = a.map(v=>(v-m)/s);
+  const lo=Math.min(...theo,...sampleZ), hi=Math.max(...theo,...sampleZ);
+  const plotH=H-padT-padB, plotW=w-40;
+  const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+  const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+  svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  theo.forEach((t,i)=>{
+    svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(sampleZ[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85}));
+  });
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; svg.appendChild(lb);
+}
+function drawQQ(){
+  const v = document.getElementById('qqVar').value;
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520,H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  drawQQSub(svg, 0, W/2, before, 'var(--before)', 'var(--before-line)', 'Before Domain Alignment', H, padT, padB);
+  drawQQSub(svg, W/2, W/2, after, 'var(--after)', 'var(--after-line)', 'After Domain Alignment', H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function pearsonPairwise(a,b){
+  const xa=[],xb=[];
+  for(let i=0;i<a.length;i++){
+    if(a[i]!==null && b[i]!==null && a[i]!==undefined && b[i]!==undefined && !isNaN(a[i]) && !isNaN(b[i])){
+      xa.push(a[i]); xb.push(b[i]);
+    }
+  }
+  if(xa.length<3) return 0;
+  const ma=mean(xa), mb=mean(xb);
+  let num=0,da=0,db=0;
+  for(let i=0;i<xa.length;i++){ num+=(xa[i]-ma)*(xb[i]-mb); da+=(xa[i]-ma)**2; db+=(xb[i]-mb)**2; }
+  return num/Math.sqrt(da*db||1);
+}
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function corrMatrix(vars, dataset){
+  return vars.map(v1=> vars.map(v2 => pearsonPairwise(dataset.map(r=>r[v1]), dataset.map(r=>r[v2])) ));
+}
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=v.length>8?v.slice(0,6)+'…':v; th.style.writingMode='vertical-rl'; th.style.transform='rotate(180deg)'; th.style.fontSize='9px'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=v1.length>8?v1.slice(0,6)+'…':v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const setSel = document.getElementById('corrSet').value;
+  const vars = setSel==='core' ? GRID_VARS : ALL_VARS;
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, BEFORE), 'Before Domain Alignment'));
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, AFTER), 'After Domain Alignment'));
+}
+
+// ================= Domain Leakage heatmap =================
+function drawMVHeat(){
+  const container = document.getElementById('mvHeat'); container.innerHTML='';
+  const N = DATA.nSubjects;
+  const outer = document.createElement('div'); outer.className='mv-wrap';
+  const wrap = document.createElement('div'); wrap.className='mv-inner';
+  outer.appendChild(wrap);
+
+  const head = document.createElement('div'); head.className='mv-headrow';
+  head.innerHTML = `<div></div><div class="h">Before</div><div class="h">After</div>`;
+  wrap.appendChild(head);
+
+  HEAT_VARS.forEach(v=>{
+    const row = document.createElement('div'); row.className='mv-row';
+    const label = document.createElement('div'); label.className='mv-label'; label.textContent=VARS_META[v][0];
+    row.appendChild(label);
+
+    const beforeGrid = document.createElement('div'); beforeGrid.className='mv-grid'; beforeGrid.style.setProperty('--n', N);
+    const afterGrid = document.createElement('div'); afterGrid.className='mv-grid'; afterGrid.style.setProperty('--n', N);
+    for(let i=0;i<N;i++){
+      const bCell = document.createElement('div'); bCell.className='mv-cell';
+      if(DATA.beforeLeak[v][i]){ bCell.className += ' on' + (DOMAIN[i]===1?' dm':''); }
+      bCell.title = 'Subject ' + (i+1) + ' (' + (DOMAIN[i]===1?'DM':'Control') + ')';
+      beforeGrid.appendChild(bCell);
+
+      const aCell = document.createElement('div'); aCell.className='mv-cell';
+      aCell.title = 'Subject ' + (i+1) + ' (' + (DOMAIN[i]===1?'DM':'Control') + ')';
+      afterGrid.appendChild(aCell);
+    }
+    row.appendChild(beforeGrid);
+    row.appendChild(afterGrid);
+    wrap.appendChild(row);
+
+    const pctRow = document.createElement('div'); pctRow.className='mv-row'; pctRow.style.marginBottom='10px';
+    pctRow.innerHTML = `<div></div><div class="mv-pct">${DATA.beforeLeakPct[v].toFixed(0)}% leak</div><div class="mv-pct">${DATA.afterLeakPct[v].toFixed(0)}% leak</div>`;
+    wrap.appendChild(pctRow);
+  });
+  container.appendChild(outer);
+
+  const legend = document.createElement('div');
+  legend.style.cssText='display:flex;gap:14px;justify-content:center;margin-top:14px;font-size:11px;color:var(--muted);';
+  legend.innerHTML = `<span><span class="swatch" style="background:#C0533E;display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px;"></span>Domain leaked</span>
+                       <span><span class="swatch" style="background:#FFFFFF;border:1px solid #D6DCEA;display:inline-block;width:11px;height:11px;border-radius:0;margin-right:5px;vertical-align:-1px;"></span>No leak</span>`;
+  container.appendChild(legend);
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawMVHeat();
+</script>
+</body>
+</html>

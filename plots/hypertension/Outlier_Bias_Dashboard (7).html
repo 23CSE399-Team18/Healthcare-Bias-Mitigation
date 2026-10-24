@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard – Outlier Bias</title>
+<style>
+  :root{
+    --navy:#0b1f3a;
+    --navy-2:#0e2a56;
+    --blue-text:#1a4fa0;
+    --before:#7fb3e8;
+    --before-line:#3f7fc4;
+    --after:#8fd694;
+    --after-line:#4caf50;
+    --gray:#c3c8d4;
+    --gray-line:#8a91a3;
+    --bg:#eef1f6;
+    --card:#ffffff;
+    --border:#dbe2ee;
+    --ink:#22293a;
+    --muted:#5b6478;
+    --gold:#e8a33d;
+    --red:#d9534f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI',Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+  }
+  header{
+    background:linear-gradient(90deg,var(--navy),var(--navy-2));
+    color:#fff;
+    padding:18px 24px;
+    text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  header h1{ margin:0; font-size:22px; letter-spacing:.3px; }
+  header p{ margin:4px 0 0; font-size:12.5px; color:#c9d6ee; }
+  .layout{
+    display:grid;
+    grid-template-columns:230px 1fr;
+    gap:16px;
+    padding:16px;
+    align-items:start;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    box-shadow:0 1px 3px rgba(20,30,60,.06);
+  }
+  .sidebar{ display:flex; flex-direction:column; gap:14px; position:sticky; top:16px; }
+  .sidebar h3{ margin:0 0 8px; font-size:13px; color:var(--blue-text); font-weight:700; }
+  select{
+    width:100%; padding:8px 10px; border-radius:6px;
+    border:1px solid var(--border); background:#fff; font-size:13px; color:var(--ink);
+  }
+  .var-list{
+    list-style:none; margin:8px 0 0; padding:0; max-height:230px; overflow-y:auto;
+    border:1px solid var(--border); border-radius:6px;
+  }
+  .var-list li{ padding:8px 10px; font-size:12.5px; cursor:pointer; border-bottom:1px solid #f0f2f7; }
+  .var-list li:last-child{ border-bottom:none; }
+  .var-list li:hover{ background:#f2f6fd; }
+  .var-list li.active{ background:var(--blue-text); color:#fff; font-weight:600; }
+  .info-row{ display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; border-bottom:1px dashed #e6e9f0; }
+  .info-row:last-child{ border-bottom:none; }
+  .info-row span:first-child{ color:var(--muted); }
+  .info-row b{ color:var(--ink); }
+  .legend-row{ display:flex; align-items:center; gap:8px; font-size:12.5px; padding:4px 0; }
+  .swatch{ width:14px; height:14px; border-radius:3px; display:inline-block; }
+  main{ display:flex; flex-direction:column; gap:16px; }
+  .section-title{ font-size:14.5px; font-weight:700; color:var(--blue-text); margin:0 0 10px; }
+  .grid6{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .grid5{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+  .grid4{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; align-items:stretch; }
+  .row3{ display:flex; flex-wrap:wrap; gap:12px; align-items:flex-start; }
+  .row3 > .card{ flex:0 1 auto; }
+  @media (max-width:1200px){
+    .grid6{ grid-template-columns:repeat(2,1fr); }
+    .grid5{ grid-template-columns:repeat(3,1fr); }
+    .grid4{ grid-template-columns:repeat(2,1fr); }
+    .grid3{ grid-template-columns:1fr; }
+    .layout{ grid-template-columns:1fr; }
+  }
+  .subcard{
+    border:1px solid var(--border); border-radius:8px; padding:10px; background:#fff;
+    transition:box-shadow .15s, border-color .15s;
+  }
+  .subcard.highlight{ border-color:var(--blue-text); box-shadow:0 0 0 3px rgba(26,79,160,.15); }
+  .subcard h4{ margin:0 0 6px; font-size:12.5px; text-align:center; color:var(--ink); }
+  .badge{
+    display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px;
+    margin-left:6px; vertical-align:middle;
+  }
+  .badge.selected{ background:#e6f6e7; color:var(--after-line); border:1px solid var(--after-line); }
+  .badge.rejected{ background:#fdeceb; color:var(--red); border:1px solid var(--red); }
+  .toolbar{ display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+  .toolbar select{ width:auto; min-width:160px; }
+  .arrow{ font-size:16px; color:var(--muted); }
+  .heat-wrap{ display:flex; gap:14px; justify-content:space-around; flex-wrap:wrap; }
+  .heat-block h5{ text-align:center; font-size:12px; margin:0 0 6px; color:var(--ink); }
+  table.heat{ border-collapse:collapse; font-size:9.5px; table-layout:fixed; }
+  table.heat th, table.heat td{ border:1px solid #eef1f6; padding:2.5px 3px; text-align:center; width:24px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  table.heat th{ background:#f5f7fb; color:var(--muted); font-weight:600; }
+  table.heat td.rowlabel{ background:#f5f7fb; color:var(--ink); font-weight:600; text-align:left; width:56px; }
+  .heat-legend{ display:flex; align-items:center; gap:10px; justify-content:center; margin-top:10px; font-size:11px; color:var(--muted); }
+  .grad{ width:120px; height:10px; border-radius:5px; background:linear-gradient(90deg,#eaf1fb,#3f7fc4); }
+  .footnote{ font-size:10.5px; color:var(--muted); text-align:center; margin-top:6px; }
+
+  /* ---- pure-SVG/CSS chart styles ---- */
+  .chart-svg{ width:100%; height:auto; display:block; }
+  .chart-legend{ display:flex; gap:14px; justify-content:center; margin-top:6px; flex-wrap:wrap; }
+  .chart-legend .item{ display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); }
+  .chart-legend .dot{ width:10px; height:10px; border-radius:2px; display:inline-block; }
+  .bar-label{ font-size:9.5px; fill:var(--muted); }
+  .val-label{ font-size:9.5px; fill:var(--ink); font-weight:600; }
+  .axis-line{ stroke:#e3e7f0; stroke-width:1; }
+  .pie-wrap{ display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; }
+  .pie-circle{ width:120px; height:120px; border-radius:50%; flex-shrink:0; }
+
+  /* diverging heatmap + colorbar (correlation-heatmap style) */
+  .heat-row{ display:flex; gap:16px; align-items:flex-start; justify-content:center; flex-wrap:wrap; overflow-x:auto; }
+  .colorbar-wrap{ display:flex; flex-direction:column; align-items:center; gap:2px; padding-top:18px; }
+  .colorbar{ width:14px; height:150px; border-radius:4px; background:linear-gradient(180deg,#c62828,#f4f4f4 50%,#1f5fa8); border:1px solid #d7dceb; }
+  .colorbar-ticks{ display:flex; flex-direction:column; justify-content:space-between; height:150px; font-size:9.5px; color:var(--muted); }
+  #qqWrap .heat-block{ flex:1 1 200px; width:auto; max-width:320px; }
+  #classImbWrap .heat-block{ flex:0 0 auto; }
+  .imb-grid{ display:grid; gap:1.5px; align-items:center; margin-top:6px; }
+  #classImbGrid{ display:flex; justify-content:center; }
+  .imb-grid .grp-header{ text-align:center; font-weight:700; font-size:12.5px; color:var(--ink); padding-bottom:4px; }
+  .hm-cell{ width:15px; height:15px; border:1px solid #d7dceb; border-radius:2px; }
+
+  /* filled-square density grid (missing-value-heatmap style) */
+  .sq-grid{ display:grid; gap:4px; }
+  .sq-cell{
+    display:flex; align-items:center; justify-content:center;
+    border-radius:3px; font-size:10px; font-weight:700; min-height:34px;
+    border:1px solid rgba(0,0,0,.05);
+  }
+  .sq-row-label{ font-size:10.5px; color:var(--ink); font-weight:600; display:flex; align-items:center; }
+  .sq-col-label{ font-size:10px; color:var(--muted); text-align:center; }
+
+  /* feature distribution comparison panel */
+  .panel-head{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+  .panel-legend{ display:flex; gap:16px; align-items:center; font-size:12.5px; color:var(--muted); }
+  .panel-legend .sw{ width:12px; height:12px; border-radius:3px; display:inline-block; margin-right:5px; vertical-align:middle; }
+  .feature-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+  @media (max-width:1300px){ .feature-grid{ grid-template-columns:repeat(3,1fr); } }
+  @media (max-width:820px){ .feature-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:520px){ .feature-grid{ grid-template-columns:1fr; } }
+  .fcell{ border:1px solid var(--border); border-radius:8px; padding:10px 10px 8px; }
+  .fcell h4{ margin:0 0 4px; font-size:12px; text-align:center; font-weight:700; color:var(--ink); }
+  .fcell .footnote{ font-size:9px; margin-top:2px; }
+  .tick-label{ font-size:8px; fill:var(--muted); }
+  #tooltip{
+    position:fixed; pointer-events:none; background:#20263c; color:#fff;
+    font-size:11.5px; font-weight:600; padding:5px 10px; border-radius:6px;
+    box-shadow:0 4px 10px rgba(0,0,0,.25); opacity:0; transform:translate(-50%,-115%);
+    transition:opacity .08s ease; white-space:nowrap; z-index:50;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Interactive EDA Dashboard – Outlier Bias (Before vs After Preprocessing)</h1>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="card">
+      <h3>1. Select Plot Type</h3>
+      <select id="plotType">
+        <option value="bar">Overlaid Bars</option>
+        <option value="stacked" selected>Stacked Bars</option>
+        <option value="curve">Smooth Curve Only</option>
+      </select>
+      <div class="footnote" style="text-align:left;margin-top:6px;">Controls the Distribution Comparison charts below.</div>
+    </div>
+
+    <div class="card">
+      <h3>2. Select Variable (Box Plot)</h3>
+      <ul class="var-list" id="varList">
+        <li data-target="box-Age" class="active">Age (years)</li>
+        <li data-target="box-EF">EF (%)</li>
+        <li data-target="box-IMT-MAX">IMT-MAX (mm)</li>
+        <li data-target="box-Weight">Weight (kg)</li>
+        <li data-target="box-Height">Height (cm)</li>
+        <li data-target="box-BSA">BSA (m²)</li>
+        <li data-target="box-SBP">SBP (mmHg)</li>
+        <li data-target="box-DBP">DBP (mmHg)</li>
+        <li data-target="box-BMI">BMI (kg/m²)</li>
+        <li data-target="box-LVMi">LVMi (g/m²)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>① Dataset Info</h3>
+      <div class="info-row"><span>Total Variables</span><b>10</b></div>
+    </div>
+
+    <div class="card">
+      <h3>▤ Legend</h3>
+      <div class="legend-row"><span class="swatch" style="background:var(--before);border:1px solid var(--before-line);"></span> Before</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after);border:1px solid var(--after-line);"></span> After</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- SECTION 0: real feature distribution comparison (continuous clinical variables) -->
+    <div class="card">
+      <div class="panel-head">
+        <div class="section-title" style="margin:0;">Distribution Comparison — Before vs After (overlaid, relative position across each variable's own range)</div>
+        <div class="panel-legend">
+          <span><span class="sw" style="background:var(--before);border:1px solid var(--before-line);"></span>Before</span>
+          <span><span class="sw" style="background:var(--after);border:1px solid var(--after-line);"></span>After</span>
+        </div>
+      </div>
+      <div class="feature-grid" id="featureGrid"></div>
+    </div>
+
+    <!-- SECTION 1: box plot comparison -->
+    <div class="card">
+      <div class="section-title">Box Plot Comparison (Before vs After Outlier Treatment)</div>
+      <div class="grid5" id="boxGrid"></div>
+    </div>
+
+    <!-- SECTION 2: bottom row, 3 panels -->
+    <div class="row3">
+
+      <div class="card" style="width:640px;">
+        <div class="section-title">Correlation Heatmap</div>
+        <div class="toolbar">
+          <select disabled><option>Before Preprocessing</option></select>
+          <span class="arrow">→</span>
+          <select disabled><option>After Preprocessing</option></select>
+        </div>
+        <div class="heat-row" style="flex-wrap:nowrap;">
+          <div class="heat-block"><h5>Before Preprocessing</h5><table class="heat" id="corrBefore"></table></div>
+          <div class="heat-block"><h5>After Preprocessing</h5><table class="heat" id="corrAfter"></table></div>
+          <div class="colorbar-wrap" style="flex-direction:row; gap:6px;">
+            <div class="colorbar"></div>
+            <div class="colorbar-ticks"><span>1.0</span><span>0</span><span>-1.0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="flex:1 1 312px;">
+        <div class="section-title">Q-Q Plot (Normality Check)</div>
+        <div class="toolbar">
+          <select id="qqSelect"></select>
+        </div>
+        <div class="heat-wrap" id="qqWrap" style="flex-wrap:nowrap;"></div>
+      </div>
+
+      <div class="card" style="flex:1 1 610px;">
+        <div class="section-title">Outlier Rate Heatmap</div>
+        <div id="classImbGrid"></div>
+        <div class="heat-legend">
+          <span class="swatch" style="background:#d9534f;"></span><span>Outlier</span>
+          <span class="swatch" style="background:#fff;border:1px solid #d7dceb;"></span><span>Within range</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<div id="tooltip"></div>
+
+<script>
+/* ===========================================================
+   Zero-dependency chart renderer: pure inline SVG + CSS.
+   No external libraries, no CDN — renders anywhere.
+   =========================================================== */
+
+const COLORS = {
+  before: '#7fb3e8', beforeLine:'#3f7fc4',
+  after:  '#8fd694', afterLine: '#4caf50',
+  gray:   '#c3c8d4', grayLine:  '#8a91a3',
+  slices: ['#3f7fc4','#4caf50','#e8a33d','#d9534f']
+};
+
+/* ---- Embedded real data (computed from final_dataset_all_bias_applied.csv, IQR-capped) ---- */
+const BOX_DATA = {"Age": {"unit": "years", "before": {"min": 31, "q1": 50, "median": 58, "q3": 65, "max": 93, "outliers": [90, 93]}, "after": {"min": 31, "q1": 50, "median": 58, "q3": 65, "max": 88, "outliers": []}}, "EF": {"unit": "%", "before": {"min": 18.9, "q1": 54.8, "median": 61.1, "q3": 65.3, "max": 74.0, "outliers": [18.9, 25.6, 26.4]}, "after": {"min": 38.9, "q1": 54.8, "median": 61.1, "q3": 65.3, "max": 74.0, "outliers": []}}, "IMT-MAX": {"unit": "mm", "before": {"min": 0.42, "q1": 0.59, "median": 0.69, "q3": 0.76, "max": 2.09, "outliers": [1.09, 1.16, 1.61, 1.69, 1.86, 2.09]}, "after": {"min": 0.42, "q1": 0.59, "median": 0.69, "q3": 0.76, "max": 1.01, "outliers": []}}, "Weight": {"unit": "kg", "before": {"min": 48.0, "q1": 66.8, "median": 74.8, "q3": 85.3, "max": 147.7, "outliers": [130.0, 141.1, 147.7]}, "after": {"min": 48.0, "q1": 66.8, "median": 74.8, "q3": 85.3, "max": 113.2, "outliers": []}}, "Height": {"unit": "cm", "before": {"min": 150.8, "q1": 163.5, "median": 166.7, "q3": 172.9, "max": 186.2, "outliers": []}, "after": {"min": 150.8, "q1": 163.5, "median": 166.7, "q3": 172.9, "max": 186.2, "outliers": []}}, "BSA": {"unit": "m\u00b2", "before": {"min": 1.42, "q1": 1.75, "median": 1.82, "q3": 1.99, "max": 2.41, "outliers": [2.38, 2.38, 2.41]}, "after": {"min": 1.42, "q1": 1.75, "median": 1.82, "q3": 1.99, "max": 2.35, "outliers": []}}, "SBP": {"unit": "mmHg", "before": {"min": 98, "q1": 111, "median": 119, "q3": 129, "max": 195, "outliers": [192, 195]}, "after": {"min": 98, "q1": 111, "median": 119, "q3": 129, "max": 156, "outliers": []}}, "DBP": {"unit": "mmHg", "before": {"min": 55, "q1": 69, "median": 74, "q3": 78, "max": 102, "outliers": [55, 92, 96, 102]}, "after": {"min": 56, "q1": 69, "median": 74, "q3": 78, "max": 92, "outliers": []}}, "BMI": {"unit": "kg/m\u00b2", "before": {"min": 18.1, "q1": 23.2, "median": 26.9, "q3": 30.2, "max": 55.5, "outliers": [43.5, 52.2, 55.5]}, "after": {"min": 18.1, "q1": 23.2, "median": 26.9, "q3": 30.2, "max": 40.7, "outliers": []}}, "LVMi": {"unit": "g/m\u00b2", "before": {"min": 58.0, "q1": 76.4, "median": 86.3, "q3": 101.3, "max": 203.2, "outliers": [166.8, 203.2]}, "after": {"min": 58.0, "q1": 76.4, "median": 86.3, "q3": 101.3, "max": 138.6, "outliers": []}}};
+const BOX_ORDER = ["Age", "EF", "IMT-MAX", "Weight", "Height", "BSA", "SBP", "DBP", "BMI", "LVMi"];
+const QQ_DATA = {"Age": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-1.924, -1.783, -1.572, -1.501, -1.501, -1.431, -1.29, -1.219, -1.219, -1.008, -0.655, -0.655, -0.655, -0.584, -0.584, -0.443, -0.443, -0.373, -0.373, -0.373, -0.302, -0.302, -0.232, -0.232, -0.161, -0.161, -0.161, -0.091, -0.02, -0.02, -0.02, 0.05, 0.05, 0.121, 0.191, 0.191, 0.191, 0.191, 0.332, 0.403, 0.403, 0.474, 0.474, 0.474, 0.826, 0.897, 0.897, 1.249, 1.39, 1.39, 1.461, 1.602, 1.672, 1.672, 2.237, 2.448], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-1.96, -1.815, -1.599, -1.526, -1.526, -1.454, -1.31, -1.238, -1.238, -1.021, -0.66, -0.66, -0.66, -0.588, -0.588, -0.443, -0.443, -0.371, -0.371, -0.371, -0.299, -0.299, -0.227, -0.227, -0.155, -0.155, -0.155, -0.083, -0.01, -0.01, -0.01, 0.062, 0.062, 0.134, 0.206, 0.206, 0.206, 0.206, 0.351, 0.423, 0.423, 0.495, 0.495, 0.495, 0.856, 0.928, 0.928, 1.289, 1.434, 1.434, 1.506, 1.65, 1.722, 1.722, 2.119, 2.119]}, "EF": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-3.677, -3.064, -2.99, -0.949, -0.931, -0.885, -0.775, -0.766, -0.592, -0.574, -0.491, -0.482, -0.446, -0.409, -0.391, -0.382, -0.354, -0.318, -0.272, -0.235, -0.226, -0.116, -0.098, -0.07, -0.043, 0.076, 0.085, 0.149, 0.222, 0.268, 0.277, 0.305, 0.314, 0.323, 0.341, 0.36, 0.387, 0.451, 0.451, 0.515, 0.543, 0.57, 0.589, 0.598, 0.662, 0.68, 0.689, 0.881, 1.074, 1.129, 1.147, 1.193, 1.211, 1.321, 1.357, 1.367], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-2.481, -2.481, -2.481, -1.319, -1.296, -1.237, -1.095, -1.083, -0.859, -0.836, -0.73, -0.718, -0.671, -0.623, -0.6, -0.588, -0.553, -0.505, -0.446, -0.399, -0.387, -0.246, -0.222, -0.187, -0.152, 0.002, 0.014, 0.096, 0.191, 0.249, 0.261, 0.297, 0.308, 0.32, 0.344, 0.367, 0.403, 0.485, 0.485, 0.568, 0.603, 0.639, 0.662, 0.674, 0.757, 0.78, 0.792, 1.04, 1.288, 1.358, 1.382, 1.441, 1.464, 1.606, 1.653, 1.665]}, "IMT-MAX": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-0.995, -0.995, -0.995, -0.995, -0.965, -0.905, -0.755, -0.725, -0.695, -0.575, -0.575, -0.545, -0.545, -0.545, -0.455, -0.425, -0.395, -0.366, -0.366, -0.276, -0.276, -0.276, -0.246, -0.246, -0.246, -0.216, -0.216, -0.216, -0.186, -0.186, -0.156, -0.156, -0.126, -0.126, -0.126, -0.126, -0.096, -0.096, -0.066, -0.066, -0.006, 0.024, 0.024, 0.054, 0.084, 0.144, 0.264, 0.264, 0.354, 0.384, 1.013, 1.223, 2.572, 2.811, 3.321, 4.01], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-1.696, -1.696, -1.696, -1.696, -1.633, -1.508, -1.194, -1.132, -1.069, -0.819, -0.819, -0.756, -0.756, -0.756, -0.568, -0.505, -0.443, -0.38, -0.38, -0.192, -0.192, -0.192, -0.129, -0.129, -0.129, -0.067, -0.067, -0.067, -0.004, -0.004, 0.058, 0.058, 0.121, 0.121, 0.121, 0.121, 0.184, 0.184, 0.246, 0.246, 0.372, 0.434, 0.434, 0.497, 0.56, 0.685, 0.935, 0.935, 1.123, 1.186, 2.008, 2.008, 2.008, 2.008, 2.008, 2.008]}, "Weight": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-1.516, -1.328, -1.293, -1.283, -1.126, -1.045, -0.933, -0.868, -0.852, -0.832, -0.766, -0.624, -0.614, -0.594, -0.554, -0.554, -0.548, -0.528, -0.518, -0.498, -0.447, -0.386, -0.361, -0.285, -0.28, -0.26, -0.25, -0.169, -0.148, -0.148, -0.072, 0.039, 0.039, 0.075, 0.09, 0.115, 0.135, 0.206, 0.216, 0.308, 0.308, 0.358, 0.429, 0.49, 0.54, 0.561, 0.566, 0.581, 0.622, 0.789, 0.92, 1.457, 1.467, 2.637, 3.2, 3.534], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-1.821, -1.585, -1.54, -1.527, -1.329, -1.227, -1.087, -1.003, -0.984, -0.959, -0.876, -0.697, -0.684, -0.659, -0.608, -0.608, -0.601, -0.576, -0.563, -0.537, -0.473, -0.397, -0.365, -0.269, -0.263, -0.237, -0.224, -0.122, -0.097, -0.097, -0.001, 0.14, 0.14, 0.184, 0.204, 0.235, 0.261, 0.35, 0.363, 0.478, 0.478, 0.542, 0.631, 0.708, 0.772, 0.797, 0.804, 0.823, 0.874, 1.085, 1.251, 1.928, 1.941, 2.341, 2.341, 2.341]}, "Height": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-2.194, -2.055, -1.701, -1.423, -1.41, -1.271, -1.145, -1.107, -1.069, -0.867, -0.778, -0.753, -0.652, -0.639, -0.563, -0.538, -0.513, -0.475, -0.462, -0.449, -0.449, -0.373, -0.361, -0.348, -0.247, -0.247, -0.222, -0.209, -0.158, -0.032, 0.019, 0.17, 0.208, 0.259, 0.271, 0.297, 0.373, 0.448, 0.461, 0.562, 0.575, 0.587, 0.638, 0.79, 0.815, 0.992, 1.131, 1.245, 1.384, 1.397, 1.46, 1.473, 1.498, 1.675, 1.7, 2.282], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-2.194, -2.055, -1.701, -1.423, -1.41, -1.271, -1.145, -1.107, -1.069, -0.867, -0.778, -0.753, -0.652, -0.639, -0.563, -0.538, -0.513, -0.475, -0.462, -0.449, -0.449, -0.373, -0.361, -0.348, -0.247, -0.247, -0.222, -0.209, -0.158, -0.032, 0.019, 0.17, 0.208, 0.259, 0.271, 0.297, 0.373, 0.448, 0.461, 0.562, 0.575, 0.587, 0.638, 0.79, 0.815, 0.992, 1.131, 1.245, 1.384, 1.397, 1.46, 1.473, 1.498, 1.675, 1.7, 2.282]}, "BSA": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-2.113, -1.641, -1.405, -1.358, -1.216, -1.169, -1.122, -1.028, -0.98, -0.933, -0.697, -0.65, -0.603, -0.556, -0.556, -0.556, -0.508, -0.461, -0.414, -0.414, -0.367, -0.367, -0.32, -0.272, -0.272, -0.272, -0.272, -0.225, -0.225, -0.131, -0.131, -0.083, -0.083, -0.036, 0.011, 0.058, 0.341, 0.341, 0.389, 0.436, 0.436, 0.577, 0.577, 0.672, 0.672, 0.814, 0.861, 0.908, 1.05, 1.05, 1.144, 1.805, 1.899, 2.419, 2.419, 2.56], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-2.157, -1.673, -1.431, -1.382, -1.237, -1.189, -1.14, -1.044, -0.995, -0.947, -0.705, -0.656, -0.608, -0.559, -0.559, -0.559, -0.511, -0.463, -0.414, -0.414, -0.366, -0.366, -0.317, -0.269, -0.269, -0.269, -0.269, -0.22, -0.22, -0.124, -0.124, -0.075, -0.075, -0.027, 0.022, 0.07, 0.361, 0.361, 0.409, 0.457, 0.457, 0.603, 0.603, 0.699, 0.699, 0.845, 0.893, 0.942, 1.087, 1.087, 1.184, 1.861, 1.958, 2.346, 2.346, 2.346]}, "SBP": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-1.322, -1.214, -1.16, -1.106, -0.997, -0.943, -0.943, -0.889, -0.889, -0.889, -0.78, -0.726, -0.672, -0.672, -0.618, -0.618, -0.563, -0.563, -0.563, -0.401, -0.401, -0.347, -0.292, -0.292, -0.292, -0.238, -0.238, -0.184, -0.184, -0.076, -0.021, -0.021, 0.033, 0.087, 0.141, 0.141, 0.141, 0.25, 0.25, 0.25, 0.304, 0.358, 0.358, 0.358, 0.412, 0.467, 0.521, 0.521, 0.846, 0.954, 1.009, 1.171, 1.334, 1.497, 3.773, 3.936], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-1.645, -1.503, -1.431, -1.36, -1.217, -1.146, -1.146, -1.075, -1.075, -1.075, -0.932, -0.861, -0.789, -0.789, -0.718, -0.718, -0.647, -0.647, -0.647, -0.433, -0.433, -0.361, -0.29, -0.29, -0.29, -0.219, -0.219, -0.147, -0.147, -0.005, 0.067, 0.067, 0.138, 0.209, 0.281, 0.281, 0.281, 0.423, 0.423, 0.423, 0.495, 0.566, 0.566, 0.566, 0.637, 0.709, 0.78, 0.78, 1.208, 1.351, 1.422, 1.636, 1.85, 2.064, 2.519, 2.519]}, "DBP": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-2.413, -1.414, -1.289, -1.164, -1.164, -1.164, -1.164, -0.914, -0.914, -0.789, -0.789, -0.789, -0.665, -0.665, -0.665, -0.54, -0.54, -0.415, -0.415, -0.415, -0.415, -0.29, -0.165, -0.165, -0.165, -0.165, -0.165, -0.165, -0.04, -0.04, -0.04, -0.04, 0.085, 0.085, 0.085, 0.21, 0.21, 0.21, 0.335, 0.335, 0.459, 0.459, 0.459, 0.584, 0.584, 0.584, 0.834, 0.834, 0.834, 0.959, 0.959, 1.209, 1.459, 2.208, 2.707, 3.457], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-2.582, -1.538, -1.399, -1.26, -1.26, -1.26, -1.26, -0.982, -0.982, -0.842, -0.842, -0.842, -0.703, -0.703, -0.703, -0.564, -0.564, -0.425, -0.425, -0.425, -0.425, -0.286, -0.147, -0.147, -0.147, -0.147, -0.147, -0.147, -0.007, -0.007, -0.007, -0.007, 0.132, 0.132, 0.132, 0.271, 0.271, 0.271, 0.41, 0.41, 0.549, 0.549, 0.549, 0.688, 0.688, 0.688, 0.967, 0.967, 0.967, 1.106, 1.106, 1.384, 1.663, 2.428, 2.428, 2.428]}, "BMI": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-1.346, -1.233, -1.063, -1.048, -1.034, -0.992, -0.978, -0.963, -0.893, -0.864, -0.85, -0.751, -0.708, -0.638, -0.623, -0.524, -0.496, -0.482, -0.482, -0.468, -0.468, -0.425, -0.369, -0.312, -0.255, -0.255, -0.227, -0.114, -0.099, -0.099, -0.085, -0.029, -0.029, 0.014, 0.028, 0.071, 0.212, 0.241, 0.241, 0.283, 0.326, 0.368, 0.368, 0.396, 0.566, 0.623, 0.651, 0.68, 0.722, 0.75, 0.807, 0.949, 1.218, 2.252, 3.484, 3.951], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-1.662, -1.514, -1.292, -1.273, -1.255, -1.199, -1.181, -1.162, -1.07, -1.033, -1.014, -0.885, -0.829, -0.737, -0.718, -0.589, -0.552, -0.533, -0.533, -0.515, -0.515, -0.459, -0.385, -0.311, -0.237, -0.237, -0.201, -0.053, -0.034, -0.034, -0.016, 0.058, 0.058, 0.114, 0.132, 0.188, 0.373, 0.41, 0.41, 0.465, 0.521, 0.576, 0.576, 0.613, 0.835, 0.909, 0.946, 0.983, 1.039, 1.076, 1.15, 1.334, 1.686, 2.525, 2.525, 2.525]}, "LVMi": {"before_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "before_samp": [-1.24, -1.24, -1.24, -1.217, -1.046, -1.046, -1.019, -0.988, -0.972, -0.825, -0.755, -0.724, -0.677, -0.607, -0.499, -0.464, -0.445, -0.445, -0.433, -0.421, -0.414, -0.367, -0.348, -0.317, -0.305, -0.282, -0.204, -0.157, -0.126, -0.126, -0.072, -0.029, -0.022, 0.005, 0.017, 0.033, 0.071, 0.141, 0.157, 0.165, 0.25, 0.405, 0.541, 0.545, 0.564, 0.626, 0.673, 0.704, 0.793, 0.847, 0.925, 1.099, 1.375, 1.759, 2.981, 4.393], "after_theo": [-2.369, -1.93, -1.699, -1.534, -1.403, -1.292, -1.195, -1.108, -1.029, -0.956, -0.887, -0.823, -0.761, -0.703, -0.647, -0.592, -0.54, -0.489, -0.439, -0.39, -0.342, -0.295, -0.249, -0.203, -0.157, -0.112, -0.067, -0.022, 0.022, 0.067, 0.112, 0.157, 0.203, 0.249, 0.295, 0.342, 0.39, 0.439, 0.489, 0.54, 0.592, 0.647, 0.703, 0.761, 0.823, 0.887, 0.956, 1.029, 1.108, 1.195, 1.292, 1.403, 1.534, 1.699, 1.93, 2.369], "after_samp": [-1.502, -1.502, -1.502, -1.472, -1.254, -1.254, -1.219, -1.18, -1.16, -0.971, -0.882, -0.843, -0.783, -0.694, -0.555, -0.511, -0.486, -0.486, -0.471, -0.456, -0.446, -0.387, -0.362, -0.322, -0.307, -0.278, -0.178, -0.119, -0.079, -0.079, -0.01, 0.045, 0.054, 0.089, 0.104, 0.124, 0.173, 0.263, 0.282, 0.292, 0.401, 0.6, 0.773, 0.778, 0.803, 0.882, 0.942, 0.981, 1.095, 1.165, 1.264, 1.487, 1.839, 2.329, 2.492, 2.492]}};
+const CORR_VARS = ["Age", "EF", "IMT-MAX", "BSA", "LVMi", "BMI"];
+const CORR_BEFORE = [[1.0, -0.13, 0.38, -0.08, 0.2, -0.1], [-0.13, 1.0, -0.0, -0.12, -0.11, -0.18], [0.38, -0.0, 1.0, 0.14, -0.04, -0.06], [-0.08, -0.12, 0.14, 1.0, 0.13, 0.76], [0.2, -0.11, -0.04, 0.13, 1.0, 0.25], [-0.1, -0.18, -0.06, 0.76, 0.25, 1.0]];
+const CORR_AFTER = [[1.0, -0.27, 0.67, -0.08, 0.35, -0.13], [-0.27, 1.0, -0.19, -0.12, -0.29, -0.21], [0.67, -0.19, 1.0, 0.02, 0.2, -0.06], [-0.08, -0.12, 0.02, 1.0, 0.24, 0.74], [0.35, -0.29, 0.2, 0.24, 1.0, 0.33], [-0.13, -0.21, -0.06, 0.74, 0.33, 1.0]];
+const TOTAL_N = 56;
+
+/* ---- Distribution Comparison (real continuous clinical variables) ----
+   Before = raw lab values from final_dataset_all_bias_applied.csv, min-max normalized to 0-100% per variable.
+   After  = same values with outliers capped at 1.5x IQR whisker bounds (9 bins, 0-100%). */
+const FEATURE_DATA = {"Age": {"unit": "years", "before": [5, 5, 5, 16, 13, 3, 4, 3, 2], "after": [5, 5, 5, 16, 13, 3, 4, 3, 2]}, "EF": {"unit": "%", "before": [1, 2, 0, 0, 3, 12, 11, 18, 9], "after": [0, 0, 0, 3, 3, 12, 11, 18, 9]}, "IMT-MAX": {"unit": "mm", "before": [15, 30, 5, 2, 0, 0, 2, 1, 1], "after": [15, 30, 5, 6, 0, 0, 0, 0, 0]}, "Weight": {"unit": "kg", "before": [6, 15, 16, 12, 2, 2, 0, 1, 2], "after": [6, 15, 16, 12, 2, 5, 0, 0, 0]}, "Height": {"unit": "cm", "before": [3, 3, 6, 16, 7, 8, 5, 7, 1], "after": [3, 3, 6, 16, 7, 8, 5, 7, 1]}, "BSA": {"unit": "m\u00b2", "before": [2, 5, 6, 20, 8, 7, 3, 2, 2], "after": [2, 5, 6, 20, 8, 7, 3, 2, 3]}, "SBP": {"unit": "mmHg", "before": [11, 18, 16, 6, 3, 0, 0, 0, 2], "after": [11, 18, 16, 6, 3, 2, 0, 0, 0]}, "DBP": {"unit": "mmHg", "before": [1, 6, 10, 18, 14, 4, 0, 2, 1], "after": [1, 6, 10, 18, 14, 4, 3, 0, 0]}, "BMI": {"unit": "kg/m\u00b2", "before": [11, 16, 17, 8, 1, 0, 1, 0, 2], "after": [11, 16, 17, 8, 1, 3, 0, 0, 0]}, "LVMi": {"unit": "g/m\u00b2", "before": [13, 21, 12, 6, 2, 0, 1, 0, 1], "after": [13, 21, 12, 6, 4, 0, 0, 0, 0]}};
+
+const tooltipEl = document.getElementById('tooltip');
+function showTip(evt, text){
+  tooltipEl.textContent = text;
+  tooltipEl.style.left = evt.clientX + 'px';
+  tooltipEl.style.top = evt.clientY + 'px';
+  tooltipEl.style.opacity = 1;
+}
+function hideTip(){ tooltipEl.style.opacity = 0; }
+
+function drawOverlaidHistogram(containerId, before, after, mode){
+  mode = mode || 'bar';
+  const W = 240, H = 140, padL = 24, padR = 6, padT = 8, padB = 8;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const n = before.length;
+  const maxStack = mode === 'stacked' ? Math.max(...before.map((v,i)=>v+after[i])) : Math.max(...before, ...after);
+  const niceMax = Math.ceil((maxStack * 1.15) / 5) * 5;
+  const barW = plotW / n;
+
+  let grid = '';
+  for(let t = 0; t <= 4; t++){
+    const val = niceMax * t / 4;
+    const y = padT + plotH - (plotH * t / 4);
+    grid += `<line class="axis-line" x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}"/>`;
+    grid += `<text class="tick-label" x="${padL-4}" y="${(y+2.5).toFixed(1)}" text-anchor="end">${Math.round(val)}</text>`;
+  }
+
+  let rects = '';
+  const beforePts = [], afterPts = [];
+  for(let i = 0; i < n; i++){
+    const x = padL + i * barW;
+    const w = barW - 1.2;
+    if(mode === 'stacked'){
+      const aH = (after[i] / niceMax) * plotH;
+      const bH = (before[i] / niceMax) * plotH;
+      const aY = padT + plotH - aH;
+      const bY = aY - bH;
+      if(mode !== 'curve'){
+        rects += `<rect class="hit" data-label="After" data-value="${after[i]}" x="${x.toFixed(1)}" y="${aY.toFixed(1)}" width="${w.toFixed(1)}" height="${aH.toFixed(1)}" fill="${COLORS.after}" fill-opacity="0.7" stroke="${COLORS.afterLine}" stroke-width="0.75"/>`;
+        rects += `<rect class="hit" data-label="Before" data-value="${before[i]}" x="${x.toFixed(1)}" y="${bY.toFixed(1)}" width="${w.toFixed(1)}" height="${bH.toFixed(1)}" fill="${COLORS.before}" fill-opacity="0.7" stroke="${COLORS.beforeLine}" stroke-width="0.75"/>`;
+      }
+      beforePts.push({x: x + w/2, y: bY});
+      afterPts.push({x: x + w/2, y: aY});
+    } else {
+      const bH = (before[i] / niceMax) * plotH;
+      const aH = (after[i] / niceMax) * plotH;
+      const bY = padT + plotH - bH;
+      const aY = padT + plotH - aH;
+      if(mode === 'bar'){
+        rects += `<rect class="hit" data-label="After" data-value="${after[i]}" x="${x.toFixed(1)}" y="${aY.toFixed(1)}" width="${w.toFixed(1)}" height="${aH.toFixed(1)}" fill="${COLORS.after}" fill-opacity="0.55" stroke="${COLORS.afterLine}" stroke-width="0.75"/>`;
+        rects += `<rect class="hit" data-label="Before" data-value="${before[i]}" x="${x.toFixed(1)}" y="${bY.toFixed(1)}" width="${w.toFixed(1)}" height="${bH.toFixed(1)}" fill="${COLORS.before}" fill-opacity="0.6" stroke="${COLORS.beforeLine}" stroke-width="1.1"/>`;
+      }
+      beforePts.push({x: x + w/2, y: bY});
+      afterPts.push({x: x + w/2, y: aY});
+    }
+  }
+
+  let curves = '';
+  if(mode === 'curve'){
+    const pathB = smoothPath(beforePts), pathA = smoothPath(afterPts);
+    curves += `<path d="${pathB}" fill="none" stroke="${COLORS.beforeLine}" stroke-width="2"/>`;
+    curves += `<path d="${pathA}" fill="none" stroke="${COLORS.afterLine}" stroke-width="2"/>`;
+    beforePts.forEach(p=> curves += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2" fill="${COLORS.beforeLine}"/>`);
+    afterPts.forEach(p=> curves += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2" fill="${COLORS.afterLine}"/>`);
+  }
+
+  const svg = `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+      ${grid}
+      <line class="axis-line" x1="${padL}" y1="${padT+plotH}" x2="${W-padR}" y2="${padT+plotH}" stroke="#d7dceb"/>
+      ${rects}
+      ${curves}
+    </svg>`;
+
+  const el = document.getElementById(containerId);
+  el.innerHTML = svg;
+}
+
+const featureGridEl = document.getElementById('featureGrid');
+Object.keys(FEATURE_DATA).forEach(varName=>{
+  const d = FEATURE_DATA[varName];
+  const cellId = 'fc_' + varName;
+  const cell = document.createElement('div');
+  cell.className = 'fcell';
+  cell.innerHTML = `<h4>${varName} (${d.unit})</h4><div id="${cellId}"></div>
+    <div class="footnote">x = relative position across each variable's own range (%)</div>`;
+  featureGridEl.appendChild(cell);
+  drawOverlaidHistogram(cellId, d.before, d.after, 'stacked');
+});
+
+
+// Smooth path through a set of {x,y} points (Catmull-Rom-ish midpoint smoothing)
+function smoothPath(pts){
+  if(pts.length < 2) return '';
+  let d = `M ${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)}`;
+  for(let i = 1; i < pts.length; i++){
+    const midX = (pts[i-1].x + pts[i].x) / 2;
+    const midY = (pts[i-1].y + pts[i].y) / 2;
+    d += ` Q ${pts[i-1].x.toFixed(1)},${pts[i-1].y.toFixed(1)} ${midX.toFixed(1)},${midY.toFixed(1)}`;
+  }
+  d += ` T ${pts[pts.length-1].x.toFixed(1)},${pts[pts.length-1].y.toFixed(1)}`;
+  return d;
+}
+
+// Grouped / stacked bar chart drawn as SVG, with an optional smoothed density-style
+// curve overlaid on top of each series (mirrors the histogram+KDE look of the reference).
+function drawBarChart(containerId, labels, series, opts){
+  opts = opts || {};
+  const stacked = !!opts.stacked;
+  const curve = opts.curve !== false; // on by default
+  const maxDeclared = opts.max;
+  const W = 300, H = 160, padL = 28, padR = 10, padT = 14, padB = 26;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+
+  let maxVal = 0;
+  if(stacked){
+    labels.forEach((_, i)=>{
+      let sum = 0;
+      series.forEach(s=> sum += s.data[i]);
+      maxVal = Math.max(maxVal, sum);
+    });
+  } else {
+    series.forEach(s=> s.data.forEach(v=> maxVal = Math.max(maxVal, v)));
+  }
+  maxVal = maxDeclared !== undefined ? maxDeclared : (maxVal === 0 ? 1 : maxVal * 1.22);
+
+  const groupW = plotW / labels.length;
+  const barW = stacked ? (groupW - 14) : (groupW - 14) / series.length;
+
+  let bars = '';
+  let gridLines = '';
+  const ticks = 4;
+  for(let t = 0; t <= ticks; t++){
+    const y = padT + plotH - (plotH * t / ticks);
+    gridLines += `<line class="axis-line" x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}"/>`;
+  }
+
+  // track top-center points per series for the curve overlay
+  const seriesPts = series.map(()=>[]);
+
+  labels.forEach((lab, i)=>{
+    const gx = padL + i * groupW;
+    if(stacked){
+      let yCursor = padT + plotH;
+      series.forEach((s, si)=>{
+        const v = s.data[i];
+        const bh = (v / maxVal) * plotH;
+        const y = yCursor - bh;
+        bars += `<rect x="${(gx+7).toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" fill="${s.color}" fill-opacity="0.55" stroke="${s.line}" stroke-width="1"/>`;
+        seriesPts[si].push({x: gx+7+barW/2, y});
+        yCursor = y;
+      });
+    } else {
+      series.forEach((s, si)=>{
+        const v = s.data[i];
+        const bh = (v / maxVal) * plotH;
+        const x = gx + 7 + si * barW;
+        const y = padT + plotH - bh;
+        bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(barW-3).toFixed(1)}" height="${bh.toFixed(1)}" fill="${s.color}" fill-opacity="0.55" stroke="${s.line}" stroke-width="1"/>`;
+        bars += `<text class="val-label" x="${(x + (barW-3)/2).toFixed(1)}" y="${(y-4).toFixed(1)}" text-anchor="middle">${v}</text>`;
+        seriesPts[si].push({x: x + (barW-3)/2, y});
+      });
+    }
+    bars += `<text class="bar-label" x="${(gx + groupW/2).toFixed(1)}" y="${H-8}" text-anchor="middle">${lab}</text>`;
+  });
+
+  let curves = '';
+  if(curve && labels.length >= 2){
+    series.forEach((s, si)=>{
+      const pts = seriesPts[si];
+      const path = smoothPath(pts);
+      curves += `<path d="${path}" fill="none" stroke="${s.line}" stroke-width="2" opacity="0.85"/>`;
+      pts.forEach(p=> curves += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2.2" fill="${s.line}"/>`);
+    });
+  }
+
+  const svg = `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+    ${gridLines}
+    <line class="axis-line" x1="${padL}" y1="${padT+plotH}" x2="${W-padR}" y2="${padT+plotH}" stroke="#c7cede"/>
+    ${bars}
+    ${curves}
+  </svg>`;
+
+  const legend = `<div class="chart-legend">${series.map(s=>`<span class="item"><span class="dot" style="background:${s.color};border:1px solid ${s.line}"></span>${s.name}</span>`).join('')}</div>`;
+
+  document.getElementById(containerId).innerHTML = svg + legend;
+}
+
+// ---- Distribution Comparison: plot-type toggle (bar / stacked / curve-only) ----
+function renderFeaturePanel(varName, mode){
+  const d = FEATURE_DATA[varName];
+  drawOverlaidHistogram('fc_' + varName, d.before, d.after, mode);
+}
+function renderAllFeaturePanels(mode){
+  Object.keys(FEATURE_DATA).forEach(v => renderFeaturePanel(v, mode));
+}
+document.getElementById('plotType').addEventListener('change', (e)=> renderAllFeaturePanels(e.target.value));
+
+/* =========================================================
+   BOX PLOT COMPARISON — real quartile/whisker/outlier stats
+   computed from final_dataset_all_bias_applied.csv (Before) and
+   the 1.5x-IQR-winsorized values (After).
+   ========================================================= */
+function drawBoxPlot(containerId, before, after){
+  const W = 240, H = 175, padL = 32, padR = 10, padT = 12, padB = 22;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+
+  const allVals = [before.min, before.q1, before.median, before.q3, before.max, ...before.outliers,
+                    after.min, after.q1, after.median, after.q3, after.max, ...after.outliers];
+  let lo = Math.min(...allVals), hi = Math.max(...allVals);
+  const pad = (hi - lo) * 0.1 || 1;
+  lo -= pad; hi += pad;
+
+  const yScale = v => padT + plotH - ((v - lo) / (hi - lo)) * plotH;
+
+  let grid = '';
+  for(let t = 0; t <= 4; t++){
+    const val = lo + (hi - lo) * t / 4;
+    const y = yScale(val);
+    grid += `<line class="axis-line" x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}"/>`;
+    grid += `<text class="tick-label" x="${padL-4}" y="${(y+2.5).toFixed(1)}" text-anchor="end">${val.toFixed(val<10?1:0)}</text>`;
+  }
+
+  function box(stat, cx, color, line){
+    const bw = 44;
+    const yMin = yScale(stat.min), yQ1 = yScale(stat.q1), yMed = yScale(stat.median),
+          yQ3 = yScale(stat.q3), yMax = yScale(stat.max);
+    let s = '';
+    s += `<line x1="${cx}" y1="${yMax.toFixed(1)}" x2="${cx}" y2="${yQ3.toFixed(1)}" stroke="${line}" stroke-width="1.3"/>`;
+    s += `<line x1="${cx}" y1="${yQ1.toFixed(1)}" x2="${cx}" y2="${yMin.toFixed(1)}" stroke="${line}" stroke-width="1.3"/>`;
+    s += `<line x1="${cx-10}" y1="${yMax.toFixed(1)}" x2="${cx+10}" y2="${yMax.toFixed(1)}" stroke="${line}" stroke-width="1.3"/>`;
+    s += `<line x1="${cx-10}" y1="${yMin.toFixed(1)}" x2="${cx+10}" y2="${yMin.toFixed(1)}" stroke="${line}" stroke-width="1.3"/>`;
+    s += `<rect x="${(cx-bw/2).toFixed(1)}" y="${yQ3.toFixed(1)}" width="${bw}" height="${(yQ1-yQ3).toFixed(1)}" fill="${color}" fill-opacity="0.55" stroke="${line}" stroke-width="1.3"/>`;
+    s += `<line x1="${cx-bw/2}" y1="${yMed.toFixed(1)}" x2="${cx+bw/2}" y2="${yMed.toFixed(1)}" stroke="${line}" stroke-width="2"/>`;
+    stat.outliers.forEach(o=>{
+      s += `<circle cx="${cx}" cy="${yScale(o).toFixed(1)}" r="2.4" fill="none" stroke="${line}" stroke-width="1.1"/>`;
+    });
+    return s;
+  }
+
+  const cxBefore = padL + plotW * 0.3;
+  const cxAfter = padL + plotW * 0.7;
+  let content = box(before, cxBefore, COLORS.before, COLORS.beforeLine);
+  content += box(after, cxAfter, COLORS.after, COLORS.afterLine);
+  content += `<text class="bar-label" x="${cxBefore}" y="${H-6}" text-anchor="middle">Before</text>`;
+  content += `<text class="bar-label" x="${cxAfter}" y="${H-6}" text-anchor="middle">After</text>`;
+
+  const svg = `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+      ${grid}
+      <line class="axis-line" x1="${padL}" y1="${padT+plotH}" x2="${W-padR}" y2="${padT+plotH}" stroke="#c7cede"/>
+      ${content}
+    </svg>`;
+  document.getElementById(containerId).innerHTML = svg;
+}
+
+const boxGridEl = document.getElementById('boxGrid');
+BOX_ORDER.forEach(varName=>{
+  const d = BOX_DATA[varName];
+  const panelId = 'box-' + varName;
+  const chartId = 'boxc-' + varName;
+  const cell = document.createElement('div');
+  cell.className = 'subcard';
+  cell.id = panelId;
+  cell.innerHTML = `<h4>${varName} (${d.unit})</h4><div id="${chartId}"></div>`;
+  boxGridEl.appendChild(cell);
+  drawBoxPlot(chartId, d.before, d.after);
+});
+
+/* =========================================================
+   Q-Q PLOT — real theoretical vs sample (standardized)
+   quantiles computed per variable, before vs after.
+   ========================================================= */
+function drawQQScatter(containerId, theo, samp, color, line){
+  const W = 220, H = 175, padL = 30, padR = 8, padT = 10, padB = 22;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const all = [...theo, ...samp];
+  let lo = Math.min(...all), hi = Math.max(...all);
+  const pad = (hi - lo) * 0.08 || 0.5;
+  lo -= pad; hi += pad;
+  const scale = v => padT + plotH - ((v - lo) / (hi - lo)) * plotH;
+  const scaleX = v => padL + ((v - lo) / (hi - lo)) * plotW;
+
+  let grid = '';
+  for(let t = 0; t <= 3; t++){
+    const val = lo + (hi - lo) * t / 3;
+    const y = scale(val);
+    grid += `<line class="axis-line" x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}"/>`;
+    grid += `<text class="tick-label" x="${padL-4}" y="${(y+2.5).toFixed(1)}" text-anchor="end">${val.toFixed(1)}</text>`;
+  }
+  const diagP1x = scaleX(lo), diagP1y = scale(lo), diagP2x = scaleX(hi), diagP2y = scale(hi);
+  const diag = `<line x1="${diagP1x.toFixed(1)}" y1="${diagP1y.toFixed(1)}" x2="${diagP2x.toFixed(1)}" y2="${diagP2y.toFixed(1)}" stroke="#d9534f" stroke-width="1.3"/>`;
+
+  let dots = '';
+  for(let i = 0; i < theo.length; i++){
+    dots += `<circle cx="${scaleX(theo[i]).toFixed(1)}" cy="${scale(samp[i]).toFixed(1)}" r="1.8" fill="${color}" fill-opacity="0.8" stroke="${line}" stroke-width="0.4"/>`;
+  }
+
+  return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+      ${grid}
+      <line class="axis-line" x1="${padL}" y1="${padT+plotH}" x2="${W-padR}" y2="${padT+plotH}" stroke="#c7cede"/>
+      ${diag}
+      ${dots}
+      <text class="bar-label" x="${W/2}" y="${H-4}" text-anchor="middle">Theoretical Quantiles</text>
+    </svg>`;
+}
+
+function renderQQ(varName){
+  const d = QQ_DATA[varName];
+  document.getElementById('qqWrap').innerHTML = `
+    <div class="heat-block">
+      <h5>Before</h5>
+      ${drawQQScatter('qqBefore', d.before_theo, d.before_samp, COLORS.before, COLORS.beforeLine)}
+    </div>
+    <div class="heat-block">
+      <h5>After</h5>
+      ${drawQQScatter('qqAfter', d.after_theo, d.after_samp, COLORS.after, COLORS.afterLine)}
+    </div>`;
+}
+const qqSelect = document.getElementById('qqSelect');
+BOX_ORDER.forEach(v=>{
+  const o = document.createElement('option');
+  o.value = v; o.textContent = v + ' (' + BOX_DATA[v].unit + ')';
+  qqSelect.appendChild(o);
+});
+qqSelect.value = 'Age';
+renderQQ('Age');
+qqSelect.addEventListener('change', (e)=> renderQQ(e.target.value));
+
+/* =========================================================
+   CORRELATION HEATMAP — real Pearson correlations
+   (Age, EF, IMT-MAX, BSA, LVMi, BMI), diverging red/blue scale.
+   ========================================================= */
+function corrColor(v){
+  const t = (v + 1) / 2; // 0 -> blue, 0.5 -> white, 1 -> red
+  let r,g,b;
+  if(t < 0.5){
+    const k = t/0.5;
+    r = Math.round(31 + k*(244-31)); g = Math.round(95 + k*(244-95)); b = Math.round(168 + k*(244-168));
+  } else {
+    const k = (t-0.5)/0.5;
+    r = Math.round(244 + k*(198-244)); g = Math.round(244 + k*(40-244)); b = Math.round(244 + k*(40-244));
+  }
+  return `rgb(${r},${g},${b})`;
+}
+const CORR_SHORT = {"Age": "Age", "EF": "EF", "IMT-MAX": "IMT", "BSA": "BSA", "LVMi": "LVMi", "BMI": "BMI"};
+function buildCorrTable(elId, matrix){
+  const el = document.getElementById(elId);
+  let html = '<tr><th></th>' + CORR_VARS.map(v=>`<th title="${v}">${CORR_SHORT[v]||v}</th>`).join('') + '</tr>';
+  CORR_VARS.forEach((rowVar, ri)=>{
+    html += `<tr><td class="rowlabel" title="${rowVar}">${rowVar}</td>` +
+      matrix[ri].map(v=>{
+        const textCol = Math.abs(v) > 0.55 ? '#fff' : '#22293a';
+        return `<td style="background:${corrColor(v)};font-weight:700;color:${textCol}">${v.toFixed(2)}</td>`;
+      }).join('') + '</tr>';
+  });
+  el.innerHTML = html;
+}
+buildCorrTable('corrBefore', CORR_BEFORE);
+buildCorrTable('corrAfter', CORR_AFTER);
+
+/* =========================================================
+   OUTLIER RATE HEATMAP — % of values beyond 1.5x IQR per variable,
+   Before vs After. "Before" = real outlier rate within each
+   variable's own 56 values (computed from
+   final_dataset_all_bias_applied.csv) — reveals which labs run
+   hottest for outliers. "After" = 0% for every variable once
+   winsorized (capped at the whisker bounds).
+   Rendered as a bordered-square grid with "Before"/"After" as
+   column-group headers, same visual style as the split-level view.
+   ========================================================= */
+const VARIABLE_CLASS_ROWS = [{"name": "Age", "beforePct": 3.6, "afterPct": 0}, {"name": "EF", "beforePct": 5.4, "afterPct": 0}, {"name": "IMT-MAX", "beforePct": 10.7, "afterPct": 0}, {"name": "Weight", "beforePct": 5.4, "afterPct": 0}, {"name": "Height", "beforePct": 0.0, "afterPct": 0}, {"name": "BSA", "beforePct": 5.4, "afterPct": 0}, {"name": "SBP", "beforePct": 3.6, "afterPct": 0}, {"name": "DBP", "beforePct": 7.1, "afterPct": 0}, {"name": "BMI", "beforePct": 5.4, "afterPct": 0}, {"name": "LVMi", "beforePct": 3.6, "afterPct": 0}];
+function buildSquareHeatmap(containerId, rows, cellCount, fillColor, labelColPx){
+  const cellPx = 15;
+  const gapColPx = 32;
+  const cols = `${labelColPx}px repeat(${cellCount}, ${cellPx}px) ${gapColPx}px repeat(${cellCount}, ${cellPx}px)`;
+  let html = `<div class="imb-grid" style="grid-template-columns:${cols};">`;
+
+  // header row
+  html += `<div></div>`;
+  html += `<div class="grp-header" style="grid-column: 2 / ${2+cellCount};">Before</div>`;
+  html += `<div></div>`;
+  html += `<div class="grp-header" style="grid-column: ${3+cellCount} / ${3+cellCount*2};">After</div>`;
+
+  rows.forEach(r=>{
+    html += `<div class="sq-row-label" title="Before ${r.beforePct}% / After ${r.afterPct}%">${r.name}</div>`;
+    const beforeFilled = r.beforePct > 0 ? Math.max(1, Math.round((r.beforePct/100)*cellCount)) : 0;
+    for(let i = 0; i < cellCount; i++){
+      html += `<div class="hm-cell" style="background:${i < beforeFilled ? fillColor : '#fff'};"></div>`;
+    }
+    html += `<div></div>`;
+    const afterFilled = r.afterPct > 0 ? Math.max(1, Math.round((r.afterPct/100)*cellCount)) : 0;
+    for(let i = 0; i < cellCount; i++){
+      html += `<div class="hm-cell" style="background:${i < afterFilled ? fillColor : '#fff'};"></div>`;
+    }
+  });
+
+  html += `</div>`;
+  document.getElementById(containerId).innerHTML = html;
+}
+buildSquareHeatmap('classImbGrid', VARIABLE_CLASS_ROWS, 20, '#d9534f', 82);
+
+// ---- sidebar list -> highlight corresponding panel ----
+document.querySelectorAll('#varList li').forEach(li=>{
+  li.addEventListener('click', ()=>{
+    document.querySelectorAll('#varList li').forEach(x=>x.classList.remove('active'));
+    li.classList.add('active');
+    document.querySelectorAll('.subcard').forEach(x=>x.classList.remove('highlight'));
+    const t = document.getElementById(li.dataset.target);
+    if(t){ t.classList.add('highlight'); t.scrollIntoView({behavior:'smooth', block:'center'}); }
+  });
+});
+</script>
+
+</body>
+</html>
