@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "partitions": {
+    "train": {
+      "rows": 308077,
+      "missing_input_cells": 214542,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 27826,
+          "negative": 280251,
+          "minority_share": 0.09032157545029328
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "validation": {
+      "rows": 66017,
+      "missing_input_cells": 46726,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 5962,
+          "negative": 60055,
+          "minority_share": 0.09031007164821182
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "test": {
+      "rows": 66017,
+      "missing_input_cells": 46158,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 5963,
+          "negative": 60054,
+          "minority_share": 0.09032521926170532
+        }
+      ],
+      "transform_and_labels_checked": true
+    }
+  },
+  "pages": [
+    "preprocessing/outputs/bias_dashboards/heart/missing_data.json",
+    "preprocessing/outputs/bias_dashboards/heart/class_imbalance.json",
+    "preprocessing/outputs/bias_dashboards/heart/outlier.json",
+    "preprocessing/outputs/bias_dashboards/heart/feature_scale.json",
+    "preprocessing/outputs/bias_dashboards/heart/demographic.json",
+    "preprocessing/outputs/bias_dashboards/heart/duplicate.json",
+    "preprocessing/outputs/bias_dashboards/heart/noise.json",
+    "preprocessing/outputs/bias_dashboards/heart/encoding_domain.json"
+  ]
+}
