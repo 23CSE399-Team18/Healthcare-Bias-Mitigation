@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "partitions": {
+    "train": {
+      "rows": 20629,
+      "missing_input_cells": 10488,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 7766,
+          "negative": 12863,
+          "minority_share": 0.37646032284647823
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "validation": {
+      "rows": 4421,
+      "missing_input_cells": 2262,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 1664,
+          "negative": 2757,
+          "minority_share": 0.37638543315991857
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "test": {
+      "rows": 4421,
+      "missing_input_cells": 2179,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 1664,
+          "negative": 2757,
+          "minority_share": 0.37638543315991857
+        }
+      ],
+      "transform_and_labels_checked": true
+    }
+  },
+  "pages": [
+    "preprocessing/outputs/bias_dashboards/hypertension/missing_data.json",
+    "preprocessing/outputs/bias_dashboards/hypertension/class_imbalance.json",
+    "preprocessing/outputs/bias_dashboards/hypertension/outlier.json",
+    "preprocessing/outputs/bias_dashboards/hypertension/feature_scale.json",
+    "preprocessing/outputs/bias_dashboards/hypertension/demographic.json",
+    "preprocessing/outputs/bias_dashboards/hypertension/duplicate.json",
+    "preprocessing/outputs/bias_dashboards/hypertension/noise.json",
+    "preprocessing/outputs/bias_dashboards/hypertension/encoding_domain.json"
+  ]
+}
