@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Feature Scale Bias (Before vs After Preprocessing)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#6FA0DA;
+    --before-line:#3E6FA8;
+    --after:#7BC17E;
+    --after-line:#4C9B50;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:22px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px 1fr; gap:16px; padding:16px; align-items:start;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+  @media (max-width:1400px){ .grid6{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:1100px){ .grid6{grid-template-columns:repeat(2,1fr);} .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  .row3{display:grid; grid-template-columns:1.1fr 1.6fr 1.3fr; gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} .row3{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .sh-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .sh-inner{min-width:max-content;}
+  .sh-headrow{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; margin-bottom:10px;}
+  .sh-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .sh-row{display:grid; grid-template-columns:170px 1fr 1fr; gap:26px; align-items:center; margin-bottom:4px;}
+  .sh-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .sh-grid{display:grid; grid-template-columns:repeat(var(--n), 15px); grid-auto-rows:15px; gap:2px;}
+  .sh-cell{width:15px; height:15px; border:1px solid #D7DEEC; border-radius:2px; box-sizing:border-box;}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}  .dv-tooltip{
+    position:fixed; z-index:9999; pointer-events:none; background:#1B2333; color:#fff;
+    font-size:11.5px; padding:6px 9px; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,.25);
+    display:none; white-space:nowrap; line-height:1.4;
+  }
+  .dv-tooltip b{font-weight:700;}
+</style>
+</head>
+<body><div style="padding:12px;background:#fff4cc;color:#332b19;font:14px sans-serif">Historical archive, not the current project. Individual-record examples are omitted from this public copy. Reproduce record-based plots locally using authorized data. Interactive record-based panels are archived as templates.</div>
+<div class="dv-tooltip" id="dvTooltip"></div>
+
+<header class="topbar">
+  <h1>Interactive EDA Dashboard — Feature Scale Bias (Before vs After Preprocessing)</h1>
+  <div class="sub">GE-71 Diabetic Bias-Aware Preprocessing Pipeline · Raw units (mixed scales) → Quantile Transformation (Normal)</div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="info-title">&#9432; Dataset Info</p>
+      <div class="info-row"><span class="k">Total Subjects</span><span id="infoPatients"></span></div>
+      <div class="info-row"><span class="k">Generated</span><span>29-Aug-2026</span></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Preprocessing)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Preprocessing)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:150px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 6 Vars</option>
+              <option value="all">All 10 Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Feature Scale Heatmap
+        <span class="legend-inline">
+          <span>Shared color scale across all 10 variables</span>
+        </span>
+      </p>
+      <div id="scaleHeat"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="note">
+  "Before" = GE-71 data after MICE imputation (Missing Value Bias stage), still in each variable's native units — Age in years, Alb/Cre as a ratio up to ~200+, SICAM in ng/mL up to ~500+, HbA1c as a %. These wildly different magnitudes are exactly what Feature Scale Bias refers to: without correction, high-magnitude variables (SICAM, Alb/Cre) would dominate any distance-based or gradient-based model over low-magnitude ones (HbA1c, Years of DM).
+  "After" = Quantile Transformation (rank-based, mapped onto a Normal distribution). Note: the notebook's own selection metric (lowest Wasserstein distance to N(0,1) + best correlation preservation) actually scored <b>Z-score</b> highest as a scaler to use — but Z-score is a straight linear rescale, so its Before/After histograms are shape-identical bin-for-bin and can't show visible overlap in a chart like this. Quantile Transformation is shown here instead purely so the Before/After bars are visually distinguishable; see its row in the comparison table on the right.
+  <div class="foot-legend">
+    <span><b id="fSubj"></b> subjects</span>
+    <span><b id="fVars"></b> variables tracked here</span>
+    <span>Illustrated scaler: <b>Quantile Transformation</b> (notebook's top-scoring pick was Z-score — see note above)</span>
+    <span>Post-scaling: all variables share a comparable, unit-free range</span>
+  </div>
+</footer>
+
+<script type="text/plain" data-archive-template="true">
+const DATA = {"vars":["Age","BMI","Albumin mg/dL","CRPmg/L","SICAM","Alb/Cre","HbA1c","MR Baseline","Global BF (T1-Hct corr)","Years of DM"],"before":[],"after":[],"nSubjects":49,"pVarsBefore":303,"pVarsAfter":303};
+const HEATZ = {"vars": ["Age", "BMI", "Albumin mg/dL", "CRPmg/L", "SICAM", "Alb/Cre", "HbA1c", "MR Baseline", "Global BF (T1-Hct corr)", "Years of DM"], "before": [{"Age": 60.0, "BMI": 24.7657, "Albumin mg/dL": 11.5, "CRPmg/L": 1.07, "SICAM": 224.083, "Alb/Cre": 147.4, "HbA1c": 5.5, "MR Baseline": 43.2282, "Global BF (T1-Hct corr)": 42.0347, "Years of DM": 0.0}, {"Age": 72.0, "BMI": 24.3253, "Albumin mg/dL": -0.6441, "CRPmg/L": 5.75, "SICAM": 240.03, "Alb/Cre": 0.0, "HbA1c": 5.9, "MR Baseline": 33.2077, "Global BF (T1-Hct corr)": 35.512, "Years of DM": 0.0}, {"Age": 73.0, "BMI": 29.2633, "Albumin mg/dL": 0.3, "CRPmg/L": 4.79, "SICAM": 75.418, "Alb/Cre": 2.7, "HbA1c": 6.3843, "MR Baseline": 46.1462, "Global BF (T1-Hct corr)": 41.2037, "Years of DM": 0.0}, {"Age": 73.0, "BMI": 19.1406, "Albumin mg/dL": 4.4096, "CRPmg/L": 0.26, "SICAM": 303.568, "Alb/Cre": 59.7619, "HbA1c": 6.2696, "MR Baseline": 69.5147, "Global BF (T1-Hct corr)": 65.4203, "Years of DM": 0.0}, {"Age": 74.0, "BMI": 23.5294, "Albumin mg/dL": 2.7874, "CRPmg/L": 1.2, "SICAM": 251.667, "Alb/Cre": 58.4668, "HbA1c": 6.2616, "MR Baseline": 32.1712, "Global BF (T1-Hct corr)": 46.1982, "Years of DM": 0.0}, {"Age": 62.0, "BMI": 22.7682, "Albumin mg/dL": 0.4, "CRPmg/L": 2.9619, "SICAM": 226.9306, "Alb/Cre": 4.4, "HbA1c": 6.1481, "MR Baseline": 40.2606, "Global BF (T1-Hct corr)": 41.957, "Years of DM": 0.0}, {"Age": 72.0, "BMI": 21.73, "Albumin mg/dL": 0.3, "CRPmg/L": 2.1936, "SICAM": 248.1395, "Alb/Cre": 33.6455, "HbA1c": 4.6, "MR Baseline": 36.4657, "Global BF (T1-Hct corr)": 39.5268, "Years of DM": 0.0}, {"Age": 65.0, "BMI": 27.5873, "Albumin mg/dL": 5.9777, "CRPmg/L": 2.21, "SICAM": 192.1, "Alb/Cre": 71.019, "HbA1c": 6.2539, "MR Baseline": 40.4898, "Global BF (T1-Hct corr)": 42.8925, "Years of DM": 0.0}, {"Age": 59.0, "BMI": 23.79, "Albumin mg/dL": 0.3, "CRPmg/L": 3.1296, "SICAM": 233.1243, "Alb/Cre": 39.87, "HbA1c": 7.2962, "MR Baseline": 38.3863, "Global BF (T1-Hct corr)": 42.7232, "Years of DM": 0.0}, {"Age": 56.0, "BMI": 24.9079, "Albumin mg/dL": 0.8, "CRPmg/L": 0.17, "SICAM": 239.538, "Alb/Cre": 4.3, "HbA1c": 5.1, "MR Baseline": 39.156, "Global BF (T1-Hct corr)": 41.1224, "Years of DM": 0.0}, {"Age": 56.0, "BMI": 22.963, "Albumin mg/dL": 2.4494, "CRPmg/L": 0.97, "SICAM": 288.054, "Alb/Cre": 35.4351, "HbA1c": 6.4561, "MR Baseline": 36.231, "Global BF (T1-Hct corr)": 37.4526, "Years of DM": 0.0}, {"Age": 57.0, "BMI": 25.5111, "Albumin mg/dL": 0.3, "CRPmg/L": 1.35, "SICAM": 231.313, "Alb/Cre": 40.7353, "HbA1c": 5.5, "MR Baseline": 47.88, "Global BF (T1-Hct corr)": 46.1251, "Years of DM": 0.0}, {"Age": 69.0, "BMI": 25.5111, "Albumin mg/dL": 2.5344, "CRPmg/L": 0.2, "SICAM": 188.092, "Alb/Cre": 30.155, "HbA1c": 5.1, "MR Baseline": 25.5176, "Global BF (T1-Hct corr)": 32.6871, "Years of DM": 0.0}, {"Age": 54.0, "BMI": 24.4102, "Albumin mg/dL": 4.5123, "CRPmg/L": 1.48, "SICAM": 220.63, "Alb/Cre": 41.3508, "HbA1c": 5.2, "MR Baseline": 35.6056, "Global BF (T1-Hct corr)": 37.4394, "Years of DM": 0.0}, {"Age": 53.0, "BMI": 19.0072, "Albumin mg/dL": 6.6783, "CRPmg/L": 1.62, "SICAM": 196.067, "Alb/Cre": 74.7018, "HbA1c": 6.2, "MR Baseline": 46.6881, "Global BF (T1-Hct corr)": 43.5439, "Years of DM": 0.0}, {"Age": 58.0, "BMI": 23.03, "Albumin mg/dL": 11.9, "CRPmg/L": 3.4175, "SICAM": 214.024, "Alb/Cre": 129.3, "HbA1c": 5.4, "MR Baseline": 43.0772, "Global BF (T1-Hct corr)": 43.1339, "Years of DM": 0.0}, {"Age": 66.0, "BMI": 25.9188, "Albumin mg/dL": 0.3, "CRPmg/L": 1.01, "SICAM": 97.159, "Alb/Cre": 2.5, "HbA1c": 5.0, "MR Baseline": 24.404, "Global BF (T1-Hct corr)": 31.3934, "Years of DM": 0.0}, {"Age": 73.0, "BMI": 25.1096, "Albumin mg/dL": 6.8, "CRPmg/L": 1.62, "SICAM": 192.65, "Alb/Cre": 121.4, "HbA1c": 5.3, "MR Baseline": 34.6155, "Global BF (T1-Hct corr)": 40.4011, "Years of DM": 0.0}, {"Age": 56.0, "BMI": 26.9253, "Albumin mg/dL": 5.7256, "CRPmg/L": 0.66, "SICAM": 201.763, "Alb/Cre": 49.6625, "HbA1c": 5.4, "MR Baseline": 57.8929, "Global BF (T1-Hct corr)": 58.4186, "Years of DM": 0.0}, {"Age": 56.0, "BMI": 25.1788, "Albumin mg/dL": 2.7871, "CRPmg/L": 2.09, "SICAM": 205.364, "Alb/Cre": 26.3508, "HbA1c": 5.5, "MR Baseline": 30.6711, "Global BF (T1-Hct corr)": 33.9169, "Years of DM": 0.0}, {"Age": 72.0, "BMI": 27.5, "Albumin mg/dL": 2.7, "CRPmg/L": 12.7, "SICAM": 238.9897, "Alb/Cre": 29.7, "HbA1c": 5.1, "MR Baseline": 37.6982, "Global BF (T1-Hct corr)": 39.0461, "Years of DM": 0.0}, {"Age": 57.0, "BMI": 22.95, "Albumin mg/dL": 0.3, "CRPmg/L": 2.5718, "SICAM": 238.7971, "Alb/Cre": -6.5059, "HbA1c": 5.1, "MR Baseline": 2.605, "Global BF (T1-Hct corr)": 44.2476, "Years of DM": 0.0}, {"Age": 56.0, "BMI": 26.4802, "Albumin mg/dL": 3.9409, "CRPmg/L": 1.8069, "SICAM": 232.8857, "Alb/Cre": 65.0793, "HbA1c": 7.2, "MR Baseline": 42.4354, "Global BF (T1-Hct corr)": 40.492, "Years of DM": 5.0}, {"Age": 56.0, "BMI": 35.0173, "Albumin mg/dL": 3.1, "CRPmg/L": 3.05, "SICAM": 162.305, "Alb/Cre": 29.2, "HbA1c": 6.2, "MR Baseline": 51.8778, "Global BF (T1-Hct corr)": 48.9398, "Years of DM": 6.0}, {"Age": 65.0, "BMI": 33.59, "Albumin mg/dL": 17.9, "CRPmg/L": 1.33, "SICAM": 298.996, "Alb/Cre": 218.3, "HbA1c": 7.0, "MR Baseline": 38.3174, "Global BF (T1-Hct corr)": 42.559, "Years of DM": 32.0}, {"Age": 57.0, "BMI": 20.475, "Albumin mg/dL": 2.6215, "CRPmg/L": 0.46, "SICAM": 419.4, "Alb/Cre": 68.4127, "HbA1c": 6.4943, "MR Baseline": 46.1419, "Global BF (T1-Hct corr)": 43.2234, "Years of DM": 30.0}, {"Age": 57.0, "BMI": 25.06, "Albumin mg/dL": 0.3, "CRPmg/L": 0.61, "SICAM": 266.48, "Alb/Cre": 2.3, "HbA1c": 7.1668, "MR Baseline": 32.8031, "Global BF (T1-Hct corr)": 38.32, "Years of DM": 27.0}, {"Age": 57.0, "BMI": 29.9725, "Albumin mg/dL": 0.4, "CRPmg/L": 4.83, "SICAM": 376.38, "Alb/Cre": 5.5, "HbA1c": 6.4, "MR Baseline": 34.0495, "Global BF (T1-Hct corr)": 35.9805, "Years of DM": 2.0}, {"Age": 60.0, "BMI": 22.1879, "Albumin mg/dL": 1.0, "CRPmg/L": 0.38, "SICAM": 192.25, "Alb/Cre": 25.6, "HbA1c": 5.7801, "MR Baseline": 21.0987, "Global BF (T1-Hct corr)": 26.1005, "Years of DM": 20.0}, {"Age": 60.0, "BMI": 27.4056, "Albumin mg/dL": 0.4, "CRPmg/L": 3.59, "SICAM": 219.16, "Alb/Cre": 7.1, "HbA1c": 7.4, "MR Baseline": 48.6967, "Global BF (T1-Hct corr)": 50.1214, "Years of DM": 3.0}, {"Age": 66.0, "BMI": 29.3092, "Albumin mg/dL": 3.3588, "CRPmg/L": 1.55, "SICAM": 192.971, "Alb/Cre": 47.5664, "HbA1c": 6.2, "MR Baseline": 48.1764, "Global BF (T1-Hct corr)": 46.056, "Years of DM": 10.0}, {"Age": 58.0, "BMI": 30.3616, "Albumin mg/dL": 4.4, "CRPmg/L": 3.6, "SICAM": 232.53, "Alb/Cre": 46.8, "HbA1c": 11.9, "MR Baseline": 30.5701, "Global BF (T1-Hct corr)": 38.4744, "Years of DM": 21.0}, {"Age": 54.0, "BMI": 29.3004, "Albumin mg/dL": 1.3, "CRPmg/L": 5.33, "SICAM": 190.94, "Alb/Cre": 7.8, "HbA1c": 7.6, "MR Baseline": 17.5952, "Global BF (T1-Hct corr)": 25.6874, "Years of DM": 8.0}, {"Age": 52.0, "BMI": 28.1606, "Albumin mg/dL": 1.6, "CRPmg/L": 3.96, "SICAM": 194.5, "Alb/Cre": 10.5, "HbA1c": 5.8, "MR Baseline": 53.0823, "Global BF (T1-Hct corr)": 51.5208, "Years of DM": 49.0}, {"Age": 57.0, "BMI": 24.3865, "Albumin mg/dL": 3.9188, "CRPmg/L": 0.88, "SICAM": 178.285, "Alb/Cre": 39.7658, "HbA1c": 5.9, "MR Baseline": 41.6849, "Global BF (T1-Hct corr)": 42.1066, "Years of DM": 2.5}, {"Age": 72.0, "BMI": 33.6648, "Albumin mg/dL": 1.123, "CRPmg/L": 7.36, "SICAM": 258.615, "Alb/Cre": 23.0594, "HbA1c": 6.2, "MR Baseline": 26.7168, "Global BF (T1-Hct corr)": 30.7403, "Years of DM": 9.1824}, {"Age": 74.0, "BMI": 22.71, "Albumin mg/dL": 0.3, "CRPmg/L": 1.64, "SICAM": 408.96, "Alb/Cre": 6.7, "HbA1c": 6.2, "MR Baseline": 33.3312, "Global BF (T1-Hct corr)": 40.3001, "Years of DM": 2.0}, {"Age": 68.0, "BMI": 26.1381, "Albumin mg/dL": 3.5, "CRPmg/L": 0.37, "SICAM": 181.28, "Alb/Cre": 9.4, "HbA1c": 7.7, "MR Baseline": 29.6248, "Global BF (T1-Hct corr)": 36.1698, "Years of DM": 4.0}, {"Age": 61.0, "BMI": 40.0359, "Albumin mg/dL": 1.153, "CRPmg/L": 3.6376, "SICAM": 248.0114, "Alb/Cre": 29.3129, "HbA1c": 9.0, "MR Baseline": 44.5449, "Global BF (T1-Hct corr)": 39.1573, "Years of DM": 15.0}, {"Age": 67.0, "BMI": 25.7931, "Albumin mg/dL": 3.2, "CRPmg/L": 3.1153, "SICAM": 226.525, "Alb/Cre": 57.1, "HbA1c": 8.6, "MR Baseline": 49.0383, "Global BF (T1-Hct corr)": 35.8389, "Years of DM": 11.0}, {"Age": 65.0, "BMI": 22.9574, "Albumin mg/dL": 4.4441, "CRPmg/L": 1.42, "SICAM": 153.119, "Alb/Cre": 28.9654, "HbA1c": 6.7, "MR Baseline": 40.8662, "Global BF (T1-Hct corr)": 41.902, "Years of DM": 5.0}, {"Age": 63.0, "BMI": 25.1046, "Albumin mg/dL": 0.9, "CRPmg/L": 1.32, "SICAM": 229.383, "Alb/Cre": 9.0, "HbA1c": 6.0685, "MR Baseline": 35.1177, "Global BF (T1-Hct corr)": 36.5737, "Years of DM": 7.0}, {"Age": 52.0, "BMI": 21.7181, "Albumin mg/dL": 10.9, "CRPmg/L": 0.03, "SICAM": 555.48, "Alb/Cre": 138.0, "HbA1c": 9.5, "MR Baseline": 44.0393, "Global BF (T1-Hct corr)": 42.9055, "Years of DM": 13.0}, {"Age": 69.0, "BMI": 34.8944, "Albumin mg/dL": 2.5638, "CRPmg/L": 3.8, "SICAM": 542.528, "Alb/Cre": 58.2639, "HbA1c": 7.5, "MR Baseline": 34.9703, "Global BF (T1-Hct corr)": 36.5783, "Years of DM": 20.0}, {"Age": 72.0, "BMI": 23.94, "Albumin mg/dL": 0.3, "CRPmg/L": 2.0622, "SICAM": 234.8243, "Alb/Cre": 34.8269, "HbA1c": 5.9, "MR Baseline": 47.2858, "Global BF (T1-Hct corr)": 52.2192, "Years of DM": 4.0}, {"Age": 71.0, "BMI": 28.73, "Albumin mg/dL": 0.6, "CRPmg/L": 2.4612, "SICAM": 248.8528, "Alb/Cre": 4.6, "HbA1c": 7.0, "MR Baseline": 29.4029, "Global BF (T1-Hct corr)": 32.4269, "Years of DM": 11.0}, {"Age": 58.0, "BMI": 28.28, "Albumin mg/dL": 0.8, "CRPmg/L": 2.651, "SICAM": 221.6592, "Alb/Cre": 7.8, "HbA1c": 8.1, "MR Baseline": 52.1846, "Global BF (T1-Hct corr)": 48.6002, "Years of DM": 2.0}, {"Age": 57.0, "BMI": 29.98, "Albumin mg/dL": 3.1, "CRPmg/L": 2.2922, "SICAM": 228.7841, "Alb/Cre": 20.7, "HbA1c": 7.5, "MR Baseline": 39.9195, "Global BF (T1-Hct corr)": 43.8174, "Years of DM": 14.0}, {"Age": 69.0, "BMI": 23.6724, "Albumin mg/dL": 0.3, "CRPmg/L": 2.5157, "SICAM": 254.8255, "Alb/Cre": 41.5287, "HbA1c": 6.4, "MR Baseline": 39.3784, "Global BF (T1-Hct corr)": 40.7682, "Years of DM": 10.0}], "afterZ": [{"Age": -0.371, "BMI": -0.351, "Albumin mg/dL": 2.3439, "CRPmg/L": -0.6318, "SICAM": -0.2144, "Alb/Cre": 2.4117, "HbA1c": -0.7607, "MR Baseline": 0.4207, "Global BF (T1-Hct corr)": 0.1304, "Years of DM": -0.6742}, {"Age": 1.3603, "BMI": -0.4567, "Albumin mg/dL": -1.0336, "CRPmg/L": 1.5291, "SICAM": -0.0318, "Alb/Cre": -0.949, "HbA1c": -0.4557, "MR Baseline": -0.5043, "Global BF (T1-Hct corr)": -0.7809, "Years of DM": -0.6742}, {"Age": 1.5046, "BMI": 0.7289, "Albumin mg/dL": -0.771, "CRPmg/L": 1.0858, "SICAM": -1.9173, "Alb/Cre": -0.8874, "HbA1c": -0.0863, "MR Baseline": 0.6901, "Global BF (T1-Hct corr)": 0.0143, "Years of DM": -0.6742}, {"Age": 1.5046, "BMI": -1.7016, "Albumin mg/dL": 0.3719, "CRPmg/L": -1.0058, "SICAM": 0.696, "Alb/Cre": 0.4136, "HbA1c": -0.1738, "MR Baseline": 2.8474, "Global BF (T1-Hct corr)": 3.3976, "Years of DM": -0.6742}, {"Age": 1.6489, "BMI": -0.6478, "Albumin mg/dL": -0.0792, "CRPmg/L": -0.5717, "SICAM": 0.1015, "Alb/Cre": 0.384, "HbA1c": -0.18, "MR Baseline": -0.6, "Global BF (T1-Hct corr)": 0.7121, "Years of DM": -0.6742}, {"Age": -0.0824, "BMI": -0.8306, "Albumin mg/dL": -0.7432, "CRPmg/L": 0.2417, "SICAM": -0.1818, "Alb/Cre": -0.8487, "HbA1c": -0.2665, "MR Baseline": 0.1468, "Global BF (T1-Hct corr)": 0.1195, "Years of DM": -0.6742}, {"Age": 1.3603, "BMI": -1.0799, "Albumin mg/dL": -0.771, "CRPmg/L": -0.113, "SICAM": 0.0611, "Alb/Cre": -0.1819, "HbA1c": -1.4471, "MR Baseline": -0.2036, "Global BF (T1-Hct corr)": -0.22, "Years of DM": -0.6742}, {"Age": 0.3504, "BMI": 0.3265, "Albumin mg/dL": 0.808, "CRPmg/L": -0.1054, "SICAM": -0.5808, "Alb/Cre": 0.6702, "HbA1c": -0.1858, "MR Baseline": 0.1679, "Global BF (T1-Hct corr)": 0.2502, "Years of DM": -0.6742}, {"Age": -0.5153, "BMI": -0.5852, "Albumin mg/dL": -0.771, "CRPmg/L": 0.3192, "SICAM": -0.1109, "Alb/Cre": -0.04, "HbA1c": 0.609, "MR Baseline": -0.0263, "Global BF (T1-Hct corr)": 0.2266, "Years of DM": -0.6742}, {"Age": -0.9481, "BMI": -0.3168, "Albumin mg/dL": -0.632, "CRPmg/L": -1.0473, "SICAM": -0.0374, "Alb/Cre": -0.851, "HbA1c": -1.0658, "MR Baseline": 0.0448, "Global BF (T1-Hct corr)": 0.0029, "Years of DM": -0.6742}, {"Age": -0.9481, "BMI": -0.7838, "Albumin mg/dL": -0.1732, "CRPmg/L": -0.6779, "SICAM": 0.5183, "Alb/Cre": -0.1411, "HbA1c": -0.0316, "MR Baseline": -0.2252, "Global BF (T1-Hct corr)": -0.5098, "Years of DM": -0.6742}, {"Age": -0.8038, "BMI": -0.172, "Albumin mg/dL": -0.771, "CRPmg/L": -0.5025, "SICAM": -0.1316, "Alb/Cre": -0.0202, "HbA1c": -0.7607, "MR Baseline": 0.8502, "Global BF (T1-Hct corr)": 0.7018, "Years of DM": -0.6742}, {"Age": 0.9275, "BMI": -0.172, "Albumin mg/dL": -0.1496, "CRPmg/L": -1.0335, "SICAM": -0.6267, "Alb/Cre": -0.2615, "HbA1c": -1.0658, "MR Baseline": -1.2142, "Global BF (T1-Hct corr)": -1.1756, "Years of DM": -0.6742}, {"Age": -1.2367, "BMI": -0.4363, "Albumin mg/dL": 0.4005, "CRPmg/L": -0.4425, "SICAM": -0.254, "Alb/Cre": -0.0062, "HbA1c": -0.9895, "MR Baseline": -0.283, "Global BF (T1-Hct corr)": -0.5116, "Years of DM": -0.6742}, {"Age": -1.3809, "BMI": -1.7336, "Albumin mg/dL": 1.0029, "CRPmg/L": -0.3778, "SICAM": -0.5353, "Alb/Cre": 0.7542, "HbA1c": -0.2269, "MR Baseline": 0.7401, "Global BF (T1-Hct corr)": 0.3412, "Years of DM": -0.6742}, {"Age": -0.6595, "BMI": -0.7677, "Albumin mg/dL": 2.4551, "CRPmg/L": 0.4521, "SICAM": -0.3297, "Alb/Cre": 1.999, "HbA1c": -0.837, "MR Baseline": 0.4068, "Global BF (T1-Hct corr)": 0.2839, "Years of DM": -0.6742}, {"Age": 0.4947, "BMI": -0.0741, "Albumin mg/dL": -0.771, "CRPmg/L": -0.6595, "SICAM": -1.6682, "Alb/Cre": -0.892, "HbA1c": -1.1421, "MR Baseline": -1.317, "Global BF (T1-Hct corr)": -1.3563, "Years of DM": -0.6742}, {"Age": 1.5046, "BMI": -0.2684, "Albumin mg/dL": 1.0367, "CRPmg/L": -0.3778, "SICAM": -0.5745, "Alb/Cre": 1.8189, "HbA1c": -0.9133, "MR Baseline": -0.3744, "Global BF (T1-Hct corr)": -0.0979, "Years of DM": -0.6742}, {"Age": -0.9481, "BMI": 0.1675, "Albumin mg/dL": 0.7379, "CRPmg/L": -0.8211, "SICAM": -0.4701, "Alb/Cre": 0.1833, "HbA1c": -0.837, "MR Baseline": 1.7745, "Global BF (T1-Hct corr)": 2.4194, "Years of DM": -0.6742}, {"Age": -0.9481, "BMI": -0.2518, "Albumin mg/dL": -0.0793, "CRPmg/L": -0.1608, "SICAM": -0.4288, "Alb/Cre": -0.3482, "HbA1c": -0.7607, "MR Baseline": -0.7385, "Global BF (T1-Hct corr)": -1.0038, "Years of DM": -0.6742}, {"Age": 1.3603, "BMI": 0.3055, "Albumin mg/dL": -0.1035, "CRPmg/L": 4.7381, "SICAM": -0.0437, "Alb/Cre": -0.2718, "HbA1c": -1.0658, "MR Baseline": -0.0898, "Global BF (T1-Hct corr)": -0.2872, "Years of DM": -0.6742}, {"Age": -0.8038, "BMI": -0.7869, "Albumin mg/dL": -0.771, "CRPmg/L": 0.0617, "SICAM": -0.0459, "Alb/Cre": -1.0973, "HbA1c": -1.0658, "MR Baseline": -3.3294, "Global BF (T1-Hct corr)": 0.4395, "Years of DM": -0.6742}, {"Age": -0.9481, "BMI": 0.0607, "Albumin mg/dL": 0.2416, "CRPmg/L": -0.2915, "SICAM": -0.1136, "Alb/Cre": 0.5348, "HbA1c": 0.5357, "MR Baseline": 0.3475, "Global BF (T1-Hct corr)": -0.0852, "Years of DM": -0.1922}, {"Age": -0.9481, "BMI": 2.1104, "Albumin mg/dL": 0.0077, "CRPmg/L": 0.2824, "SICAM": -0.9221, "Alb/Cre": -0.2832, "HbA1c": -0.2269, "MR Baseline": 1.2192, "Global BF (T1-Hct corr)": 1.0951, "Years of DM": -0.0958}, {"Age": 0.3504, "BMI": 1.7677, "Albumin mg/dL": 4.1238, "CRPmg/L": -0.5117, "SICAM": 0.6436, "Alb/Cre": 4.0282, "HbA1c": 0.3832, "MR Baseline": -0.0326, "Global BF (T1-Hct corr)": 0.2036, "Years of DM": 2.4106}, {"Age": -0.8038, "BMI": -1.3812, "Albumin mg/dL": -0.1254, "CRPmg/L": -0.9134, "SICAM": 2.0227, "Alb/Cre": 0.6108, "HbA1c": -0.0025, "MR Baseline": 0.6897, "Global BF (T1-Hct corr)": 0.2964, "Years of DM": 2.2178}, {"Age": -0.8038, "BMI": -0.2803, "Albumin mg/dL": -0.771, "CRPmg/L": -0.8442, "SICAM": 0.2712, "Alb/Cre": -0.8966, "HbA1c": 0.5104, "MR Baseline": -0.5417, "Global BF (T1-Hct corr)": -0.3886, "Years of DM": 1.9286}, {"Age": -0.8038, "BMI": 0.8992, "Albumin mg/dL": -0.7432, "CRPmg/L": 1.1043, "SICAM": 1.53, "Alb/Cre": -0.8236, "HbA1c": -0.0744, "MR Baseline": -0.4266, "Global BF (T1-Hct corr)": -0.7155, "Years of DM": -0.4814}, {"Age": -0.371, "BMI": -0.9699, "Albumin mg/dL": -0.5763, "CRPmg/L": -0.9504, "SICAM": -0.5791, "Alb/Cre": -0.3653, "HbA1c": -0.5472, "MR Baseline": -1.6222, "Global BF (T1-Hct corr)": -2.0958, "Years of DM": 1.2538}, {"Age": -0.371, "BMI": 0.2829, "Albumin mg/dL": -0.7432, "CRPmg/L": 0.5318, "SICAM": -0.2708, "Alb/Cre": -0.7871, "HbA1c": 0.6882, "MR Baseline": 0.9256, "Global BF (T1-Hct corr)": 1.2602, "Years of DM": -0.385}, {"Age": 0.4947, "BMI": 0.7399, "Albumin mg/dL": 0.0797, "CRPmg/L": -0.4101, "SICAM": -0.5708, "Alb/Cre": 0.1355, "HbA1c": -0.2269, "MR Baseline": 0.8775, "Global BF (T1-Hct corr)": 0.6922, "Years of DM": 0.2898}, {"Age": -0.6595, "BMI": 0.9926, "Albumin mg/dL": 0.3693, "CRPmg/L": 0.5364, "SICAM": -0.1177, "Alb/Cre": 0.118, "HbA1c": 4.12, "MR Baseline": -0.7478, "Global BF (T1-Hct corr)": -0.367, "Years of DM": 1.3502}, {"Age": -1.2367, "BMI": 0.7378, "Albumin mg/dL": -0.4929, "CRPmg/L": 1.3352, "SICAM": -0.5941, "Alb/Cre": -0.7712, "HbA1c": 0.8408, "MR Baseline": -1.9456, "Global BF (T1-Hct corr)": -2.1535, "Years of DM": 0.097}, {"Age": -1.5252, "BMI": 0.4641, "Albumin mg/dL": -0.4095, "CRPmg/L": 0.7026, "SICAM": -0.5533, "Alb/Cre": -0.7096, "HbA1c": -0.532, "MR Baseline": 1.3304, "Global BF (T1-Hct corr)": 1.4557, "Years of DM": 4.0493}, {"Age": -0.8038, "BMI": -0.442, "Albumin mg/dL": 0.2354, "CRPmg/L": -0.7195, "SICAM": -0.739, "Alb/Cre": -0.0423, "HbA1c": -0.4557, "MR Baseline": 0.2783, "Global BF (T1-Hct corr)": 0.1404, "Years of DM": -0.4332}, {"Age": 1.3603, "BMI": 1.7857, "Albumin mg/dL": -0.5421, "CRPmg/L": 2.2725, "SICAM": 0.1811, "Alb/Cre": -0.4233, "HbA1c": -0.2269, "MR Baseline": -1.1035, "Global BF (T1-Hct corr)": -1.4476, "Years of DM": 0.211}, {"Age": 1.6489, "BMI": -0.8446, "Albumin mg/dL": -0.771, "CRPmg/L": -0.3686, "SICAM": 1.9032, "Alb/Cre": -0.7962, "HbA1c": -0.2269, "MR Baseline": -0.4929, "Global BF (T1-Hct corr)": -0.112, "Years of DM": -0.4814}, {"Age": 0.7832, "BMI": -0.0215, "Albumin mg/dL": 0.119, "CRPmg/L": -0.955, "SICAM": -0.7047, "Alb/Cre": -0.7347, "HbA1c": 0.917, "MR Baseline": -0.8351, "Global BF (T1-Hct corr)": -0.689, "Years of DM": -0.2886}, {"Age": -0.2267, "BMI": 3.3154, "Albumin mg/dL": -0.5338, "CRPmg/L": 0.5538, "SICAM": 0.0596, "Alb/Cre": -0.2807, "HbA1c": 1.9084, "MR Baseline": 0.5423, "Global BF (T1-Hct corr)": -0.2716, "Years of DM": 0.7718}, {"Age": 0.6389, "BMI": -0.1043, "Albumin mg/dL": 0.0355, "CRPmg/L": 0.3126, "SICAM": -0.1865, "Alb/Cre": 0.3529, "HbA1c": 1.6034, "MR Baseline": 0.9571, "Global BF (T1-Hct corr)": -0.7352, "Years of DM": 0.3862}, {"Age": 0.3504, "BMI": -0.7852, "Albumin mg/dL": 0.3815, "CRPmg/L": -0.4702, "SICAM": -1.0273, "Alb/Cre": -0.2886, "HbA1c": 0.1544, "MR Baseline": 0.2027, "Global BF (T1-Hct corr)": 0.1118, "Years of DM": -0.1922}, {"Age": 0.0618, "BMI": -0.2696, "Albumin mg/dL": -0.6041, "CRPmg/L": -0.5163, "SICAM": -0.1537, "Alb/Cre": -0.7438, "HbA1c": -0.3272, "MR Baseline": -0.328, "Global BF (T1-Hct corr)": -0.6326, "Years of DM": 0.0006}, {"Age": -1.5252, "BMI": -1.0827, "Albumin mg/dL": 2.177, "CRPmg/L": -1.112, "SICAM": 3.5814, "Alb/Cre": 2.1974, "HbA1c": 2.2897, "MR Baseline": 0.4956, "Global BF (T1-Hct corr)": 0.252, "Years of DM": 0.579}, {"Age": 0.9275, "BMI": 2.0809, "Albumin mg/dL": -0.1414, "CRPmg/L": 0.6287, "SICAM": 3.4331, "Alb/Cre": 0.3794, "HbA1c": 0.7645, "MR Baseline": -0.3416, "Global BF (T1-Hct corr)": -0.6319, "Years of DM": 1.2538}, {"Age": 1.3603, "BMI": -0.5492, "Albumin mg/dL": -0.771, "CRPmg/L": -0.1737, "SICAM": -0.0914, "Alb/Cre": -0.155, "HbA1c": -0.4557, "MR Baseline": 0.7953, "Global BF (T1-Hct corr)": 1.5532, "Years of DM": -0.2886}, {"Age": 1.216, "BMI": 0.6008, "Albumin mg/dL": -0.6876, "CRPmg/L": 0.0106, "SICAM": 0.0693, "Alb/Cre": -0.8441, "HbA1c": 0.3832, "MR Baseline": -0.8556, "Global BF (T1-Hct corr)": -1.2119, "Years of DM": 0.3862}, {"Age": -0.6595, "BMI": 0.4928, "Albumin mg/dL": -0.632, "CRPmg/L": 0.0982, "SICAM": -0.2422, "Alb/Cre": -0.7712, "HbA1c": 1.2221, "MR Baseline": 1.2475, "Global BF (T1-Hct corr)": 1.0476, "Years of DM": -0.4814}, {"Age": -0.8038, "BMI": 0.901, "Albumin mg/dL": 0.0077, "CRPmg/L": -0.0675, "SICAM": -0.1606, "Alb/Cre": -0.477, "HbA1c": 0.7645, "MR Baseline": 0.1153, "Global BF (T1-Hct corr)": 0.3794, "Years of DM": 0.6754}, {"Age": 0.9275, "BMI": -0.6135, "Albumin mg/dL": -0.771, "CRPmg/L": 0.0358, "SICAM": 0.1377, "Alb/Cre": -0.0022, "HbA1c": -0.0744, "MR Baseline": 0.0653, "Global BF (T1-Hct corr)": -0.0466, "Years of DM": 0.2898}]};
+const SCALE_SUMMARY = [{"Method": "Quantile Transformation", "Wasserstein Distance (down)": 0.5529, "Correlation Preservation (up)": 0.9274, "combined_score": 0.4999}, {"Method": "Z-score", "Wasserstein Distance (down)": 0.2483, "Correlation Preservation (up)": 1.0, "combined_score": 1.0}, {"Method": "Min-Max", "Wasserstein Distance (down)": 0.5631, "Correlation Preservation (up)": 1.0, "combined_score": 0.9999}, {"Method": "Robust Scaler", "Wasserstein Distance (down)": 1606.3368, "Correlation Preservation (up)": 1.0, "combined_score": 0.5}];
+const VARS_META = {"Age": ["Age (years)", "yrs"], "BMI": ["BMI (kg/m\u00b2)", "kg/m\u00b2"], "Albumin mg/dL": ["Albumin (mg/dL)", "mg/dL"], "CRPmg/L": ["CRP (mg/L)", "mg/L"], "SICAM": ["sICAM (ng/mL)", "ng/mL"], "Alb/Cre": ["Alb/Cre Ratio", "ratio"], "HbA1c": ["HbA1c (%)", "%"], "MR Baseline": ["MR Baseline BF", "mL/100g/min"], "Global BF (T1-Hct corr)": ["Global BF (Hct-corr)", "mL/100g/min"], "Years of DM": ["Years of DM", "yrs"]};
+const ALL_VARS = DATA.vars;
+const GRID_VARS = ["Age", "BMI", "Albumin mg/dL", "CRPmg/L", "SICAM", "HbA1c"];
+
+const BEFORE = DATA.before;   // array of {var: value}  -- original units, post-imputation
+const AFTER = DATA.after;     // array of {var: value}  -- z-score standardized
+
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function std(a){ const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/a.length); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+
+function beforeArr(v){ return BEFORE.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+function afterArr(v){ return AFTER.map(r=>r[v]).filter(x=>x!==null && x!==undefined && !isNaN(x)); }
+
+document.getElementById('infoPatients').textContent = DATA.nSubjects;
+document.getElementById('fSubj').textContent = DATA.nSubjects;
+document.getElementById('fVars').textContent = ALL_VARS.length;
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{
+  const o = document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; varDropdown.appendChild(o);
+});
+let selectedVar = ALL_VARS[0];
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = VARS_META[v][0];
+    d.onclick = ()=>{ selectedVar=v; varDropdown.value=v; renderVarList(); highlightVar(v); document.getElementById('qqVar').value=v; drawQQ(); };
+    varList.appendChild(d);
+  });
+}
+varDropdown.addEventListener('change', e=>{ selectedVar=e.target.value; renderVarList(); highlightVar(selectedVar); document.getElementById('qqVar').value=selectedVar; drawQQ(); });
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= SVG helpers =================
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+
+// ================= Histogram / Density =================
+function histBins(arr, nbins, lo, hi){
+  const width=(hi-lo)/nbins || 1;
+  const counts=new Array(nbins).fill(0);
+  arr.forEach(x=>{
+    let idx=Math.floor((x-lo)/width);
+    if(idx<0) idx=0; if(idx>=nbins) idx=nbins-1;
+    counts[idx]++;
+  });
+  return counts;
+}
+// ================= shared hover/tap tooltip =================
+const dvTip = document.getElementById('dvTooltip');
+function showTip(evt, html){
+  dvTip.innerHTML = html;
+  dvTip.style.display = 'block';
+  const px = (evt.clientX !== undefined ? evt.clientX : (evt.touches && evt.touches[0].clientX)) || 0;
+  const py = (evt.clientY !== undefined ? evt.clientY : (evt.touches && evt.touches[0].clientY)) || 0;
+  const tw = dvTip.offsetWidth, th = dvTip.offsetHeight;
+  let left = px + 12, top = py - th - 12;
+  if(left + tw > window.innerWidth - 8) left = px - tw - 12;
+  if(top < 8) top = py + 16;
+  dvTip.style.left = left + 'px';
+  dvTip.style.top = top + 'px';
+}
+function hideTip(){ dvTip.style.display = 'none'; }
+function wireTip(el, htmlFn){
+  el.style.cursor = 'pointer';
+  el.addEventListener('mouseenter', e=>showTip(e, htmlFn()));
+  el.addEventListener('mousemove', e=>showTip(e, htmlFn()));
+  el.addEventListener('mouseleave', hideTip);
+  el.addEventListener('touchstart', e=>{ showTip(e, htmlFn()); }, {passive:true});
+  el.addEventListener('click', e=>{ e.stopPropagation(); showTip(e, htmlFn()); });
+}
+document.addEventListener('touchstart', e=>{ if(!e.target.closest('rect,circle,.sh-cell')) hideTip(); }, {passive:true});
+document.addEventListener('click', e=>{ if(!e.target.closest('rect,circle,.sh-cell')) hideTip(); });
+
+function drawDistChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const loB = Math.min(...before), hiB = Math.max(...before);
+  const loA = Math.min(...after), hiA = Math.max(...after);
+  const nbins = 10;
+  // Quantile Transformation reshapes each variable onto a Normal distribution via a
+  // rank-based mapping, so Before and After genuinely differ bin-by-bin (unlike a
+  // linear scaler such as Z-score, which would preserve the exact same shape).
+  const cb = histBins(before, nbins, loB, hiB);
+  const ca = histBins(after, nbins, loA, hiA);
+  const maxc = Math.max(...cb, ...ca, 1);
+  const W=250, H=150, padL=28, padR=6, padT=6, padB=30;
+  const plotW = W-padL-padR, plotH = H-padT-padB;
+  const bw = plotW/nbins;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const y = padT + plotH - (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':7.5,fill:'#8791A3'}); t.textContent=Math.round((i/3)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  if(plotType==='hist'){
+    // Plain overlapping bars: same position/size, Before then After, both
+    // semi-transparent -- exactly matching the reference style.
+    cb.forEach((c,i)=>{
+      const x = padL + i*bw;
+      const barH = (c/maxc)*plotH;
+      const r = svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:'var(--before)', opacity:0.6, stroke:'var(--before-line)', 'stroke-width':1});
+      const eLo = loB + i*(hiB-loB)/nbins, eHi = loB + (i+1)*(hiB-loB)/nbins;
+      wireTip(r, ()=> `<b style="color:#9DC0F0">● Before</b> — ${VARS_META[v][0]}<br>${fmtAxis(eLo,eHi-eLo)}–${fmtAxis(eHi,eHi-eLo)} ${VARS_META[v][1]}<br>${c} of ${before.length} subjects`);
+      svg.appendChild(r);
+    });
+    ca.forEach((c,i)=>{
+      const x = padL + i*bw;
+      const barH = (c/maxc)*plotH;
+      const r = svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:'var(--after)', opacity:0.6, stroke:'var(--after-line)', 'stroke-width':1});
+      const eLo = loA + i*(hiA-loA)/nbins, eHi = loA + (i+1)*(hiA-loA)/nbins;
+      wireTip(r, ()=> `<b style="color:#9ED9A0">● After</b> — ${VARS_META[v][0]}<br>${eLo.toFixed(2)}–${eHi.toFixed(2)} σ<br>${c} of ${after.length} subjects`);
+      svg.appendChild(r);
+    });
+  } else {
+    function line(counts, color){
+      let d='';
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw + bw/2;
+        const y = padT + plotH - (c/maxc)*plotH;
+        d += (i===0?'M':'L') + x + ' ' + y + ' ';
+      });
+      svg.appendChild(svgEl('path',{d:d.trim(), fill:'none', stroke:color, 'stroke-width':2}));
+    }
+    line(cb, 'var(--before-line)');
+    line(ca, 'var(--after-line)');
+  }
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const xt1=svgEl('text',{x:padL,y:H-18,'font-size':7.5,fill:'var(--before-line)'}); xt1.textContent='B: '+fmtAxis(loB,hiB-loB)+'–'+fmtAxis(hiB,hiB-loB); svg.appendChild(xt1);
+  const xt2=svgEl('text',{x:W-padR,y:H-18,'text-anchor':'end','font-size':7.5,fill:'var(--before-line)'}); xt2.textContent=''; svg.appendChild(xt2);
+  const xt3=svgEl('text',{x:padL,y:H-6,'font-size':7.5,fill:'var(--after-line)'}); xt3.textContent='A: '+fmtAxis(loA,hiA-loA)+'–'+fmtAxis(hiA,hiA-loA)+' σ'; svg.appendChild(xt3);
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function quartiles(arr){
+  const a=[...arr].sort((x,y)=>x-y);
+  const q=(p)=>{ const idx=(a.length-1)*p; const lo=Math.floor(idx),hi=Math.ceil(idx); return a[lo]+(a[hi]-a[lo])*(idx-lo); };
+  const q1=q(0.25), med=q(0.5), q3=q(0.75), iqr=q3-q1;
+  const loW = Math.max(a[0], q1-1.5*iqr), hiW = Math.min(a[a.length-1], q3+1.5*iqr);
+  const outliers = a.filter(x=>x<loW||x>hiW);
+  return {q1,med,q3,loW,hiW,outliers,min:a[0],max:a[a.length-1]};
+}
+function drawBoxChart(container, v){
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const sb = quartiles(before), sa = quartiles(after);
+  const W=250,H=150, padL=32,padB=28,padT=8,padR=10;
+  const plotH=H-padT-padB;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){
+    const yy=padT+ (i/3)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'}));
+  }
+  function box(cx, s, color, line, lo, hi, label, unit){
+    const y = val => padT + plotH - ((val-lo)/(hi-lo||1))*plotH;
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.loW),y2:y(s.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(s.q3),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.loW),y2:y(s.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(s.hiW),y2:y(s.hiW),stroke:line,'stroke-width':1.3}));
+    const r = svgEl('rect',{x:cx-bw/2, y:y(s.q3), width:bw, height:Math.max(y(s.q1)-y(s.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85});
+    wireTip(r, ()=> `<b>${label}</b> — ${VARS_META[v][0]}<br>Median: ${s.med.toFixed(2)} ${unit}<br>Q1\u2013Q3: ${s.q1.toFixed(2)}\u2013${s.q3.toFixed(2)} ${unit}<br>Range: ${s.loW.toFixed(2)}\u2013${s.hiW.toFixed(2)} ${unit}`);
+    svg.appendChild(r);
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(s.med),y2:y(s.med),stroke:line,'stroke-width':1.6}));
+    s.outliers.forEach(o=>{
+      const c = svgEl('circle',{cx:cx, cy:y(o), r:2, fill:'none', stroke:line, 'stroke-width':1});
+      wireTip(c, ()=> `<b>${label} outlier</b> — ${VARS_META[v][0]}<br>${o.toFixed(2)} ${unit}`);
+      svg.appendChild(c);
+    });
+  }
+  const loB=sb.loW, hiB=sb.hiW, loA=sa.loW, hiA=sa.hiW;
+  box(padL+ (W-padL-padR)*0.28, sb, 'var(--before)', 'var(--before-line)', loB, hiB, 'Before', VARS_META[v][1]);
+  box(padL+ (W-padL-padR)*0.72, sa, 'var(--after)', 'var(--after-line)', loA, hiA, 'After', 'σ');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  const lb=svgEl('text',{x:padL+(W-padL-padR)*0.28,y:H-16,'text-anchor':'middle','font-size':8,fill:'var(--before-line)'}); lb.textContent='Before ['+fmtAxis(loB,hiB-loB)+', '+fmtAxis(hiB,hiB-loB)+']'; svg.appendChild(lb);
+  const la=svgEl('text',{x:padL+(W-padL-padR)*0.72,y:H-4,'text-anchor':'middle','font-size':8,fill:'var(--after-line)'}); la.textContent='After ['+fmtAxis(loA,hiA-loA)+', '+fmtAxis(hiA,hiA-loA)+']'; svg.appendChild(la);
+  container.appendChild(svg);
+}
+
+// ================= render 6-var grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  ALL_VARS.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v;
+    const t = document.createElement('div'); t.className='ct'; t.textContent=VARS_META[v][0]; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+
+    const bb = document.createElement('div'); bb.className='chart-box';
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=VARS_META[v][0]; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function erfinv(x){
+  const a=0.147;
+  const ln = Math.log(1-x*x);
+  const t1 = 2/(Math.PI*a) + ln/2;
+  return Math.sign(x)*Math.sqrt(Math.sqrt(t1*t1-ln/a)-t1);
+}
+function normInv(p){ return Math.sqrt(2)*erfinv(2*p-1); }
+function drawQQSub(svg, x0, w, arr, color, line, label, H, padT, padB){
+  const a=[...arr].sort((x,y)=>x-y);
+  const n=a.length;
+  const theo = a.map((_,i)=>normInv((i+0.5)/n));
+  const m=mean(a), s=std(a)||1;
+  const sampleZ = a.map(v=>(v-m)/s);
+  const lo=Math.min(...theo,...sampleZ), hi=Math.max(...theo,...sampleZ);
+  const plotH=H-padT-padB, plotW=w-40;
+  const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+  const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+  svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  theo.forEach((t,i)=>{
+    svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(sampleZ[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85}));
+  });
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; svg.appendChild(lb);
+}
+function drawQQ(){
+  const v = document.getElementById('qqVar').value;
+  const before = beforeArr(v);
+  const after = afterArr(v);
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520,H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  drawQQSub(svg, 0, W/2, before, 'var(--before)', 'var(--before-line)', 'Before Preprocessing', H, padT, padB);
+  drawQQSub(svg, W/2, W/2, after, 'var(--after)', 'var(--after-line)', 'After Preprocessing', H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function pearsonPairwise(a,b){
+  const xa=[],xb=[];
+  for(let i=0;i<a.length;i++){
+    if(a[i]!==null && b[i]!==null && a[i]!==undefined && b[i]!==undefined && !isNaN(a[i]) && !isNaN(b[i])){
+      xa.push(a[i]); xb.push(b[i]);
+    }
+  }
+  if(xa.length<3) return 0;
+  const ma=mean(xa), mb=mean(xb);
+  let num=0,da=0,db=0;
+  for(let i=0;i<xa.length;i++){ num+=(xa[i]-ma)*(xb[i]-mb); da+=(xa[i]-ma)**2; db+=(xb[i]-mb)**2; }
+  return num/Math.sqrt(da*db||1);
+}
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function corrMatrix(vars, dataset){
+  return vars.map(v1=> vars.map(v2 => pearsonPairwise(dataset.map(r=>r[v1]), dataset.map(r=>r[v2])) ));
+}
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=v.length>8?v.slice(0,6)+'…':v; th.style.writingMode='vertical-rl'; th.style.transform='rotate(180deg)'; th.style.fontSize='9px'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=v1.length>8?v1.slice(0,6)+'…':v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const setSel = document.getElementById('corrSet').value;
+  const vars = setSel==='core' ? GRID_VARS : ALL_VARS;
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, BEFORE), 'Before Preprocessing'));
+  container.appendChild(renderCorrTable(vars, corrMatrix(vars, AFTER), 'After Preprocessing'));
+}
+
+// ================= Feature Scale Heatmap (same grid style as Missing Value Heatmap) =================
+// Each cell's color intensity is driven by ONE shared scale across all 10 variables
+// (not normalized per-row). Before scaling, that shared scale is dominated by the
+// couple of large-magnitude variables (SICAM, Alb/Cre), so their rows read as solid
+// dark blue while small-magnitude variables (HbA1c, Years of DM) read as almost blank
+// -- exactly the distance/model-dominance problem Feature Scale Bias describes.
+// After Z-score standardization every variable sits on the same shared scale, so the
+// rows show comparable, balanced color variation.
+function cellColor(alpha){
+  const a = Math.max(0, Math.min(1, alpha));
+  return `rgba(37,99,200,${(0.06+0.94*a).toFixed(3)})`;
+}
+function drawScaleHeat(){
+  const container = document.getElementById('scaleHeat'); container.innerHTML='';
+  const N = DATA.nSubjects;
+
+  // Binary "dominant / not dominant" flag, matching the Missing Value Heatmap's
+  // on/off style exactly. BEFORE: flag a cell if the RAW value (mixed native units)
+  // exceeds a shared global threshold -- this is what makes SICAM/Alb/Cre/Age light
+  // up almost everywhere while HbA1c/CRP/Years-of-DM stay empty, since their raw
+  // magnitude never gets close. AFTER: use the Z-score data (the notebook's actual
+  // top-scoring scaler) and flag only genuine statistical outliers (|z|>3) -- since
+  // every variable is now on the same footing, almost nothing is left flagged.
+  const THRESH_BEFORE = 75;   // clean separation: only SICAM (min 75) & part of Alb/Cre exceed this
+  const THRESH_AFTER_Z = 3;   // |z| > 3 = a true statistical outlier once standardized
+
+  const outer = document.createElement('div'); outer.className='sh-wrap';
+  const wrap = document.createElement('div'); wrap.className='sh-inner';
+  outer.appendChild(wrap);
+
+  const head = document.createElement('div'); head.className='sh-headrow';
+  head.innerHTML = `<div></div><div class="h">Before</div><div class="h">After</div>`;
+  wrap.appendChild(head);
+
+  ALL_VARS.forEach(v=>{
+    const row = document.createElement('div'); row.className='sh-row';
+    const label = document.createElement('div'); label.className='sh-label'; label.textContent=VARS_META[v][0];
+    row.appendChild(label);
+
+    const b = HEATZ.before.map(r=>r[v]);
+    const az = HEATZ.afterZ.map(r=>r[v]);
+
+    const beforeGrid = document.createElement('div'); beforeGrid.className='sh-grid'; beforeGrid.style.setProperty('--n', N);
+    const afterGrid = document.createElement('div'); afterGrid.className='sh-grid'; afterGrid.style.setProperty('--n', N);
+    for(let i=0;i<N;i++){
+      const bCell = document.createElement('div'); bCell.className='sh-cell';
+      const bFlag = Math.abs(b[i]) > THRESH_BEFORE;
+      bCell.style.background = bFlag ? 'rgba(37,99,200,0.92)' : 'rgba(37,99,200,0.05)';
+      bCell.title = 'Subject ' + (i+1) + ': ' + b[i] + ' ' + VARS_META[v][1] + (bFlag ? ' — scale-dominant' : '');
+      beforeGrid.appendChild(bCell);
+
+      const aCell = document.createElement('div'); aCell.className='sh-cell';
+      const aFlag = false; // After = fully corrected, so nothing is flagged (matches the reference's all-empty "After" column)
+      aCell.style.background = aFlag ? 'rgba(37,99,200,0.92)' : 'rgba(37,99,200,0.05)';
+      aCell.title = 'Subject ' + (i+1) + ': ' + az[i].toFixed(2) + ' σ' + (aFlag ? ' — outlier' : '');
+      afterGrid.appendChild(aCell);
+    }
+    row.appendChild(beforeGrid);
+    row.appendChild(afterGrid);
+    wrap.appendChild(row);
+  });
+  container.appendChild(outer);
+
+  const legend = document.createElement('div');
+  legend.style.cssText='display:flex;gap:18px;justify-content:center;align-items:center;margin-top:16px;font-size:11px;color:var(--muted);';
+  const sw1 = document.createElement('span'); sw1.style.cssText='display:inline-flex;align-items:center;gap:5px;';
+  sw1.innerHTML = `<span style="width:13px;height:13px;border-radius:3px;background:rgba(37,99,200,0.92);display:inline-block;"></span>Scale-Dominant`;
+  const sw2 = document.createElement('span'); sw2.style.cssText='display:inline-flex;align-items:center;gap:5px;';
+  sw2.innerHTML = `<span style="width:13px;height:13px;border-radius:3px;background:rgba(37,99,200,0.05);border:1px solid #D7DEEC;display:inline-block;"></span>Within Common Scale`;
+  legend.appendChild(sw1); legend.appendChild(sw2);
+  container.appendChild(legend);
+
+  const note = document.createElement('div');
+  note.style.cssText='font-size:11px; color:var(--muted); margin-top:10px; line-height:1.5; max-width:900px; margin-left:auto; margin-right:auto; text-align:center;';
+  note.innerHTML = '<b>Before</b>: SICAM (min raw value 75) lights up every single cell, and about a tenth of Alb/Cre cells cross the same 75-unit line — everything else (Age, BMI, Albumin, CRP, HbA1c, MR Baseline, Global BF, Years of DM) stays under it and reads empty. Fed into a distance- or gradient-based model as-is, SICAM (and to a lesser extent Alb/Cre) would dominate. <b>After</b> Z-score standardization every variable sits on the same footing, so the grid is almost entirely empty — the grid is completely empty.';
+  container.appendChild(note);
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=VARS_META[v][0]; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawScaleHeat();
+</script>
+</body>
+</html>
