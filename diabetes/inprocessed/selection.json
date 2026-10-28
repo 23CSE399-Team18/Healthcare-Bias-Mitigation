@@ -1,0 +1,127 @@
+{
+ "dataset": "diabetes",
+ "selected": {
+  "demographic": "DANN",
+  "intersectional": "Intersectional debiasing",
+  "calibration": "Uncertainty-weighted gradient",
+  "environment": "V-REx"
+ },
+ "thresholds": {
+  "ERM": 0.6250000000000002,
+  "FairCare": 0.6250000000000002,
+  "DANN": 0.6000000000000002,
+  "GroupDRO": 0.6250000000000002,
+  "Fair-ERM": 0.6250000000000002,
+  "FOMO": 0.6500000000000002,
+  "Intersectional debiasing": 0.6000000000000002,
+  "Fairness-constrained optimization": 0.6250000000000002,
+  "GroupDRO (intersectional)": 0.5750000000000002,
+  "AvUC": 0.6500000000000002,
+  "CRL": 0.6250000000000002,
+  "Uncertainty-weighted gradient": 0.5750000000000002,
+  "Calibration-regularized": 0.5250000000000001
+ },
+ "thresholds_hospital": {
+  "ERM": 0.3500000000000001,
+  "Fishr": 0.3500000000000001,
+  "V-REx": 0.4500000000000001,
+  "EQRM": 0.5000000000000002,
+  "Fish": 0.3500000000000001
+ },
+ "families": {
+  "demographic": {
+   "title": "Demographic prediction dependence",
+   "methods": [
+    "FairCare",
+    "DANN",
+    "GroupDRO",
+    "Fair-ERM"
+   ],
+   "metrics": {
+    "CMI": "min",
+    "PAD": "min",
+    "WGER": "min",
+    "EOV": "min"
+   },
+   "data": "diabetes latent rows"
+  },
+  "intersectional": {
+   "title": "Intersectional / subgroup unfairness",
+   "methods": [
+    "FOMO",
+    "Intersectional debiasing",
+    "Fairness-constrained optimization",
+    "GroupDRO (intersectional)"
+   ],
+   "metrics": {
+    "HVI": "max",
+    "DF-epsilon": "min",
+    "MSFV": "min",
+    "IWGR": "min"
+   },
+   "data": "diabetes latent rows"
+  },
+  "calibration": {
+   "title": "Predictive miscalibration",
+   "methods": [
+    "AvUC",
+    "CRL",
+    "Uncertainty-weighted gradient",
+    "Calibration-regularized"
+   ],
+   "metrics": {
+    "UCE": "min",
+    "AURC": "min",
+    "E-AURC": "min",
+    "MMCE": "min"
+   },
+   "data": "diabetes latent rows"
+  },
+  "environment": {
+   "title": "Cross-hospital generalization failure",
+   "methods": [
+    "Fishr",
+    "V-REx",
+    "EQRM",
+    "Fish"
+   ],
+   "metrics": {
+    "IEGVD": "min",
+    "ERV": "min",
+    "UQER": "min",
+    "IDGA": "max"
+   },
+   "data": "cross-hospital ICU cohort (eICU hospitals + MIMIC external), label target_diabetes"
+  }
+ },
+ "erm_validation_auroc": 0.7780631856398491,
+ "reference_validation_auroc": {
+  "demographic": 0.7780631856398491,
+  "intersectional": 0.7780631856398491,
+  "calibration": 0.7780631856398491,
+  "environment": 0.58144530071738
+ },
+ "rule": "best mean rank over the bias metrics (validation), AUROC within 0.05 of that bias's ERM",
+ "seconds": {
+  "ERM": 3.0,
+  "FairCare": 0.8,
+  "DANN": 0.7,
+  "GroupDRO": 0.7,
+  "Fair-ERM": 0.8,
+  "FOMO": 1.7,
+  "Intersectional debiasing": 0.7,
+  "Fairness-constrained optimization": 0.9,
+  "GroupDRO (intersectional)": 0.8,
+  "AvUC": 0.7,
+  "CRL": 0.6,
+  "Uncertainty-weighted gradient": 0.6,
+  "Calibration-regularized": 1.3,
+  "cross-hospital ERM": 3.0,
+  "cross-hospital Fishr": 13.8,
+  "cross-hospital V-REx": 9.9,
+  "cross-hospital EQRM": 10.2,
+  "cross-hospital Fish": 8.5
+ },
+ "test_used_for_selection": false,
+ "external_used_for_selection": false
+}
