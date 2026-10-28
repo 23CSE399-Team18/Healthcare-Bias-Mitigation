@@ -1,0 +1,379 @@
+{
+  "stage": "preprocessing",
+  "dataset": "mimic",
+  "title": "Class imbalance bias",
+  "kind": "class_imbalance",
+  "states": {
+    "train": {
+      "default": {
+        "rows": 52229,
+        "numeric_features": 9,
+        "input_features": 11,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Not detected by rule",
+          "value": -0.11896073062857798,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": -0.11896073062857798,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "panels": [
+          {
+            "title": "Minority class share: before and after",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "target_heart",
+                  "target_respiratory",
+                  "target_diabetes",
+                  "target_hypertension"
+                ],
+                "y": [
+                  35.9800111049417,
+                  41.09019893162802,
+                  31.8960730628578,
+                  34.66464990713971
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "target_heart",
+                  "target_respiratory",
+                  "target_diabetes",
+                  "target_hypertension"
+                ],
+                "y": [
+                  35.9800111049417,
+                  41.09019893162802,
+                  31.8960730628578,
+                  34.66464990713971
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Minority share (%)"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Unchanged target counts",
+            "table": [
+              {
+                "target": "target_heart",
+                "positive": 18792,
+                "negative": 33437,
+                "minority_share": 0.359800111049417
+              },
+              {
+                "target": "target_respiratory",
+                "positive": 30768,
+                "negative": 21461,
+                "minority_share": 0.4109019893162802
+              },
+              {
+                "target": "target_diabetes",
+                "positive": 16659,
+                "negative": 35570,
+                "minority_share": 0.318960730628578
+              },
+              {
+                "target": "target_hypertension",
+                "positive": 34124,
+                "negative": 18105,
+                "minority_share": 0.3466464990713971
+              }
+            ]
+          }
+        ],
+        "note": "The verified baseline does not resample. Counts and labels are unchanged; this page does not claim imbalance was removed."
+      }
+    },
+    "validation": {
+      "default": {
+        "rows": 10829,
+        "numeric_features": 9,
+        "input_features": 11,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Not detected by rule",
+          "value": -0.12357558407978575,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": -0.12357558407978575,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "panels": [
+          {
+            "title": "Minority class share: before and after",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "target_heart",
+                  "target_respiratory",
+                  "target_diabetes",
+                  "target_hypertension"
+                ],
+                "y": [
+                  36.753162803582974,
+                  42.26613722412041,
+                  32.35755840797857,
+                  34.41684366054114
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "target_heart",
+                  "target_respiratory",
+                  "target_diabetes",
+                  "target_hypertension"
+                ],
+                "y": [
+                  36.753162803582974,
+                  42.26613722412041,
+                  32.35755840797857,
+                  34.41684366054114
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Minority share (%)"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Unchanged target counts",
+            "table": [
+              {
+                "target": "target_heart",
+                "positive": 3980,
+                "negative": 6849,
+                "minority_share": 0.3675316280358297
+              },
+              {
+                "target": "target_respiratory",
+                "positive": 6252,
+                "negative": 4577,
+                "minority_share": 0.42266137224120415
+              },
+              {
+                "target": "target_diabetes",
+                "positive": 3504,
+                "negative": 7325,
+                "minority_share": 0.32357558407978576
+              },
+              {
+                "target": "target_hypertension",
+                "positive": 7102,
+                "negative": 3727,
+                "minority_share": 0.3441684366054114
+              }
+            ]
+          }
+        ],
+        "note": "The verified baseline does not resample. Counts and labels are unchanged; this page does not claim imbalance was removed."
+      }
+    },
+    "test": {
+      "default": {
+        "rows": 10932,
+        "numeric_features": 9,
+        "input_features": 11,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Not detected by rule",
+          "value": -0.11256860592755213,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": -0.11256860592755213,
+          "limit": 0,
+          "rule": "Minority class share <20%"
+        },
+        "panels": [
+          {
+            "title": "Minority class share: before and after",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Before",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "target_heart",
+                  "target_respiratory",
+                  "target_diabetes",
+                  "target_hypertension"
+                ],
+                "y": [
+                  35.30918404683498,
+                  41.38309549945115,
+                  31.256860592755213,
+                  35.318331503841925
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              },
+              {
+                "type": "bar",
+                "name": "After",
+                "marker": {
+                  "color": "#83b657"
+                },
+                "x": [
+                  "target_heart",
+                  "target_respiratory",
+                  "target_diabetes",
+                  "target_hypertension"
+                ],
+                "y": [
+                  35.30918404683498,
+                  41.38309549945115,
+                  31.256860592755213,
+                  35.318331503841925
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Minority share (%)"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Unchanged target counts",
+            "table": [
+              {
+                "target": "target_heart",
+                "positive": 3860,
+                "negative": 7072,
+                "minority_share": 0.3530918404683498
+              },
+              {
+                "target": "target_respiratory",
+                "positive": 6408,
+                "negative": 4524,
+                "minority_share": 0.4138309549945115
+              },
+              {
+                "target": "target_diabetes",
+                "positive": 3417,
+                "negative": 7515,
+                "minority_share": 0.31256860592755215
+              },
+              {
+                "target": "target_hypertension",
+                "positive": 7071,
+                "negative": 3861,
+                "minority_share": 0.35318331503841927
+              }
+            ]
+          }
+        ],
+        "note": "The verified baseline does not resample. Counts and labels are unchanged; this page does not claim imbalance was removed."
+      }
+    }
+  },
+  "default_split": "train",
+  "methods": {
+    "default": "Saved fixed baseline"
+  },
+  "default_method": "default",
+  "protocol": "No fitting or changes to patient rows. Before = model-ready rows; after = saved preprocessing.",
+  "input_checks": {
+    "train": {
+      "X_sha256": "b1cf9278caef6878c0f9a52d68ff7990a7f83736a57b72ca595e2c6c7ed409ff",
+      "rows_sha256": "f270c02f30b1d8b990d1277dbb0b1f6ddad324e99675e6892f62dace859b24c3",
+      "transform_reproduced": true
+    },
+    "validation": {
+      "X_sha256": "30f9c00aa9f6635dfeeefce887a5a76006ddfdd8621d2a635d4406636960f7fd",
+      "rows_sha256": "ae26d4f2b516485f9ffa084e3240789a08fa7e7ae6c65c5468e5102deff39363",
+      "transform_reproduced": true
+    },
+    "test": {
+      "X_sha256": "2b2f96ec67173c2462cb0b3a0fdb4bff2d3c1a91c5b177b3b1b505e00bd74b7a",
+      "rows_sha256": "b07a596892b5a6c5df561883bce7c1521974ad812c21e98352d32fbe60297f70",
+      "transform_reproduced": true
+    }
+  }
+}
