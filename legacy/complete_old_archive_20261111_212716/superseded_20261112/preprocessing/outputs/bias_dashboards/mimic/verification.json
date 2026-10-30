@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "partitions": {
+    "train": {
+      "rows": 52229,
+      "missing_input_cells": 810,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target_heart",
+          "positive": 18792,
+          "negative": 33437,
+          "minority_share": 0.359800111049417
+        },
+        {
+          "target": "target_respiratory",
+          "positive": 30768,
+          "negative": 21461,
+          "minority_share": 0.4109019893162802
+        },
+        {
+          "target": "target_diabetes",
+          "positive": 16659,
+          "negative": 35570,
+          "minority_share": 0.318960730628578
+        },
+        {
+          "target": "target_hypertension",
+          "positive": 34124,
+          "negative": 18105,
+          "minority_share": 0.3466464990713971
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "validation": {
+      "rows": 10829,
+      "missing_input_cells": 186,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target_heart",
+          "positive": 3980,
+          "negative": 6849,
+          "minority_share": 0.3675316280358297
+        },
+        {
+          "target": "target_respiratory",
+          "positive": 6252,
+          "negative": 4577,
+          "minority_share": 0.42266137224120415
+        },
+        {
+          "target": "target_diabetes",
+          "positive": 3504,
+          "negative": 7325,
+          "minority_share": 0.32357558407978576
+        },
+        {
+          "target": "target_hypertension",
+          "positive": 7102,
+          "negative": 3727,
+          "minority_share": 0.3441684366054114
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "test": {
+      "rows": 10932,
+      "missing_input_cells": 144,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target_heart",
+          "positive": 3860,
+          "negative": 7072,
+          "minority_share": 0.3530918404683498
+        },
+        {
+          "target": "target_respiratory",
+          "positive": 6408,
+          "negative": 4524,
+          "minority_share": 0.4138309549945115
+        },
+        {
+          "target": "target_diabetes",
+          "positive": 3417,
+          "negative": 7515,
+          "minority_share": 0.31256860592755215
+        },
+        {
+          "target": "target_hypertension",
+          "positive": 7071,
+          "negative": 3861,
+          "minority_share": 0.35318331503841927
+        }
+      ],
+      "transform_and_labels_checked": true
+    }
+  },
+  "pages": [
+    "preprocessing/outputs/bias_dashboards/mimic/missing_data.json",
+    "preprocessing/outputs/bias_dashboards/mimic/class_imbalance.json",
+    "preprocessing/outputs/bias_dashboards/mimic/outlier.json",
+    "preprocessing/outputs/bias_dashboards/mimic/feature_scale.json",
+    "preprocessing/outputs/bias_dashboards/mimic/demographic.json",
+    "preprocessing/outputs/bias_dashboards/mimic/duplicate.json",
+    "preprocessing/outputs/bias_dashboards/mimic/noise.json",
+    "preprocessing/outputs/bias_dashboards/mimic/encoding_domain.json"
+  ]
+}
