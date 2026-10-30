@@ -1,0 +1,1791 @@
+{
+  "stage": "preprocessing",
+  "dataset": "respiratory_hospital",
+  "title": "Encoding / domain shift",
+  "kind": "encoding_domain",
+  "states": {
+    "train": {
+      "default": {
+        "rows": 21082,
+        "numeric_features": 107,
+        "input_features": 112,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Not applicable",
+          "value": null,
+          "limit": 1,
+          "rule": "Any unseen category OR |numeric standardized mean shift| >0.5"
+        },
+        "after": {
+          "label": "Not applicable",
+          "value": null,
+          "limit": 1,
+          "rule": "Same shift remains after linear scaling; unknown categories are ignored"
+        },
+        "panels": [
+          {
+            "title": "Mean shift from source training after imputation",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Absolute standardized shift",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "y": [
+                  "pf_ratio_min",
+                  "inr_max",
+                  "inr_min",
+                  "lactate_max",
+                  "lactate_min",
+                  "alt_max",
+                  "alt_min",
+                  "ast_max",
+                  "ast_min",
+                  "bilirubin_max",
+                  "bilirubin_min",
+                  "albumin_max",
+                  "albumin_min",
+                  "base_excess_max",
+                  "base_excess_min",
+                  "fio2_max",
+                  "fio2_min",
+                  "paco2_max",
+                  "paco2_min",
+                  "pao2_max",
+                  "pao2_min",
+                  "ph_max",
+                  "ph_min",
+                  "lymphocytes_pct_max",
+                  "lymphocytes_pct_min",
+                  "rdw_max",
+                  "rdw_min",
+                  "platelets_max",
+                  "platelets_min",
+                  "wbc_max",
+                  "wbc_min",
+                  "hemoglobin_max",
+                  "hemoglobin_min",
+                  "magnesium_max",
+                  "magnesium_min",
+                  "calcium_max",
+                  "calcium_min",
+                  "glucose_max",
+                  "glucose_min",
+                  "creatinine_max",
+                  "creatinine_min",
+                  "bun_max",
+                  "bun_min",
+                  "anion_gap_max",
+                  "anion_gap_min",
+                  "bicarbonate_max",
+                  "bicarbonate_min",
+                  "chloride_max",
+                  "chloride_min",
+                  "potassium_max",
+                  "potassium_min",
+                  "sodium_max",
+                  "sodium_min",
+                  "nibp_map_max",
+                  "nibp_map_min",
+                  "nibp_map_mean",
+                  "nibp_dbp_max",
+                  "nibp_dbp_min",
+                  "nibp_dbp_mean",
+                  "nibp_sbp_max",
+                  "nibp_sbp_min",
+                  "nibp_sbp_mean",
+                  "art_map_max",
+                  "art_map_min",
+                  "art_map_mean",
+                  "art_dbp_max",
+                  "art_dbp_min",
+                  "art_dbp_mean",
+                  "art_sbp_max",
+                  "art_sbp_min",
+                  "art_sbp_mean",
+                  "temperature_c_max",
+                  "temperature_c_min",
+                  "temperature_c_mean",
+                  "spo2_max",
+                  "spo2_min",
+                  "spo2_mean",
+                  "resp_rate_max",
+                  "resp_rate_min",
+                  "resp_rate_mean",
+                  "heart_rate_max",
+                  "heart_rate_min",
+                  "heart_rate_mean",
+                  "comorb_diabetes",
+                  "icu_readmission",
+                  "comorb_cirrhosis",
+                  "comorb_immunosuppression",
+                  "comorb_leukemia",
+                  "comorb_metastatic_cancer",
+                  "comorb_lymphoma",
+                  "comorb_hepatic_failure",
+                  "comorb_aids",
+                  "urine_output_day1_ml",
+                  "gcs_unable_due_to_meds",
+                  "gcs_verbal",
+                  "gcs_motor",
+                  "gcs_eyes",
+                  "apache_day1_dialysis",
+                  "apache_day1_ventilated",
+                  "apache_day1_intubated",
+                  "unit_visit_number",
+                  "pre_icu_hospital_hours",
+                  "admission_bmi",
+                  "admission_weight_kg",
+                  "male",
+                  "age_over89",
+                  "age"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Absolute standardized mean shift"
+                },
+                "automargin": true
+              },
+              "height": 2748
+            }
+          },
+          {
+            "title": "Unseen categorical values",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Unseen rows",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "unit_type",
+                  "unit_admit_source",
+                  "hospital_admit_source",
+                  "unit_stay_type",
+                  "admission_dx_by24h"
+                ],
+                "y": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Partition domains",
+            "table": [
+              {
+                "domain": "420",
+                "rows": 1214
+              },
+              {
+                "domain": "73",
+                "rows": 768
+              },
+              {
+                "domain": "338",
+                "rows": 750
+              },
+              {
+                "domain": "264",
+                "rows": 721
+              },
+              {
+                "domain": "208",
+                "rows": 597
+              },
+              {
+                "domain": "443",
+                "rows": 589
+              },
+              {
+                "domain": "188",
+                "rows": 588
+              },
+              {
+                "domain": "411",
+                "rows": 584
+              },
+              {
+                "domain": "300",
+                "rows": 537
+              },
+              {
+                "domain": "199",
+                "rows": 487
+              },
+              {
+                "domain": "252",
+                "rows": 447
+              },
+              {
+                "domain": "458",
+                "rows": 404
+              },
+              {
+                "domain": "345",
+                "rows": 374
+              },
+              {
+                "domain": "416",
+                "rows": 373
+              },
+              {
+                "domain": "417",
+                "rows": 365
+              },
+              {
+                "domain": "148",
+                "rows": 334
+              },
+              {
+                "domain": "157",
+                "rows": 318
+              },
+              {
+                "domain": "307",
+                "rows": 291
+              },
+              {
+                "domain": "331",
+                "rows": 289
+              },
+              {
+                "domain": "283",
+                "rows": 286
+              },
+              {
+                "domain": "165",
+                "rows": 280
+              },
+              {
+                "domain": "142",
+                "rows": 264
+              },
+              {
+                "domain": "154",
+                "rows": 258
+              },
+              {
+                "domain": "336",
+                "rows": 258
+              },
+              {
+                "domain": "183",
+                "rows": 249
+              },
+              {
+                "domain": "110",
+                "rows": 243
+              },
+              {
+                "domain": "400",
+                "rows": 242
+              },
+              {
+                "domain": "310",
+                "rows": 236
+              },
+              {
+                "domain": "440",
+                "rows": 233
+              },
+              {
+                "domain": "277",
+                "rows": 229
+              },
+              {
+                "domain": "390",
+                "rows": 227
+              },
+              {
+                "domain": "79",
+                "rows": 224
+              },
+              {
+                "domain": "171",
+                "rows": 223
+              },
+              {
+                "domain": "444",
+                "rows": 201
+              },
+              {
+                "domain": "272",
+                "rows": 192
+              },
+              {
+                "domain": "391",
+                "rows": 191
+              },
+              {
+                "domain": "217",
+                "rows": 188
+              },
+              {
+                "domain": "318",
+                "rows": 177
+              },
+              {
+                "domain": "226",
+                "rows": 176
+              },
+              {
+                "domain": "421",
+                "rows": 172
+              },
+              {
+                "domain": "197",
+                "rows": 170
+              },
+              {
+                "domain": "392",
+                "rows": 169
+              },
+              {
+                "domain": "206",
+                "rows": 148
+              },
+              {
+                "domain": "452",
+                "rows": 144
+              },
+              {
+                "domain": "388",
+                "rows": 136
+              },
+              {
+                "domain": "259",
+                "rows": 135
+              },
+              {
+                "domain": "301",
+                "rows": 133
+              },
+              {
+                "domain": "66",
+                "rows": 128
+              },
+              {
+                "domain": "459",
+                "rows": 128
+              },
+              {
+                "domain": "195",
+                "rows": 122
+              },
+              {
+                "domain": "256",
+                "rows": 122
+              },
+              {
+                "domain": "353",
+                "rows": 122
+              },
+              {
+                "domain": "202",
+                "rows": 121
+              },
+              {
+                "domain": "384",
+                "rows": 121
+              },
+              {
+                "domain": "382",
+                "rows": 119
+              },
+              {
+                "domain": "396",
+                "rows": 118
+              },
+              {
+                "domain": "144",
+                "rows": 116
+              },
+              {
+                "domain": "215",
+                "rows": 113
+              },
+              {
+                "domain": "143",
+                "rows": 112
+              },
+              {
+                "domain": "245",
+                "rows": 105
+              },
+              {
+                "domain": "413",
+                "rows": 103
+              },
+              {
+                "domain": "357",
+                "rows": 100
+              },
+              {
+                "domain": "200",
+                "rows": 97
+              },
+              {
+                "domain": "424",
+                "rows": 96
+              },
+              {
+                "domain": "210",
+                "rows": 94
+              },
+              {
+                "domain": "328",
+                "rows": 91
+              },
+              {
+                "domain": "404",
+                "rows": 91
+              },
+              {
+                "domain": "220",
+                "rows": 90
+              },
+              {
+                "domain": "269",
+                "rows": 90
+              },
+              {
+                "domain": "71",
+                "rows": 89
+              },
+              {
+                "domain": "152",
+                "rows": 89
+              },
+              {
+                "domain": "407",
+                "rows": 87
+              },
+              {
+                "domain": "275",
+                "rows": 85
+              },
+              {
+                "domain": "405",
+                "rows": 82
+              },
+              {
+                "domain": "402",
+                "rows": 82
+              },
+              {
+                "domain": "398",
+                "rows": 82
+              },
+              {
+                "domain": "422",
+                "rows": 81
+              },
+              {
+                "domain": "434",
+                "rows": 79
+              },
+              {
+                "domain": "258",
+                "rows": 77
+              },
+              {
+                "domain": "429",
+                "rows": 77
+              },
+              {
+                "domain": "92",
+                "rows": 76
+              },
+              {
+                "domain": "131",
+                "rows": 75
+              },
+              {
+                "domain": "312",
+                "rows": 71
+              },
+              {
+                "domain": "198",
+                "rows": 70
+              },
+              {
+                "domain": "387",
+                "rows": 68
+              },
+              {
+                "domain": "436",
+                "rows": 68
+              },
+              {
+                "domain": "67",
+                "rows": 67
+              },
+              {
+                "domain": "180",
+                "rows": 67
+              },
+              {
+                "domain": "224",
+                "rows": 67
+              },
+              {
+                "domain": "389",
+                "rows": 64
+              },
+              {
+                "domain": "182",
+                "rows": 59
+              },
+              {
+                "domain": "204",
+                "rows": 59
+              },
+              {
+                "domain": "381",
+                "rows": 58
+              },
+              {
+                "domain": "397",
+                "rows": 57
+              },
+              {
+                "domain": "59",
+                "rows": 54
+              },
+              {
+                "domain": "69",
+                "rows": 53
+              },
+              {
+                "domain": "428",
+                "rows": 52
+              },
+              {
+                "domain": "408",
+                "rows": 51
+              },
+              {
+                "domain": "108",
+                "rows": 45
+              },
+              {
+                "domain": "196",
+                "rows": 45
+              },
+              {
+                "domain": "412",
+                "rows": 45
+              },
+              {
+                "domain": "266",
+                "rows": 44
+              },
+              {
+                "domain": "360",
+                "rows": 44
+              },
+              {
+                "domain": "95",
+                "rows": 42
+              },
+              {
+                "domain": "68",
+                "rows": 41
+              },
+              {
+                "domain": "250",
+                "rows": 39
+              },
+              {
+                "domain": "207",
+                "rows": 38
+              },
+              {
+                "domain": "123",
+                "rows": 33
+              },
+              {
+                "domain": "383",
+                "rows": 31
+              },
+              {
+                "domain": "164",
+                "rows": 29
+              },
+              {
+                "domain": "267",
+                "rows": 28
+              },
+              {
+                "domain": "342",
+                "rows": 27
+              },
+              {
+                "domain": "262",
+                "rows": 26
+              },
+              {
+                "domain": "138",
+                "rows": 24
+              },
+              {
+                "domain": "303",
+                "rows": 24
+              },
+              {
+                "domain": "58",
+                "rows": 22
+              },
+              {
+                "domain": "201",
+                "rows": 21
+              },
+              {
+                "domain": "120",
+                "rows": 20
+              },
+              {
+                "domain": "203",
+                "rows": 20
+              },
+              {
+                "domain": "356",
+                "rows": 19
+              },
+              {
+                "domain": "355",
+                "rows": 18
+              },
+              {
+                "domain": "85",
+                "rows": 15
+              },
+              {
+                "domain": "393",
+                "rows": 14
+              },
+              {
+                "domain": "84",
+                "rows": 13
+              },
+              {
+                "domain": "263",
+                "rows": 10
+              },
+              {
+                "domain": "83",
+                "rows": 9
+              },
+              {
+                "domain": "61",
+                "rows": 7
+              },
+              {
+                "domain": "93",
+                "rows": 7
+              },
+              {
+                "domain": "363",
+                "rows": 7
+              },
+              {
+                "domain": "86",
+                "rows": 4
+              },
+              {
+                "domain": "246",
+                "rows": 3
+              },
+              {
+                "domain": "94",
+                "rows": 2
+              },
+              {
+                "domain": "212",
+                "rows": 2
+              },
+              {
+                "domain": "447",
+                "rows": 2
+              },
+              {
+                "domain": "179",
+                "rows": 1
+              },
+              {
+                "domain": "265",
+                "rows": 1
+              },
+              {
+                "domain": "351",
+                "rows": 1
+              }
+            ]
+          }
+        ],
+        "note": "Unknown categories use the saved encoder handle_unknown=ignore. Linear scaling is not domain adaptation. States/regions are not hospitals. Training self-comparison is not an evaluation of domain shift."
+      }
+    },
+    "validation": {
+      "default": {
+        "rows": 4909,
+        "numeric_features": 107,
+        "input_features": 112,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.3882366185431198,
+          "limit": 1,
+          "rule": "Any unseen category OR |numeric standardized mean shift| >0.5"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.3882366185431198,
+          "limit": 1,
+          "rule": "Same shift remains after linear scaling; unknown categories are ignored"
+        },
+        "panels": [
+          {
+            "title": "Mean shift from source training after imputation",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Absolute standardized shift",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.1941183092715599,
+                  0.18405117833909593,
+                  0.11465781005069502,
+                  0.11341475146838319,
+                  0.10250333596462345,
+                  0.09988100162172434,
+                  0.08453691228437248,
+                  0.0831130887345188,
+                  0.08098023472804089,
+                  0.07950612384309923,
+                  0.0793332976965243,
+                  0.07888429726926185,
+                  0.07541702558041682,
+                  0.06924533412162631,
+                  0.06752635431713867,
+                  0.06339985475858373,
+                  0.06244922469369529,
+                  0.062179867407707035,
+                  0.061338366073946264,
+                  0.060664509277223166,
+                  0.059904725065278344,
+                  0.05950417221341778,
+                  0.05499581057276448,
+                  0.054100686036563934,
+                  0.05041540905478106,
+                  0.049679407245237214,
+                  0.04907085314804069,
+                  0.04892404555921146,
+                  0.0481774352936505,
+                  0.045686588733068745,
+                  0.04485487153870981,
+                  0.04447816591197433,
+                  0.043466864093157816,
+                  0.04322597382768634,
+                  0.04310892939120817,
+                  0.04245180080329635,
+                  0.04206621755366819,
+                  0.04193576217262554,
+                  0.04042312072879136,
+                  0.03990363028560783,
+                  0.038574016462936886,
+                  0.03842808306643461,
+                  0.03815118282943837,
+                  0.036174791876188314,
+                  0.03483844095668446,
+                  0.03482716275209223,
+                  0.03386555851194179,
+                  0.03294901238661146,
+                  0.03266165945574922,
+                  0.0314892393850969,
+                  0.03134179845732833,
+                  0.03052465390361589,
+                  0.029707704657609527,
+                  0.028057714454068756,
+                  0.02802070509662908,
+                  0.027081312563239167,
+                  0.026760230672281036,
+                  0.026556380656988014,
+                  0.02622963425200892,
+                  0.025350663778425948,
+                  0.024869641066114372,
+                  0.02459843672303011,
+                  0.02380007444801327,
+                  0.023762651908458353,
+                  0.022422158344106644,
+                  0.02196550053124328,
+                  0.02106739280400194,
+                  0.021008411301516577,
+                  0.02081950475165122,
+                  0.019080861389747135,
+                  0.01864446837605012,
+                  0.018549038436593553,
+                  0.016760909336070464,
+                  0.01655103806915366,
+                  0.015836550706492515,
+                  0.015715506589295124,
+                  0.015675263288604243,
+                  0.015122576883600873,
+                  0.013769456676402905,
+                  0.013504193701781745,
+                  0.013478378092948039,
+                  0.012512185275743085,
+                  0.01241002056174212,
+                  0.012162976222070512,
+                  0.011687663066612166,
+                  0.011061202330504678,
+                  0.01066562744270164,
+                  0.009890264464702432,
+                  0.009741766189554671,
+                  0.009250341563822616,
+                  0.008629826908846236,
+                  0.008148465697192558,
+                  0.007356845510388833,
+                  0.00680038605899267,
+                  0.006669398470895816,
+                  0.006047815983221691,
+                  0.005897642901422051,
+                  0.004768837994977163,
+                  0.0046981021684882945,
+                  0.004484641355883672,
+                  0.0031435818954581567,
+                  0.003013161004861895,
+                  0.0015071838306870797,
+                  0.0014918483926208614,
+                  0.0012461932410309786,
+                  0.000880308485715288,
+                  0.0007280125065971741
+                ],
+                "y": [
+                  "anion_gap_max",
+                  "anion_gap_min",
+                  "pf_ratio_min",
+                  "pao2_min",
+                  "unit_visit_number",
+                  "urine_output_day1_ml",
+                  "gcs_eyes",
+                  "lactate_min",
+                  "temperature_c_mean",
+                  "spo2_mean",
+                  "nibp_map_min",
+                  "nibp_dbp_min",
+                  "temperature_c_min",
+                  "spo2_max",
+                  "apache_day1_dialysis",
+                  "pao2_max",
+                  "comorb_immunosuppression",
+                  "nibp_map_mean",
+                  "nibp_dbp_max",
+                  "potassium_max",
+                  "heart_rate_max",
+                  "calcium_min",
+                  "gcs_verbal",
+                  "apache_day1_ventilated",
+                  "creatinine_max",
+                  "comorb_diabetes",
+                  "hemoglobin_min",
+                  "creatinine_min",
+                  "art_dbp_min",
+                  "resp_rate_min",
+                  "resp_rate_max",
+                  "art_sbp_mean",
+                  "gcs_motor",
+                  "glucose_min",
+                  "comorb_cirrhosis",
+                  "bicarbonate_max",
+                  "art_map_max",
+                  "wbc_min",
+                  "comorb_metastatic_cancer",
+                  "sodium_max",
+                  "bilirubin_max",
+                  "bilirubin_min",
+                  "art_sbp_min",
+                  "inr_min",
+                  "paco2_min",
+                  "ph_min",
+                  "heart_rate_mean",
+                  "paco2_max",
+                  "lactate_max",
+                  "art_map_mean",
+                  "art_map_min",
+                  "comorb_aids",
+                  "ph_max",
+                  "sodium_min",
+                  "age_over89",
+                  "art_dbp_max",
+                  "comorb_leukemia",
+                  "wbc_max",
+                  "comorb_hepatic_failure",
+                  "lymphocytes_pct_min",
+                  "albumin_min",
+                  "chloride_min",
+                  "spo2_min",
+                  "nibp_sbp_min",
+                  "fio2_max",
+                  "pre_icu_hospital_hours",
+                  "albumin_max",
+                  "magnesium_max",
+                  "calcium_max",
+                  "resp_rate_mean",
+                  "nibp_sbp_max",
+                  "inr_max",
+                  "admission_weight_kg",
+                  "nibp_sbp_mean",
+                  "apache_day1_intubated",
+                  "rdw_min",
+                  "lymphocytes_pct_max",
+                  "admission_bmi",
+                  "temperature_c_max",
+                  "bicarbonate_min",
+                  "gcs_unable_due_to_meds",
+                  "art_dbp_mean",
+                  "potassium_min",
+                  "fio2_min",
+                  "base_excess_max",
+                  "alt_min",
+                  "platelets_max",
+                  "magnesium_min",
+                  "alt_max",
+                  "rdw_max",
+                  "age",
+                  "chloride_max",
+                  "base_excess_min",
+                  "male",
+                  "ast_max",
+                  "bun_max",
+                  "art_sbp_max",
+                  "bun_min",
+                  "icu_readmission",
+                  "comorb_lymphoma",
+                  "glucose_max",
+                  "hemoglobin_max",
+                  "nibp_dbp_mean",
+                  "nibp_map_max",
+                  "ast_min",
+                  "platelets_min",
+                  "heart_rate_min"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Absolute standardized mean shift"
+                },
+                "automargin": true
+              },
+              "height": 2748
+            }
+          },
+          {
+            "title": "Unseen categorical values",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Unseen rows",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "unit_type",
+                  "unit_admit_source",
+                  "hospital_admit_source",
+                  "unit_stay_type",
+                  "admission_dx_by24h"
+                ],
+                "y": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Partition domains",
+            "table": [
+              {
+                "domain": "243",
+                "rows": 600
+              },
+              {
+                "domain": "122",
+                "rows": 512
+              },
+              {
+                "domain": "176",
+                "rows": 498
+              },
+              {
+                "domain": "167",
+                "rows": 452
+              },
+              {
+                "domain": "281",
+                "rows": 341
+              },
+              {
+                "domain": "365",
+                "rows": 267
+              },
+              {
+                "domain": "141",
+                "rows": 241
+              },
+              {
+                "domain": "394",
+                "rows": 200
+              },
+              {
+                "domain": "227",
+                "rows": 183
+              },
+              {
+                "domain": "435",
+                "rows": 172
+              },
+              {
+                "domain": "184",
+                "rows": 144
+              },
+              {
+                "domain": "271",
+                "rows": 124
+              },
+              {
+                "domain": "268",
+                "rows": 107
+              },
+              {
+                "domain": "279",
+                "rows": 104
+              },
+              {
+                "domain": "386",
+                "rows": 103
+              },
+              {
+                "domain": "403",
+                "rows": 99
+              },
+              {
+                "domain": "155",
+                "rows": 93
+              },
+              {
+                "domain": "253",
+                "rows": 79
+              },
+              {
+                "domain": "112",
+                "rows": 74
+              },
+              {
+                "domain": "358",
+                "rows": 62
+              },
+              {
+                "domain": "125",
+                "rows": 57
+              },
+              {
+                "domain": "249",
+                "rows": 57
+              },
+              {
+                "domain": "364",
+                "rows": 51
+              },
+              {
+                "domain": "439",
+                "rows": 49
+              },
+              {
+                "domain": "251",
+                "rows": 43
+              },
+              {
+                "domain": "438",
+                "rows": 42
+              },
+              {
+                "domain": "425",
+                "rows": 41
+              },
+              {
+                "domain": "433",
+                "rows": 36
+              },
+              {
+                "domain": "158",
+                "rows": 33
+              },
+              {
+                "domain": "437",
+                "rows": 17
+              },
+              {
+                "domain": "115",
+                "rows": 13
+              },
+              {
+                "domain": "350",
+                "rows": 10
+              },
+              {
+                "domain": "135",
+                "rows": 4
+              },
+              {
+                "domain": "151",
+                "rows": 1
+              }
+            ]
+          }
+        ],
+        "note": "Unknown categories use the saved encoder handle_unknown=ignore. Linear scaling is not domain adaptation. States/regions are not hospitals. Training self-comparison is not an evaluation of domain shift."
+      }
+    },
+    "test": {
+      "default": {
+        "rows": 2301,
+        "numeric_features": 107,
+        "input_features": 112,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.4647546161043593,
+          "limit": 1,
+          "rule": "Any unseen category OR |numeric standardized mean shift| >0.5"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.4647546161043593,
+          "limit": 1,
+          "rule": "Same shift remains after linear scaling; unknown categories are ignored"
+        },
+        "panels": [
+          {
+            "title": "Mean shift from source training after imputation",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Absolute standardized shift",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.23237730805217965,
+                  0.16753978116789345,
+                  0.14302277081806788,
+                  0.13261336391595713,
+                  0.1325745667520921,
+                  0.13188579606702672,
+                  0.1269093045517133,
+                  0.10117671074637644,
+                  0.09501655145796442,
+                  0.08626501151719988,
+                  0.08571953483643384,
+                  0.08106472652024473,
+                  0.0793928477299643,
+                  0.07737718941689224,
+                  0.07662836021392284,
+                  0.07422923412084892,
+                  0.07152774685201638,
+                  0.07151842143313351,
+                  0.07133500969844941,
+                  0.06924022459869872,
+                  0.06827859224928881,
+                  0.06782788536829175,
+                  0.06494559681291096,
+                  0.06234775433518022,
+                  0.06209238229590408,
+                  0.0600592423449261,
+                  0.058369249763503925,
+                  0.05779872213072477,
+                  0.05576058872689415,
+                  0.05395159060906641,
+                  0.053630075955038756,
+                  0.053310821428968015,
+                  0.05295337963673562,
+                  0.05269312983168354,
+                  0.05196118857050014,
+                  0.05096772424662561,
+                  0.04916602364982038,
+                  0.04879116251846702,
+                  0.04730905688858154,
+                  0.04725883907217113,
+                  0.046554412516771775,
+                  0.04622375832963623,
+                  0.045344226966530086,
+                  0.04507700323065813,
+                  0.0441724839143905,
+                  0.04312443971106959,
+                  0.04277390954578487,
+                  0.04118141026344407,
+                  0.03878669140808232,
+                  0.03856426110115302,
+                  0.037111940709895604,
+                  0.036728700970879324,
+                  0.036439396451816236,
+                  0.03556452578754101,
+                  0.0347570760786528,
+                  0.03437915898616561,
+                  0.031749551041621554,
+                  0.031537750627150654,
+                  0.030125740138460567,
+                  0.029024744748793786,
+                  0.028949222209306142,
+                  0.027912963658686403,
+                  0.02753470410584463,
+                  0.02670685306755713,
+                  0.02587665538281839,
+                  0.025304420333698164,
+                  0.025286239768453456,
+                  0.02363190761116827,
+                  0.023241896202139203,
+                  0.022967537488062142,
+                  0.022467965599501143,
+                  0.022220191534756475,
+                  0.02207064428819369,
+                  0.021925546253280224,
+                  0.02154379421707839,
+                  0.02106785600858047,
+                  0.0203185379396038,
+                  0.01964545945373935,
+                  0.019544889324688893,
+                  0.01911221214192603,
+                  0.01904474052343147,
+                  0.018945867789350652,
+                  0.018136179717450497,
+                  0.01758366576080288,
+                  0.017102837893068296,
+                  0.016668564260437037,
+                  0.016648229730005328,
+                  0.015301164180529703,
+                  0.015184834560364225,
+                  0.01495933099497963,
+                  0.01427220799079777,
+                  0.01386736787585098,
+                  0.013359277918598365,
+                  0.011599786506718052,
+                  0.010812335862506418,
+                  0.009531240602383945,
+                  0.008468939308452838,
+                  0.006863453207306326,
+                  0.00675603119469059,
+                  0.006464889640535919,
+                  0.004694107353308756,
+                  0.004609724945776017,
+                  0.0017524180911327356,
+                  0.001635601128407025,
+                  0.0015712904932169945,
+                  0.0015302143791932992,
+                  0.0009277159835894056
+                ],
+                "y": [
+                  "unit_visit_number",
+                  "nibp_dbp_max",
+                  "resp_rate_max",
+                  "resp_rate_mean",
+                  "anion_gap_max",
+                  "anion_gap_min",
+                  "comorb_diabetes",
+                  "base_excess_min",
+                  "nibp_map_min",
+                  "base_excess_max",
+                  "comorb_metastatic_cancer",
+                  "comorb_immunosuppression",
+                  "gcs_verbal",
+                  "spo2_mean",
+                  "heart_rate_min",
+                  "rdw_max",
+                  "rdw_min",
+                  "comorb_hepatic_failure",
+                  "gcs_unable_due_to_meds",
+                  "magnesium_max",
+                  "pao2_min",
+                  "nibp_map_max",
+                  "art_sbp_mean",
+                  "lactate_min",
+                  "lymphocytes_pct_min",
+                  "nibp_dbp_min",
+                  "bilirubin_min",
+                  "lymphocytes_pct_max",
+                  "comorb_cirrhosis",
+                  "bilirubin_max",
+                  "comorb_leukemia",
+                  "icu_readmission",
+                  "bicarbonate_max",
+                  "paco2_min",
+                  "albumin_min",
+                  "art_sbp_min",
+                  "spo2_min",
+                  "sodium_min",
+                  "urine_output_day1_ml",
+                  "nibp_map_mean",
+                  "admission_bmi",
+                  "albumin_max",
+                  "pao2_max",
+                  "bicarbonate_min",
+                  "magnesium_min",
+                  "nibp_dbp_mean",
+                  "heart_rate_mean",
+                  "alt_min",
+                  "pf_ratio_min",
+                  "heart_rate_max",
+                  "age_over89",
+                  "ast_max",
+                  "nibp_sbp_min",
+                  "ast_min",
+                  "ph_max",
+                  "calcium_min",
+                  "gcs_motor",
+                  "potassium_max",
+                  "apache_day1_ventilated",
+                  "apache_day1_intubated",
+                  "potassium_min",
+                  "paco2_max",
+                  "male",
+                  "comorb_aids",
+                  "age",
+                  "comorb_lymphoma",
+                  "glucose_min",
+                  "art_map_max",
+                  "wbc_min",
+                  "bun_min",
+                  "pre_icu_hospital_hours",
+                  "alt_max",
+                  "inr_min",
+                  "hemoglobin_min",
+                  "admission_weight_kg",
+                  "calcium_max",
+                  "temperature_c_mean",
+                  "temperature_c_min",
+                  "art_dbp_mean",
+                  "art_map_min",
+                  "sodium_max",
+                  "art_dbp_min",
+                  "glucose_max",
+                  "chloride_min",
+                  "bun_max",
+                  "hemoglobin_max",
+                  "gcs_eyes",
+                  "apache_day1_dialysis",
+                  "platelets_max",
+                  "art_dbp_max",
+                  "temperature_c_max",
+                  "spo2_max",
+                  "art_sbp_max",
+                  "wbc_max",
+                  "nibp_sbp_max",
+                  "fio2_min",
+                  "resp_rate_min",
+                  "fio2_max",
+                  "platelets_min",
+                  "creatinine_min",
+                  "inr_max",
+                  "chloride_max",
+                  "art_map_mean",
+                  "lactate_max",
+                  "creatinine_max",
+                  "nibp_sbp_mean",
+                  "ph_min"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Absolute standardized mean shift"
+                },
+                "automargin": true
+              },
+              "height": 2748
+            }
+          },
+          {
+            "title": "Unseen categorical values",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Unseen rows",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "unit_type",
+                  "unit_admit_source",
+                  "hospital_admit_source",
+                  "unit_stay_type",
+                  "admission_dx_by24h"
+                ],
+                "y": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Partition domains",
+            "table": [
+              {
+                "domain": "449",
+                "rows": 322
+              },
+              {
+                "domain": "244",
+                "rows": 234
+              },
+              {
+                "domain": "248",
+                "rows": 210
+              },
+              {
+                "domain": "280",
+                "rows": 186
+              },
+              {
+                "domain": "181",
+                "rows": 136
+              },
+              {
+                "domain": "419",
+                "rows": 109
+              },
+              {
+                "domain": "146",
+                "rows": 107
+              },
+              {
+                "domain": "140",
+                "rows": 101
+              },
+              {
+                "domain": "337",
+                "rows": 101
+              },
+              {
+                "domain": "282",
+                "rows": 97
+              },
+              {
+                "domain": "63",
+                "rows": 95
+              },
+              {
+                "domain": "175",
+                "rows": 90
+              },
+              {
+                "domain": "273",
+                "rows": 66
+              },
+              {
+                "domain": "445",
+                "rows": 61
+              },
+              {
+                "domain": "194",
+                "rows": 57
+              },
+              {
+                "domain": "399",
+                "rows": 53
+              },
+              {
+                "domain": "254",
+                "rows": 48
+              },
+              {
+                "domain": "60",
+                "rows": 39
+              },
+              {
+                "domain": "56",
+                "rows": 35
+              },
+              {
+                "domain": "205",
+                "rows": 35
+              },
+              {
+                "domain": "414",
+                "rows": 21
+              },
+              {
+                "domain": "423",
+                "rows": 19
+              },
+              {
+                "domain": "174",
+                "rows": 18
+              },
+              {
+                "domain": "209",
+                "rows": 17
+              },
+              {
+                "domain": "133",
+                "rows": 15
+              },
+              {
+                "domain": "102",
+                "rows": 11
+              },
+              {
+                "domain": "352",
+                "rows": 11
+              },
+              {
+                "domain": "91",
+                "rows": 4
+              },
+              {
+                "domain": "323",
+                "rows": 3
+              }
+            ]
+          }
+        ],
+        "note": "Unknown categories use the saved encoder handle_unknown=ignore. Linear scaling is not domain adaptation. States/regions are not hospitals. Training self-comparison is not an evaluation of domain shift."
+      }
+    }
+  },
+  "default_split": "train",
+  "methods": {
+    "default": "Saved fixed baseline"
+  },
+  "default_method": "default",
+  "protocol": "No fitting or changes to patient rows. Before = model-ready rows; after = saved preprocessing.",
+  "input_checks": {
+    "train": {
+      "X_sha256": "37cfb5e1ae40133da27cca6725f4e8758817388bea8db9d2469d5a6dc1343fec",
+      "rows_sha256": "c07c66a5d968e66a77e3eb5c8f2587e035db79a2ad8d4c38a2240bc89ac8d7c0",
+      "transform_reproduced": true
+    },
+    "validation": {
+      "X_sha256": "5a2f36494bc1f9d90c6f7b883e77feaf6106292484363d757b5ab4721cdd4df8",
+      "rows_sha256": "01ea09f6456732d0f41a05eac5015e935faf2c2910dca72e66b15720cb3f34d5",
+      "transform_reproduced": true
+    },
+    "test": {
+      "X_sha256": "c3895d5aef39a46f1b5379c7927140e19bea41ea389a95e75834ef1edb299a28",
+      "rows_sha256": "03aabd296005ef3c7cfe46d93a3eddc088b188878a6de40249c2caa591a82b54",
+      "transform_reproduced": true
+    }
+  }
+}
