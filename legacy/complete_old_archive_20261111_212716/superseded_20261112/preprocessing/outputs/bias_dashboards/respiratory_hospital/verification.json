@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "partitions": {
+    "train": {
+      "rows": 21082,
+      "missing_input_cells": 492246,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 2911,
+          "negative": 18171,
+          "minority_share": 0.1380798785693957
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "validation": {
+      "rows": 4909,
+      "missing_input_cells": 109852,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 685,
+          "negative": 4224,
+          "minority_share": 0.1395396211040945
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "test": {
+      "rows": 2301,
+      "missing_input_cells": 50190,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 294,
+          "negative": 2007,
+          "minority_share": 0.12777053455019557
+        }
+      ],
+      "transform_and_labels_checked": true
+    }
+  },
+  "pages": [
+    "preprocessing/outputs/bias_dashboards/respiratory_hospital/missing_data.json",
+    "preprocessing/outputs/bias_dashboards/respiratory_hospital/class_imbalance.json",
+    "preprocessing/outputs/bias_dashboards/respiratory_hospital/outlier.json",
+    "preprocessing/outputs/bias_dashboards/respiratory_hospital/feature_scale.json",
+    "preprocessing/outputs/bias_dashboards/respiratory_hospital/demographic.json",
+    "preprocessing/outputs/bias_dashboards/respiratory_hospital/duplicate.json",
+    "preprocessing/outputs/bias_dashboards/respiratory_hospital/noise.json",
+    "preprocessing/outputs/bias_dashboards/respiratory_hospital/encoding_domain.json"
+  ]
+}
