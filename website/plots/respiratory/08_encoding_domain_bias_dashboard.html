@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive EDA Dashboard — Encoding / Domain Bias (Before vs After Preprocessing)</title>
+<style>
+  :root{
+    --navy:#0B1E3F;
+    --navy2:#132a52;
+    --bg:#EEF1F7;
+    --card:#FFFFFF;
+    --before:#6FA0DA;
+    --before-line:#3E6FA8;
+    --after:#7BC17E;
+    --after-line:#4C9B50;
+    --text:#1B2333;
+    --muted:#6B7686;
+    --border:#E1E5EE;
+    --blue-hi:#2563C8;
+    --red-hi:#D0433F;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header.topbar{
+    background:linear-gradient(180deg,var(--navy),var(--navy2));
+    color:#fff; padding:18px 28px; text-align:center;
+    box-shadow: var(--shadow);
+  }
+  header.topbar h1{margin:0; font-size:22px; letter-spacing:.2px; font-weight:700;}
+  header.topbar .sub{margin-top:4px; font-size:12.5px; color:#B9C6E6; font-weight:400;}
+  .layout{display:grid; grid-template-columns:270px minmax(0,1fr); gap:16px; padding:16px; align-items:start;}
+  .main{min-width:0;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    box-shadow:var(--shadow); padding:16px;
+  }
+  .side .card{margin-bottom:14px;}
+  .side-label{font-size:12.5px; font-weight:700; color:var(--blue-hi); margin:0 0 8px 0;}
+  select.control{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:6px;
+    background:#fff; font-size:13px; color:var(--text); appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B7686'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .varlist{
+    max-height:230px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:8px;
+  }
+  .varlist .opt{
+    padding:8px 10px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F2F7;
+  }
+  .varlist .opt:last-child{border-bottom:none;}
+  .varlist .opt:hover{background:#F3F6FC;}
+  .varlist .opt.active{background:var(--blue-hi); color:#fff; font-weight:600;}
+  .info-title, .legend-title{
+    font-size:13px; font-weight:700; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;
+  }
+  .info-row{display:flex; justify-content:space-between; gap:10px; font-size:12.5px; padding:4px 0; color:var(--text);}
+  .info-row span.k{color:var(--muted);}
+  .info-row span.v{text-align:right;}
+  .legend-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:3px 0;}
+  .swatch{width:13px; height:13px; border-radius:3px; display:inline-block;}
+  .panel-title{
+    font-size:14px; font-weight:700; color:var(--blue-hi); margin:0 0 12px 0;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .panel-title .ctrls{display:flex; align-items:center; gap:6px; font-weight:400;}
+  .panel-title select{padding:5px 8px; font-size:12px; border:1px solid var(--border); border-radius:5px;}
+  .legend-inline{display:flex; gap:14px; font-size:11.5px; color:var(--muted); align-items:center; font-weight:400; flex-wrap:wrap;}
+  .legend-inline .lg{display:flex; align-items:center; gap:5px;}
+  .grid6{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px;}
+  @media (max-width:1500px){ .grid6{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  @media (max-width:1100px){ .grid6{grid-template-columns:repeat(2,minmax(0,1fr));} .layout{grid-template-columns:1fr;} }
+  .chart-box{border:1px solid var(--border); border-radius:8px; padding:10px 8px 6px; background:#fbfcfe; cursor:pointer;}
+  .chart-box .ct{font-size:12px; font-weight:700; text-align:center; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .row2{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; margin-top:16px;}
+  @media (max-width:1100px){ .row2{grid-template-columns:1fr;} }
+  svg text{font-family:inherit;}
+  .axis{stroke:#B7C0D1; stroke-width:1;}
+  .gridline{stroke:#EDEFF4; stroke-width:1;}
+  .corr-table{border-collapse:collapse; width:100%; font-size:10.5px;}
+  .corr-table th, .corr-table td{border:1px solid #fff; padding:0; text-align:center; width:34px; height:26px;}
+  .corr-table th{background:transparent; color:var(--text); font-weight:600; font-size:10px;}
+  .corr-heading{text-align:center; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .mv-wrap{display:flex; flex-direction:column; overflow-x:auto;}
+  .mv-inner{min-width:640px;}
+  .mv-headrow{display:grid; grid-template-columns:170px minmax(0,1fr) minmax(0,1fr); gap:26px; margin-bottom:10px;}
+  .mv-headrow .h{text-align:center; font-weight:700; font-size:14px; color:var(--text);}
+  .mv-row{display:grid; grid-template-columns:170px minmax(0,1fr) minmax(0,1fr); gap:26px; align-items:center; margin-bottom:4px;}
+  .mv-label{font-size:12.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mv-grid{display:grid; grid-template-columns:repeat(var(--n), minmax(0,1fr)); gap:2px;}   /* 15px cells, shrinking to fit narrower screens */
+  .mv-cell{width:100%; aspect-ratio:1/1; background:#FFFFFF; border:1px solid #D7DEEC; border-radius:2px; box-sizing:border-box;}
+  .mv-cell.on{background:#C0533E; border-color:#9B4230;}
+  .mv-pct{font-size:9.5px; color:var(--muted); text-align:right; margin-top:2px;}
+  footer.note{padding:6px 28px 22px; font-size:11px; color:var(--muted); text-align:center;}
+  .foot-legend{display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+  .kpi-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:2px;}
+  .kpi{flex:1 1 100px; background:#F6F8FC; border:1px solid var(--border); border-radius:8px; padding:8px 10px; text-align:center;}
+  .kpi .val{font-size:16px; font-weight:800; color:var(--navy);}
+  .kpi .lbl{font-size:10px; color:var(--muted); margin-top:2px;}
+  .method-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:8px;}
+  .method-table th, .method-table td{padding:5px 6px; text-align:center; border-bottom:1px solid var(--border);}
+  .method-table th{color:var(--muted); font-weight:600; font-size:10.5px;}
+  .method-table td.m{text-align:left; font-weight:600;}
+  .method-table tr.winner td{background:#EAF3FF; font-weight:700; color:var(--blue-hi);}
+  .method-table tr.ref td{color:var(--muted); font-style:italic;}
+  .method-table td.top{color:var(--after-line); font-weight:700;}
+  .muted-note{font-size:11.5px; color:var(--muted); margin:-4px 0 10px;}
+</style>
+</head>
+<body><div style="padding:8px 16px;background:#eef1f7;color:#26334a;font:12px sans-serif">Public copy: individual clinical records and point-level projections are omitted; aggregate results are retained.</div>
+
+<header class="topbar">
+  <h1 id="ttl"></h1>
+  <div class="sub" id="sub"></div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="card">
+      <p class="side-label">1. Select Plot Type</p>
+      <select id="plotType" class="control">
+        <option value="hist">Histogram</option>
+        <option value="density">Density Curve</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <p class="side-label">2. Select Variable (Y Axis)</p>
+      <select id="varDropdown" class="control"></select>
+      <div class="varlist" id="varList"></div>
+    </div>
+
+    <div class="card">
+      <p class="info-title">&#9432; Dataset Info</p>
+      <div id="info"></div>
+    </div>
+
+    <div class="card">
+      <p class="legend-title">&#128273; Legend</p>
+      <div class="legend-row"><span class="swatch" style="background:var(--before)"></span>Before Preprocessing</div>
+      <div class="legend-row"><span class="swatch" style="background:var(--after)"></span>After Preprocessing</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="card">
+      <p class="panel-title">Distribution Comparison (Before vs After Preprocessing)
+        <span class="legend-inline">
+          <span class="lg"><span class="swatch" style="background:var(--before)"></span>Before</span>
+          <span class="lg"><span class="swatch" style="background:var(--after)"></span>After</span>
+        </span>
+      </p>
+      <div class="muted-note" id="distNote" style="display:none"></div>
+      <div class="grid6" id="distGrid"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Box Plot Comparison (Before vs After Preprocessing)</p>
+      <div class="grid6" id="boxGrid"></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <p class="panel-title">Q-Q Plot (Normality Check)
+          <span class="ctrls"><select id="qqVar" class="control" style="width:170px;"></select></span>
+        </p>
+        <div id="qqChart"></div>
+      </div>
+
+      <div class="card">
+        <p class="panel-title">Correlation Heatmap
+          <span class="ctrls">
+            <select id="corrSet" class="control" style="width:130px;">
+              <option value="core">Core 6 Vars</option>
+              <option value="all" id="corrAllOpt">All Vars</option>
+            </select>
+          </span>
+        </p>
+        <div id="corrChart" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; overflow-x:auto;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title"><span id="heatTitle"></span>
+        <span class="legend-inline" id="heatChips"></span>
+      </p>
+      <div class="muted-note" id="heatNote"></div>
+      <div id="mvHeat"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="panel-title">Method Comparison (every method &times; every metric)
+        <span class="legend-inline"><span class="lg"><span class="swatch" style="background:#EAF3FF;border:1px solid var(--blue-hi)"></span>Selected (best-ranked modern method)</span></span>
+      </p>
+      <div id="cmp"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="note">
+  <span id="footNote"></span>
+  <div class="foot-legend" id="footChips"></div>
+</footer>
+
+<script>
+const D = {"title":"Encoding / Domain Bias","subtitle":"Respiratory ICU mortality — eICU-CRD v2.0 · Stage 6 of 8 · Encoding / Domain detected → Domain-generalisation transformer","info":[["Total Patients (before)","19,372"],["Rows after","19,372"],["Variables shown","40"],["Bias detected","YES"],["Statistic","one-vs-rest domain-classifier AUC; AUROC drop on held-out domains"],["Value (before)","0.965; -0.008"],["Threshold","AUC >= 0.60 or drop >= 0.02"],["Value (after)","0.584; -0.005"],["Domains","198"],["Selected method","Domain-generalisation transformer"],["Best traditional","CORAL"],["Generated","13-Nov-2026"]],"vars":["age","admission_weight_kg","admission_bmi","pre_icu_hospital_hours","unit_visit_number","gcs_eyes","gcs_motor","gcs_verbal","urine_output_day1_ml","heart_rate_mean","heart_rate_min","heart_rate_max","resp_rate_mean","resp_rate_min","resp_rate_max","spo2_mean","spo2_min","spo2_max","temperature_c_mean","temperature_c_min","z1","z2","z3","z4","z5","z6","z7","z8","z9","z10","z11","z12","z13","z14","z15","z16","z17","z18","z19","z20"],"dist":{"age":{"rel":false,"b":[462,534,509,1018,1805,2806,3475,3357,2761,2645],"r":[-2.8782088134265313,1.5835988794673397]},"admission_weight_kg":{"rel":false,"b":[1856,4884,5354,3589,1856,868,410,247,136,172],"r":[-1.6379142163955993,4.157812471165725]},"admission_bmi":{"rel":false,"b":[1975,5332,5437,3266,1559,830,413,250,142,168],"r":[-1.5908924109437168,4.218091663470747]},"pre_icu_hospital_hours":{"rel":false,"b":[16048,1479,685,391,245,150,107,72,67,128],"r":[-0.3934729084875772,5.615721746768227]},"unit_visit_number":{"rel":false,"b":[15593,2702,704,219,89,36,14,7,4,2,2],"r":[-0.40139407935625265,13.721028923348658]},"gcs_eyes":{"rel":false,"b":[1727,1689,3532,12424],"r":[-2.4454902279428365,0.6424426365248634]},"gcs_motor":{"rel":false,"b":[997,94,176,1648,2535,13922],"r":[-3.5288098005113855,0.48576052222214494]},"gcs_verbal":{"rel":false,"b":[4800,603,1174,3146,9649],"r":[-1.5791508805274095,0.8208735076320081]},"urine_output_day1_ml":{"rel":false,"b":[1548,3353,7466,4986,929,452,280,139,71,148],"r":[-1.8552983354315382,4.829755376792573]},"heart_rate_mean":{"rel":false,"b":[681,1550,2617,3426,3632,3096,2160,1262,621,327],"r":[-2.1846877848981068,2.7107697264310557]},"heart_rate_min":{"rel":false,"b":[333,971,2377,3937,4100,3285,2228,1267,569,305],"r":[-2.4091322498016665,2.8107524571334244]},"heart_rate_max":{"rel":false,"b":[725,1895,3512,4089,4022,2745,1324,629,240,191],"r":[-2.1488817838533163,3.266924557153555]},"resp_rate_mean":{"rel":false,"b":[752,2576,4061,4616,3382,1937,1078,506,248,216],"r":[-2.0006303845595523,3.4192158712501897]},"resp_rate_min":{"rel":false,"b":[1536,751,1727,2308,5290,3408,2088,1555,402,307],"r":[-2.1961307757362243,2.589535888142108]},"resp_rate_max":{"rel":false,"b":[1835,4243,4625,3620,1986,1270,649,422,297,425],"r":[-1.589552381145319,3.433912902109124]},"spo2_mean":{"rel":false,"b":[162,193,499,1090,1872,2857,3501,3436,3050,2712],"r":[-3.1561681888936324,1.557337701097773]},"spo2_min":{"rel":false,"b":[158,82,158,169,392,836,1588,4579,7979,3431],"r":[-4.96441192794829,1.3397936821159684]},"spo2_max":{"rel":false,"b":[299,0,473,0,0,1056,0,2133,162,15249],"r":[-3.9908712053341255,0.40989628618414187]},"temperature_c_mean":{"rel":false,"b":[251,411,1751,4808,6019,3094,1586,813,386,253],"r":[-2.757838125708171,3.3101675735435476]},"temperature_c_min":{"rel":false,"b":[116,16,18,51,56,142,389,3060,13516,2008],"r":[-7.610483854463587,1.6222830562686104]},"z1":{"rel":false,"a":[707,3445,7242,5121,1748,546,234,109,76,144],"r":[0.3797065930068493,1.044142166376115]},"z2":{"rel":false,"a":[234,345,736,1640,3680,5147,4289,2297,718,286],"r":[-0.09111824691295624,0.27220999911427507]},"z3":{"rel":false,"a":[1051,3238,4637,4371,3095,1533,690,319,219,219],"r":[-0.5250839132070542,0.6362556797266009]},"z4":{"rel":false,"a":[264,330,549,1007,1680,2694,3770,4416,3464,1198],"r":[-0.7601138377189636,0.8624614420533182]},"z5":{"rel":false,"a":[131,55,88,194,508,1363,2989,5143,6368,2533],"r":[0.8773934161663055,1.8222297662496567]},"z6":{"rel":false,"a":[240,229,399,676,1302,2373,3843,4830,3879,1601],"r":[-1.2448457127809525,1.2166293048858643]},"z7":{"rel":false,"a":[128,35,68,84,156,207,488,1742,11243,5221],"r":[0.569445603787899,2.238352544307709]},"z8":{"rel":false,"a":[6930,9315,1757,558,240,167,116,80,71,138],"r":[-1.175807032585144,0.20398648828268295]},"z9":{"rel":false,"a":[196,255,480,1262,2562,3884,4447,3730,1981,575],"r":[-1.077426415681839,-0.2256096033751964]},"z10":{"rel":false,"a":[135,48,46,89,128,183,590,4169,10449,3535],"r":[0.37519981026649474,1.6132130348682405]},"z11":{"rel":false,"a":[407,1063,2100,3540,4366,3671,2236,1179,501,309],"r":[0.4276871228218079,1.2874088972806932]},"z12":{"rel":false,"a":[1017,2926,4298,4001,2916,1825,1107,638,370,274],"r":[-0.6169049674272538,1.1683597224950795]},"z13":{"rel":false,"a":[1825,4577,5259,3813,2122,894,357,186,146,193],"r":[-1.2842658519744874,0.9736651885509513]},"z14":{"rel":false,"a":[187,163,191,399,774,1782,3656,5585,4716,1919],"r":[-1.1178480100631714,0.9613898861408234]},"z15":{"rel":false,"a":[1441,3349,3817,3533,2822,1928,1194,671,338,279],"r":[-0.37045147627592084,0.7589195182919513]},"z16":{"rel":false,"a":[856,2013,2977,3293,3261,2594,1879,1290,786,423],"r":[-0.5215099641680717,0.4420034296810631]},"z17":{"rel":false,"a":[188,145,399,921,2239,4912,6428,3076,752,312],"r":[0.28604565605521204,0.9639280995726587]},"z18":{"rel":false,"a":[567,1571,3540,4439,3596,2571,1540,875,440,233],"r":[-2.1648874402046205,-1.2233128190040585]},"z19":{"rel":false,"a":[354,1047,2616,3628,3524,2848,2368,1612,903,472],"r":[-1.2188918036222458,-0.6331241106986998]},"z20":{"rel":false,"a":[1030,2402,3816,4327,3454,2011,1055,580,340,357],"r":[-0.9297271734476089,0.8442023116350178]}},"box":{"age":{"b":{"q1":-0.583564857081112,"med":0.11757635180221052,"q3":0.7549774507870493,"loW":-2.591378318883354,"hiW":1.5835988794673397,"out":[],"min":-3.0056890332234993,"max":1.5835988794673397}},"admission_weight_kg":{"b":{"q1":-0.6773162941168802,"med":-0.16976632809018155,"q3":0.458547480871421,"loW":-2.0364601628729404,"hiW":2.1623431433538727,"out":[],"min":-2.0364601628729404,"max":7.433264035477551}},"admission_bmi":{"b":{"q1":-0.6720936086256368,"med":-0.19512717066167826,"q3":0.4169255311303301,"loW":-2.0190484674571736,"hiW":2.0504542407642803,"out":[],"min":-2.0190484674571736,"max":6.5552939719859955}},"pre_icu_hospital_hours":{"b":{"q1":-0.38224454194331675,"med":-0.3558323615494315,"q3":-0.08488422113196581,"loW":-0.6827947600021527,"hiW":0.36115626008506063,"out":[],"min":-0.6827947600021527,"max":31.87583177912191}},"unit_visit_number":{"b":{"q1":-0.40139407935625265,"med":-0.40139407935625265,"q3":-0.40139407935625265,"loW":-0.40139407935625265,"hiW":-0.40139407935625265,"out":[],"min":-0.40139407935625265,"max":13.721028923348658}},"gcs_eyes":{"b":{"q1":-0.3868683182977033,"med":0.6424426365248634,"q3":0.6424426365248634,"loW":-1.9308347505315535,"hiW":0.6424426365248634,"out":[],"min":-2.4454902279428365,"max":0.6424426365248634}},"gcs_motor":{"b":{"q1":-0.31715354232456117,"med":0.48576052222214494,"q3":0.48576052222214494,"loW":-1.5215246391446202,"hiW":0.48576052222214494,"out":[],"min":-3.5288098005113855,"max":0.48576052222214494}},"gcs_verbal":{"b":{"q1":-0.9791447834875552,"med":0.22086741059215365,"q3":0.8208735076320081,"loW":-1.5791508805274095,"hiW":0.8208735076320081,"out":[],"min":-1.5791508805274095,"max":0.8208735076320081}},"urine_output_day1_ml":{"b":{"q1":-0.5267059440059728,"med":-0.037263925324682395,"q3":0.31925032744875925,"loW":-1.7956403511880707,"hiW":1.5881847346308573,"out":[],"min":-2.904475265871687,"max":19.615055236989175}},"heart_rate_mean":{"b":{"q1":-0.7168601132023334,"med":-0.03610883799464018,"q3":0.6672536881673113,"loW":-2.7930308152568006,"hiW":2.7434243902217785,"out":[],"min":-4.649418696685438,"max":4.185738302492581}},"heart_rate_min":{"b":{"q1":-0.6847796607206386,"med":-0.09119873504730713,"q3":0.6342890629978758,"loW":-2.66338274629841,"hiW":2.6128921485756473,"out":[],"min":-4.707939268062107,"max":4.4595883617815675}},"heart_rate_max":{"b":{"q1":-0.6676356051163942,"med":-0.06587934500451968,"q3":0.5821658581928837,"loW":-2.5423378000803107,"hiW":2.4568680531568003,"out":[],"min":-4.139306336531055,"max":8.636441955074897}},"resp_rate_mean":{"b":{"q1":-0.6946907562710577,"med":-0.10512269962938899,"q3":0.5418115626223222,"loW":-2.5494442346111277,"hiW":2.396565040962392,"out":[],"min":-3.9754662622662136,"max":8.010863792739165}},"resp_rate_min":{"b":{"q1":-0.6009085544434469,"med":-0.002700221458655405,"q3":0.5955081115261361,"loW":-2.1961307757362243,"hiW":2.390133110480511,"out":[],"min":-2.1961307757362243,"max":7.175799774358843}},"resp_rate_max":{"b":{"q1":-0.7201064667358961,"med":-0.23708095873066112,"q3":0.43915475247666774,"loW":-2.458998295554742,"hiW":2.1780465812955137,"out":[],"min":-3.1352340067620705,"max":3.433912902109124}},"spo2_mean":{"b":{"q1":-0.6060751363897695,"med":0.07929619618624892,"q3":0.744526888258803,"loW":-2.631978173362628,"hiW":1.5588919776208037,"out":[],"min":-15.972433501969418,"max":1.5588919776208037}},"spo2_min":{"b":{"q1":-0.35387349670726514,"med":0.210682229567146,"q3":0.5870527137500867,"loW":-1.765262812393293,"hiW":1.4338863031617035,"out":[],"min":-7.88128318036608,"max":1.4338863031617035}},"spo2_max":{"b":{"q1":0.40989628618414187,"med":0.40989628618414187,"q3":0.40989628618414187,"loW":0.40989628618414187,"hiW":0.40989628618414187,"out":[],"min":-28.195092408684594,"max":0.5033151072685469}},"temperature_c_mean":{"b":{"q1":-0.5675515768422755,"med":-0.1136981692625786,"q3":0.472529148861196,"loW":-2.127672665397483,"hiW":2.0326502374164033,"out":[],"min":-9.00557326374059,"max":6.06440412522163}},"temperature_c_min":{"b":{"q1":-0.2195562405220962,"med":0.0874169756096858,"q3":0.39439019174147505,"loW":-1.140475888917453,"hiW":1.315309840136832,"out":[],"min":-11.475240832020877,"max":3.56644675843658}},"z1":{"a":{"q1":0.5200031250715256,"med":0.5638846755027771,"q3":0.6127732396125793,"loW":0.3808479532599449,"hiW":0.75192841142416,"out":[],"min":0.13956613838672638,"max":1.5972799062728882}},"z2":{"a":{"q1":0.07574004493653774,"med":0.11234717071056366,"q3":0.14869198575615883,"loW":-0.03368786629289389,"hiW":0.25811989698559046,"out":[],"min":-0.35311058163642883,"max":0.5189549922943115}},"z3":{"a":{"q1":-0.278610423207283,"med":-0.15748599916696548,"q3":-0.021540301851928234,"loW":-0.6642156052403152,"hiW":0.36406488018110394,"out":[],"min":-1.0602562427520752,"max":0.9258854389190674}},"z4":{"a":{"q1":0.12071286141872406,"med":0.3526739180088043,"q3":0.5303956121206284,"loW":-0.4938112646341324,"hiW":1.1449197381734848,"out":[],"min":-1.3417261838912964,"max":1.60689377784729}},"z5":{"a":{"q1":1.5264788269996643,"med":1.6211914420127869,"q3":1.692631483078003,"loW":1.2772498428821564,"hiW":1.9105931520462036,"out":[],"min":-1.322508692741394,"max":1.9105931520462036}},"z6":{"a":{"q1":0.2011789008975029,"med":0.5104154348373413,"q3":0.7583917677402496,"loW":-0.6346403993666172,"hiW":1.5942110680043697,"out":[],"min":-1.8131033182144165,"max":1.629042148590088}},"z7":{"a":{"q1":1.9640794694423676,"med":2.0312169790267944,"q3":2.0750415921211243,"loW":1.7976362854242325,"hiW":2.2414847761392593,"out":[],"min":-1.9765429496765137,"max":2.5720467567443848}},"z8":{"a":{"q1":-1.0543046593666077,"med":-1.0145089626312256,"q3":-0.950629785656929,"loW":-1.2098169699311256,"hiW":-0.795117475092411,"out":[],"min":-1.301426887512207,"max":1.3983263969421387}},"z9":{"a":{"q1":-0.6487044990062714,"med":-0.545631617307663,"q3":-0.4527347832918167,"loW":-0.9426590725779533,"hiW":-0.15878020972013474,"out":[],"min":-1.48827064037323,"max":0.9385377764701843}},"z10":{"a":{"q1":1.3565418124198914,"med":1.418222725391388,"q3":1.471300184726715,"loW":1.1844042539596558,"hiW":1.6434377431869507,"out":[],"min":-1.7796655893325806,"max":1.7356696128845215}},"z11":{"a":{"q1":0.7211012542247772,"med":0.8221981525421143,"q3":0.9271457344293594,"loW":0.4120345339179039,"hiW":1.2362124547362328,"out":[],"min":-0.542930006980896,"max":1.5706452131271362}},"z12":{"a":{"q1":-0.2198900207877159,"med":-0.023741587065160275,"q3":0.23258188366889954,"loW":-0.8985978774726391,"hiW":0.9112897403538227,"out":[],"min":-0.9570382237434387,"max":1.8421859741210938}},"z13":{"a":{"q1":-0.8968444913625717,"med":-0.6974557042121887,"q3":-0.4482748433947563,"loW":-1.5696989633142948,"hiW":0.22457962855696678,"out":[],"min":-2.177675485610962,"max":1.5519282817840576}},"z14":{"a":{"q1":0.22383315861225128,"med":0.4370897710323334,"q3":0.6113616675138474,"loW":-0.3574596047401428,"hiW":1.1926544308662415,"out":[],"min":-2.1108336448669434,"max":1.3063143491744995}},"z15":{"a":{"q1":-0.1431547775864601,"med":0.00006629712879657745,"q3":0.17391213029623032,"loW":-0.6187551394104958,"hiW":0.649512492120266,"out":[],"min":-1.1520317792892456,"max":1.0928847789764404}},"z16":{"a":{"q1":-0.26154644787311554,"med":-0.12158778309822083,"q3":0.038421424105763435,"loW":-0.711498255841434,"hiW":0.4883732320740819,"out":[],"min":-1.4272527694702148,"max":0.624295711517334}},"z17":{"a":{"q1":0.6426581293344498,"med":0.7019897103309631,"q3":0.7519958168268204,"loW":0.47865159809589386,"hiW":0.9160023480653763,"out":[],"min":-0.1650102287530899,"max":1.484171986579895}},"z18":{"a":{"q1":-1.900626927614212,"med":-1.7980360388755798,"q3":-1.6700461208820343,"loW":-2.2464981377124786,"hiW":-1.3241749107837677,"out":[],"min":-2.3313465118408203,"max":1.342895269393921}},"z19":{"a":{"q1":-1.0294371843338013,"med":-0.9509676396846771,"q3":-0.8563455790281296,"loW":-1.2890745922923088,"hiW":-0.596708171069622,"out":[],"min":-1.4513967037200928,"max":0.2166733741760254}},"z20":{"a":{"q1":-0.49998269975185394,"med":-0.2985561043024063,"q3":-0.07721046917140484,"loW":-1.1341410456225276,"hiW":0.5569478766992688,"out":[],"min":-1.2884469032287598,"max":1.288601040840149}}},"qq":{"age":{"b":[]},"admission_weight_kg":{"b":[]},"admission_bmi":{"b":[]},"pre_icu_hospital_hours":{"b":[]},"unit_visit_number":{"b":[]},"gcs_eyes":{"b":[]},"gcs_motor":{"b":[]},"gcs_verbal":{"b":[]},"urine_output_day1_ml":{"b":[]},"heart_rate_mean":{"b":[]},"heart_rate_min":{"b":[]},"heart_rate_max":{"b":[]},"resp_rate_mean":{"b":[]},"resp_rate_min":{"b":[]},"resp_rate_max":{"b":[]},"spo2_mean":{"b":[]},"spo2_min":{"b":[]},"spo2_max":{"b":[]},"temperature_c_mean":{"b":[]},"temperature_c_min":{"b":[]},"z1":{"a":[]},"z2":{"a":[]},"z3":{"a":[]},"z4":{"a":[]},"z5":{"a":[]},"z6":{"a":[]},"z7":{"a":[]},"z8":{"a":[]},"z9":{"a":[]},"z10":{"a":[]},"z11":{"a":[]},"z12":{"a":[]},"z13":{"a":[]},"z14":{"a":[]},"z15":{"a":[]},"z16":{"a":[]},"z17":{"a":[]},"z18":{"a":[]},"z19":{"a":[]},"z20":{"a":[]}},"corr":{"core":{"bv":["age","admission_weight_kg","admission_bmi","pre_icu_hospital_hours","unit_visit_number","gcs_eyes"],"b":[[1,-0.18,-0.16,-0.01,0,0.03],[-0.18,1,0.91,-0.01,0,-0.01],[-0.16,0.91,1,-0.01,-0.01,-0.01],[-0.01,-0.01,-0.01,1,0.51,0.02],[0,0,-0.01,0.51,1,0.02],[0.03,-0.01,-0.01,0.02,0.02,1]],"av":["z1","z2","z3","z4","z5","z6"],"a":[[1,-0.57,0.36,-0.29,-0.1,-0.42],[-0.57,1,-0.49,0.51,-0.34,0.57],[0.36,-0.49,1,-0.89,0.11,-0.88],[-0.29,0.51,-0.89,1,-0.15,0.96],[-0.1,-0.34,0.11,-0.15,1,-0.08],[-0.42,0.57,-0.88,0.96,-0.08,1]]},"all":{"bv":["age","admission_weight_kg","admission_bmi","pre_icu_hospital_hours","unit_visit_number","gcs_eyes","gcs_motor","gcs_verbal","urine_output_day1_ml","heart_rate_mean","heart_rate_min","heart_rate_max"],"b":[[1,-0.18,-0.16,-0.01,0,0.03,0.05,0.02,-0.13,-0.17,-0.14,-0.14],[-0.18,1,0.91,-0.01,0,-0.01,0.01,0.02,0.11,-0.1,-0.06,-0.12],[-0.16,0.91,1,-0.01,-0.01,-0.01,0.02,0.02,0.1,-0.1,-0.06,-0.12],[-0.01,-0.01,-0.01,1,0.51,0.02,0.01,-0.02,0.01,0.04,0.04,0.02],[0,0,-0.01,0.51,1,0.02,0.02,-0.04,0.01,0.04,0.03,0.03],[0.03,-0.01,-0.01,0.02,0.02,1,0.74,0.73,0.05,0.03,0.04,-0.01],[0.05,0.01,0.02,0.01,0.02,0.74,1,0.65,0.04,0,0.02,-0.04],[0.02,0.02,0.02,-0.02,-0.04,0.73,0.65,1,0.06,0.03,0.05,-0.02],[-0.13,0.11,0.1,0.01,0.01,0.05,0.04,0.06,1,0.03,0.02,0.03],[-0.17,-0.1,-0.1,0.04,0.04,0.03,0,0.03,0.03,1,0.86,0.74],[-0.14,-0.06,-0.06,0.04,0.03,0.04,0.02,0.05,0.02,0.86,1,0.52],[-0.14,-0.12,-0.12,0.02,0.03,-0.01,-0.04,-0.02,0.03,0.74,0.52,1]],"av":["z1","z2","z3","z4","z5","z6","z7","z8","z9","z10","z11","z12"],"a":[[1,-0.57,0.36,-0.29,-0.1,-0.42,-0.53,0.64,-0.49,-0.48,0.35,0.36],[-0.57,1,-0.49,0.51,-0.34,0.57,0.25,-0.44,0.46,0.08,-0.61,-0.41],[0.36,-0.49,1,-0.89,0.11,-0.88,-0.62,0.71,-0.72,-0.27,0.67,0.85],[-0.29,0.51,-0.89,1,-0.15,0.96,0.57,-0.63,0.67,0.27,-0.85,-0.94],[-0.1,-0.34,0.11,-0.15,1,-0.08,0.45,-0.42,-0.2,0.68,0.35,0.1],[-0.42,0.57,-0.88,0.96,-0.08,1,0.64,-0.72,0.74,0.38,-0.86,-0.93],[-0.53,0.25,-0.62,0.57,0.45,0.64,1,-0.88,0.55,0.77,-0.38,-0.65],[0.64,-0.44,0.71,-0.63,-0.42,-0.72,-0.88,1,-0.54,-0.69,0.42,0.62],[-0.49,0.46,-0.72,0.67,-0.2,0.74,0.55,-0.54,1,0.37,-0.67,-0.74],[-0.48,0.08,-0.27,0.27,0.68,0.38,0.77,-0.69,0.37,1,-0.1,-0.35],[0.35,-0.61,0.67,-0.85,0.35,-0.86,-0.38,0.42,-0.67,-0.1,1,0.85],[0.36,-0.41,0.85,-0.94,0.1,-0.93,-0.65,0.62,-0.74,-0.35,0.85,1]]}},"heat":{"title":"Domain Leakage Heatmap","states":[{"v":1,"label":"Domain leaked","color":"#C0533E","border":"#9B4230"}],"rows":[],"note":"Public copy: individual clinical records and point-level projections are omitted; aggregate results are retained.","off":"No leak","empty":"Record-level examples are available only in the authorized local version."},"comparison":{"metrics":["MMD","Domain-classifier AUC","Wasserstein (sliced)","Worst-group accuracy","DG gap","Target-domain AUROC","OOD performance","Source-domain AUROC (accuracy guard)"],"arrows":["↓","↓","↓","↑","↓","↑","↑","↑"],"dirs":["min","min","min","max","min","max","max","max"],"rows":[{"method":"Domain-generalisation transformer","family":"Modern","values":[0.0006684609592031432,0.5192616666666666,0.03370454943375546,0.552772808586762,-0.001964808778983973,0.7449674316869582,0.737169692108995,0.7430026229079743],"mean_rank":2.875},{"method":"OT domain adaptation","family":"Modern","values":[0.0010609761932774964,0.922926,0.11236563593372241,0.5909361955873584,-0.013878992469753992,0.7823658265918266,0.7778921324782829,0.7684868341220726],"mean_rank":3},{"method":"CORAL","family":"Traditional","values":[0.018711726581453814,0.9921802222222224,0.29277218162721214,0.6814814814814815,0.007307083509007328,0.7788577769914921,0.7830087256212531,0.7861648605004994],"mean_rank":3.5},{"method":"Autoencoder (domain-conditional)","family":"Traditional","values":[0.0020268142729310545,0.5629777777777778,0.05431203172055878,0.47167561121049495,-0.0268045193182308,0.759905431268797,0.7476654142691388,0.7331009119505661],"mean_rank":3.75},{"method":"DANN","family":"Traditional","values":[0.0010427192210720193,0.5312843333333334,0.04220420913211589,0.5336911150864639,-0.004268899219259548,0.7360966273702494,0.7349068222218882,0.7318277281509898],"mean_rank":3.875},{"method":"IRM","family":"Modern","values":[0.0006197669800043215,0.5361097222222222,0.04178702135043786,0.6013986013986015,0.0151008389409919,0.7112379175579393,0.7132629517912424,0.7263387564989312],"mean_rank":4},{"method":"No adaptation (raw predictors)","family":"reference","values":[0.0027402336808549643,0.7091023333333333,0.07209444462895723,0.6433566433566433,-0.002147174413166253,0.8016739308747608,0.7921358900550416,0.7995267564615945],"mean_rank":null}],"best":"Domain-generalisation transformer","best_trad":"CORAL","select_family":"Modern"},"cmp_note":"No methods were run: the bias was not detected, so the data are unchanged (After = Before).","footer":"<b>Detected: one-vs-rest domain-classifier AUC; AUROC drop on held-out domains = 0.965; -0.008 — Domain-generalisation transformer selected (best-ranked modern method; best traditional for comparison: CORAL) and applied.<\/b> Domain = meta_domain_hospitalid. Target domains in the benchmark are whole held-out domains; their labels are never used for fitting. The selected method replaced the predictors with a learned representation (z1, z2, ...), shown as After-only variables. Public copy: individual clinical records and point-level projections are omitted; aggregate results are retained.","chips":["<b>19,372<\/b> rows (before)","<b>19,372<\/b> rows (after)","Bias detected: <b>YES<\/b>","Domain-classifier AUC: <b>0.965 → 0.584<\/b>","AUROC drop on unseen domains: <b>-0.008 → -0.005<\/b>","Selected method: <b>Domain-generalisation transformer<\/b>"]};
+const ALL_VARS = D.vars;
+const B_ONLY = ALL_VARS.filter(v=>D.box[v].b && !D.box[v].a), A_ONLY = ALL_VARS.filter(v=>D.box[v].a && !D.box[v].b);
+const REPLACED = B_ONLY.length>0 && A_ONLY.length>0;   // the step replaced the predictors with learned features
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){ const e=document.createElementNS(NS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+function makeSVG(w,h){ return svgEl('svg', {viewBox:`0 0 ${w} ${h}`, width:'100%', height:h}); }
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fmtAxis(val, range){
+  if(range===0 || !isFinite(range)) return val.toFixed(2);
+  if(Math.abs(val)>=1e5) return val.toExponential(1);
+  if(range < 0.5) return val.toFixed(3);
+  if(range < 5) return val.toFixed(2);
+  if(range < 20) return val.toFixed(1);
+  return val.toFixed(0);
+}
+function fmtCount(n){ if(n>=1e6) return (n/1e6).toFixed(1)+'M'; if(n>=1e4) return Math.round(n/1e3)+'k'; if(n>=1e3) return (n/1e3).toFixed(1)+'k'; return String(Math.round(n)); }
+function fmtVal(v){ if(v===null||v===undefined||Number.isNaN(v)) return '–'; const a=Math.abs(v); if(a!==0&&(a<0.001||a>=1e6)) return v.toExponential(2); if(a>=1000) return v.toFixed(0); if(a>=100) return v.toFixed(1); if(a>=1) return v.toFixed(3); return v.toFixed(4); }
+
+document.getElementById('ttl').textContent = 'Interactive EDA Dashboard — ' + D.title + ' (Before vs After Preprocessing)';
+document.title = 'Interactive EDA Dashboard — ' + D.title + ' (Before vs After Preprocessing)';
+document.getElementById('sub').textContent = D.subtitle;
+document.getElementById('info').innerHTML = D.info.map(([k,v])=>`<div class="info-row"><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></div>`).join('');
+document.getElementById('footNote').innerHTML = D.footer;
+document.getElementById('footChips').innerHTML = D.chips.map(c=>`<span>${c}</span>`).join('');
+
+// ---------- sidebar variable list ----------
+const varDropdown = document.getElementById('varDropdown');
+const varList = document.getElementById('varList');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; varDropdown.appendChild(o); });
+let selectedVar = ALL_VARS[0];
+let gridVars = REPLACED ? B_ONLY.slice(0,5).concat(A_ONLY.slice(0,5)) : ALL_VARS.slice(0, 10);
+if(REPLACED){
+  const n=document.getElementById('distNote'); n.style.display='block';
+  n.textContent='The selected method replaced the original predictors with learned features, so an original variable has no direct After value. Blue charts = original predictors (Before); green charts = learned features (After).';
+}
+function renderVarList(){
+  varList.innerHTML = '';
+  ALL_VARS.forEach(v=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (v===selectedVar?' active':'');
+    d.textContent = v;
+    d.onclick = ()=>choose(v);
+    varList.appendChild(d);
+  });
+}
+function choose(v){
+  selectedVar=v; varDropdown.value=v; renderVarList();
+  if(!gridVars.includes(v)){
+    if(REPLACED){
+      const top = list => [v].concat(list.filter(x=>x!==v)).slice(0,5);
+      gridVars = B_ONLY.includes(v) ? top(B_ONLY).concat(A_ONLY.slice(0,5)) : B_ONLY.slice(0,5).concat(top(A_ONLY));
+    } else { gridVars = [v].concat(ALL_VARS.filter(x=>x!==v).slice(0, 9)); }
+    renderGrids();
+  }
+  highlightVar(v); document.getElementById('qqVar').value=v; drawQQ();
+}
+varDropdown.addEventListener('change', e=>choose(e.target.value));
+renderVarList();
+
+function highlightVar(v){
+  document.querySelectorAll('.chart-box').forEach(el=>el.style.boxShadow='none');
+  const el = document.getElementById('box_'+v);
+  if(el){ el.style.boxShadow='0 0 0 2px var(--blue-hi)'; el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ================= Histogram / Density =================
+function drawDistChart(container, v){
+  const d = D.dist[v];
+  const nb = (d.b||d.a).length;
+  const maxc = Math.max(...(d.b||[0]), ...(d.a||[0]), 1);
+  const W=250, H=d.rel?160:150, padL=30, padB=d.rel?30:20, padT=6, padR=6;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const bw = plotW/nb;
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=4;i++){
+    const y = padT + plotH - (i/4)*plotH;
+    svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+    const t=svgEl('text',{x:padL-4,y:y+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtCount((i/4)*maxc); svg.appendChild(t);
+  }
+  const plotType = document.getElementById('plotType').value;
+  function barsOrLine(counts, color, line, alpha){
+    if(!counts) return;
+    if(plotType==='hist'){
+      counts.forEach((c,i)=>{
+        const x = padL + i*bw;
+        const barH = (c/maxc)*plotH;
+        svg.appendChild(svgEl('rect',{x:x+1, y:padT+plotH-barH, width:Math.max(bw-2,1), height:barH, fill:color, opacity:alpha, stroke:line, 'stroke-width':1}));
+      });
+    } else {
+      let dd='';
+      counts.forEach((c,i)=>{ const x = padL + i*bw + bw/2; const y = padT + plotH - (c/maxc)*plotH; dd += (i===0?'M':'L') + x + ' ' + y + ' '; });
+      svg.appendChild(svgEl('path',{d:dd.trim(), fill:'none', stroke:line, 'stroke-width':2}));
+      const dArea = dd.trim() + ` L ${padL+bw*(nb-0.5)} ${padT+plotH} L ${padL+bw/2} ${padT+plotH} Z`;
+      svg.appendChild(svgEl('path',{d:dArea, fill:color, opacity:alpha*0.6}));
+    }
+  }
+  barsOrLine(d.b, 'var(--before)', 'var(--before-line)', 0.55);
+  barsOrLine(d.a, 'var(--after)', 'var(--after-line)', 0.55);
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  if(d.rel){
+    [['b','B','#3E6FA8',H-15],['a','A','#4C9B50',H-4]].forEach(([k,lab,col,y])=>{
+      if(!d[k+'r']) return; const [lo,hi]=d[k+'r'];
+      const t=svgEl('text',{x:padL,y:y,'font-size':8,fill:col}); t.textContent=`${lab}: ${fmtAxis(lo,hi-lo)}–${fmtAxis(hi,hi-lo)}`; svg.appendChild(t);
+    });
+  } else {
+    const [lo,hi]=d.r;
+    const xt1=svgEl('text',{x:padL,y:H-4,'font-size':8,fill:'#8791A3'}); xt1.textContent=fmtAxis(lo,hi-lo); svg.appendChild(xt1);
+    const xt2=svgEl('text',{x:W-padR,y:H-4,'text-anchor':'end','font-size':8,fill:'#8791A3'}); xt2.textContent=fmtAxis(hi,hi-lo); svg.appendChild(xt2);
+  }
+  container.appendChild(svg);
+}
+
+// ================= Box plot =================
+function drawBoxChart(container, v){
+  const s = D.box[v], rel = D.dist[v].rel;
+  const W=250, H=150, padL=32, padB=20, padT=8, padR=10;
+  const plotH=H-padT-padB;
+  const rng = st => [Math.min(st.loW, ...st.out), Math.max(st.hiW, ...st.out)];
+  let lo=Infinity, hi=-Infinity;
+  ['b','a'].forEach(k=>{ if(s[k]){ const [l,h]=rng(s[k]); lo=Math.min(lo,l); hi=Math.max(hi,h); } });
+  const svg = makeSVG(W,H);
+  for(let i=0;i<=3;i++){ const yy=padT+(i/3)*plotH; svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:yy,y2:yy,class:'gridline'})); }
+  function box(cx, st, color, line){
+    let L=lo, Hh=hi; if(rel){ [L,Hh]=rng(st); }
+    const y = val => padT + plotH - ((val-L)/((Hh-L)||1))*plotH;
+    const bw=46;
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(st.loW),y2:y(st.q1),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx,x2:cx,y1:y(st.q3),y2:y(st.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(st.loW),y2:y(st.loW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('line',{x1:cx-8,x2:cx+8,y1:y(st.hiW),y2:y(st.hiW),stroke:line,'stroke-width':1.3}));
+    svg.appendChild(svgEl('rect',{x:cx-bw/2, y:y(st.q3), width:bw, height:Math.max(y(st.q1)-y(st.q3),1), fill:color, stroke:line, 'stroke-width':1.3, opacity:0.85}));
+    svg.appendChild(svgEl('line',{x1:cx-bw/2,x2:cx+bw/2,y1:y(st.med),y2:y(st.med),stroke:line,'stroke-width':1.6}));
+    st.out.forEach(o=>{ svg.appendChild(svgEl('circle',{cx:cx, cy:y(o), r:2, fill:'none', stroke:line, 'stroke-width':1})); });
+  }
+  const xb=padL+(W-padL-padR)*(s.a?0.28:0.5), xa=padL+(W-padL-padR)*(s.b?0.72:0.5);
+  if(s.b) box(xb, s.b, 'var(--before)', 'var(--before-line)');
+  if(s.a) box(xa, s.a, 'var(--after)', 'var(--after-line)');
+  svg.appendChild(svgEl('line',{x1:padL,x2:padL,y1:padT,y2:padT+plotH,class:'axis'}));
+  svg.appendChild(svgEl('line',{x1:padL,x2:W-padR,y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+  [['b',xb,'Before','#556'],['a',xa,'After','#556']].forEach(([k,x,lab,col])=>{
+    if(!s[k]) return;
+    let txt=lab, c=col;
+    if(rel && s[k]){ const [l,h]=rng(s[k]); txt=`${lab} [${fmtAxis(l,h-l)}, ${fmtAxis(h,h-l)}]`; c = k==='b'?'#3E6FA8':'#4C9B50'; }
+    const t=svgEl('text',{x:x,y:H-4,'text-anchor':'middle','font-size':rel?7.5:9,fill:c}); t.textContent=txt; svg.appendChild(t);
+  });
+  if(!rel){
+    for(let i=0;i<=3;i++){
+      const val = lo + (i/3)*(hi-lo); const yy=padT+plotH-(i/3)*plotH;
+      const t=svgEl('text',{x:padL-4,y:yy+3,'text-anchor':'end','font-size':8,fill:'#8791A3'}); t.textContent=fmtAxis(val,hi-lo); svg.appendChild(t);
+    }
+  }
+  container.appendChild(svg);
+}
+
+// ================= render grids =================
+function renderGrids(){
+  const distGrid=document.getElementById('distGrid'); distGrid.innerHTML='';
+  const boxGrid=document.getElementById('boxGrid'); boxGrid.innerHTML='';
+  gridVars.forEach(v=>{
+    const cb = document.createElement('div'); cb.className='chart-box'; cb.id='box_'+v; cb.onclick=()=>choose(v);
+    const t = document.createElement('div'); t.className='ct'; t.textContent=v; t.title=v; cb.appendChild(t);
+    drawDistChart(cb, v);
+    distGrid.appendChild(cb);
+    const bb = document.createElement('div'); bb.className='chart-box'; bb.onclick=()=>choose(v);
+    const t2 = document.createElement('div'); t2.className='ct'; t2.textContent=v; t2.title=v; bb.appendChild(t2);
+    drawBoxChart(bb, v);
+    boxGrid.appendChild(bb);
+  });
+}
+
+// ================= Q-Q plot =================
+function drawQQSub(svg, x0, w, pts, color, line, label, H, padT, padB){
+  const container = svg;
+  if(!pts){ const t=svgEl('text',{x:x0+w/2,y:H/2,'text-anchor':'middle','font-size':10,fill:'#8791A3'}); t.textContent='not present'; svg.appendChild(t); }
+  else {
+    const theo=pts.map(p=>p[0]), z=pts.map(p=>p[1]);
+    const lo=Math.min(...theo,...z), hi=Math.max(...theo,...z);
+    const plotH=H-padT-padB, plotW=w-40;
+    const X = t => x0+30 + ((t-lo)/(hi-lo||1))*plotW;
+    const Y = t => padT + plotH - ((t-lo)/(hi-lo||1))*plotH;
+    svg.appendChild(svgEl('line',{x1:X(lo),y1:Y(lo),x2:X(hi),y2:Y(hi),stroke:'var(--red-hi)','stroke-width':1.3,'stroke-dasharray':'3,2'}));
+    svg.appendChild(svgEl('line',{x1:X(lo),x2:X(lo),y1:padT,y2:padT+plotH,class:'axis'}));
+    svg.appendChild(svgEl('line',{x1:X(lo),x2:X(hi),y1:padT+plotH,y2:padT+plotH,class:'axis'}));
+    theo.forEach((t,i)=>{ svg.appendChild(svgEl('circle',{cx:X(t), cy:Y(z[i]), r:2.3, fill:color, stroke:line, 'stroke-width':0.5, opacity:0.85})); });
+  }
+  const lb=svgEl('text',{x:x0+w/2,y:H-2,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'#334'}); lb.textContent=label; container.appendChild(lb);
+}
+function drawQQ(){
+  if(Object.values(D.qq).every(q=>!q.b?.length&&!q.a?.length)){document.getElementById('qqChart').textContent='Point-level Q-Q data are available only in the authorized local version.';return;}
+  const v = document.getElementById('qqVar').value;
+  const q = D.qq[v] || {};
+  const container = document.getElementById('qqChart'); container.innerHTML='';
+  const W=520, H=210, padT=10, padB=24;
+  const svg = makeSVG(W,H);
+  let pb=q.b, pa=q.a, lb='Before Preprocessing', la='After Preprocessing';
+  if(!pb && B_ONLY.length){ pb=D.qq[B_ONLY[0]].b; lb+=` (${B_ONLY[0]})`; }
+  if(!pa && A_ONLY.length){ pa=D.qq[A_ONLY[0]].a; la+=` (${A_ONLY[0]})`; }
+  drawQQSub(svg, 0, W/2, pb, 'var(--before)', 'var(--before-line)', lb, H, padT, padB);
+  drawQQSub(svg, W/2, W/2, pa, 'var(--after)', 'var(--after-line)', la, H, padT, padB);
+  container.appendChild(svg);
+}
+
+// ================= Correlation heatmap =================
+function corrColor(r){
+  const t=(r+1)/2;
+  const c1=[47,94,181], c2=[255,255,255], c3=[192,57,43];
+  let col;
+  if(t<0.5){ const k=t/0.5; col=c1.map((c,i)=>Math.round(c+(c2[i]-c)*k)); }
+  else { const k=(t-0.5)/0.5; col=c2.map((c,i)=>Math.round(c+(c3[i]-c)*k)); }
+  return `rgb(${col[0]},${col[1]},${col[2]})`;
+}
+function short(v){ return v.length>8 ? v.slice(0,6)+'…' : v; }
+function renderCorrTable(vars, mat, title){
+  const wrap = document.createElement('div');
+  const h = document.createElement('div'); h.className='corr-heading'; h.textContent=title; wrap.appendChild(h);
+  if(!vars.length){ const p=document.createElement('div'); p.className='mv-pct'; p.style.textAlign='center'; p.textContent='no variables'; wrap.appendChild(p); return wrap; }
+  const table = document.createElement('table'); table.className='corr-table';
+  const thead = document.createElement('tr');
+  thead.appendChild(document.createElement('th'));
+  vars.forEach(v=>{ const th=document.createElement('th'); th.textContent=short(v); th.title=v; th.style.writingMode='vertical-rl'; th.style.transform='rotate(180deg)'; th.style.fontSize='9px'; thead.appendChild(th); });
+  table.appendChild(thead);
+  vars.forEach((v1,i)=>{
+    const tr=document.createElement('tr');
+    const th=document.createElement('th'); th.textContent=short(v1); th.title=v1; th.style.textAlign='right'; th.style.paddingRight='4px'; th.style.fontSize='9px'; tr.appendChild(th);
+    vars.forEach((v2,j)=>{
+      const td=document.createElement('td');
+      const val=mat[i][j];
+      td.style.background=corrColor(val);
+      td.style.color = Math.abs(val)>0.6 ? '#fff':'#1B2333';
+      td.textContent=val.toFixed(2); td.title=`${v1} × ${v2}: ${val.toFixed(2)}`;
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+function drawCorr(){
+  const c = D.corr[document.getElementById('corrSet').value];
+  const container = document.getElementById('corrChart'); container.innerHTML='';
+  container.appendChild(renderCorrTable(c.bv, c.b, 'Before Preprocessing'));
+  container.appendChild(renderCorrTable(c.av, c.a, 'After Preprocessing'));
+}
+
+// ================= Bias heatmap (cell grid) =================
+function chip(st){ return `<span class="lg"><span class="swatch" style="background:${st.color};border:1px solid ${st.border||st.color}"></span>${esc(st.label)}</span>`; }
+function drawMVHeat(){
+  const h = D.heat;
+  document.getElementById('heatTitle').textContent = h.title;
+  document.getElementById('heatChips').innerHTML = h.states.map(chip).join('');
+  document.getElementById('heatNote').innerHTML = h.note;
+  const container = document.getElementById('mvHeat'); container.innerHTML='';
+  if(!h.rows.length){ container.innerHTML = `<div style="font-size:12.5px;color:var(--muted);padding:6px 0;">${esc(h.empty||'Not applicable')}</div>`; return; }
+  const colour = {}; h.states.forEach(s=>colour[s.v]=s);
+  const outer = document.createElement('div'); outer.className='mv-wrap';
+  const wrap = document.createElement('div'); wrap.className='mv-inner';
+  outer.appendChild(wrap);
+  const head = document.createElement('div'); head.className='mv-headrow';
+  const gw = k => Math.max(...h.rows.map(r=>r[k].length))*17-2;
+  head.innerHTML = `<div></div><div class="h" style="width:min(100%,${gw('b')}px)">Before</div><div class="h" style="width:min(100%,${gw('a')}px)">After</div>`;
+  wrap.appendChild(head);
+  h.rows.forEach(r=>{
+    const row = document.createElement('div'); row.className='mv-row';
+    const label = document.createElement('div'); label.className='mv-label'; label.textContent=r.label; label.title=r.label;
+    row.appendChild(label);
+    [['b','Before'],['a','After']].forEach(([k,lab])=>{
+      const holder = document.createElement('div'); holder.style.width=`min(100%,${r[k].length*17-2}px)`;
+      const grid = document.createElement('div'); grid.className='mv-grid'; grid.style.setProperty('--n', r[k].length);
+      r[k].forEach((s,i)=>{
+        const cell = document.createElement('div'); cell.className='mv-cell';
+        if(s>0 && colour[s]){ cell.style.background=colour[s].color; cell.style.borderColor=colour[s].border||colour[s].color; }
+        cell.title = `${r.label} · example ${i+1} · ${lab}: ` + (s>0 && colour[s] ? colour[s].label : h.off);
+        grid.appendChild(cell);
+      });
+      const pct = document.createElement('div'); pct.className='mv-pct'; pct.textContent = k==='b' ? r.pb : r.pa;
+      holder.appendChild(grid); holder.appendChild(pct);
+      row.appendChild(holder);
+    });
+    row.style.marginBottom='10px';
+    row.style.alignItems='start';
+    wrap.appendChild(row);
+  });
+  container.appendChild(outer);
+  const legend = document.createElement('div');
+  legend.style.cssText='display:flex;gap:14px;justify-content:center;margin-top:14px;font-size:11px;color:var(--muted);flex-wrap:wrap;';
+  legend.innerHTML = h.states.map(s=>`<span><span class="swatch" style="background:${s.color};border:1px solid ${s.border||s.color};display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px;"></span>${esc(s.label)}</span>`).join('') +
+    `<span><span class="swatch" style="background:#FFFFFF;border:1px solid #D6DCEA;display:inline-block;width:11px;height:11px;border-radius:0;margin-right:5px;vertical-align:-1px;"></span>${esc(h.off)}</span>`;
+  container.appendChild(legend);
+}
+
+// ================= Method comparison =================
+function drawCmp(){
+  const c = document.getElementById('cmp'); const d = D.comparison;
+  if(!d){ c.innerHTML = `<div class="muted-note" style="margin:0;font-size:12.5px;">${esc(D.cmp_note)}</div>`; return; }
+  const best=[];
+  d.metrics.forEach((m,j)=>{
+    const vals=d.rows.filter(x=>x.family!=='reference').map(x=>x.values[j]).filter(v=>v!==null);
+    if(!vals.length){ best.push(null); return; }
+    const dir=d.dirs[j]; let b;
+    if(dir==='max') b=Math.max(...vals); else if(dir==='min') b=Math.min(...vals);
+    else if(dir[0]==='target') b=vals.reduce((p,v)=>Math.abs(v-dir[1])<Math.abs(p-dir[1])?v:p);
+    else b=vals.reduce((p,v)=>Math.abs(v)<Math.abs(p)?v:p);
+    best.push(b);
+  });
+  const nm = d.rows.filter(x=>x.family!=='reference').length;
+  let h = `<div class="kpi-row">
+    <div class="kpi"><div class="val">${nm}</div><div class="lbl">methods compared</div></div>
+    <div class="kpi"><div class="val">${d.metrics.length}</div><div class="lbl">metrics</div></div>
+    <div class="kpi"><div class="val" style="font-size:13px">${esc(d.best)}</div><div class="lbl">selected (best-ranked ${esc(d.select_family.toLowerCase())})</div></div>
+    <div class="kpi"><div class="val" style="font-size:13px;color:var(--muted)">${esc(d.best_trad||'—')}</div><div class="lbl">best traditional (comparison only)</div></div></div>`;
+  h += `<div style="overflow-x:auto"><table class="method-table"><tr><th style="text-align:left">Method</th>${d.metrics.map((m,j)=>`<th>${esc(m)} ${d.arrows[j]}</th>`).join('')}<th>Mean rank ↓</th></tr>`;
+  d.rows.forEach(x=>{
+    const cls = x.method===d.best ? 'winner' : (x.family==='reference' ? 'ref' : '');
+    h += `<tr class="${cls}"><td class="m">${esc(x.method)}</td>` +
+         x.values.map((v,j)=>`<td class="${(cls!=='winner'&&x.family!=='reference'&&v!==null&&v===best[j])?'top':''}">${fmtVal(v)}</td>`).join('') +
+         `<td>${x.mean_rank===null?'–':x.mean_rank.toFixed(2)}</td></tr>`;
+  });
+  h += `</table></div><div class="mv-pct" style="text-align:left;margin-top:8px;font-size:11px;">All methods are ranked together on every metric (green = best value of that metric). Project rule: only <b>${esc(d.select_family)}</b> methods can be selected and applied; traditional methods are compared only. Reference rows give context and are not ranked.</div>`;
+  c.innerHTML = h;
+}
+
+// ================= wire up controls =================
+document.getElementById('plotType').addEventListener('change', renderGrids);
+document.getElementById('corrSet').addEventListener('change', drawCorr);
+document.getElementById('corrAllOpt').textContent = `All ${Math.max(D.corr.all.bv.length, D.corr.all.av.length)} Vars`;
+const qqVarSel = document.getElementById('qqVar');
+ALL_VARS.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; qqVarSel.appendChild(o); });
+qqVarSel.value=ALL_VARS[0];
+qqVarSel.addEventListener('change', drawQQ);
+
+renderGrids();
+drawQQ();
+drawCorr();
+drawMVHeat();
+drawCmp();
+</script>
+</body>
+</html>
