@@ -1,0 +1,3295 @@
+{
+  "stage": "preprocessing",
+  "dataset": "respiratory",
+  "title": "Encoding / domain shift",
+  "kind": "encoding_domain",
+  "states": {
+    "train": {
+      "default": {
+        "rows": 20150,
+        "numeric_features": 107,
+        "input_features": 112,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Not applicable",
+          "value": null,
+          "limit": 1,
+          "rule": "Any unseen category OR |numeric standardized mean shift| >0.5"
+        },
+        "after": {
+          "label": "Not applicable",
+          "value": null,
+          "limit": 1,
+          "rule": "Same shift remains after linear scaling; unknown categories are ignored"
+        },
+        "panels": [
+          {
+            "title": "Mean shift from source training after imputation",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Absolute standardized shift",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "y": [
+                  "pf_ratio_min",
+                  "inr_max",
+                  "inr_min",
+                  "lactate_max",
+                  "lactate_min",
+                  "alt_max",
+                  "alt_min",
+                  "ast_max",
+                  "ast_min",
+                  "bilirubin_max",
+                  "bilirubin_min",
+                  "albumin_max",
+                  "albumin_min",
+                  "base_excess_max",
+                  "base_excess_min",
+                  "fio2_max",
+                  "fio2_min",
+                  "paco2_max",
+                  "paco2_min",
+                  "pao2_max",
+                  "pao2_min",
+                  "ph_max",
+                  "ph_min",
+                  "lymphocytes_pct_max",
+                  "lymphocytes_pct_min",
+                  "rdw_max",
+                  "rdw_min",
+                  "platelets_max",
+                  "platelets_min",
+                  "wbc_max",
+                  "wbc_min",
+                  "hemoglobin_max",
+                  "hemoglobin_min",
+                  "magnesium_max",
+                  "magnesium_min",
+                  "calcium_max",
+                  "calcium_min",
+                  "glucose_max",
+                  "glucose_min",
+                  "creatinine_max",
+                  "creatinine_min",
+                  "bun_max",
+                  "bun_min",
+                  "anion_gap_max",
+                  "anion_gap_min",
+                  "bicarbonate_max",
+                  "bicarbonate_min",
+                  "chloride_max",
+                  "chloride_min",
+                  "potassium_max",
+                  "potassium_min",
+                  "sodium_max",
+                  "sodium_min",
+                  "nibp_map_max",
+                  "nibp_map_min",
+                  "nibp_map_mean",
+                  "nibp_dbp_max",
+                  "nibp_dbp_min",
+                  "nibp_dbp_mean",
+                  "nibp_sbp_max",
+                  "nibp_sbp_min",
+                  "nibp_sbp_mean",
+                  "art_map_max",
+                  "art_map_min",
+                  "art_map_mean",
+                  "art_dbp_max",
+                  "art_dbp_min",
+                  "art_dbp_mean",
+                  "art_sbp_max",
+                  "art_sbp_min",
+                  "art_sbp_mean",
+                  "temperature_c_max",
+                  "temperature_c_min",
+                  "temperature_c_mean",
+                  "spo2_max",
+                  "spo2_min",
+                  "spo2_mean",
+                  "resp_rate_max",
+                  "resp_rate_min",
+                  "resp_rate_mean",
+                  "heart_rate_max",
+                  "heart_rate_min",
+                  "heart_rate_mean",
+                  "comorb_diabetes",
+                  "icu_readmission",
+                  "comorb_cirrhosis",
+                  "comorb_immunosuppression",
+                  "comorb_leukemia",
+                  "comorb_metastatic_cancer",
+                  "comorb_lymphoma",
+                  "comorb_hepatic_failure",
+                  "comorb_aids",
+                  "urine_output_day1_ml",
+                  "gcs_unable_due_to_meds",
+                  "gcs_verbal",
+                  "gcs_motor",
+                  "gcs_eyes",
+                  "apache_day1_dialysis",
+                  "apache_day1_ventilated",
+                  "apache_day1_intubated",
+                  "unit_visit_number",
+                  "pre_icu_hospital_hours",
+                  "admission_bmi",
+                  "admission_weight_kg",
+                  "male",
+                  "age_over89",
+                  "age"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Absolute standardized mean shift"
+                },
+                "automargin": true
+              },
+              "height": 2748
+            }
+          },
+          {
+            "title": "Unseen categorical values",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Unseen rows",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "unit_type",
+                  "unit_admit_source",
+                  "hospital_admit_source",
+                  "unit_stay_type",
+                  "admission_dx_by24h"
+                ],
+                "y": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Partition domains",
+            "table": [
+              {
+                "domain": "420",
+                "rows": 898
+              },
+              {
+                "domain": "73",
+                "rows": 539
+              },
+              {
+                "domain": "264",
+                "rows": 521
+              },
+              {
+                "domain": "338",
+                "rows": 517
+              },
+              {
+                "domain": "243",
+                "rows": 446
+              },
+              {
+                "domain": "208",
+                "rows": 442
+              },
+              {
+                "domain": "188",
+                "rows": 426
+              },
+              {
+                "domain": "411",
+                "rows": 423
+              },
+              {
+                "domain": "443",
+                "rows": 422
+              },
+              {
+                "domain": "122",
+                "rows": 370
+              },
+              {
+                "domain": "176",
+                "rows": 366
+              },
+              {
+                "domain": "300",
+                "rows": 357
+              },
+              {
+                "domain": "167",
+                "rows": 349
+              },
+              {
+                "domain": "199",
+                "rows": 330
+              },
+              {
+                "domain": "252",
+                "rows": 310
+              },
+              {
+                "domain": "458",
+                "rows": 280
+              },
+              {
+                "domain": "345",
+                "rows": 276
+              },
+              {
+                "domain": "416",
+                "rows": 247
+              },
+              {
+                "domain": "148",
+                "rows": 239
+              },
+              {
+                "domain": "281",
+                "rows": 239
+              },
+              {
+                "domain": "417",
+                "rows": 237
+              },
+              {
+                "domain": "157",
+                "rows": 225
+              },
+              {
+                "domain": "449",
+                "rows": 223
+              },
+              {
+                "domain": "165",
+                "rows": 204
+              },
+              {
+                "domain": "283",
+                "rows": 200
+              },
+              {
+                "domain": "142",
+                "rows": 199
+              },
+              {
+                "domain": "307",
+                "rows": 197
+              },
+              {
+                "domain": "331",
+                "rows": 196
+              },
+              {
+                "domain": "400",
+                "rows": 189
+              },
+              {
+                "domain": "365",
+                "rows": 184
+              },
+              {
+                "domain": "183",
+                "rows": 180
+              },
+              {
+                "domain": "336",
+                "rows": 180
+              },
+              {
+                "domain": "310",
+                "rows": 175
+              },
+              {
+                "domain": "141",
+                "rows": 173
+              },
+              {
+                "domain": "244",
+                "rows": 173
+              },
+              {
+                "domain": "110",
+                "rows": 172
+              },
+              {
+                "domain": "154",
+                "rows": 168
+              },
+              {
+                "domain": "390",
+                "rows": 168
+              },
+              {
+                "domain": "277",
+                "rows": 156
+              },
+              {
+                "domain": "440",
+                "rows": 156
+              },
+              {
+                "domain": "248",
+                "rows": 150
+              },
+              {
+                "domain": "171",
+                "rows": 148
+              },
+              {
+                "domain": "444",
+                "rows": 147
+              },
+              {
+                "domain": "394",
+                "rows": 144
+              },
+              {
+                "domain": "79",
+                "rows": 140
+              },
+              {
+                "domain": "272",
+                "rows": 135
+              },
+              {
+                "domain": "226",
+                "rows": 132
+              },
+              {
+                "domain": "280",
+                "rows": 132
+              },
+              {
+                "domain": "391",
+                "rows": 131
+              },
+              {
+                "domain": "217",
+                "rows": 130
+              },
+              {
+                "domain": "421",
+                "rows": 129
+              },
+              {
+                "domain": "227",
+                "rows": 126
+              },
+              {
+                "domain": "318",
+                "rows": 119
+              },
+              {
+                "domain": "392",
+                "rows": 116
+              },
+              {
+                "domain": "435",
+                "rows": 116
+              },
+              {
+                "domain": "184",
+                "rows": 111
+              },
+              {
+                "domain": "452",
+                "rows": 110
+              },
+              {
+                "domain": "206",
+                "rows": 107
+              },
+              {
+                "domain": "197",
+                "rows": 105
+              },
+              {
+                "domain": "181",
+                "rows": 99
+              },
+              {
+                "domain": "301",
+                "rows": 96
+              },
+              {
+                "domain": "66",
+                "rows": 92
+              },
+              {
+                "domain": "388",
+                "rows": 92
+              },
+              {
+                "domain": "259",
+                "rows": 91
+              },
+              {
+                "domain": "459",
+                "rows": 89
+              },
+              {
+                "domain": "195",
+                "rows": 88
+              },
+              {
+                "domain": "245",
+                "rows": 88
+              },
+              {
+                "domain": "382",
+                "rows": 88
+              },
+              {
+                "domain": "202",
+                "rows": 87
+              },
+              {
+                "domain": "353",
+                "rows": 87
+              },
+              {
+                "domain": "279",
+                "rows": 86
+              },
+              {
+                "domain": "144",
+                "rows": 85
+              },
+              {
+                "domain": "271",
+                "rows": 85
+              },
+              {
+                "domain": "256",
+                "rows": 84
+              },
+              {
+                "domain": "143",
+                "rows": 83
+              },
+              {
+                "domain": "419",
+                "rows": 83
+              },
+              {
+                "domain": "215",
+                "rows": 80
+              },
+              {
+                "domain": "384",
+                "rows": 78
+              },
+              {
+                "domain": "413",
+                "rows": 78
+              },
+              {
+                "domain": "146",
+                "rows": 77
+              },
+              {
+                "domain": "268",
+                "rows": 77
+              },
+              {
+                "domain": "396",
+                "rows": 77
+              },
+              {
+                "domain": "403",
+                "rows": 76
+              },
+              {
+                "domain": "155",
+                "rows": 75
+              },
+              {
+                "domain": "140",
+                "rows": 74
+              },
+              {
+                "domain": "337",
+                "rows": 74
+              },
+              {
+                "domain": "357",
+                "rows": 74
+              },
+              {
+                "domain": "63",
+                "rows": 73
+              },
+              {
+                "domain": "282",
+                "rows": 73
+              },
+              {
+                "domain": "200",
+                "rows": 72
+              },
+              {
+                "domain": "131",
+                "rows": 68
+              },
+              {
+                "domain": "220",
+                "rows": 67
+              },
+              {
+                "domain": "152",
+                "rows": 66
+              },
+              {
+                "domain": "175",
+                "rows": 66
+              },
+              {
+                "domain": "424",
+                "rows": 66
+              },
+              {
+                "domain": "328",
+                "rows": 65
+              },
+              {
+                "domain": "71",
+                "rows": 64
+              },
+              {
+                "domain": "407",
+                "rows": 64
+              },
+              {
+                "domain": "253",
+                "rows": 63
+              },
+              {
+                "domain": "210",
+                "rows": 61
+              },
+              {
+                "domain": "404",
+                "rows": 61
+              },
+              {
+                "domain": "92",
+                "rows": 59
+              },
+              {
+                "domain": "269",
+                "rows": 59
+              },
+              {
+                "domain": "422",
+                "rows": 59
+              },
+              {
+                "domain": "402",
+                "rows": 58
+              },
+              {
+                "domain": "258",
+                "rows": 56
+              },
+              {
+                "domain": "386",
+                "rows": 56
+              },
+              {
+                "domain": "112",
+                "rows": 53
+              },
+              {
+                "domain": "273",
+                "rows": 53
+              },
+              {
+                "domain": "405",
+                "rows": 52
+              },
+              {
+                "domain": "275",
+                "rows": 50
+              },
+              {
+                "domain": "358",
+                "rows": 50
+              },
+              {
+                "domain": "429",
+                "rows": 50
+              },
+              {
+                "domain": "434",
+                "rows": 50
+              },
+              {
+                "domain": "198",
+                "rows": 49
+              },
+              {
+                "domain": "389",
+                "rows": 49
+              },
+              {
+                "domain": "445",
+                "rows": 49
+              },
+              {
+                "domain": "180",
+                "rows": 47
+              },
+              {
+                "domain": "249",
+                "rows": 47
+              },
+              {
+                "domain": "67",
+                "rows": 46
+              },
+              {
+                "domain": "182",
+                "rows": 46
+              },
+              {
+                "domain": "381",
+                "rows": 46
+              },
+              {
+                "domain": "398",
+                "rows": 45
+              },
+              {
+                "domain": "436",
+                "rows": 44
+              },
+              {
+                "domain": "125",
+                "rows": 43
+              },
+              {
+                "domain": "387",
+                "rows": 42
+              },
+              {
+                "domain": "312",
+                "rows": 41
+              },
+              {
+                "domain": "399",
+                "rows": 41
+              },
+              {
+                "domain": "194",
+                "rows": 40
+              },
+              {
+                "domain": "397",
+                "rows": 40
+              },
+              {
+                "domain": "224",
+                "rows": 39
+              },
+              {
+                "domain": "254",
+                "rows": 39
+              },
+              {
+                "domain": "425",
+                "rows": 39
+              },
+              {
+                "domain": "69",
+                "rows": 38
+              },
+              {
+                "domain": "204",
+                "rows": 38
+              },
+              {
+                "domain": "250",
+                "rows": 38
+              },
+              {
+                "domain": "59",
+                "rows": 37
+              },
+              {
+                "domain": "60",
+                "rows": 37
+              },
+              {
+                "domain": "428",
+                "rows": 37
+              },
+              {
+                "domain": "408",
+                "rows": 36
+              },
+              {
+                "domain": "412",
+                "rows": 36
+              },
+              {
+                "domain": "439",
+                "rows": 36
+              },
+              {
+                "domain": "108",
+                "rows": 33
+              },
+              {
+                "domain": "364",
+                "rows": 33
+              },
+              {
+                "domain": "251",
+                "rows": 32
+              },
+              {
+                "domain": "360",
+                "rows": 31
+              },
+              {
+                "domain": "196",
+                "rows": 30
+              },
+              {
+                "domain": "438",
+                "rows": 30
+              },
+              {
+                "domain": "266",
+                "rows": 29
+              },
+              {
+                "domain": "95",
+                "rows": 28
+              },
+              {
+                "domain": "68",
+                "rows": 27
+              },
+              {
+                "domain": "56",
+                "rows": 26
+              },
+              {
+                "domain": "123",
+                "rows": 26
+              },
+              {
+                "domain": "207",
+                "rows": 26
+              },
+              {
+                "domain": "383",
+                "rows": 23
+              },
+              {
+                "domain": "414",
+                "rows": 23
+              },
+              {
+                "domain": "164",
+                "rows": 21
+              },
+              {
+                "domain": "205",
+                "rows": 21
+              },
+              {
+                "domain": "433",
+                "rows": 21
+              },
+              {
+                "domain": "303",
+                "rows": 20
+              },
+              {
+                "domain": "138",
+                "rows": 19
+              },
+              {
+                "domain": "158",
+                "rows": 19
+              },
+              {
+                "domain": "262",
+                "rows": 18
+              },
+              {
+                "domain": "342",
+                "rows": 16
+              },
+              {
+                "domain": "58",
+                "rows": 15
+              },
+              {
+                "domain": "120",
+                "rows": 15
+              },
+              {
+                "domain": "355",
+                "rows": 15
+              },
+              {
+                "domain": "356",
+                "rows": 15
+              },
+              {
+                "domain": "201",
+                "rows": 14
+              },
+              {
+                "domain": "209",
+                "rows": 14
+              },
+              {
+                "domain": "423",
+                "rows": 14
+              },
+              {
+                "domain": "174",
+                "rows": 13
+              },
+              {
+                "domain": "133",
+                "rows": 12
+              },
+              {
+                "domain": "267",
+                "rows": 12
+              },
+              {
+                "domain": "115",
+                "rows": 11
+              },
+              {
+                "domain": "203",
+                "rows": 10
+              },
+              {
+                "domain": "437",
+                "rows": 10
+              },
+              {
+                "domain": "61",
+                "rows": 9
+              },
+              {
+                "domain": "85",
+                "rows": 9
+              },
+              {
+                "domain": "393",
+                "rows": 9
+              },
+              {
+                "domain": "84",
+                "rows": 8
+              },
+              {
+                "domain": "102",
+                "rows": 8
+              },
+              {
+                "domain": "263",
+                "rows": 8
+              },
+              {
+                "domain": "350",
+                "rows": 8
+              },
+              {
+                "domain": "352",
+                "rows": 8
+              },
+              {
+                "domain": "83",
+                "rows": 7
+              },
+              {
+                "domain": "93",
+                "rows": 7
+              },
+              {
+                "domain": "363",
+                "rows": 5
+              },
+              {
+                "domain": "91",
+                "rows": 4
+              },
+              {
+                "domain": "135",
+                "rows": 4
+              },
+              {
+                "domain": "323",
+                "rows": 3
+              },
+              {
+                "domain": "94",
+                "rows": 2
+              },
+              {
+                "domain": "86",
+                "rows": 2
+              },
+              {
+                "domain": "151",
+                "rows": 1
+              },
+              {
+                "domain": "246",
+                "rows": 1
+              },
+              {
+                "domain": "265",
+                "rows": 1
+              },
+              {
+                "domain": "351",
+                "rows": 1
+              },
+              {
+                "domain": "447",
+                "rows": 1
+              }
+            ]
+          }
+        ],
+        "note": "Unknown categories use the saved encoder handle_unknown=ignore. Linear scaling is not domain adaptation. States/regions are not hospitals. Training self-comparison is not an evaluation of domain shift."
+      }
+    },
+    "validation": {
+      "default": {
+        "rows": 4360,
+        "numeric_features": 107,
+        "input_features": 112,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Detected by rule",
+          "value": 1.01,
+          "limit": 1,
+          "rule": "Any unseen category OR |numeric standardized mean shift| >0.5"
+        },
+        "after": {
+          "label": "Detected by rule",
+          "value": 1.01,
+          "limit": 1,
+          "rule": "Same shift remains after linear scaling; unknown categories are ignored"
+        },
+        "panels": [
+          {
+            "title": "Mean shift from source training after imputation",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Absolute standardized shift",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.053137690065695055,
+                  0.050324556737131564,
+                  0.0467884888322004,
+                  0.04534515580923398,
+                  0.04430171361015419,
+                  0.043998189301665214,
+                  0.041191359705041015,
+                  0.04023871202480654,
+                  0.03854386383867065,
+                  0.03740796861356521,
+                  0.037029387345242644,
+                  0.03652975736195913,
+                  0.03515155618050899,
+                  0.03315505643065983,
+                  0.03292365046996198,
+                  0.0323253279401765,
+                  0.03208351593433522,
+                  0.031804106439915374,
+                  0.03047167189039466,
+                  0.03037801625110132,
+                  0.029540680089991486,
+                  0.029150313613877737,
+                  0.026685414753715383,
+                  0.02436903373828809,
+                  0.02394410282739653,
+                  0.02374384041776023,
+                  0.023509722351275953,
+                  0.02347145957953769,
+                  0.023094984272504518,
+                  0.022043253205967697,
+                  0.02147227068030652,
+                  0.020784655865061147,
+                  0.01929968452391636,
+                  0.01904113191970014,
+                  0.018311763838438057,
+                  0.01820795048830345,
+                  0.0178797191665202,
+                  0.017808089324013163,
+                  0.017090305721005946,
+                  0.016582793644904295,
+                  0.016079946359398297,
+                  0.015854993291677538,
+                  0.015616606736019237,
+                  0.015514306546604729,
+                  0.015190938067238355,
+                  0.015167344435910925,
+                  0.014947944220477927,
+                  0.014740791945002775,
+                  0.014613604319160926,
+                  0.01449262058815462,
+                  0.014381924189405745,
+                  0.013051503694436611,
+                  0.012990400407659114,
+                  0.012981625210453129,
+                  0.012735334413557758,
+                  0.012729353613205006,
+                  0.01238231603289314,
+                  0.012300320711880275,
+                  0.012221608071598803,
+                  0.012142033062560996,
+                  0.01179660788936368,
+                  0.01170677322840021,
+                  0.011536654997138022,
+                  0.01153027482710391,
+                  0.011355940874550009,
+                  0.01099136756882643,
+                  0.010860296787337064,
+                  0.010548476791305697,
+                  0.010544446490196242,
+                  0.010095251551684658,
+                  0.00941573164912083,
+                  0.0092739713567014,
+                  0.009057851675763794,
+                  0.009048019750553872,
+                  0.008726236864679314,
+                  0.008439670365748412,
+                  0.008304119342771707,
+                  0.008145039248371178,
+                  0.007732149375861144,
+                  0.007683546709377241,
+                  0.007360136389514555,
+                  0.006964403723585992,
+                  0.0068199314868030965,
+                  0.006418453749939695,
+                  0.006152394771675715,
+                  0.0059460173233197525,
+                  0.005706869221677713,
+                  0.005282766248196616,
+                  0.00506321603372407,
+                  0.00504018525228659,
+                  0.0048406561976914305,
+                  0.004676981427563936,
+                  0.004647079022752707,
+                  0.004017438366307275,
+                  0.003937551905889138,
+                  0.003452118908750905,
+                  0.003391709864956551,
+                  0.003081852577997447,
+                  0.0027917181638307045,
+                  0.0024240314209130766,
+                  0.002173415573551951,
+                  0.002150753568482923,
+                  0.0020707692504887,
+                  0.0018289643819898228,
+                  0.0011374789732635875,
+                  0.00024945465311014396,
+                  0.000049110453844868244
+                ],
+                "y": [
+                  "comorb_metastatic_cancer",
+                  "nibp_dbp_max",
+                  "rdw_max",
+                  "rdw_min",
+                  "nibp_sbp_max",
+                  "nibp_dbp_mean",
+                  "hemoglobin_min",
+                  "comorb_diabetes",
+                  "comorb_lymphoma",
+                  "nibp_map_max",
+                  "pao2_min",
+                  "temperature_c_min",
+                  "ast_min",
+                  "urine_output_day1_ml",
+                  "albumin_min",
+                  "calcium_max",
+                  "nibp_sbp_mean",
+                  "calcium_min",
+                  "apache_day1_dialysis",
+                  "nibp_map_mean",
+                  "hemoglobin_max",
+                  "art_map_max",
+                  "art_dbp_min",
+                  "gcs_verbal",
+                  "comorb_immunosuppression",
+                  "nibp_dbp_min",
+                  "albumin_max",
+                  "art_dbp_mean",
+                  "inr_max",
+                  "male",
+                  "icu_readmission",
+                  "anion_gap_max",
+                  "inr_min",
+                  "fio2_max",
+                  "sodium_min",
+                  "admission_weight_kg",
+                  "comorb_hepatic_failure",
+                  "sodium_max",
+                  "heart_rate_mean",
+                  "creatinine_max",
+                  "gcs_motor",
+                  "alt_min",
+                  "resp_rate_mean",
+                  "lymphocytes_pct_min",
+                  "age_over89",
+                  "pao2_max",
+                  "apache_day1_ventilated",
+                  "spo2_mean",
+                  "art_map_min",
+                  "resp_rate_min",
+                  "creatinine_min",
+                  "base_excess_min",
+                  "comorb_cirrhosis",
+                  "apache_day1_intubated",
+                  "glucose_min",
+                  "chloride_max",
+                  "temperature_c_max",
+                  "fio2_min",
+                  "spo2_max",
+                  "bilirubin_min",
+                  "chloride_min",
+                  "magnesium_max",
+                  "anion_gap_min",
+                  "pre_icu_hospital_hours",
+                  "art_sbp_mean",
+                  "lymphocytes_pct_max",
+                  "age",
+                  "resp_rate_max",
+                  "ast_max",
+                  "platelets_min",
+                  "bilirubin_max",
+                  "paco2_min",
+                  "nibp_map_min",
+                  "potassium_max",
+                  "alt_max",
+                  "potassium_min",
+                  "pf_ratio_min",
+                  "wbc_max",
+                  "lactate_min",
+                  "comorb_leukemia",
+                  "base_excess_max",
+                  "art_map_mean",
+                  "art_dbp_max",
+                  "bun_max",
+                  "art_sbp_min",
+                  "glucose_max",
+                  "heart_rate_min",
+                  "magnesium_min",
+                  "heart_rate_max",
+                  "bicarbonate_max",
+                  "nibp_sbp_min",
+                  "art_sbp_max",
+                  "wbc_min",
+                  "spo2_min",
+                  "admission_bmi",
+                  "lactate_max",
+                  "gcs_unable_due_to_meds",
+                  "paco2_max",
+                  "ph_min",
+                  "platelets_max",
+                  "gcs_eyes",
+                  "bicarbonate_min",
+                  "bun_min",
+                  "ph_max",
+                  "comorb_aids",
+                  "temperature_c_mean",
+                  "unit_visit_number"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Absolute standardized mean shift"
+                },
+                "automargin": true
+              },
+              "height": 2748
+            }
+          },
+          {
+            "title": "Unseen categorical values",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Unseen rows",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "unit_type",
+                  "unit_admit_source",
+                  "hospital_admit_source",
+                  "unit_stay_type",
+                  "admission_dx_by24h"
+                ],
+                "y": [
+                  0,
+                  3,
+                  1,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Partition domains",
+            "table": [
+              {
+                "domain": "420",
+                "rows": 150
+              },
+              {
+                "domain": "338",
+                "rows": 119
+              },
+              {
+                "domain": "73",
+                "rows": 117
+              },
+              {
+                "domain": "300",
+                "rows": 97
+              },
+              {
+                "domain": "122",
+                "rows": 95
+              },
+              {
+                "domain": "208",
+                "rows": 95
+              },
+              {
+                "domain": "264",
+                "rows": 94
+              },
+              {
+                "domain": "443",
+                "rows": 91
+              },
+              {
+                "domain": "188",
+                "rows": 85
+              },
+              {
+                "domain": "199",
+                "rows": 80
+              },
+              {
+                "domain": "243",
+                "rows": 80
+              },
+              {
+                "domain": "176",
+                "rows": 75
+              },
+              {
+                "domain": "252",
+                "rows": 72
+              },
+              {
+                "domain": "411",
+                "rows": 71
+              },
+              {
+                "domain": "148",
+                "rows": 64
+              },
+              {
+                "domain": "167",
+                "rows": 62
+              },
+              {
+                "domain": "458",
+                "rows": 61
+              },
+              {
+                "domain": "417",
+                "rows": 60
+              },
+              {
+                "domain": "416",
+                "rows": 56
+              },
+              {
+                "domain": "331",
+                "rows": 55
+              },
+              {
+                "domain": "171",
+                "rows": 53
+              },
+              {
+                "domain": "157",
+                "rows": 52
+              },
+              {
+                "domain": "154",
+                "rows": 49
+              },
+              {
+                "domain": "281",
+                "rows": 48
+              },
+              {
+                "domain": "283",
+                "rows": 47
+              },
+              {
+                "domain": "183",
+                "rows": 46
+              },
+              {
+                "domain": "449",
+                "rows": 46
+              },
+              {
+                "domain": "244",
+                "rows": 45
+              },
+              {
+                "domain": "307",
+                "rows": 45
+              },
+              {
+                "domain": "79",
+                "rows": 43
+              },
+              {
+                "domain": "365",
+                "rows": 40
+              },
+              {
+                "domain": "440",
+                "rows": 39
+              },
+              {
+                "domain": "272",
+                "rows": 37
+              },
+              {
+                "domain": "336",
+                "rows": 37
+              },
+              {
+                "domain": "227",
+                "rows": 36
+              },
+              {
+                "domain": "110",
+                "rows": 35
+              },
+              {
+                "domain": "217",
+                "rows": 35
+              },
+              {
+                "domain": "165",
+                "rows": 34
+              },
+              {
+                "domain": "277",
+                "rows": 34
+              },
+              {
+                "domain": "141",
+                "rows": 31
+              },
+              {
+                "domain": "345",
+                "rows": 31
+              },
+              {
+                "domain": "391",
+                "rows": 31
+              },
+              {
+                "domain": "390",
+                "rows": 31
+              },
+              {
+                "domain": "444",
+                "rows": 31
+              },
+              {
+                "domain": "197",
+                "rows": 30
+              },
+              {
+                "domain": "248",
+                "rows": 30
+              },
+              {
+                "domain": "318",
+                "rows": 30
+              },
+              {
+                "domain": "394",
+                "rows": 30
+              },
+              {
+                "domain": "259",
+                "rows": 29
+              },
+              {
+                "domain": "386",
+                "rows": 29
+              },
+              {
+                "domain": "268",
+                "rows": 27
+              },
+              {
+                "domain": "310",
+                "rows": 27
+              },
+              {
+                "domain": "142",
+                "rows": 26
+              },
+              {
+                "domain": "226",
+                "rows": 25
+              },
+              {
+                "domain": "392",
+                "rows": 25
+              },
+              {
+                "domain": "396",
+                "rows": 25
+              },
+              {
+                "domain": "384",
+                "rows": 25
+              },
+              {
+                "domain": "421",
+                "rows": 25
+              },
+              {
+                "domain": "280",
+                "rows": 24
+              },
+              {
+                "domain": "388",
+                "rows": 24
+              },
+              {
+                "domain": "435",
+                "rows": 24
+              },
+              {
+                "domain": "184",
+                "rows": 23
+              },
+              {
+                "domain": "206",
+                "rows": 23
+              },
+              {
+                "domain": "400",
+                "rows": 23
+              },
+              {
+                "domain": "181",
+                "rows": 21
+              },
+              {
+                "domain": "146",
+                "rows": 20
+              },
+              {
+                "domain": "271",
+                "rows": 20
+              },
+              {
+                "domain": "328",
+                "rows": 20
+              },
+              {
+                "domain": "398",
+                "rows": 20
+              },
+              {
+                "domain": "143",
+                "rows": 19
+              },
+              {
+                "domain": "195",
+                "rows": 19
+              },
+              {
+                "domain": "224",
+                "rows": 19
+              },
+              {
+                "domain": "301",
+                "rows": 19
+              },
+              {
+                "domain": "459",
+                "rows": 19
+              },
+              {
+                "domain": "245",
+                "rows": 18
+              },
+              {
+                "domain": "253",
+                "rows": 18
+              },
+              {
+                "domain": "256",
+                "rows": 18
+              },
+              {
+                "domain": "275",
+                "rows": 18
+              },
+              {
+                "domain": "269",
+                "rows": 18
+              },
+              {
+                "domain": "413",
+                "rows": 18
+              },
+              {
+                "domain": "312",
+                "rows": 17
+              },
+              {
+                "domain": "353",
+                "rows": 17
+              },
+              {
+                "domain": "387",
+                "rows": 17
+              },
+              {
+                "domain": "452",
+                "rows": 17
+              },
+              {
+                "domain": "66",
+                "rows": 16
+              },
+              {
+                "domain": "131",
+                "rows": 16
+              },
+              {
+                "domain": "144",
+                "rows": 16
+              },
+              {
+                "domain": "140",
+                "rows": 16
+              },
+              {
+                "domain": "202",
+                "rows": 16
+              },
+              {
+                "domain": "210",
+                "rows": 16
+              },
+              {
+                "domain": "258",
+                "rows": 16
+              },
+              {
+                "domain": "429",
+                "rows": 16
+              },
+              {
+                "domain": "436",
+                "rows": 16
+              },
+              {
+                "domain": "71",
+                "rows": 15
+              },
+              {
+                "domain": "59",
+                "rows": 15
+              },
+              {
+                "domain": "63",
+                "rows": 15
+              },
+              {
+                "domain": "220",
+                "rows": 15
+              },
+              {
+                "domain": "382",
+                "rows": 15
+              },
+              {
+                "domain": "402",
+                "rows": 15
+              },
+              {
+                "domain": "405",
+                "rows": 15
+              },
+              {
+                "domain": "424",
+                "rows": 15
+              },
+              {
+                "domain": "403",
+                "rows": 14
+              },
+              {
+                "domain": "175",
+                "rows": 13
+              },
+              {
+                "domain": "152",
+                "rows": 13
+              },
+              {
+                "domain": "282",
+                "rows": 13
+              },
+              {
+                "domain": "357",
+                "rows": 13
+              },
+              {
+                "domain": "407",
+                "rows": 13
+              },
+              {
+                "domain": "404",
+                "rows": 13
+              },
+              {
+                "domain": "434",
+                "rows": 13
+              },
+              {
+                "domain": "112",
+                "rows": 12
+              },
+              {
+                "domain": "155",
+                "rows": 12
+              },
+              {
+                "domain": "204",
+                "rows": 12
+              },
+              {
+                "domain": "215",
+                "rows": 12
+              },
+              {
+                "domain": "337",
+                "rows": 12
+              },
+              {
+                "domain": "419",
+                "rows": 12
+              },
+              {
+                "domain": "67",
+                "rows": 11
+              },
+              {
+                "domain": "92",
+                "rows": 11
+              },
+              {
+                "domain": "180",
+                "rows": 11
+              },
+              {
+                "domain": "194",
+                "rows": 11
+              },
+              {
+                "domain": "198",
+                "rows": 11
+              },
+              {
+                "domain": "68",
+                "rows": 10
+              },
+              {
+                "domain": "200",
+                "rows": 10
+              },
+              {
+                "domain": "397",
+                "rows": 10
+              },
+              {
+                "domain": "60",
+                "rows": 9
+              },
+              {
+                "domain": "108",
+                "rows": 9
+              },
+              {
+                "domain": "158",
+                "rows": 9
+              },
+              {
+                "domain": "266",
+                "rows": 9
+              },
+              {
+                "domain": "422",
+                "rows": 9
+              },
+              {
+                "domain": "428",
+                "rows": 9
+              },
+              {
+                "domain": "439",
+                "rows": 9
+              },
+              {
+                "domain": "182",
+                "rows": 8
+              },
+              {
+                "domain": "196",
+                "rows": 8
+              },
+              {
+                "domain": "205",
+                "rows": 8
+              },
+              {
+                "domain": "207",
+                "rows": 8
+              },
+              {
+                "domain": "273",
+                "rows": 8
+              },
+              {
+                "domain": "360",
+                "rows": 8
+              },
+              {
+                "domain": "358",
+                "rows": 8
+              },
+              {
+                "domain": "433",
+                "rows": 8
+              },
+              {
+                "domain": "438",
+                "rows": 8
+              },
+              {
+                "domain": "56",
+                "rows": 7
+              },
+              {
+                "domain": "381",
+                "rows": 7
+              },
+              {
+                "domain": "123",
+                "rows": 6
+              },
+              {
+                "domain": "164",
+                "rows": 6
+              },
+              {
+                "domain": "203",
+                "rows": 6
+              },
+              {
+                "domain": "364",
+                "rows": 6
+              },
+              {
+                "domain": "399",
+                "rows": 6
+              },
+              {
+                "domain": "125",
+                "rows": 5
+              },
+              {
+                "domain": "249",
+                "rows": 5
+              },
+              {
+                "domain": "250",
+                "rows": 5
+              },
+              {
+                "domain": "254",
+                "rows": 5
+              },
+              {
+                "domain": "279",
+                "rows": 5
+              },
+              {
+                "domain": "389",
+                "rows": 5
+              },
+              {
+                "domain": "425",
+                "rows": 5
+              },
+              {
+                "domain": "445",
+                "rows": 5
+              },
+              {
+                "domain": "58",
+                "rows": 4
+              },
+              {
+                "domain": "69",
+                "rows": 4
+              },
+              {
+                "domain": "85",
+                "rows": 4
+              },
+              {
+                "domain": "120",
+                "rows": 4
+              },
+              {
+                "domain": "342",
+                "rows": 4
+              },
+              {
+                "domain": "408",
+                "rows": 4
+              },
+              {
+                "domain": "393",
+                "rows": 4
+              },
+              {
+                "domain": "383",
+                "rows": 4
+              },
+              {
+                "domain": "437",
+                "rows": 4
+              },
+              {
+                "domain": "95",
+                "rows": 3
+              },
+              {
+                "domain": "251",
+                "rows": 3
+              },
+              {
+                "domain": "262",
+                "rows": 3
+              },
+              {
+                "domain": "267",
+                "rows": 3
+              },
+              {
+                "domain": "412",
+                "rows": 3
+              },
+              {
+                "domain": "414",
+                "rows": 3
+              },
+              {
+                "domain": "102",
+                "rows": 2
+              },
+              {
+                "domain": "84",
+                "rows": 2
+              },
+              {
+                "domain": "133",
+                "rows": 2
+              },
+              {
+                "domain": "174",
+                "rows": 2
+              },
+              {
+                "domain": "201",
+                "rows": 2
+              },
+              {
+                "domain": "209",
+                "rows": 2
+              },
+              {
+                "domain": "212",
+                "rows": 2
+              },
+              {
+                "domain": "303",
+                "rows": 2
+              },
+              {
+                "domain": "352",
+                "rows": 2
+              },
+              {
+                "domain": "356",
+                "rows": 2
+              },
+              {
+                "domain": "355",
+                "rows": 2
+              },
+              {
+                "domain": "423",
+                "rows": 2
+              },
+              {
+                "domain": "86",
+                "rows": 1
+              },
+              {
+                "domain": "138",
+                "rows": 1
+              },
+              {
+                "domain": "115",
+                "rows": 1
+              },
+              {
+                "domain": "263",
+                "rows": 1
+              },
+              {
+                "domain": "323",
+                "rows": 1
+              },
+              {
+                "domain": "363",
+                "rows": 1
+              }
+            ]
+          }
+        ],
+        "note": "Unknown categories use the saved encoder handle_unknown=ignore. Linear scaling is not domain adaptation. States/regions are not hospitals. Training self-comparison is not an evaluation of domain shift."
+      }
+    },
+    "test": {
+      "default": {
+        "rows": 4332,
+        "numeric_features": 107,
+        "input_features": 112,
+        "variables": {},
+        "before_label": "Model-ready (before)",
+        "after_label": "Imputed, original units (after)",
+        "before": {
+          "label": "Not detected by rule",
+          "value": 0.10976273437723502,
+          "limit": 1,
+          "rule": "Any unseen category OR |numeric standardized mean shift| >0.5"
+        },
+        "after": {
+          "label": "Not detected by rule",
+          "value": 0.10976273437723502,
+          "limit": 1,
+          "rule": "Same shift remains after linear scaling; unknown categories are ignored"
+        },
+        "panels": [
+          {
+            "title": "Mean shift from source training after imputation",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Absolute standardized shift",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  0.05488136718861751,
+                  0.04438177154516608,
+                  0.04426920533298586,
+                  0.04327042293871264,
+                  0.04110785506415086,
+                  0.04016078910955269,
+                  0.03668028018418161,
+                  0.03588300063746121,
+                  0.03539714073030082,
+                  0.03464568119640698,
+                  0.033473597154080506,
+                  0.03266064580669284,
+                  0.032346476641815045,
+                  0.03164083357051622,
+                  0.03153413025979526,
+                  0.03145187454909404,
+                  0.030791342855735124,
+                  0.02811587762021769,
+                  0.028110869436937636,
+                  0.027723006118324466,
+                  0.02724473910806347,
+                  0.02659700184781545,
+                  0.02628362904407955,
+                  0.025963084241141954,
+                  0.024490976748710154,
+                  0.02426554551247674,
+                  0.02426452327128575,
+                  0.02382224521964597,
+                  0.023778934186467454,
+                  0.023748589198304023,
+                  0.021981060236866766,
+                  0.021774166560686963,
+                  0.020984953191749672,
+                  0.020289191016230723,
+                  0.019614745269386835,
+                  0.019596499623752883,
+                  0.018972188985715645,
+                  0.01782521359138781,
+                  0.016811945020547555,
+                  0.016481235098349485,
+                  0.016133927141486967,
+                  0.016058814515800508,
+                  0.01597407665692728,
+                  0.015920142222914983,
+                  0.015211787116816918,
+                  0.01498146120780312,
+                  0.014551689663513626,
+                  0.014373747833457316,
+                  0.014020262874204333,
+                  0.013821503677891162,
+                  0.013655023729954422,
+                  0.013459309596123264,
+                  0.013421895550503155,
+                  0.013326468458399333,
+                  0.013030109996862898,
+                  0.012666337200581562,
+                  0.012557474026918133,
+                  0.012336336862073763,
+                  0.012317694138774826,
+                  0.01229417583041309,
+                  0.011957318772799886,
+                  0.011917217366053673,
+                  0.011736979024176288,
+                  0.011251148089781792,
+                  0.011223265604818119,
+                  0.011215196674351013,
+                  0.011209685948566552,
+                  0.01110680889751946,
+                  0.010942748064923949,
+                  0.01094186783023367,
+                  0.01081483371504844,
+                  0.01002472201390257,
+                  0.009959091360492642,
+                  0.009866546010058682,
+                  0.009540573644701447,
+                  0.008562479126765648,
+                  0.008460789542755823,
+                  0.00845100921659333,
+                  0.006884037368069947,
+                  0.006395923361485397,
+                  0.006165706372253204,
+                  0.005546018429928682,
+                  0.005250631977676853,
+                  0.005174687198030066,
+                  0.004121093259519302,
+                  0.004078633789497923,
+                  0.003957853990777471,
+                  0.003954276537823398,
+                  0.0034127407121265553,
+                  0.0031370795843733957,
+                  0.0030857091159645507,
+                  0.0028625013471593,
+                  0.0025378386936571783,
+                  0.0024524349170992046,
+                  0.0019509823893194905,
+                  0.0018817518765705161,
+                  0.0018486728389324665,
+                  0.0016934586546857799,
+                  0.0016652398949521968,
+                  0.0010733275699646582,
+                  0.000990815881301974,
+                  0.0008978115226467903,
+                  0.0008917654195863232,
+                  0.0008504177251657079,
+                  0.0007355872657682551,
+                  0.0007066086756842445,
+                  0.00001416415550536504
+                ],
+                "y": [
+                  "calcium_max",
+                  "age",
+                  "comorb_diabetes",
+                  "art_dbp_min",
+                  "age_over89",
+                  "spo2_mean",
+                  "temperature_c_mean",
+                  "nibp_dbp_min",
+                  "pao2_min",
+                  "hemoglobin_min",
+                  "art_map_min",
+                  "admission_bmi",
+                  "art_dbp_mean",
+                  "nibp_dbp_mean",
+                  "admission_weight_kg",
+                  "icu_readmission",
+                  "spo2_max",
+                  "comorb_aids",
+                  "alt_min",
+                  "temperature_c_max",
+                  "spo2_min",
+                  "comorb_immunosuppression",
+                  "pf_ratio_min",
+                  "nibp_map_min",
+                  "bun_max",
+                  "ast_min",
+                  "lymphocytes_pct_max",
+                  "comorb_lymphoma",
+                  "potassium_max",
+                  "urine_output_day1_ml",
+                  "glucose_max",
+                  "temperature_c_min",
+                  "art_sbp_max",
+                  "rdw_max",
+                  "heart_rate_max",
+                  "glucose_min",
+                  "ph_max",
+                  "paco2_max",
+                  "calcium_min",
+                  "bun_min",
+                  "pao2_max",
+                  "alt_max",
+                  "art_dbp_max",
+                  "nibp_map_mean",
+                  "gcs_verbal",
+                  "wbc_min",
+                  "rdw_min",
+                  "bicarbonate_min",
+                  "apache_day1_ventilated",
+                  "gcs_eyes",
+                  "lactate_min",
+                  "art_map_max",
+                  "inr_min",
+                  "anion_gap_max",
+                  "chloride_max",
+                  "ast_max",
+                  "unit_visit_number",
+                  "hemoglobin_max",
+                  "potassium_min",
+                  "anion_gap_min",
+                  "sodium_min",
+                  "creatinine_max",
+                  "creatinine_min",
+                  "base_excess_min",
+                  "nibp_dbp_max",
+                  "platelets_max",
+                  "base_excess_max",
+                  "chloride_min",
+                  "gcs_motor",
+                  "ph_min",
+                  "comorb_metastatic_cancer",
+                  "art_sbp_mean",
+                  "apache_day1_dialysis",
+                  "inr_max",
+                  "paco2_min",
+                  "magnesium_min",
+                  "apache_day1_intubated",
+                  "magnesium_max",
+                  "pre_icu_hospital_hours",
+                  "fio2_max",
+                  "gcs_unable_due_to_meds",
+                  "lactate_max",
+                  "comorb_hepatic_failure",
+                  "resp_rate_max",
+                  "albumin_max",
+                  "bilirubin_min",
+                  "heart_rate_mean",
+                  "male",
+                  "bilirubin_max",
+                  "platelets_min",
+                  "wbc_max",
+                  "sodium_max",
+                  "fio2_min",
+                  "comorb_cirrhosis",
+                  "art_sbp_min",
+                  "bicarbonate_max",
+                  "resp_rate_mean",
+                  "nibp_sbp_mean",
+                  "art_map_mean",
+                  "comorb_leukemia",
+                  "nibp_sbp_max",
+                  "nibp_sbp_min",
+                  "lymphocytes_pct_min",
+                  "heart_rate_min",
+                  "resp_rate_min",
+                  "nibp_map_max",
+                  "albumin_min"
+                ],
+                "orientation": "h",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": ""
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": "Absolute standardized mean shift"
+                },
+                "automargin": true
+              },
+              "height": 2748
+            }
+          },
+          {
+            "title": "Unseen categorical values",
+            "data": [
+              {
+                "type": "bar",
+                "name": "Unseen rows",
+                "marker": {
+                  "color": "#77ade0"
+                },
+                "x": [
+                  "unit_type",
+                  "unit_admit_source",
+                  "hospital_admit_source",
+                  "unit_stay_type",
+                  "admission_dx_by24h"
+                ],
+                "y": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "orientation": "v",
+                "hovertemplate": "%{x}: %{y}<extra>%{fullData.name}</extra>"
+              }
+            ],
+            "layout": {
+              "barmode": "group",
+              "yaxis": {
+                "title": {
+                  "text": "Rows"
+                }
+              },
+              "xaxis": {
+                "title": {
+                  "text": ""
+                },
+                "automargin": true
+              },
+              "height": 400
+            }
+          },
+          {
+            "title": "Partition domains",
+            "table": [
+              {
+                "domain": "420",
+                "rows": 182
+              },
+              {
+                "domain": "73",
+                "rows": 123
+              },
+              {
+                "domain": "338",
+                "rows": 114
+              },
+              {
+                "domain": "243",
+                "rows": 112
+              },
+              {
+                "domain": "264",
+                "rows": 108
+              },
+              {
+                "domain": "411",
+                "rows": 94
+              },
+              {
+                "domain": "300",
+                "rows": 83
+              },
+              {
+                "domain": "176",
+                "rows": 77
+              },
+              {
+                "domain": "188",
+                "rows": 77
+              },
+              {
+                "domain": "199",
+                "rows": 77
+              },
+              {
+                "domain": "443",
+                "rows": 76
+              },
+              {
+                "domain": "252",
+                "rows": 71
+              },
+              {
+                "domain": "122",
+                "rows": 70
+              },
+              {
+                "domain": "416",
+                "rows": 70
+              },
+              {
+                "domain": "417",
+                "rows": 68
+              },
+              {
+                "domain": "345",
+                "rows": 67
+              },
+              {
+                "domain": "167",
+                "rows": 66
+              },
+              {
+                "domain": "208",
+                "rows": 63
+              },
+              {
+                "domain": "458",
+                "rows": 63
+              },
+              {
+                "domain": "281",
+                "rows": 58
+              },
+              {
+                "domain": "449",
+                "rows": 56
+              },
+              {
+                "domain": "157",
+                "rows": 53
+              },
+              {
+                "domain": "148",
+                "rows": 52
+              },
+              {
+                "domain": "307",
+                "rows": 50
+              },
+              {
+                "domain": "365",
+                "rows": 49
+              },
+              {
+                "domain": "154",
+                "rows": 48
+              },
+              {
+                "domain": "165",
+                "rows": 48
+              },
+              {
+                "domain": "141",
+                "rows": 47
+              },
+              {
+                "domain": "142",
+                "rows": 46
+              },
+              {
+                "domain": "277",
+                "rows": 44
+              },
+              {
+                "domain": "283",
+                "rows": 44
+              },
+              {
+                "domain": "79",
+                "rows": 41
+              },
+              {
+                "domain": "110",
+                "rows": 41
+              },
+              {
+                "domain": "244",
+                "rows": 41
+              },
+              {
+                "domain": "336",
+                "rows": 41
+              },
+              {
+                "domain": "331",
+                "rows": 38
+              },
+              {
+                "domain": "440",
+                "rows": 38
+              },
+              {
+                "domain": "435",
+                "rows": 37
+              },
+              {
+                "domain": "248",
+                "rows": 36
+              },
+              {
+                "domain": "197",
+                "rows": 35
+              },
+              {
+                "domain": "394",
+                "rows": 35
+              },
+              {
+                "domain": "171",
+                "rows": 34
+              },
+              {
+                "domain": "310",
+                "rows": 34
+              },
+              {
+                "domain": "280",
+                "rows": 32
+              },
+              {
+                "domain": "183",
+                "rows": 30
+              },
+              {
+                "domain": "400",
+                "rows": 30
+              },
+              {
+                "domain": "391",
+                "rows": 29
+              },
+              {
+                "domain": "318",
+                "rows": 28
+              },
+              {
+                "domain": "390",
+                "rows": 28
+              },
+              {
+                "domain": "392",
+                "rows": 28
+              },
+              {
+                "domain": "444",
+                "rows": 26
+              },
+              {
+                "domain": "217",
+                "rows": 23
+              },
+              {
+                "domain": "227",
+                "rows": 23
+              },
+              {
+                "domain": "353",
+                "rows": 23
+              },
+              {
+                "domain": "272",
+                "rows": 22
+              },
+              {
+                "domain": "279",
+                "rows": 22
+              },
+              {
+                "domain": "434",
+                "rows": 22
+              },
+              {
+                "domain": "215",
+                "rows": 21
+              },
+              {
+                "domain": "226",
+                "rows": 21
+              },
+              {
+                "domain": "271",
+                "rows": 21
+              },
+              {
+                "domain": "452",
+                "rows": 21
+              },
+              {
+                "domain": "66",
+                "rows": 20
+              },
+              {
+                "domain": "256",
+                "rows": 20
+              },
+              {
+                "domain": "388",
+                "rows": 20
+              },
+              {
+                "domain": "386",
+                "rows": 20
+              },
+              {
+                "domain": "421",
+                "rows": 20
+              },
+              {
+                "domain": "459",
+                "rows": 20
+              },
+              {
+                "domain": "140",
+                "rows": 19
+              },
+              {
+                "domain": "175",
+                "rows": 19
+              },
+              {
+                "domain": "245",
+                "rows": 19
+              },
+              {
+                "domain": "275",
+                "rows": 19
+              },
+              {
+                "domain": "144",
+                "rows": 18
+              },
+              {
+                "domain": "202",
+                "rows": 18
+              },
+              {
+                "domain": "206",
+                "rows": 18
+              },
+              {
+                "domain": "301",
+                "rows": 18
+              },
+              {
+                "domain": "384",
+                "rows": 18
+              },
+              {
+                "domain": "382",
+                "rows": 18
+              },
+              {
+                "domain": "184",
+                "rows": 17
+              },
+              {
+                "domain": "181",
+                "rows": 17
+              },
+              {
+                "domain": "210",
+                "rows": 17
+              },
+              {
+                "domain": "404",
+                "rows": 17
+              },
+              {
+                "domain": "398",
+                "rows": 17
+              },
+              {
+                "domain": "396",
+                "rows": 17
+              },
+              {
+                "domain": "405",
+                "rows": 16
+              },
+              {
+                "domain": "195",
+                "rows": 15
+              },
+              {
+                "domain": "200",
+                "rows": 15
+              },
+              {
+                "domain": "259",
+                "rows": 15
+              },
+              {
+                "domain": "337",
+                "rows": 15
+              },
+              {
+                "domain": "424",
+                "rows": 15
+              },
+              {
+                "domain": "419",
+                "rows": 15
+              },
+              {
+                "domain": "143",
+                "rows": 14
+              },
+              {
+                "domain": "282",
+                "rows": 14
+              },
+              {
+                "domain": "152",
+                "rows": 13
+              },
+              {
+                "domain": "267",
+                "rows": 13
+              },
+              {
+                "domain": "269",
+                "rows": 13
+              },
+              {
+                "domain": "312",
+                "rows": 13
+              },
+              {
+                "domain": "357",
+                "rows": 13
+              },
+              {
+                "domain": "422",
+                "rows": 13
+              },
+              {
+                "domain": "71",
+                "rows": 12
+              },
+              {
+                "domain": "131",
+                "rows": 12
+              },
+              {
+                "domain": "146",
+                "rows": 12
+              },
+              {
+                "domain": "364",
+                "rows": 12
+              },
+              {
+                "domain": "402",
+                "rows": 12
+              },
+              {
+                "domain": "425",
+                "rows": 12
+              },
+              {
+                "domain": "69",
+                "rows": 11
+              },
+              {
+                "domain": "95",
+                "rows": 11
+              },
+              {
+                "domain": "112",
+                "rows": 11
+              },
+              {
+                "domain": "155",
+                "rows": 11
+              },
+              {
+                "domain": "273",
+                "rows": 11
+              },
+              {
+                "domain": "408",
+                "rows": 11
+              },
+              {
+                "domain": "407",
+                "rows": 11
+              },
+              {
+                "domain": "429",
+                "rows": 11
+              },
+              {
+                "domain": "63",
+                "rows": 10
+              },
+              {
+                "domain": "67",
+                "rows": 10
+              },
+              {
+                "domain": "198",
+                "rows": 10
+              },
+              {
+                "domain": "389",
+                "rows": 10
+              },
+              {
+                "domain": "387",
+                "rows": 10
+              },
+              {
+                "domain": "125",
+                "rows": 9
+              },
+              {
+                "domain": "182",
+                "rows": 9
+              },
+              {
+                "domain": "180",
+                "rows": 9
+              },
+              {
+                "domain": "204",
+                "rows": 9
+              },
+              {
+                "domain": "224",
+                "rows": 9
+              },
+              {
+                "domain": "253",
+                "rows": 9
+              },
+              {
+                "domain": "268",
+                "rows": 9
+              },
+              {
+                "domain": "403",
+                "rows": 9
+              },
+              {
+                "domain": "413",
+                "rows": 9
+              },
+              {
+                "domain": "436",
+                "rows": 9
+              },
+              {
+                "domain": "220",
+                "rows": 8
+              },
+              {
+                "domain": "251",
+                "rows": 8
+              },
+              {
+                "domain": "433",
+                "rows": 8
+              },
+              {
+                "domain": "445",
+                "rows": 8
+              },
+              {
+                "domain": "158",
+                "rows": 7
+              },
+              {
+                "domain": "196",
+                "rows": 7
+              },
+              {
+                "domain": "249",
+                "rows": 7
+              },
+              {
+                "domain": "254",
+                "rows": 7
+              },
+              {
+                "domain": "342",
+                "rows": 7
+              },
+              {
+                "domain": "397",
+                "rows": 7
+              },
+              {
+                "domain": "92",
+                "rows": 6
+              },
+              {
+                "domain": "194",
+                "rows": 6
+              },
+              {
+                "domain": "205",
+                "rows": 6
+              },
+              {
+                "domain": "266",
+                "rows": 6
+              },
+              {
+                "domain": "328",
+                "rows": 6
+              },
+              {
+                "domain": "399",
+                "rows": 6
+              },
+              {
+                "domain": "412",
+                "rows": 6
+              },
+              {
+                "domain": "428",
+                "rows": 6
+              },
+              {
+                "domain": "60",
+                "rows": 5
+              },
+              {
+                "domain": "68",
+                "rows": 5
+              },
+              {
+                "domain": "201",
+                "rows": 5
+              },
+              {
+                "domain": "209",
+                "rows": 5
+              },
+              {
+                "domain": "250",
+                "rows": 5
+              },
+              {
+                "domain": "262",
+                "rows": 5
+              },
+              {
+                "domain": "258",
+                "rows": 5
+              },
+              {
+                "domain": "360",
+                "rows": 5
+              },
+              {
+                "domain": "358",
+                "rows": 5
+              },
+              {
+                "domain": "381",
+                "rows": 5
+              },
+              {
+                "domain": "56",
+                "rows": 4
+              },
+              {
+                "domain": "61",
+                "rows": 4
+              },
+              {
+                "domain": "138",
+                "rows": 4
+              },
+              {
+                "domain": "203",
+                "rows": 4
+              },
+              {
+                "domain": "207",
+                "rows": 4
+              },
+              {
+                "domain": "363",
+                "rows": 4
+              },
+              {
+                "domain": "383",
+                "rows": 4
+              },
+              {
+                "domain": "423",
+                "rows": 4
+              },
+              {
+                "domain": "438",
+                "rows": 4
+              },
+              {
+                "domain": "439",
+                "rows": 4
+              },
+              {
+                "domain": "58",
+                "rows": 3
+              },
+              {
+                "domain": "108",
+                "rows": 3
+              },
+              {
+                "domain": "84",
+                "rows": 3
+              },
+              {
+                "domain": "174",
+                "rows": 3
+              },
+              {
+                "domain": "437",
+                "rows": 3
+              },
+              {
+                "domain": "59",
+                "rows": 2
+              },
+              {
+                "domain": "83",
+                "rows": 2
+              },
+              {
+                "domain": "85",
+                "rows": 2
+              },
+              {
+                "domain": "123",
+                "rows": 2
+              },
+              {
+                "domain": "164",
+                "rows": 2
+              },
+              {
+                "domain": "246",
+                "rows": 2
+              },
+              {
+                "domain": "303",
+                "rows": 2
+              },
+              {
+                "domain": "350",
+                "rows": 2
+              },
+              {
+                "domain": "356",
+                "rows": 2
+              },
+              {
+                "domain": "102",
+                "rows": 1
+              },
+              {
+                "domain": "86",
+                "rows": 1
+              },
+              {
+                "domain": "133",
+                "rows": 1
+              },
+              {
+                "domain": "115",
+                "rows": 1
+              },
+              {
+                "domain": "120",
+                "rows": 1
+              },
+              {
+                "domain": "179",
+                "rows": 1
+              },
+              {
+                "domain": "263",
+                "rows": 1
+              },
+              {
+                "domain": "352",
+                "rows": 1
+              },
+              {
+                "domain": "355",
+                "rows": 1
+              },
+              {
+                "domain": "393",
+                "rows": 1
+              },
+              {
+                "domain": "414",
+                "rows": 1
+              },
+              {
+                "domain": "447",
+                "rows": 1
+              }
+            ]
+          }
+        ],
+        "note": "Unknown categories use the saved encoder handle_unknown=ignore. Linear scaling is not domain adaptation. States/regions are not hospitals. Training self-comparison is not an evaluation of domain shift."
+      }
+    }
+  },
+  "default_split": "train",
+  "methods": {
+    "default": "Saved fixed baseline"
+  },
+  "default_method": "default",
+  "protocol": "No fitting or changes to patient rows. Before = model-ready rows; after = saved preprocessing.",
+  "input_checks": {
+    "train": {
+      "X_sha256": "0fab7c9aea61690f27b4b9bf125e0b7bc2cb51e713198c5b01170da4f0784eb4",
+      "rows_sha256": "3502ac468b773a502cd68ae3b193dda28a8388e8343912871ceac8473e192903",
+      "transform_reproduced": true
+    },
+    "validation": {
+      "X_sha256": "155c0e264d0576c90bc17ce55ea6dc9aa5929b4155e11dbf67bae601504d492b",
+      "rows_sha256": "dd40c1218ec4171aca109897f2b7891f3f099fa0ccd7d595bee7b9ac1f2b3f82",
+      "transform_reproduced": true
+    },
+    "test": {
+      "X_sha256": "a5ce731c516751453883d7bbb87e883cc0ec1b5722e8d4cb9227c704832b77fd",
+      "rows_sha256": "1171cfa404fa36f375c18b371083689ea41056231ef7fe62205b4eeb0c5f1921",
+      "transform_reproduced": true
+    }
+  }
+}
