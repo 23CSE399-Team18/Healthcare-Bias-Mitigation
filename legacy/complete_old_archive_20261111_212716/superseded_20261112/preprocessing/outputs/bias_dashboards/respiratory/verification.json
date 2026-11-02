@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "partitions": {
+    "train": {
+      "rows": 20150,
+      "missing_input_cells": 464073,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 2723,
+          "negative": 17427,
+          "minority_share": 0.13513647642679902
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "validation": {
+      "rows": 4360,
+      "missing_input_cells": 101469,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 630,
+          "negative": 3730,
+          "minority_share": 0.1444954128440367
+        }
+      ],
+      "transform_and_labels_checked": true
+    },
+    "test": {
+      "rows": 4332,
+      "missing_input_cells": 98799,
+      "nonfinite_output_cells": 0,
+      "record_id_duplicates": 0,
+      "label_counts": [
+        {
+          "target": "target",
+          "positive": 578,
+          "negative": 3754,
+          "minority_share": 0.13342566943674977
+        }
+      ],
+      "transform_and_labels_checked": true
+    }
+  },
+  "pages": [
+    "preprocessing/outputs/bias_dashboards/respiratory/missing_data.json",
+    "preprocessing/outputs/bias_dashboards/respiratory/class_imbalance.json",
+    "preprocessing/outputs/bias_dashboards/respiratory/outlier.json",
+    "preprocessing/outputs/bias_dashboards/respiratory/feature_scale.json",
+    "preprocessing/outputs/bias_dashboards/respiratory/demographic.json",
+    "preprocessing/outputs/bias_dashboards/respiratory/duplicate.json",
+    "preprocessing/outputs/bias_dashboards/respiratory/noise.json",
+    "preprocessing/outputs/bias_dashboards/respiratory/encoding_domain.json"
+  ]
+}
