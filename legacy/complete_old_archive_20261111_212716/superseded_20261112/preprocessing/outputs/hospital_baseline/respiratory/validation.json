@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "source_sha256": "fedc1c489959ee53f7dad13e79bfd7cdd175179ae229c050726fc253f87fb240",
+  "excluded_cross_partition_patients": 212,
+  "excluded_stays": 550,
+  "fit_partition": "train",
+  "features": 277,
+  "partitions": {
+    "train": {
+      "rows": 21082,
+      "hospitals": 137
+    },
+    "validation": {
+      "rows": 4909,
+      "hospitals": 34
+    },
+    "test": {
+      "rows": 2301,
+      "hospitals": 29
+    }
+  }
+}
