@@ -1,0 +1,225 @@
+{
+  "completed": true,
+  "completed_utc": "2026-11-09T15:59:14.508424+00:00",
+  "direction": "mimic_to_eicu",
+  "fit_source": "mimic",
+  "external_source": "eicu",
+  "fit_partition": "train",
+  "fit_rows": 52229,
+  "input_predictors": [
+    "heart_rate_mean",
+    "heart_rate_min",
+    "heart_rate_max",
+    "resp_rate_mean",
+    "resp_rate_min",
+    "resp_rate_max",
+    "spo2_mean",
+    "spo2_min",
+    "spo2_max",
+    "age_group",
+    "sex"
+  ],
+  "output_feature_count": 24,
+  "metadata_or_labels_used_as_predictors": false,
+  "labels_used_to_fit_transformations": false,
+  "source_validation_test_or_external_rows_used_for_fit": 0,
+  "prediction_models_trained": 0,
+  "performance_evaluation_completed": false,
+  "raw_model_ready_csvs_modified": false,
+  "numeric_method": "Training median imputation with missing indicators, then training StandardScaler",
+  "categorical_method": "Training most-frequent imputation, then training one-hot categories; unknown categories ignored",
+  "empty_training_numeric_feature": "Kept and imputed to zero by keep_empty_features=True",
+  "missing_indicator_policy": "Indicators are learned for features missing in source training rows only",
+  "external_rows": "All rows from the other dataset; its existing meta_split is preserved only as metadata",
+  "row_alignment": "Each X/y/rows artifact shares identical row order; rows CSV includes source, patient and stay keys",
+  "label_meaning": "Recorded diagnosis versus not documented among encounters with parseable diagnoses; not confirmed disease absence",
+  "input_csv_sha256": {
+    "D:\\complete\\cross_dataset\\four_conditions\\mimic\\heart_model_ready.csv": "968374f37b509be4ff9b8ea4429787b4e552ed7c59ab30a257d0a3f72ce0bd86",
+    "D:\\complete\\cross_dataset\\four_conditions\\mimic\\respiratory_model_ready.csv": "e4f7b27461e9e83fc9ac8525ed1f02d8aef83e87b9a02a7e9e9132872f0a7bd5",
+    "D:\\complete\\cross_dataset\\four_conditions\\mimic\\diabetes_model_ready.csv": "6865790e8a8b45c92733078bc3c5f0749ce888ad5b0ac449add18f44c9862b78",
+    "D:\\complete\\cross_dataset\\four_conditions\\mimic\\hypertension_model_ready.csv": "5c8728b0f33d17cf9f4c303360dcd6d2f20165dc56ccfead5d4af39eaf831001",
+    "D:\\complete\\cross_dataset\\four_conditions\\eicu\\heart_model_ready.csv": "0c4b3256aa5b3243778489c53180a092345801ba272c083c1094592f0cc64fb3",
+    "D:\\complete\\cross_dataset\\four_conditions\\eicu\\respiratory_model_ready.csv": "ec02fff7b6719283b35b092122fbde7fee946213ca0763d04e53190f7e79278d",
+    "D:\\complete\\cross_dataset\\four_conditions\\eicu\\diabetes_model_ready.csv": "7f90db1518cbfd85700162051584543bad8fa48e0e50e2b5a7c54a87b59d7d53",
+    "D:\\complete\\cross_dataset\\four_conditions\\eicu\\hypertension_model_ready.csv": "c041ab76cc3bdd0cae33b3bf8eea733ebe416ceaee05b1bb9b14128cb8d21b5e"
+  },
+  "partitions": {
+    "train": {
+      "rows": 52229,
+      "features": 24,
+      "all_finite": true,
+      "X_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\X_train.npz",
+      "y_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\y_train.npz",
+      "row_metadata_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\rows_train.csv",
+      "sha256": {
+        "X_train.npz": "b1cf9278caef6878c0f9a52d68ff7990a7f83736a57b72ca595e2c6c7ed409ff",
+        "y_train.npz": "108f324ae0a186731a724e092965ab2113e0b38c5e43b91e37834e9909eab02d",
+        "rows_train.csv": "f270c02f30b1d8b990d1277dbb0b1f6ddad324e99675e6892f62dace859b24c3"
+      },
+      "positive_labels": {
+        "heart": 18792,
+        "respiratory": 30768,
+        "diabetes": 16659,
+        "hypertension": 34124
+      }
+    },
+    "validation": {
+      "rows": 10829,
+      "features": 24,
+      "all_finite": true,
+      "X_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\X_validation.npz",
+      "y_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\y_validation.npz",
+      "row_metadata_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\rows_validation.csv",
+      "sha256": {
+        "X_validation.npz": "30f9c00aa9f6635dfeeefce887a5a76006ddfdd8621d2a635d4406636960f7fd",
+        "y_validation.npz": "4f89c318d25454b6aa561c2d12053696ac9b91823da7f4a7c7f3ffb6225561c2",
+        "rows_validation.csv": "ae26d4f2b516485f9ffa084e3240789a08fa7e7ae6c65c5468e5102deff39363"
+      },
+      "positive_labels": {
+        "heart": 3980,
+        "respiratory": 6252,
+        "diabetes": 3504,
+        "hypertension": 7102
+      }
+    },
+    "test": {
+      "rows": 10932,
+      "features": 24,
+      "all_finite": true,
+      "X_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\X_test.npz",
+      "y_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\y_test.npz",
+      "row_metadata_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\rows_test.csv",
+      "sha256": {
+        "X_test.npz": "2b2f96ec67173c2462cb0b3a0fdb4bff2d3c1a91c5b177b3b1b505e00bd74b7a",
+        "y_test.npz": "e56b06b374168a8ce4c8dabc75c9322a3d696d957df9424add2fd3c52a0763f7",
+        "rows_test.csv": "b07a596892b5a6c5df561883bce7c1521974ad812c21e98352d32fbe60297f70"
+      },
+      "positive_labels": {
+        "heart": 3860,
+        "respiratory": 6408,
+        "diabetes": 3417,
+        "hypertension": 7071
+      }
+    },
+    "external": {
+      "rows": 109378,
+      "features": 24,
+      "all_finite": true,
+      "X_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\X_external.npz",
+      "y_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\y_external.npz",
+      "row_metadata_path": "D:\\complete\\preprocessing\\outputs\\cross_dataset_baseline\\mimic_to_eicu\\rows_external.csv",
+      "sha256": {
+        "X_external.npz": "a60e28ccc5d4bd973b2ceba56b2289696ea4f71108d11af727472f98710340d3",
+        "y_external.npz": "7aec1bd284ab3ac79cf6ee35155a5c0342d4beed207b61685a0a3fb4d57a018c",
+        "rows_external.csv": "b1dea1a59184e211de75fd7ef767efe4396db467eb6e5df0d2c4ad7b7acae411"
+      },
+      "positive_labels": {
+        "heart": 19791,
+        "respiratory": 53639,
+        "diabetes": 33882,
+        "hypertension": 62817
+      }
+    }
+  },
+  "fit_statistics": {
+    "numeric_features": [
+      "heart_rate_mean",
+      "heart_rate_min",
+      "heart_rate_max",
+      "resp_rate_mean",
+      "resp_rate_min",
+      "resp_rate_max",
+      "spo2_mean",
+      "spo2_min",
+      "spo2_max"
+    ],
+    "source_training_numeric_imputation_values": [
+      83.41666666666667,
+      70,
+      100,
+      18.695742753623186,
+      13,
+      26,
+      97.01449275362317,
+      93,
+      100
+    ],
+    "numeric_missing_indicator_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "numeric_scaler_mean": [
+      84.85734548807278,
+      71.41821590684444,
+      102.22148196446949,
+      19.29903927205983,
+      13.034206178260762,
+      27.19408469481092,
+      96.8578553272077,
+      92.32348986451896,
+      99.41772206072281,
+      0.0011487870723161462,
+      0.0011487870723161462,
+      0.0011487870723161462,
+      0.002584770912711329,
+      0.002584770912711329,
+      0.002584770912711329,
+      0.0014359838403951827,
+      0.0014359838403951827,
+      0.0014359838403951827
+    ],
+    "numeric_scaler_scale": [
+      15.916128661028665,
+      15.000840532488775,
+      19.94748755383056,
+      3.9135706163173984,
+      3.6066838129749734,
+      6.196293899336756,
+      2.0198005977823703,
+      5.148212563387943,
+      1.1102527656642585,
+      0.03387428760252569,
+      0.03387428760252569,
+      0.03387428760252569,
+      0.050774894111560005,
+      0.050774894111560005,
+      0.050774894111560005,
+      0.037867159793220646,
+      0.037867159793220646,
+      0.037867159793220646
+    ],
+    "categorical_features": [
+      "age_group",
+      "sex"
+    ],
+    "source_training_categorical_imputation_values": [
+      "40-64",
+      "Male"
+    ],
+    "source_training_categories": [
+      [
+        "18-39",
+        "40-64",
+        "65-79",
+        "80+"
+      ],
+      [
+        "Female",
+        "Male"
+      ]
+    ]
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "sklearn": "1.9.1",
+    "joblib": "1.6.0"
+  }
+}
