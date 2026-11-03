@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "exports": {
+    "respiratory_hospital": {
+      "train": {
+        "csv": "preprocessing/outputs/hospital_baseline/respiratory/respiratory_train_preprocessed.csv",
+        "rows": 21082,
+        "features": 277,
+        "sha256": "68bf6a35a9bd68134d7d6b8fa2d329bc087135fa113d9f0cdc3ae929c24b2f0d"
+      },
+      "validation": {
+        "csv": "preprocessing/outputs/hospital_baseline/respiratory/respiratory_validation_preprocessed.csv",
+        "rows": 4909,
+        "features": 277,
+        "sha256": "03621c8859608f7f6b98b257ba1dac93558d9e354cbd7ff4434a1e3a25a89b9d"
+      },
+      "test": {
+        "csv": "preprocessing/outputs/hospital_baseline/respiratory/respiratory_test_preprocessed.csv",
+        "rows": 2301,
+        "features": 277,
+        "sha256": "13d2330486e18d07e94cabc8463e67c5181cb79ee7c4a35f333370acd31e7cda"
+      }
+    },
+    "eicu_hospital": {
+      "train": {
+        "csv": "preprocessing/outputs/hospital_baseline/eicu/eicu_train_preprocessed.csv",
+        "rows": 80606,
+        "features": 25,
+        "sha256": "158b4134d99661acf7380fa941f0bf170b5dc3fbd8ab9d2f7c118fbd01fc4e21"
+      },
+      "validation": {
+        "csv": "preprocessing/outputs/hospital_baseline/eicu/eicu_validation_preprocessed.csv",
+        "rows": 20318,
+        "features": 25,
+        "sha256": "cb49532f495f8681ebcf64ccb4d59ba2736fbc697b9836511e3e03447ee55357"
+      },
+      "test": {
+        "csv": "preprocessing/outputs/hospital_baseline/eicu/eicu_test_preprocessed.csv",
+        "rows": 8454,
+        "features": 25,
+        "sha256": "dad088b27bc66940b8d0c3fb6447a2bf015e85d8c94e8fe7dd1e495c4f2b7a5c"
+      },
+      "external": {
+        "csv": "preprocessing/outputs/hospital_baseline/eicu/eicu_external_preprocessed.csv",
+        "rows": 73990,
+        "features": 25,
+        "sha256": "e6092e4e26cb658613cb878c6e593c1d6a61f97177bb3e0fbe9cc0f6e26117fc"
+      }
+    },
+    "mimic_transfer": {
+      "train": {
+        "csv": "preprocessing/outputs/verified_baseline/mimic/mimic_train_preprocessed.csv",
+        "rows": 52229,
+        "features": 24,
+        "sha256": "5c029e677134c8a18a2906f86b5060209bc4c5b1318cfc936bbc02faf1b05562"
+      },
+      "validation": {
+        "csv": "preprocessing/outputs/verified_baseline/mimic/mimic_validation_preprocessed.csv",
+        "rows": 10829,
+        "features": 24,
+        "sha256": "dafdf63c24f1d81eb0a24665f39b026853552f03976006d7223db1186d02e91b"
+      },
+      "test": {
+        "csv": "preprocessing/outputs/verified_baseline/mimic/mimic_test_preprocessed.csv",
+        "rows": 10932,
+        "features": 24,
+        "sha256": "dd3a2aa6d5d5769ffd8a8788aa2a43bb278157a6bff56084f50edbde2bdad3dd"
+      },
+      "external": {
+        "csv": "preprocessing/outputs/hospital_baseline/mimic/mimic_external_preprocessed.csv",
+        "rows": 109378,
+        "features": 24,
+        "sha256": "5ea9a87194b3ebf7e8dc7f094b17a9aacffdb56d7f871cccbae3b5c9fb019dfd"
+      }
+    }
+  }
+}
