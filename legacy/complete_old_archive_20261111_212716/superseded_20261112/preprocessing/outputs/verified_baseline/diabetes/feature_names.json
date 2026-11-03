@@ -1,0 +1,18 @@
+{
+  "features": [
+    "numeric__age",
+    "numeric__male",
+    "numeric__education",
+    "numeric__income_poverty_ratio",
+    "numeric__bmi",
+    "numeric__waist_cm",
+    "numeric__missingindicator_education",
+    "numeric__missingindicator_income_poverty_ratio",
+    "numeric__missingindicator_bmi",
+    "numeric__missingindicator_waist_cm",
+    "categorical__smoking_status___MISSING__",
+    "categorical__smoking_status_current",
+    "categorical__smoking_status_former",
+    "categorical__smoking_status_never"
+  ]
+}
