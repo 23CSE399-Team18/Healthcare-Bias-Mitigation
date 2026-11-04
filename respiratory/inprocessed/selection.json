@@ -1,0 +1,127 @@
+{
+ "dataset": "respiratory",
+ "selected": {
+  "demographic": "GroupDRO",
+  "intersectional": "Fairness-constrained optimization",
+  "calibration": "Uncertainty-weighted gradient",
+  "environment": "Fishr"
+ },
+ "thresholds": {
+  "ERM": 0.6250000000000002,
+  "FairCare": 0.7250000000000003,
+  "DANN": 0.6000000000000002,
+  "GroupDRO": 0.6500000000000002,
+  "Fair-ERM": 0.6250000000000002,
+  "FOMO": 0.7500000000000002,
+  "Intersectional debiasing": 0.7000000000000003,
+  "Fairness-constrained optimization": 0.6250000000000002,
+  "GroupDRO (intersectional)": 0.6000000000000002,
+  "AvUC": 0.6250000000000002,
+  "CRL": 0.6250000000000002,
+  "Uncertainty-weighted gradient": 0.6000000000000002,
+  "Calibration-regularized": 0.5250000000000001
+ },
+ "thresholds_hospital": {
+  "ERM": 0.5000000000000002,
+  "Fishr": 0.47500000000000014,
+  "V-REx": 0.5000000000000002,
+  "EQRM": 0.5000000000000002,
+  "Fish": 0.5000000000000002
+ },
+ "families": {
+  "demographic": {
+   "title": "Demographic prediction dependence",
+   "methods": [
+    "FairCare",
+    "DANN",
+    "GroupDRO",
+    "Fair-ERM"
+   ],
+   "metrics": {
+    "CMI": "min",
+    "PAD": "min",
+    "WGER": "min",
+    "EOV": "min"
+   },
+   "data": "respiratory latent rows"
+  },
+  "intersectional": {
+   "title": "Intersectional / subgroup unfairness",
+   "methods": [
+    "FOMO",
+    "Intersectional debiasing",
+    "Fairness-constrained optimization",
+    "GroupDRO (intersectional)"
+   ],
+   "metrics": {
+    "HVI": "max",
+    "DF-epsilon": "min",
+    "MSFV": "min",
+    "IWGR": "min"
+   },
+   "data": "respiratory latent rows"
+  },
+  "calibration": {
+   "title": "Predictive miscalibration",
+   "methods": [
+    "AvUC",
+    "CRL",
+    "Uncertainty-weighted gradient",
+    "Calibration-regularized"
+   ],
+   "metrics": {
+    "UCE": "min",
+    "AURC": "min",
+    "E-AURC": "min",
+    "MMCE": "min"
+   },
+   "data": "respiratory latent rows"
+  },
+  "environment": {
+   "title": "Cross-hospital generalization failure",
+   "methods": [
+    "Fishr",
+    "V-REx",
+    "EQRM",
+    "Fish"
+   ],
+   "metrics": {
+    "IEGVD": "min",
+    "ERV": "min",
+    "UQER": "min",
+    "IDGA": "max"
+   },
+   "data": "cross-hospital ICU cohort (eICU hospitals + MIMIC external), label target_respiratory"
+  }
+ },
+ "erm_validation_auroc": 0.7637983036050129,
+ "reference_validation_auroc": {
+  "demographic": 0.7637983036050129,
+  "intersectional": 0.7637983036050129,
+  "calibration": 0.7637983036050129,
+  "environment": 0.6464974709515171
+ },
+ "rule": "best mean rank over the bias metrics (validation), AUROC within 0.05 of that bias's ERM",
+ "seconds": {
+  "ERM": 3.3,
+  "FairCare": 1.7,
+  "DANN": 1.3,
+  "GroupDRO": 1.5,
+  "Fair-ERM": 1.7,
+  "FOMO": 2.6,
+  "Intersectional debiasing": 2.0,
+  "Fairness-constrained optimization": 2.6,
+  "GroupDRO (intersectional)": 3.0,
+  "AvUC": 2.1,
+  "CRL": 1.8,
+  "Uncertainty-weighted gradient": 1.3,
+  "Calibration-regularized": 4.0,
+  "cross-hospital ERM": 3.4,
+  "cross-hospital Fishr": 15.0,
+  "cross-hospital V-REx": 10.6,
+  "cross-hospital EQRM": 9.9,
+  "cross-hospital Fish": 5.1
+ },
+ "test_used_for_selection": false,
+ "external_used_for_selection": false
+}
