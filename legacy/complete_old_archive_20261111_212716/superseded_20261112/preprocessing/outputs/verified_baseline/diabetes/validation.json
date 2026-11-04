@@ -1,0 +1,74 @@
+{
+  "status": "verified_complete",
+  "seed": 20261111,
+  "source_rows": 7876,
+  "source_sha256": "6227f83f445fd16f9605be4024f402ebf2da5ba1586c601bc729288eb0f64e7d",
+  "fit_partition": "train",
+  "fit_rows": 5513,
+  "all_source_rows_retained": true,
+  "numeric": [
+    "age",
+    "male",
+    "education",
+    "income_poverty_ratio",
+    "bmi",
+    "waist_cm"
+  ],
+  "categorical": [
+    "smoking_status"
+  ],
+  "output_predictors": [
+    "numeric__age",
+    "numeric__male",
+    "numeric__education",
+    "numeric__income_poverty_ratio",
+    "numeric__bmi",
+    "numeric__waist_cm",
+    "numeric__missingindicator_education",
+    "numeric__missingindicator_income_poverty_ratio",
+    "numeric__missingindicator_bmi",
+    "numeric__missingindicator_waist_cm",
+    "categorical__smoking_status___MISSING__",
+    "categorical__smoking_status_current",
+    "categorical__smoking_status_former",
+    "categorical__smoking_status_never"
+  ],
+  "partitions": {
+    "train": {
+      "rows": 5513,
+      "positive_rows": 751,
+      "features": 14,
+      "all_finite": true,
+      "csv_roundtrip_passed": true,
+      "sha256": "5074fb2565fb0934f7d5da75cce3da989c36a47e6e382bf9be3d9199cd557004"
+    },
+    "validation": {
+      "rows": 1181,
+      "positive_rows": 161,
+      "features": 14,
+      "all_finite": true,
+      "csv_roundtrip_passed": true,
+      "sha256": "4058a6dec1a7b0c6c794687b72f51d39f009cff7f1e066644fa17c4531c6a087"
+    },
+    "test": {
+      "rows": 1182,
+      "positive_rows": 161,
+      "features": 14,
+      "all_finite": true,
+      "csv_roundtrip_passed": true,
+      "sha256": "ca9374e4f2195a61be6d166bc8c35d2177bd7a376e78b6843499ef44f71a8661"
+    }
+  },
+  "methods": "Training median + missing indicators + StandardScaler; missing category + training one-hot levels, unknowns ignored",
+  "prediction_models_trained": 0,
+  "method_selection": "fixed in advance; no label or holdout-driven selection",
+  "synthetic_rows": 0,
+  "test_performance_claimed": false,
+  "versions": {
+    "python": "3.12.10",
+    "numpy": "2.4.2",
+    "pandas": "3.0.1",
+    "sklearn": "1.8.0"
+  },
+  "record_partitions_disjoint": true
+}
