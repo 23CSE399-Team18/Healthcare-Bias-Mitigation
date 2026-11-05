@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "source": "existing verified mimic_to_eicu arrays",
+  "partitions": {
+    "train": {
+      "rows": 52229,
+      "features": 24,
+      "csv": "preprocessing\\outputs\\verified_baseline\\mimic\\mimic_train_preprocessed.csv",
+      "sha256": "5c029e677134c8a18a2906f86b5060209bc4c5b1318cfc936bbc02faf1b05562"
+    },
+    "validation": {
+      "rows": 10829,
+      "features": 24,
+      "csv": "preprocessing\\outputs\\verified_baseline\\mimic\\mimic_validation_preprocessed.csv",
+      "sha256": "dafdf63c24f1d81eb0a24665f39b026853552f03976006d7223db1186d02e91b"
+    },
+    "test": {
+      "rows": 10932,
+      "features": 24,
+      "csv": "preprocessing\\outputs\\verified_baseline\\mimic\\mimic_test_preprocessed.csv",
+      "sha256": "dd3a2aa6d5d5769ffd8a8788aa2a43bb278157a6bff56084f50edbde2bdad3dd"
+    }
+  }
+}
