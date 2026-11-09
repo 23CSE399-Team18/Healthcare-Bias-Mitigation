@@ -1,0 +1,6 @@
+dataset,bias,applied,mean_rank,position,lowest_mean_rank,file
+hypertension,Missing Data,HyperImpute,3.286,1 of 8,HyperImpute,01_missing_data_bias_method_comparison.png
+hypertension,Feature Scale,PowerTransform (Yeo-Johnson),2.0,1 of 6,PowerTransform (Yeo-Johnson),04_feature_scale_bias_method_comparison.png
+hypertension,Demographic,Counterfactual recourse (DiCE),2.5,1 of 6,Counterfactual recourse (DiCE),05_demographic_bias_method_comparison.png
+hypertension,Data Noise,Confident Learning (Cleanlab),1.0,1 of 7,Confident Learning (Cleanlab),07_data_noise_bias_method_comparison.png
+hypertension,Encoding / Domain,Domain-generalisation transformer,2.375,1 of 6,Domain-generalisation transformer,08_encoding_domain_bias_method_comparison.png
