@@ -1,0 +1,8 @@
+dataset,bias,applied,mean_rank,position,lowest_mean_rank,file
+respiratory,Missing Data,MIP-VAE,3.571,3 of 8,Random Forest,01_missing_data_bias_method_comparison.png
+respiratory,Class Imbalance,TabDDPM,3.333,1 of 8,TabDDPM,02_class_imbalance_bias_method_comparison.png
+respiratory,Outlier,ECOD,3.429,3 of 6,LOF,03_outlier_bias_method_comparison.png
+respiratory,Feature Scale,SNN (SELU),2.833,2 of 6,Quantile transform,04_feature_scale_bias_method_comparison.png
+respiratory,Demographic,Fair contrastive learning,2.75,2 of 6,Reweighting,05_demographic_bias_method_comparison.png
+respiratory,Data Noise,Robust loss (GCE),1.167,1 of 7,Robust loss (GCE),07_data_noise_bias_method_comparison.png
+respiratory,Encoding / Domain,Domain-generalisation transformer,2.875,1 of 6,Domain-generalisation transformer,08_encoding_domain_bias_method_comparison.png
