@@ -1,0 +1,792 @@
+=== PAGE 1 ===
+Type 1: Research Project
+Healthcare Bias Mitigation: A Multi-Method Approach to
+Addressing Across Diverse Clinical Applications
+GROUP 18
+PROJECT REVIEW 1
+S.No
+Register Number
+Student Name
+1
+CB.SC.U4CSE23414
+E. RatanRaja
+2
+CB.SC.U4CSE23422
+Datta K
+3
+CB.SC.U4CSE23452
+Srija U
+4
+CB.SC.U4CSE23554
+Sriya U
+Guide: Dr. Bagavathi Sivakumar P, Dr. Deepika T
+
+
+=== PAGE 2 ===
+Table of Contents
+1
+Introduction
+2
+Research Theme
+3
+Literature Review
+4
+Research Gaps
+5
+Objectives
+6
+Problem Statement
+7
+Architecture Diagram
+8
+Datasets
+9
+Preprocessing Bias Analysis
+10 Latent Feature Extraction
+11 References
+2 / 23
+
+
+=== PAGE 3 ===
+Introduction
+Source link: [Systematic literature review on bias mitigation]
+3 / 23
+
+
+=== PAGE 4 ===
+Motivation
+Healthcare AI systems are frequently developed using datasets that are sampling
+bias and demographically skewed, which restricts fairness and equitable
+performance across diverse patient populations [1]
+Conventional machine learning models primarily optimize for overall accuracy, often
+neglecting performance disparities affecting underrepresented and vulnerable
+groups [2]
+4 / 23
+
+
+=== PAGE 5 ===
+Research Theme Covered
+Special Issue: BMC Medical Informatics and Decision Making
+Special Issue on “Equity in health informatics”[r1]
+Deadline for Submission: 17 January, 2027
+5 / 23
+
+
+=== PAGE 6 ===
+Research Theme Covered
+Special Issue: BMC Medical Informatics and Decision Making
+Special Issue on “Explainable AI for clinical documentation”
+[r2]
+Deadline for Submission:10 June, 2027
+6 / 23
+
+
+=== PAGE 7 ===
+1. Literature Survey
+Rubric: Survey Extensiveness & Justiﬁcation
+Author
+(Year)
+Key Objectives
+Parameters
+Methods / Models
+Future Imp.
+Pre
+In
+Post
+Iqbal
+et
+al.
+(2025) [3]
+To develop the FairBias framework that
+reduces bias in medical image diagno-
+sis by handling mixed noise while main-
+taining high accuracy.
+Ethnicity,
+race,
+Age, Gender.
+GMM, Dynamic Reweighting, GAN Aug-
+mentation,Multi Domain Adaptation.
+Apply the framework in real clinical settings and ex-
+tend it to more datasets and medical imaging modal-
+ities to test scalability and real-world performance.
+✓
+✓
+×
+Dehghani
+et
+al. (2025) [1]
+Systematically evaluate bias mitigation
+at pre, in, and post-processing stages in
+healthcare ML.
+Age,
+Education,
+Gender,
+BMI,
+Geodemograph-
+ics.
+RUS, ROS, Cost-Sensitive Learning (CSL),
+NearMiss.
+Validate in clinical settings; extend to intersectional
+fairness and automated monitoring.
+✓
+✓
+✓
+Panda (2025)
+[4]
+Address hospital AI bias to prevent un-
+fair assistance and ensure equitable
+medical care.
+Perceived
+Sex,Age,Race
+Aggregation Methods,MLP
+Bias-aware FL with non-IID aggregation to reduce
+class imbalance and demographic skew.
+×
+×
+✓
+Haohui
+Lu
+(2025) [5]
+Evaluate bias mitigation in healthcare
+LLMs while balancing fairness and per-
+formance.
+Socioeconomic,
+Sentiment, Clini-
+cal Urgency.
+LLMs (Llama3, GPT-4o), LoRA/QLoRA,
+FairMed framework.
+Extend to class imbalance, federated settings, and in-
+tersectional bias in clinical models.
+×
+✓
+✓
+Straw
+(2020) [6]
+Identify historical medical bias in AI and
+advocate for ethical, fair design princi-
+ples.
+Socioeconomic
+Status,
+Race,
+Hormonal
+Lev-
+els.
+Conceptual bias analysis, Ethical evalu-
+ation.
+Develop bias-aware pipelines validated on multi-
+hospital and multi-demographic datasets.
+✓
+×
+×
+7 / 23
+
+
+=== PAGE 8 ===
+2.Literature Survey
+Rubric: Survey Extensiveness & Justiﬁcation
+Author
+(Year)
+Key Objectives
+Parameters
+Methods / Models
+Future Imp.
+Pre
+In
+Post
+Zhang
+(2021) [7]
+Test if perceived sex affects pain assess-
+ment and if gendered stereotypes ex-
+plain biases.
+Perceived
+sex,Length
+of
+Stay/Observation.
+Equalized Odds Ratio and Demographic
+Parity Ratio,
+Test bias-reduction in pain care;
+target clinician
+stereotypes as modiﬁable bias sources.
+×
+✓
+×
+Cau
+et
+al.(2024) [8]
+Investigate racial and ethnic biases in
+AI-based cardiovascular disease models
+Race/ethnicity,
+age,sex,
+prog-
+nosis
+of
+dis-
+eases(stroke,heart
+failure)
+(Artiﬁcial Neural Networks – ANN /
+CNN), Gradient-Boosted Trees,BART
+Prioritize social determinants of health and adopt
+standardized fairness metrics .
+✓
+×
+×
+Wu
+et
+al.
+(2025) [2]
+Mitigate racial disparities in clinical de-
+cision support
+Race,
+Under-
+graduate
+GPA,
+Sex.
+CFReg (Counterfactual Regression), Cy-
+cleGAN, Optimal Transport
+Automate fairness-accuracy trade-offs and expand
+models to clinical trials and medical school admis-
+sions.
+✓
+×
+×
+Sebastian
+et
+al. (2025) [9]
+To create an algorithm that automati-
+cally chooses the best way to ﬁll missing
+data so AI models become more accu-
+rate and less biased.
+patient age, di-
+agnosis,
+length
+of
+hospital
+stay,medication
+history.
+GAN:
+Generative
+Adversarial
+Net-
+works,RFI:
+Random
+Forest
+Imputa-
+tion,Autoencoder:
+Neural
+network-
+based imputation
+Develop automated tools and hybrid imputation
+models to detect data characteristics and select the
+best method without manual effort.
+✓
+×
+×
+KBahamazava
+(2026) [10]
+To develop a framework that analyzes
+how algorithmic bias affects resource
+allocation, response times, and social
+welfare in AI-driven emergency sys-
+tems.
+Total
+Economic
+Cost,Social
+Welfare
+Func-
+tion,response
+time
+Fairness
+Constrained
+Optimization
+Model,Resource Allocation Model,Bias
+Function Modeling
+Validate and extend the framework using real-world
+data and improved fairness-aware AI models to en-
+hance equitable emergency response.
+✓
+✓
+×
+8 / 23
+
+
+=== PAGE 9 ===
+3.Literature Survey
+Rubric: Survey Extensiveness & Justiﬁcation
+Author
+(Year)
+Key Objectives
+Parameters
+Methods / Models
+Future Imp.
+Pre
+In
+Post
+S.
+Uddin
+et
+al(2026) [11]
+To check whether disease datasets and
+machine learning models are fair for
+both males and females.
+gender,income,
+TPR(true
+posi-
+tive rate),p-value
+Independent
+t-tests,Chi-Square
+Tests,bootstrap method
+Apply bias mitigation techniques (pre-processing, in-
+processing, and post-processing) to reduce gender
+disparities and improve fairness in healthcare AI
+models.
+✓
+×
+×
+PegahAhadian
+(2026) [12]
+To propose a practical framework and
+trustworthiness index (HAITI) to mea-
+sure and guide fair, transparent, and re-
+liable AI deployment in healthcare.
+Gender,
+Race,
+Ethnicity,
+Age,
+Geography
+re-
+gions.
+CNNs(Convolution
+neural
+network),
+SHAP(Sharpl additive explanation), bias
+auditing
+Test and validate the framework in real clinical sys-
+tems and reﬁne it through trials and real-world feed-
+back.
+✓
+✓
+×
+WooJin
+Kim(2026) [13]
+To examine how AI literacy inﬂuences
+biases and credibility perceptions of AI-
+generated news articles.
+Emotional
+and
+Cognitive
+Reac-
+tions,age,gender
+,Processing Time
+Multivariate
+Analysis
+of
+Variance
+(MANOVA),PROCESS macro
+Apply the ﬁndings to design better AI literacy pro-
+grams and guidelines to reduce bias in evaluating AI-
+generated content.
+×
+×
+×
+Shaheen et al.
+(2026) [14]
+Reduce class imbalance bias for reli-
+able, interpretable diabetes prediction.
+HbA1c
+Level(Average
+blood sugar over
+3
+months),Age,
+Gender,
+BMI,
+Heart
+Disease,
+Smoking
+His-
+tory.
+Deep Residual Network (DRNet), SHAP,
+and LIME.
+Extend to demographic bias and integrate fairness-
+aware learning for transparent deployment.
+✓
+✓
+×
+9 / 23
+
+
+=== PAGE 10 ===
+4.Literature Survey
+Rubric: Survey Extensiveness & Justiﬁcation
+Author (Year)
+Key Objectives
+Parameters
+Methods / Models
+Future Imp.
+Pre
+In
+Post
+Moreno Sanchez
+(2024) [15]
+Build AI literacy, train professionals to detect bias,
+and promote ethical AI use.
+ECG, Age, Sex, Blood
+Pressure, (HRV)Heart
+Rate Variability.
+Machine Learning, XAI, Bias Auditing, Fairness
+Evaluation, Calibration.
+Develop bias-aware pipelines validated on multi-hospital and multi-
+demographic datasets.
+✓
+×
+✓
+Michael P. Cary Jr
+(2025) [16]
+Ground the curriculum in evidence on algorithmic
+bias and structural racism, and align with legal ex-
+pectations.
+Disability,
+socioeco-
+nomic status, trans-
+portation access, in-
+come.
+Nominal Group Technique, Competency-Based
+Education (CBE), SDOH Integration
+Expand stakeholder participation (ethicists, patients, affected com-
+munities) via advisory panels and participatory approaches.
+✓
+✓
+×
+Tuija
+Leinonen
+(2024) [17]
+Compare standard K-fold vs.
+leave-source-out
+(LSO) cross-validation for multi-source ECG data.
+ECG signals, age, sex,
+HRV,
+Morphological
+features
+(shape,
+structure,
+appear-
+ance).
+Logistic regression, Extreme Gradient Boosting,
+Leave-Source-Out testing
+Explore data augmentation, alternative deep architectures, and do-
+main adaptation to improve generalization.
+✓
+✓
+×
+10 / 23
+
+
+=== PAGE 11 ===
+Research Gaps
+Stage-Isolated Bias Handling : Most bias mitigation techniques operate only at a
+single level (data or algorithm or output), and do not analyze how bias propagates
+across the entire ML pipeline. [1, 11, 5, 8, 15]
+Lack of Clinical Risk Awareness : Fairness metrics optimize statistical parity but ignore
+medical consequences are clinically more harmful than others. [7, 14, 2, 9, 16]
+Absence of Continuous Fairness Monitoring : Existing studies evaluate fairness oﬄine
+on retrospective datasets and lack an integrated auditing mechanism that monitors
+demographic performance and detects fairness drift after deployment. [11, 12, 15, 7]
+Human–AI Interaction Neglect : Algorithmic fairness research rarely considers
+decision-level bias arising from clinician interpretation. [1, 13, 9, 10, 6, 15]
+11 / 23
+
+
+=== PAGE 12 ===
+Objectives
+Overall Problem
+Healthcare AI models trained on real-world clinical data often exhibit uneven predictive
+reliability across patient groups, resulting in unfair and unsafe clinical decision support.
+Existing solutions typically address these issues at isolated stages of the learning pipeline,
+limiting robustness for high-risk patient outcomes.
+(objtective 1)Design a healthcare AI framework incorporating equitable data collection and pre-processing
+techniques to reduce data-related bias and unfair clinical decision outcomes
+(objtective 2)Implement in-processing and post-processing bias mitigation strategies within the learning pipeline to
+improve fairness
+(objtective 3)Incorporate clinical risk-aware learning and automated bias detection and auditing to minimize
+high-risk misclassiﬁcation errors and identify performance disparities across patient demographics
+(objtective 4)Integrate a privacy-preserving fairness mechanism that enables local (on-device) model operation to
+support fairness-by-design without exposing patient data
+12 / 23
+
+
+=== PAGE 13 ===
+Problem Statement
+Core Problem
+To develop a clinically risk-aware, multi-stage bias mitigation framework that ensures
+fairness and consistent predictive performance across diverse patient populations,
+reducing unfair and unsafe clinical decision support.
+Sustainable Development Goals related to the problem
+13 / 23
+
+
+=== PAGE 14 ===
+Architecture Diagram-obj1
+14 / 23
+
+
+=== PAGE 15 ===
+Data Collection
+Healthcare datasets are collected to train, analyse, and evaluate ML models for fair clinical decision support.
+1.Heart Disease[D1]
+Parameters:Age,Diagnose,Smoker,Systolic
+BP,Diastolic BP, Cardiac output (at rest), Cardiac
+index (at rest), Stroke volume index (at rest)
+2.Diabetes[D2]
+Parameters:Age, diastolic bp,
+cholesterol,glucose,bmi,hdl,triglycerides,WBC,hbA1c,
+hemoglobin
+3.Respiratory[D3]
+Parameters:Age,gender, ethnicity, admission weight,
+respiratory rate,oxygenation,tidal volume,airway
+pressures, respiratory blood gases
+4.Hypertension[D4]
+Parameters: Gender,Age,Weight,Height,BSA,BMI,
+Smoker,SBP,DBP,IMT MAX,LVMi,EF
+15 / 23
+
+
+=== PAGE 16 ===
+1.Preprocessing Bias Analysis
+Bias
+Heart Diabetes Respiratory HyperTension Methodology
+Metrics Applied
+Performance
+Missing
+Data
+Bias
+✓
+✓
+✓
+✓
+GMM, Random Forest Imputa-
+tion, GAIN,MICE,KNN Imputer
+Wassertein
+Dis-
+tance,Correlation Perservation
+Improved data quality and better
+predictive performance.
+Class
+Imbal-
+ance Bias
+✓
+✓
+✓
+✓
+SMOTE,ADASYN,Borderline
+SMOTE,Near Miss
+Imbalance Ratio,Class Entropy Improved minority class recall and
+balanced F1-score.
+Outlier Bias
+✓
+✓
+✓
+✓
+Isolation Forest,LOF,One-Class
+SVM
+Outlier
+Score
+Stabil-
+ity,Neighborhood Consistency
+Reduced outlier effects and im-
+proved reliability.
+Feature Scale
+Bias
+×
+✓
+×
+✓
+Quantile
+Transformation,Z-
+score,Min-Max,Robust Scaler
+Wassertein
+Dis-
+tance,Correlation Perservation
+Balanced feature inﬂuence and
+improved model reliability
+16 / 23
+
+
+=== PAGE 17 ===
+2.Preprocessing Bias Analysis
+Bias
+Heart Diabetes Respiratory HyperTension Methodology
+Metrics Applied
+Performance
+Demographic
+Bias
+✓
+×
+×
+✓
+OptimalTransport,
+FairSMOTE,Reweighting
+Statistical
+Parity
+Differ-
+ence,Disparate
+Impact
+Dif-
+ference
+Reduced demographic disparities
+and improved model fairness.
+Duplicate Bias
+✓
+×
+×
+×
+GBER,Fuzzy
+Matching,
+Exact
+Duplicate Removal
+Duplicate
+Rate,Redundancy
+Reduction
+Reduced duplicate inﬂuence and
+improved data consistency.
+Data
+Noise
+Bias
+×
+✓
+×
+✓
+DenoisingAutoencoder,
+Wavelet,Median
+Filter,Savitzky-Golay
+Residual Variance,Spectral Dis-
+tortion
+Reduced noise effects and im-
+proved prediction reliability.
+Encoding /Do-
+main Bias
+×
+✓
+✓
+×
+DANN,CORAL, Autoencoder
+MMD,Domain classiﬁer AUC
+Reduced domain effects and im-
+proved model consistency
+17 / 23
+
+
+=== PAGE 18 ===
+Latent Feature Extraction Methods
+DGCCA (Deep Generalized Canonical Correlation Analysis): DGCCA is employed to learn a uniﬁed
+latent representation from multiple heterogeneous healthcare datasets by maximizing the shared
+information across different domains, thereby facilitating cross-dataset feature alignment and
+integration.
+SAINT (Self-Attention and Intersample Transformer): SAINT is employed to learn robust latent
+feature representations by modeling both feature-level and inter-sample dependencies using a
+self-attention mechanism, thereby improving the representation quality of tabular healthcare data.
+MV-DAE(Multi-View Denoising Autoencoder): is employed to learn robust and shared latent feature
+representations from multiple heterogeneous healthcare datasets by jointly reconstructing different
+data views while suppressing noise and view-speciﬁc variations, thereby improving cross-dataset
+feature integration and representation robustness.
+18 / 23
+
+
+=== PAGE 19 ===
+Latent Feature Extraction Metric
+Cross-dataset alignment(CKA): Measures how well latent features from the four datasets are aligned
+in a common space.Higher CKA indicates better cross-dataset alignment, making the method more
+suitable for uniﬁed latent representation
+Clinical information preservation(Macro-F1): Measures how well the latent features preserve useful
+clinical information for classiﬁcation.Higher Macro-F1 indicates better preservation of clinical
+information, making the method more effective for prediction
+Latent structure(Silhouette Score): Measures how clearly clinical classes are separated in the learned
+latent space.Higher Silhouette Score indicates better latent-space structure and clearer clinical class
+separation.
+Domain invariance(NMI and ARI): Measures how much dataset-speciﬁc information remains in the
+common latent representation.Lower NMI and ARI indicate less dataset-speciﬁc information, making
+the method more domain-invariant.
+19 / 23
+
+
+=== PAGE 20 ===
+References I
+[1]
+F. Dehghani, P. Paiva, N. Malik, J. Lin, S. Bayat, and M. Bento, “Accuracy-fairness trade-off in ml for healthcare: A
+quantitative evaluation of bias mitigation strategies,” Information and Software Technology, vol. 188, p. 107896, 2025.
+[Online]. Available: https://www.sciencedirect.com/science/article/pii/S0950584925002356
+[2]
+H. Wu, Y. Zhu, W. Shi, L. Tong, and M. D. Wang, “Fairness artiﬁcial intelligence in clinical decision support: Mitigating
+effect of health disparity,” IEEE Journal of Biomedical and Health Informatics, vol. 29, no. 2, pp. 815–823, 2025. [Online].
+Available: https://ieeexplore.ieee.org/document/10786197
+[3]
+S. Iqbal, X. Zhong, M. A. Khan, Z. Wu, N. Abdullah Almujally, W. Liu, and A. Hussain, “Fairbias: Mitigating bias in medical
+image diagnosis with mixed noise and class imbalance,” Neurocomputing, vol. 651, p. 130910, 2025. [Online].
+Available: https://www.sciencedirect.com/science/article/pii/S0925231225015826
+[4]
+S. Panda, R. Dubey, B. Jena, V. Pareek, L.-W. Tsai, and S. Saxena, “Federated learning frameworks in smart
+e-healthcare: A systematic literature review with bias evaluation,” Applied Soft Computing, vol. 171, p. 112747, 2025.
+[Online]. Available: https://www.sciencedirect.com/science/article/pii/S1568494625000584
+[5]
+H. Lu, Y. Lin, Z. Li, M. L. Yiu, Y. Gao, and S. Uddin, “Toward fair medical advice: Addressing and mitigating bias in large
+language model-based healthcare applications,” Artiﬁcial Intelligence in Medicine, vol. 168, p. 103216, July 2025.
+[Online]. Available: https://www.sciencedirect.com/science/article/pii/S0933365725001514
+[6]
+I. Straw, “The automation of bias in medical artiﬁcial intelligence (ai): Decoding the past to create a better future,”
+Artiﬁcial Intelligence in Medicine, vol. 110, p. 101965, October 2020. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S0933365720312306
+20 / 23
+
+
+=== PAGE 21 ===
+References II
+[7]
+Unknown, “Evaluating gender bias in ml-based clinical risk prediction models: A study on multiple use cases at
+different hospitals,” Journal of Biomedical Informatics, vol. 157, p. 104692, 2024. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S1532046424001102
+[8]
+R. Cau, F. Pisu, J. S. Suri, and L. Saba, “Addressing hidden risks: Systematic review of artiﬁcial intelligence biases across
+racial and ethnic groups in cardiovascular diseases,” European Journal of Radiology, vol. 183, p. 111867, 2025. [Online].
+Available: https://www.sciencedirect.com/science/article/pii/S0720048X24005837
+[9]
+A. M. Sebastian, D. Peter, and R. A. Sebastian, “An optimal imputation algorithm for reducing bias and errors in
+missing data handling for ai models,” Decision Analytics Journal, vol. 16, p. 100627, 2025. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S2772662225000839
+[10] K. Bahamazava, “Implications of algorithmic bias in ai-driven emergency response systems,” Journal of Economy and
+Technology, vol. 4, pp. 20–34, 2026. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S2949948825000198
+[11] S. Uddin, H. Liang, and H. Guo, “Gender-based data bias and model fairness evaluation in benchmarked open-access
+disease prediction datasets,” Computers in Biology and Medicine, vol. 203, p. 111503, 2026. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S0010482526000648
+[12] P. Ahadian, W. Xu, D. Liu, and Q. Guan, “Ethics of trustworthy ai in healthcare: Challenges, principles, and practical
+pathways,” Neurocomputing, vol. 661, p. 131942, 2026. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S0925231225026141
+21 / 23
+
+
+=== PAGE 22 ===
+References III
+[13] W. Kim and Y. Ryoo, “The literacy paradox: How ai literacy ampliﬁes biases in evaluating ai-generated news articles,”
+International Journal of Information Management, vol. 86, p. 102992, 2026. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S0268401225001240
+[14] I. Shaheen, N. Javaid, Z. Ali, I. Ahmed, F. A. Khan, and D. Pamucar, “A trustworthy and patient privacy-conscious
+framework for early diabetes prediction using deep residual networks and proximity-based data,” Biomedical Signal
+Processing and Control, vol. 112, p. 108361, 2026. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S1746809425008729
+[15] P. A. Moreno-Sanchez, G. García-Isla, V. D. A. Corino, A. Vehkaoja, K. Brukamp, M. van Gils, and L. Mainardi, “Ecg-based
+data-driven solutions for diagnosis and prognosis of cardiovascular diseases: A systematic review,” Computers in
+Biology and Medicine, vol. 172, p. 108235, 2024. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S0010482524003196
+[16] M. P. C. Jr., S. D. Grady, J. McMillian-Bohler, S. Bessias, C. Silcox, S. Silva, V. Guilamo-Ramos, J. McCall, J. Sperling, and
+B. A. Goldstein, “Building competency in artiﬁcial intelligence and bias mitigation for nurse scientists and aligned
+health researchers,” Nursing Outlook, vol. 73, p. 102395, 2025. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S002965542500048X
+[17] T. Leinonen, D. Wong, A. Vasankari, A. Wahab, R. Nadarajah, M. Kaisti, and A. Airola, “Empirical investigation of
+multi-source cross-validation in clinical ecg classiﬁcation,” Computers in Biology and Medicine, vol. 183, p. 109271, 2024.
+[Online]. Available: https://www.sciencedirect.com/science/article/pii/S0010482524013568
+22 / 23
+
+
+=== PAGE 23 ===
+Thank You
+23 / 23
+
+
