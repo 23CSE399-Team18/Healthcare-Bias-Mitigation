@@ -1,0 +1,7 @@
+dataset,bias,applied,mean_rank,position,lowest_mean_rank,file
+diabetes,Missing Data,MIP-VAE,4.429,4 of 8,MICE,01_missing_data_bias_method_comparison.png
+diabetes,Class Imbalance,TabDDPM,3.111,2 of 8,Borderline-SMOTE,02_class_imbalance_bias_method_comparison.png
+diabetes,Feature Scale,PowerTransform (Yeo-Johnson),2.5,1 of 6,PowerTransform (Yeo-Johnson),04_feature_scale_bias_method_comparison.png
+diabetes,Demographic,Adversarial debiasing,2.938,2 of 6,Optimal Transport,05_demographic_bias_method_comparison.png
+diabetes,Duplicate,Ditto (transformer matcher),2.143,1 of 6,Ditto (transformer matcher),06_duplicate_bias_method_comparison.png
+diabetes,Data Noise,Robust loss (GCE),1.417,1 of 7,Robust loss (GCE),07_data_noise_bias_method_comparison.png

@@ -1,0 +1,2464 @@
+{
+  "included": [
+    {
+      "group": "data",
+      "path": ".gitignore",
+      "source": "publication metadata"
+    },
+    {
+      "group": "data",
+      "path": "heart/source_documentation/source/DATASET_README.md",
+      "source": "heart/raw/source/DATASET_README.md"
+    },
+    {
+      "group": "data",
+      "path": "heart/source_documentation/source/dataset_verified/data_dictionary.csv",
+      "source": "heart/raw/source/dataset_verified/data_dictionary.csv"
+    },
+    {
+      "group": "data",
+      "path": "diabetes/source_documentation/source/data_dictionary.csv",
+      "source": "diabetes/raw/source/data_dictionary.csv"
+    },
+    {
+      "group": "data",
+      "path": "diabetes/source_documentation/source/DATASET_README.md",
+      "source": "diabetes/raw/source/DATASET_README.md"
+    },
+    {
+      "group": "data",
+      "path": "hypertension/source_documentation/source/DATASET_README.md",
+      "source": "hypertension/raw/source/DATASET_README.md"
+    },
+    {
+      "group": "data",
+      "path": "hypertension/source_documentation/source/derived/data_dictionary.csv",
+      "source": "hypertension/raw/source/derived/data_dictionary.csv"
+    },
+    {
+      "group": "data",
+      "path": "hypertension/source_documentation/source/DATASET_README_folder.md",
+      "source": "hypertension/raw/source/DATASET_README_folder.md"
+    },
+    {
+      "group": "data",
+      "path": "respiratory/source_documentation/source/official_verified/README.md",
+      "source": "respiratory/raw/source/official_verified/README.md"
+    },
+    {
+      "group": "data",
+      "path": "respiratory/source_documentation/source/dataset_verified/respiratory_cohort_24h_dictionary.csv",
+      "source": "respiratory/raw/source/dataset_verified/respiratory_cohort_24h_dictionary.csv"
+    },
+    {
+      "group": "data",
+      "path": "respiratory/source_documentation/source/DATASET_README.md",
+      "source": "respiratory/raw/source/DATASET_README.md"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/prepare_diabetes.py",
+      "source": "code/build_raw/prepare_diabetes.py"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/download_nhis2023.py",
+      "source": "code/build_raw/download_nhis2023.py"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/eicu_sources.py",
+      "source": "code/build_raw/eicu_sources.py"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/prepare_respiratory_cohort.py",
+      "source": "code/build_raw/prepare_respiratory_cohort.py"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/build_heart_cohort.py",
+      "source": "code/build_raw/build_heart_cohort.py"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/build_survey_raw.py",
+      "source": "code/build_raw/build_survey_raw.py"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/prepare_hypertension.py",
+      "source": "code/build_raw/prepare_hypertension.py"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/validate_raw.py",
+      "source": "code/build_raw/validate_raw.py"
+    },
+    {
+      "group": "data",
+      "path": "code/build_raw/extract_respiratory_features.py",
+      "source": "code/build_raw/extract_respiratory_features.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/source_documentation/phenotype_definitions.json",
+      "source": "hospital/raw/phenotype_definitions.json"
+    },
+    {
+      "group": "data",
+      "path": "hospital/source_documentation/STUDY_README_codex.md",
+      "source": "hospital/raw/STUDY_README_codex.md"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/prepare_cross_dataset.py",
+      "source": "hospital/code/prepare_cross_dataset.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/prepare_four_condition_tables.py",
+      "source": "hospital/code/prepare_four_condition_tables.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/prepare_mimic_clinical_features.py",
+      "source": "hospital/code/prepare_mimic_clinical_features.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/prepare_mimic_metadata.py",
+      "source": "hospital/code/prepare_mimic_metadata.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/streaming_sources.py",
+      "source": "hospital/code/streaming_sources.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/validate_four_condition_tables.py",
+      "source": "hospital/code/validate_four_condition_tables.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/write_four_condition_report.py",
+      "source": "hospital/code/write_four_condition_report.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/prepare_four_condition_baseline.py",
+      "source": "hospital/code/prepare_four_condition_baseline.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/code/fix_eicu_race_labels.py",
+      "source": "hospital/code/fix_eicu_race_labels.py"
+    },
+    {
+      "group": "data",
+      "path": "hospital/preprocessed/feature_names.json",
+      "source": "hospital/preprocessed/feature_names.json"
+    },
+    {
+      "group": "data",
+      "path": "hospital/preprocessed/transformation_validation.json",
+      "source": "hospital/preprocessed/transformation_validation.json"
+    },
+    {
+      "group": "data",
+      "path": "hospital/preprocessed/race_fix_audit.json",
+      "source": "hospital/preprocessed/race_fix_audit.json"
+    },
+    {
+      "group": "data",
+      "path": "hospital/README.md",
+      "source": "hospital/README.md"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/heart_preprocessing.ipynb",
+      "source": "heart/heart_preprocessing.ipynb"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/heart_sample10_comparison.ipynb",
+      "source": "heart/heart_sample10_comparison.ipynb"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/modern_vs_traditional.csv",
+      "source": "heart/preprocessed/modern_vs_traditional.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/comparison_missing_data.csv",
+      "source": "heart/preprocessed/comparison_missing_data.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/comparison_class_imbalance.csv",
+      "source": "heart/preprocessed/comparison_class_imbalance.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/comparison_outlier.csv",
+      "source": "heart/preprocessed/comparison_outlier.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/comparison_feature_scale.csv",
+      "source": "heart/preprocessed/comparison_feature_scale.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/comparison_demographic.csv",
+      "source": "heart/preprocessed/comparison_demographic.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/comparison_data_noise.csv",
+      "source": "heart/preprocessed/comparison_data_noise.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/bias_summary.csv",
+      "source": "heart/preprocessed/bias_summary.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/end_to_end_check.csv",
+      "source": "heart/preprocessed/end_to_end_check.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "heart/preprocessed/pipeline_log.json",
+      "source": "heart/preprocessed/pipeline_log.json"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/diabetes_preprocessing.ipynb",
+      "source": "diabetes/diabetes_preprocessing.ipynb"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/diabetes_sample10_comparison.ipynb",
+      "source": "diabetes/diabetes_sample10_comparison.ipynb"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/modern_vs_traditional.csv",
+      "source": "diabetes/preprocessed/modern_vs_traditional.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/comparison_missing_data.csv",
+      "source": "diabetes/preprocessed/comparison_missing_data.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/comparison_class_imbalance.csv",
+      "source": "diabetes/preprocessed/comparison_class_imbalance.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/comparison_feature_scale.csv",
+      "source": "diabetes/preprocessed/comparison_feature_scale.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/comparison_demographic.csv",
+      "source": "diabetes/preprocessed/comparison_demographic.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/comparison_duplicate.csv",
+      "source": "diabetes/preprocessed/comparison_duplicate.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/comparison_data_noise.csv",
+      "source": "diabetes/preprocessed/comparison_data_noise.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/bias_summary.csv",
+      "source": "diabetes/preprocessed/bias_summary.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/end_to_end_check.csv",
+      "source": "diabetes/preprocessed/end_to_end_check.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "diabetes/preprocessed/pipeline_log.json",
+      "source": "diabetes/preprocessed/pipeline_log.json"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/hypertension_preprocessing.ipynb",
+      "source": "hypertension/hypertension_preprocessing.ipynb"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/hypertension_sample10_comparison.ipynb",
+      "source": "hypertension/hypertension_sample10_comparison.ipynb"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/modern_vs_traditional.csv",
+      "source": "hypertension/preprocessed/modern_vs_traditional.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/comparison_missing_data.csv",
+      "source": "hypertension/preprocessed/comparison_missing_data.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/comparison_feature_scale.csv",
+      "source": "hypertension/preprocessed/comparison_feature_scale.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/comparison_demographic.csv",
+      "source": "hypertension/preprocessed/comparison_demographic.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/comparison_data_noise.csv",
+      "source": "hypertension/preprocessed/comparison_data_noise.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/comparison_encoding_domain.csv",
+      "source": "hypertension/preprocessed/comparison_encoding_domain.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/bias_summary.csv",
+      "source": "hypertension/preprocessed/bias_summary.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/end_to_end_check.csv",
+      "source": "hypertension/preprocessed/end_to_end_check.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "hypertension/preprocessed/pipeline_log.json",
+      "source": "hypertension/preprocessed/pipeline_log.json"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/respiratory_preprocessing.ipynb",
+      "source": "respiratory/respiratory_preprocessing.ipynb"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/respiratory_sample10_comparison.ipynb",
+      "source": "respiratory/respiratory_sample10_comparison.ipynb"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/modern_vs_traditional.csv",
+      "source": "respiratory/preprocessed/modern_vs_traditional.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/comparison_missing_data.csv",
+      "source": "respiratory/preprocessed/comparison_missing_data.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/comparison_class_imbalance.csv",
+      "source": "respiratory/preprocessed/comparison_class_imbalance.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/comparison_outlier.csv",
+      "source": "respiratory/preprocessed/comparison_outlier.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/comparison_feature_scale.csv",
+      "source": "respiratory/preprocessed/comparison_feature_scale.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/comparison_demographic.csv",
+      "source": "respiratory/preprocessed/comparison_demographic.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/comparison_data_noise.csv",
+      "source": "respiratory/preprocessed/comparison_data_noise.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/comparison_encoding_domain.csv",
+      "source": "respiratory/preprocessed/comparison_encoding_domain.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/bias_summary.csv",
+      "source": "respiratory/preprocessed/bias_summary.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/end_to_end_check.csv",
+      "source": "respiratory/preprocessed/end_to_end_check.csv"
+    },
+    {
+      "group": "preprocessing",
+      "path": "respiratory/preprocessed/pipeline_log.json",
+      "source": "respiratory/preprocessed/pipeline_log.json"
+    },
+    {
+      "group": "latent",
+      "path": "latent/latent_dashboard.py",
+      "source": "latent/latent_dashboard.py"
+    },
+    {
+      "group": "latent",
+      "path": "latent/latent_alignment.ipynb",
+      "source": "latent/latent_alignment.ipynb"
+    },
+    {
+      "group": "latent",
+      "path": "latent/latent_alignment.py",
+      "source": "latent/latent_alignment.py"
+    },
+    {
+      "group": "latent",
+      "path": "latent/methods/PCA_no_alignment/metrics.json",
+      "source": "latent/methods/PCA_no_alignment/metrics.json"
+    },
+    {
+      "group": "latent",
+      "path": "latent/methods/MV-DAE/metrics.json",
+      "source": "latent/methods/MV-DAE/metrics.json"
+    },
+    {
+      "group": "latent",
+      "path": "latent/methods/DGCCA/metrics.json",
+      "source": "latent/methods/DGCCA/metrics.json"
+    },
+    {
+      "group": "latent",
+      "path": "latent/methods/SAINT/metrics.json",
+      "source": "latent/methods/SAINT/metrics.json"
+    },
+    {
+      "group": "latent",
+      "path": "latent/latent_method_comparison.csv",
+      "source": "latent/latent_method_comparison.csv"
+    },
+    {
+      "group": "latent",
+      "path": "latent/latent_report.json",
+      "source": "latent/latent_report.json"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/heart_inprocessing.ipynb",
+      "source": "heart/heart_inprocessing.ipynb"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/heart_inprocessing_sample10.ipynb",
+      "source": "heart/heart_inprocessing_sample10.ipynb"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/comparison_demographic.csv",
+      "source": "heart/inprocessed/comparison_demographic.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/test_metrics_demographic.csv",
+      "source": "heart/inprocessed/test_metrics_demographic.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/comparison_intersectional.csv",
+      "source": "heart/inprocessed/comparison_intersectional.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/test_metrics_intersectional.csv",
+      "source": "heart/inprocessed/test_metrics_intersectional.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/comparison_calibration.csv",
+      "source": "heart/inprocessed/comparison_calibration.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/test_metrics_calibration.csv",
+      "source": "heart/inprocessed/test_metrics_calibration.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/comparison_environment.csv",
+      "source": "heart/inprocessed/comparison_environment.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/test_metrics_environment.csv",
+      "source": "heart/inprocessed/test_metrics_environment.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/inprocessing_summary.csv",
+      "source": "heart/inprocessed/inprocessing_summary.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "heart/inprocessed/selection.json",
+      "source": "heart/inprocessed/selection.json"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/diabetes_inprocessing.ipynb",
+      "source": "diabetes/diabetes_inprocessing.ipynb"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/diabetes_inprocessing_sample10.ipynb",
+      "source": "diabetes/diabetes_inprocessing_sample10.ipynb"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/comparison_demographic.csv",
+      "source": "diabetes/inprocessed/comparison_demographic.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/test_metrics_demographic.csv",
+      "source": "diabetes/inprocessed/test_metrics_demographic.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/comparison_intersectional.csv",
+      "source": "diabetes/inprocessed/comparison_intersectional.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/test_metrics_intersectional.csv",
+      "source": "diabetes/inprocessed/test_metrics_intersectional.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/comparison_calibration.csv",
+      "source": "diabetes/inprocessed/comparison_calibration.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/test_metrics_calibration.csv",
+      "source": "diabetes/inprocessed/test_metrics_calibration.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/comparison_environment.csv",
+      "source": "diabetes/inprocessed/comparison_environment.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/test_metrics_environment.csv",
+      "source": "diabetes/inprocessed/test_metrics_environment.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/inprocessing_summary.csv",
+      "source": "diabetes/inprocessed/inprocessing_summary.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "diabetes/inprocessed/selection.json",
+      "source": "diabetes/inprocessed/selection.json"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/hypertension_inprocessing.ipynb",
+      "source": "hypertension/hypertension_inprocessing.ipynb"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/hypertension_inprocessing_sample10.ipynb",
+      "source": "hypertension/hypertension_inprocessing_sample10.ipynb"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/comparison_demographic.csv",
+      "source": "hypertension/inprocessed/comparison_demographic.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/test_metrics_demographic.csv",
+      "source": "hypertension/inprocessed/test_metrics_demographic.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/comparison_intersectional.csv",
+      "source": "hypertension/inprocessed/comparison_intersectional.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/test_metrics_intersectional.csv",
+      "source": "hypertension/inprocessed/test_metrics_intersectional.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/comparison_calibration.csv",
+      "source": "hypertension/inprocessed/comparison_calibration.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/test_metrics_calibration.csv",
+      "source": "hypertension/inprocessed/test_metrics_calibration.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/comparison_environment.csv",
+      "source": "hypertension/inprocessed/comparison_environment.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/test_metrics_environment.csv",
+      "source": "hypertension/inprocessed/test_metrics_environment.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/inprocessing_summary.csv",
+      "source": "hypertension/inprocessed/inprocessing_summary.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "hypertension/inprocessed/selection.json",
+      "source": "hypertension/inprocessed/selection.json"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/respiratory_inprocessing.ipynb",
+      "source": "respiratory/respiratory_inprocessing.ipynb"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/respiratory_inprocessing_sample10.ipynb",
+      "source": "respiratory/respiratory_inprocessing_sample10.ipynb"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/comparison_demographic.csv",
+      "source": "respiratory/inprocessed/comparison_demographic.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/test_metrics_demographic.csv",
+      "source": "respiratory/inprocessed/test_metrics_demographic.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/comparison_intersectional.csv",
+      "source": "respiratory/inprocessed/comparison_intersectional.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/test_metrics_intersectional.csv",
+      "source": "respiratory/inprocessed/test_metrics_intersectional.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/comparison_calibration.csv",
+      "source": "respiratory/inprocessed/comparison_calibration.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/test_metrics_calibration.csv",
+      "source": "respiratory/inprocessed/test_metrics_calibration.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/comparison_environment.csv",
+      "source": "respiratory/inprocessed/comparison_environment.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/test_metrics_environment.csv",
+      "source": "respiratory/inprocessed/test_metrics_environment.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/inprocessing_summary.csv",
+      "source": "respiratory/inprocessed/inprocessing_summary.csv"
+    },
+    {
+      "group": "inprocessing",
+      "path": "respiratory/inprocessed/selection.json",
+      "source": "respiratory/inprocessed/selection.json"
+    },
+    {
+      "group": "inprocessing",
+      "path": "code/inprocessing/inprocessing_cells.py",
+      "source": "code/inprocessing/inprocessing_cells.py"
+    },
+    {
+      "group": "inprocessing",
+      "path": "code/inprocessing/make_notebooks.py",
+      "source": "code/inprocessing/make_notebooks.py"
+    },
+    {
+      "group": "inprocessing",
+      "path": "code/inprocessing/dashboard_template.html",
+      "source": "code/inprocessing/dashboard_template.html"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/01_missing_data_bias_method_comparison.png",
+      "source": "heart/plots_comparison/01_missing_data_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/02_class_imbalance_bias_method_comparison.png",
+      "source": "heart/plots_comparison/02_class_imbalance_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/03_outlier_bias_method_comparison.png",
+      "source": "heart/plots_comparison/03_outlier_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/04_feature_scale_bias_method_comparison.png",
+      "source": "heart/plots_comparison/04_feature_scale_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/05_demographic_bias_method_comparison.png",
+      "source": "heart/plots_comparison/05_demographic_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/07_data_noise_bias_method_comparison.png",
+      "source": "heart/plots_comparison/07_data_noise_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/00_overview_applied_vs_all_methods.png",
+      "source": "heart/plots_comparison/00_overview_applied_vs_all_methods.png"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/method_comparison_summary.csv",
+      "source": "heart/plots_comparison/method_comparison_summary.csv"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/S10_01_missing_data_infographic.html",
+      "source": "heart/plots_comparison/S10_01_missing_data_infographic.html"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/S10_01_missing_data_infographic.png",
+      "source": "heart/plots_comparison/S10_01_missing_data_infographic.png"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/S10_02_feature_scale_infographic.html",
+      "source": "heart/plots_comparison/S10_02_feature_scale_infographic.html"
+    },
+    {
+      "group": "docs",
+      "path": "heart/plots_comparison/S10_02_feature_scale_infographic.png",
+      "source": "heart/plots_comparison/S10_02_feature_scale_infographic.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/01_missing_data_bias_method_comparison.png",
+      "source": "diabetes/plots_comparison/01_missing_data_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/02_class_imbalance_bias_method_comparison.png",
+      "source": "diabetes/plots_comparison/02_class_imbalance_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/04_feature_scale_bias_method_comparison.png",
+      "source": "diabetes/plots_comparison/04_feature_scale_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/05_demographic_bias_method_comparison.png",
+      "source": "diabetes/plots_comparison/05_demographic_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/06_duplicate_bias_method_comparison.png",
+      "source": "diabetes/plots_comparison/06_duplicate_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/07_data_noise_bias_method_comparison.png",
+      "source": "diabetes/plots_comparison/07_data_noise_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/00_overview_applied_vs_all_methods.png",
+      "source": "diabetes/plots_comparison/00_overview_applied_vs_all_methods.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/method_comparison_summary.csv",
+      "source": "diabetes/plots_comparison/method_comparison_summary.csv"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/S10_03_class_imbalance_infographic.html",
+      "source": "diabetes/plots_comparison/S10_03_class_imbalance_infographic.html"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/S10_03_class_imbalance_infographic.png",
+      "source": "diabetes/plots_comparison/S10_03_class_imbalance_infographic.png"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/S10_04_demographic_infographic.html",
+      "source": "diabetes/plots_comparison/S10_04_demographic_infographic.html"
+    },
+    {
+      "group": "docs",
+      "path": "diabetes/plots_comparison/S10_04_demographic_infographic.png",
+      "source": "diabetes/plots_comparison/S10_04_demographic_infographic.png"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/01_missing_data_bias_method_comparison.png",
+      "source": "hypertension/plots_comparison/01_missing_data_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/04_feature_scale_bias_method_comparison.png",
+      "source": "hypertension/plots_comparison/04_feature_scale_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/05_demographic_bias_method_comparison.png",
+      "source": "hypertension/plots_comparison/05_demographic_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/07_data_noise_bias_method_comparison.png",
+      "source": "hypertension/plots_comparison/07_data_noise_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/08_encoding_domain_bias_method_comparison.png",
+      "source": "hypertension/plots_comparison/08_encoding_domain_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/00_overview_applied_vs_all_methods.png",
+      "source": "hypertension/plots_comparison/00_overview_applied_vs_all_methods.png"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/method_comparison_summary.csv",
+      "source": "hypertension/plots_comparison/method_comparison_summary.csv"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/S10_05_data_noise_infographic.html",
+      "source": "hypertension/plots_comparison/S10_05_data_noise_infographic.html"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/S10_05_data_noise_infographic.png",
+      "source": "hypertension/plots_comparison/S10_05_data_noise_infographic.png"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/S10_06_encoding_domain_infographic.html",
+      "source": "hypertension/plots_comparison/S10_06_encoding_domain_infographic.html"
+    },
+    {
+      "group": "docs",
+      "path": "hypertension/plots_comparison/S10_06_encoding_domain_infographic.png",
+      "source": "hypertension/plots_comparison/S10_06_encoding_domain_infographic.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/01_missing_data_bias_method_comparison.png",
+      "source": "respiratory/plots_comparison/01_missing_data_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/02_class_imbalance_bias_method_comparison.png",
+      "source": "respiratory/plots_comparison/02_class_imbalance_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/03_outlier_bias_method_comparison.png",
+      "source": "respiratory/plots_comparison/03_outlier_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/04_feature_scale_bias_method_comparison.png",
+      "source": "respiratory/plots_comparison/04_feature_scale_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/05_demographic_bias_method_comparison.png",
+      "source": "respiratory/plots_comparison/05_demographic_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/07_data_noise_bias_method_comparison.png",
+      "source": "respiratory/plots_comparison/07_data_noise_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/08_encoding_domain_bias_method_comparison.png",
+      "source": "respiratory/plots_comparison/08_encoding_domain_bias_method_comparison.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/00_overview_applied_vs_all_methods.png",
+      "source": "respiratory/plots_comparison/00_overview_applied_vs_all_methods.png"
+    },
+    {
+      "group": "docs",
+      "path": "respiratory/plots_comparison/method_comparison_summary.csv",
+      "source": "respiratory/plots_comparison/method_comparison_summary.csv"
+    },
+    {
+      "group": "docs",
+      "path": "code/recheck.py",
+      "source": "code/recheck.py"
+    },
+    {
+      "group": "docs",
+      "path": "code/plots_comparison/make_sample10_infographics.py",
+      "source": "code/plots_comparison/make_sample10_infographics.py"
+    },
+    {
+      "group": "docs",
+      "path": "code/plots_comparison/make_method_comparison.py",
+      "source": "code/plots_comparison/make_method_comparison.py"
+    },
+    {
+      "group": "docs",
+      "path": "code/build_website.py",
+      "source": "code/build_website.py"
+    },
+    {
+      "group": "docs",
+      "path": "docs/Healthcare_Bias_Mitigation.pdf",
+      "source": "docs/Healthcare_Bias_Mitigation.pdf"
+    },
+    {
+      "group": "docs",
+      "path": "docs/PPT__Copy__1 (1).pdf",
+      "source": "docs/PPT__Copy__1 (1).pdf"
+    },
+    {
+      "group": "docs",
+      "path": "docs/in.jpeg",
+      "source": "docs/in.jpeg"
+    },
+    {
+      "group": "docs",
+      "path": "docs/latent.png",
+      "source": "docs/latent.png"
+    },
+    {
+      "group": "docs",
+      "path": "docs/pre_methods_metrics.jpeg",
+      "source": "docs/pre_methods_metrics.jpeg"
+    },
+    {
+      "group": "docs",
+      "path": "pre_methods_metrics.jpeg",
+      "source": "pre_methods_metrics.jpeg"
+    },
+    {
+      "group": "docs",
+      "path": "latent metrics.png",
+      "source": "latent metrics.png"
+    },
+    {
+      "group": "docs",
+      "path": "latent methods.png",
+      "source": "latent methods.png"
+    },
+    {
+      "group": "docs",
+      "path": "inprocessing.png",
+      "source": "inprocessing.png"
+    },
+    {
+      "group": "docs",
+      "path": "PROJECT_README.md",
+      "source": "README.md"
+    },
+    {
+      "group": "docs",
+      "path": "RECHECK_REPORT.md",
+      "source": "RECHECK_REPORT.md"
+    },
+    {
+      "group": "docs",
+      "path": "PREPROCESSING_ALGORITHM_GUIDE.md",
+      "source": "PREPROCESSING_ALGORITHM_GUIDE.md"
+    },
+    {
+      "group": "docs",
+      "path": "code/figures/build_specs.cjs",
+      "source": "output/bias_frameworks/build_specs.cjs"
+    },
+    {
+      "group": "docs",
+      "path": "docs/generated/01_heart_missing_data.png",
+      "source": "output/bias_frameworks/01_heart_missing_data.png"
+    },
+    {
+      "group": "docs",
+      "path": "docs/generated/02_heart_class_imbalance.png",
+      "source": "output/bias_frameworks/02_heart_class_imbalance.png"
+    },
+    {
+      "group": "docs",
+      "path": "docs/generated/05_hypertension_data_noise.png",
+      "source": "output/bias_frameworks/05_hypertension_data_noise.png"
+    },
+    {
+      "group": "docs",
+      "path": "docs/generated/06_hypertension_domain.png",
+      "source": "output/bias_frameworks/06_hypertension_domain.png"
+    },
+    {
+      "group": "docs",
+      "path": "README.md",
+      "source": "publication metadata"
+    },
+    {
+      "group": "docs",
+      "path": "PUBLICATION.md",
+      "source": "publication metadata"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "resp_physionet/",
+      "reason": "Environment, cache, local tool state or publication workspace"
+    },
+    {
+      "path": "Heart_correct/",
+      "reason": "Environment, cache, local tool state or publication workspace"
+    },
+    {
+      "path": ".claude/",
+      "reason": "Environment, cache, local tool state or publication workspace"
+    },
+    {
+      "path": "code/__pycache__/",
+      "reason": "Environment, cache, local tool state or publication workspace"
+    },
+    {
+      "path": "latent/__pycache__/",
+      "reason": "Environment, cache, local tool state or publication workspace"
+    },
+    {
+      "path": ".publication/",
+      "reason": "Environment, cache, local tool state or publication workspace"
+    },
+    {
+      "path": "heart/raw/heart_raw.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/raw/source/LLCP2022.XPT",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/raw/source/LLCP2022XPT.zip",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/raw/source/dataset_verified/heart_2022_baseline_raw.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/raw/source/dataset_verified/heart_label_exclusions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/raw/source/dataset_verified/validation.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/raw/heart_schema.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/preprocessed/run_progress.log",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "heart/preprocessed/heart_train_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/preprocessed/heart_test_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/preprocessed/heart_validation_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/preprocessed/heart_train_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/preprocessed/heart_test_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/preprocessed/heart_validation_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/preprocessed/sample10_trace.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/preprocessed/sample10_complete_details.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/06_duplicate_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/01_missing_data_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/03_outlier_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/07_data_noise_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/04_feature_scale_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/08_encoding_domain_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/02_class_imbalance_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/05_demographic_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/inprocessing/01_demographic_prediction_dependence_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/inprocessing/02_intersectional_subgroup_unfairness_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/inprocessing/03_predictive_miscalibration_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/inprocessing/04_cross_environment_generalization_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/plots/inprocessing/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/inprocessed/models/ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/FairCare.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/DANN.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/GroupDRO.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/Fair-ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/Intersectional_debiasing.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/Fairness-constrained_optimization.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/GroupDRO_(intersectional).pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/AvUC.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/CRL.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/Uncertainty-weighted_gradient.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/Calibration-regularized.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/hospital_ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/hospital_Fishr.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/hospital_V-REx.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/hospital_EQRM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/models/hospital_Fish.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "heart/inprocessed/run_progress.log",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "heart/inprocessed/predictions_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/inprocessed/predictions_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/inprocessed/hospital_predictions_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/inprocessed/hospital_predictions_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/inprocessed/hospital_predictions_external.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/inprocessed/sample10_test_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "heart/inprocessed/sample10_hospital_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/diabetes_raw.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/codebooks/DEMO_L.htm",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/codebooks/DIQ_L.htm",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/codebooks/BMX_L.htm",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/codebooks/SMQ_L.htm",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/codebooks/GHB_L.htm",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/codebooks/GLU_L.htm",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/cohort_flow.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/cohort_summary.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/derived_files_manifest.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/diabetes_all_participants_label_audit.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/diabetes_baseline_raw.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/diabetes_biomarkers_adults.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/diabetes_excluded_audit.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/download_manifest.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/raw/DIQ_L.xpt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/raw/DEMO_L.xpt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/raw/BMX_L.xpt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/raw/SMQ_L.xpt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/raw/GHB_L.xpt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/raw/GLU_L.xpt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/source/validation.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/raw/diabetes_schema.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/preprocessed/run_progress.log",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "diabetes/preprocessed/diabetes_train_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/preprocessed/diabetes_test_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/preprocessed/diabetes_validation_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/preprocessed/diabetes_train_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/preprocessed/diabetes_test_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/preprocessed/diabetes_validation_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/preprocessed/sample10_trace.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/preprocessed/sample10_complete_details.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/06_duplicate_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/01_missing_data_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/03_outlier_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/07_data_noise_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/04_feature_scale_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/08_encoding_domain_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/02_class_imbalance_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/05_demographic_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/inprocessing/01_demographic_prediction_dependence_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/inprocessing/02_intersectional_subgroup_unfairness_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/inprocessing/03_predictive_miscalibration_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/inprocessing/04_cross_environment_generalization_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/plots/inprocessing/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/inprocessed/models/ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/FairCare.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/DANN.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/GroupDRO.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/Fair-ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/Intersectional_debiasing.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/Fairness-constrained_optimization.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/GroupDRO_(intersectional).pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/AvUC.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/CRL.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/Uncertainty-weighted_gradient.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/Calibration-regularized.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/hospital_ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/hospital_Fishr.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/hospital_V-REx.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/hospital_EQRM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/models/hospital_Fish.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "diabetes/inprocessed/run_progress.log",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "diabetes/inprocessed/predictions_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/inprocessed/predictions_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/inprocessed/hospital_predictions_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/inprocessed/hospital_predictions_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/inprocessed/hospital_predictions_external.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/inprocessed/sample10_test_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "diabetes/inprocessed/sample10_hospital_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/hypertension_raw.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/cohort_summary.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/derived/hypertension_nhis2023_raw_cohort.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/derived/excluded_labels.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/documentation/adult-summary.pdf",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/documentation/adult-codebook.pdf",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/documentation/srvydesc-508.pdf",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/download_manifest.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/feature_schema.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/raw/adult23csv.zip",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/source/raw/adult23.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/raw/hypertension_schema.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/preprocessed/run_progress.log",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "hypertension/preprocessed/hypertension_train_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/preprocessed/hypertension_test_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/preprocessed/hypertension_validation_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/preprocessed/hypertension_train_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/preprocessed/hypertension_test_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/preprocessed/hypertension_validation_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/preprocessed/sample10_trace.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/preprocessed/sample10_complete_details.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/06_duplicate_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/01_missing_data_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/03_outlier_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/07_data_noise_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/04_feature_scale_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/08_encoding_domain_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/02_class_imbalance_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/05_demographic_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/inprocessing/01_demographic_prediction_dependence_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/inprocessing/02_intersectional_subgroup_unfairness_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/inprocessing/03_predictive_miscalibration_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/inprocessing/04_cross_environment_generalization_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/plots/inprocessing/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/inprocessed/models/ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/FairCare.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/DANN.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/GroupDRO.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/Fair-ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/Intersectional_debiasing.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/Fairness-constrained_optimization.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/GroupDRO_(intersectional).pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/AvUC.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/CRL.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/Uncertainty-weighted_gradient.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/Calibration-regularized.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/hospital_ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/hospital_Fishr.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/hospital_V-REx.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/hospital_EQRM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/models/hospital_Fish.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "hypertension/inprocessed/run_progress.log",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "hypertension/inprocessed/predictions_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/inprocessed/predictions_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/inprocessed/hospital_predictions_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/inprocessed/hospital_predictions_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/inprocessed/hospital_predictions_external.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/inprocessed/sample10_test_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hypertension/inprocessed/sample10_hospital_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/respiratory_raw.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/admissionDx.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/allergy.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/apacheApsVar.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/apachePatientResult.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/apachePredVar.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/carePlanCareProvider.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/carePlanEOL.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/carePlanGeneral.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/carePlanGoal.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/carePlanInfectiousDisease.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/customLab.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/diagnosis.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/hospital.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/infusionDrug.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/intakeOutput.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/lab.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/medication.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/microLab.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/note.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/nurseAssessment.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/nurseCare.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/nurseCharting.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/pastHistory.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/patient.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/physicalExam.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/respiratoryCare.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/respiratoryCharting.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/treatment.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/vitalAperiodic.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/vitalPeriodic.csv.gz",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/SHA256SUMS.txt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/LICENSE.txt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/official_verified/canonical_file_manifest.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/dataset_verified/respiratory_cohort_24h_landmark.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/dataset_verified/respiratory_cohort_24h_flow.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/raw/source/SHA256SUMS.txt",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/preprocessed/run_progress.log",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "respiratory/preprocessed/respiratory_train_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/preprocessed/respiratory_test_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/preprocessed/respiratory_validation_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/preprocessed/respiratory_train_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/preprocessed/respiratory_test_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/preprocessed/respiratory_validation_feature_space.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/preprocessed/sample10_trace.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/preprocessed/sample10_complete_details.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/06_duplicate_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/01_missing_data_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/03_outlier_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/07_data_noise_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/07b_monitor_signal_noise_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/04_feature_scale_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/08_encoding_domain_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/02_class_imbalance_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/05_demographic_bias_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/inprocessing/01_demographic_prediction_dependence_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/inprocessing/02_intersectional_subgroup_unfairness_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/inprocessing/03_predictive_miscalibration_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/inprocessing/04_cross_environment_generalization_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots/inprocessing/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/inprocessed/models/ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/FairCare.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/DANN.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/GroupDRO.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/Fair-ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/Intersectional_debiasing.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/Fairness-constrained_optimization.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/GroupDRO_(intersectional).pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/AvUC.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/CRL.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/Uncertainty-weighted_gradient.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/Calibration-regularized.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/hospital_ERM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/hospital_Fishr.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/hospital_V-REx.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/hospital_EQRM.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/models/hospital_Fish.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "respiratory/inprocessed/run_progress.log",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "respiratory/inprocessed/predictions_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/inprocessed/predictions_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/inprocessed/hospital_predictions_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/inprocessed/hospital_predictions_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/inprocessed/hospital_predictions_external.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/inprocessed/sample10_test_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/inprocessed/sample10_hospital_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots_comparison/S10_07_missing_data_infographic.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots_comparison/S10_07_missing_data_infographic.png",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots_comparison/S10_08_outlier_infographic.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "respiratory/plots_comparison/S10_08_outlier_infographic.png",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/run_log.txt",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "latent/methods/MV-DAE/encoder.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "latent/methods/DGCCA/encoder.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "latent/methods/SAINT/encoder.pt",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "latent/data/heart_latent_train.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/diabetes_latent_train.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/hypertension_latent_train.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/respiratory_latent_train.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/hospital_latent_train.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/combined_latent_train.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/heart_latent_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/diabetes_latent_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/hypertension_latent_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/respiratory_latent_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/hospital_latent_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/combined_latent_validation.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/heart_latent_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/diabetes_latent_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/hypertension_latent_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/respiratory_latent_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/hospital_latent_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/combined_latent_test.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/data/hospital_latent_external.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/latent_scatter.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/plots/01_cka_alignment_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/plots/02_macro_f1_preservation_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/plots/03_silhouette_structure_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/plots/04_nmi_ari_domain_invariance_dashboard.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "latent/plots/index.html",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/eicu/heart_model_ready.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/eicu/diabetes_model_ready.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/eicu/hypertension_model_ready.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/eicu/respiratory_model_ready.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/mimic/heart_model_ready.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/mimic/diabetes_model_ready.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/mimic/hypertension_model_ready.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/mimic/respiratory_model_ready.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/preprocessing_status.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/raw/independent_validation.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/preprocessed/hospital_train_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/preprocessed/hospital_validation_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/preprocessed/hospital_test_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/preprocessed/hospital_external_preprocessed.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "hospital/preprocessed/preprocessor.joblib",
+      "reason": "Model weights or machine-generated binary/cache"
+    },
+    {
+      "path": "output/bias_frameworks/image_specs.json",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/heart_sample10_complete_details.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/heart_sample10_trace.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/heart_pipeline_log.json",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/heart_sample10_test_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/heart_inprocessing_summary.csv",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/respiratory_sample10_complete_details.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/respiratory_sample10_trace.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/respiratory_pipeline_log.json",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/respiratory_sample10_test_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/respiratory_inprocessing_summary.csv",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/hypertension_sample10_complete_details.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/hypertension_sample10_trace.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/hypertension_pipeline_log.json",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/hypertension_sample10_test_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/hypertension_inprocessing_summary.csv",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/diabetes_sample10_complete_details.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/diabetes_sample10_trace.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/diabetes_pipeline_log.json",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/diabetes_sample10_test_predictions.csv",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/diabetes_inprocessing_summary.csv",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/latent_heart_test_sample10.json",
+      "reason": "Raw/record-level data or generated content requiring restricted-data review"
+    },
+    {
+      "path": "output/bias_frameworks/source_data/latent_method_comparison.csv",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/prompts.md",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/03_respiratory_outlier.png",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    },
+    {
+      "path": "output/bias_frameworks/04_respiratory_feature_scale.png",
+      "reason": "Local intermediate output or duplicate supporting artifact"
+    }
+  ]
+}
