@@ -1,0 +1,42 @@
+{
+  "input_features": [
+    "heart_rate_mean",
+    "heart_rate_min",
+    "heart_rate_max",
+    "resp_rate_mean",
+    "resp_rate_min",
+    "resp_rate_max",
+    "spo2_mean",
+    "spo2_min",
+    "spo2_max",
+    "age_group",
+    "sex"
+  ],
+  "output_features": [
+    "numeric__heart_rate_mean",
+    "numeric__heart_rate_min",
+    "numeric__heart_rate_max",
+    "numeric__resp_rate_mean",
+    "numeric__resp_rate_min",
+    "numeric__resp_rate_max",
+    "numeric__spo2_mean",
+    "numeric__spo2_min",
+    "numeric__spo2_max",
+    "numeric__missingindicator_heart_rate_mean",
+    "numeric__missingindicator_heart_rate_min",
+    "numeric__missingindicator_heart_rate_max",
+    "numeric__missingindicator_resp_rate_mean",
+    "numeric__missingindicator_resp_rate_min",
+    "numeric__missingindicator_resp_rate_max",
+    "numeric__missingindicator_spo2_mean",
+    "numeric__missingindicator_spo2_min",
+    "numeric__missingindicator_spo2_max",
+    "categorical__age_group_18-39",
+    "categorical__age_group_40-64",
+    "categorical__age_group_65-79",
+    "categorical__age_group_80+",
+    "categorical__sex_Female",
+    "categorical__sex_Male",
+    "categorical__sex_Unknown"
+  ]
+}

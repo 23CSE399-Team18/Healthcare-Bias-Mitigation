@@ -1,0 +1,15 @@
+column,description,role
+patientunitstayid,stay identifier; never a predictor,join_key
+patienthealthsystemstayid,hospital encounter identifier; never a predictor,group_identifier
+uniquepid,true eICU patient identifier for patient-disjoint splitting,group_identifier
+hospitalid,hospital identifier for held-out-hospital evaluation,domain_identifier
+landmark_minutes,1440 minutes after ICU admission; prediction time,task_metadata
+age_raw,original age string; >89 indicates deidentified top-coded age,demographic_metadata
+age_years_or_topcode90,"age in years; >89 represented as 90 solely for age grouping, not exact age",demographic_metadata
+age_is_topcoded_over89,1 means raw age is >89; value 90 is not an exact observed age,demographic_metadata
+gender,"source-recorded gender for demographic auditing, including unknown values",demographic_metadata
+ethnicity,"source-recorded ethnicity for demographic auditing, including unknown values",demographic_metadata
+hospital_region,hospital region from hospital table; site metadata,domain_metadata
+respiratory_apache_admission_flag,APACHE admission diagnosis in documented respiratory list AND admissionDx.admitdxenteredoffset <=1440 min for that diagnosis; no final APACHE predictions used,cohort_provenance
+primary_pulmonary_diagnosis_by24h_flag,primary pulmonary diagnosis with known diagnosisoffset <=1440 minutes; negative offsets allowed,cohort_provenance
+hospital_mortality,1=expired during this hospitalization after 24h eligibility; 0=alive at hospital discharge,target

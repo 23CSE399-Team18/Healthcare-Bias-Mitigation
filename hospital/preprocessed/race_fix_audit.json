@@ -1,0 +1,204 @@
+{
+ "bug": "substring 'ASIAN' matched inside 'CAUCASIAN' (prepare_cross_dataset.race_group)",
+ "fix": "whole-word regex \\bASIAN; eICU labels recomputed from patient.csv.gz",
+ "files": {
+  "raw\\eicu\\diabetes_model_ready.csv": {
+   "rows": 109378,
+   "changed_asian_to_white": 83473,
+   "before": {
+    "Asian": 85327,
+    "Black": 12897,
+    "Unknown": 6143,
+    "Hispanic": 4302,
+    "Other": 709
+   },
+   "after": {
+    "White": 83473,
+    "Black": 12897,
+    "Unknown": 6143,
+    "Hispanic": 4302,
+    "Asian": 1854,
+    "Other": 709
+   }
+  },
+  "raw\\eicu\\heart_model_ready.csv": {
+   "rows": 109378,
+   "changed_asian_to_white": 83473,
+   "before": {
+    "Asian": 85327,
+    "Black": 12897,
+    "Unknown": 6143,
+    "Hispanic": 4302,
+    "Other": 709
+   },
+   "after": {
+    "White": 83473,
+    "Black": 12897,
+    "Unknown": 6143,
+    "Hispanic": 4302,
+    "Asian": 1854,
+    "Other": 709
+   }
+  },
+  "raw\\eicu\\hypertension_model_ready.csv": {
+   "rows": 109378,
+   "changed_asian_to_white": 83473,
+   "before": {
+    "Asian": 85327,
+    "Black": 12897,
+    "Unknown": 6143,
+    "Hispanic": 4302,
+    "Other": 709
+   },
+   "after": {
+    "White": 83473,
+    "Black": 12897,
+    "Unknown": 6143,
+    "Hispanic": 4302,
+    "Asian": 1854,
+    "Other": 709
+   }
+  },
+  "raw\\eicu\\respiratory_model_ready.csv": {
+   "rows": 109378,
+   "changed_asian_to_white": 83473,
+   "before": {
+    "Asian": 85327,
+    "Black": 12897,
+    "Unknown": 6143,
+    "Hispanic": 4302,
+    "Other": 709
+   },
+   "after": {
+    "White": 83473,
+    "Black": 12897,
+    "Unknown": 6143,
+    "Hispanic": 4302,
+    "Asian": 1854,
+    "Other": 709
+   }
+  },
+  "preprocessed\\hospital_train_preprocessed.csv": {
+   "rows": 80606,
+   "changed_asian_to_white": 62369,
+   "before": {
+    "Asian": 63782,
+    "Black": 9078,
+    "Unknown": 4294,
+    "Hispanic": 2956,
+    "Other": 496
+   },
+   "after": {
+    "White": 62369,
+    "Black": 9078,
+    "Unknown": 4294,
+    "Hispanic": 2956,
+    "Asian": 1413,
+    "Other": 496
+   }
+  },
+  "preprocessed\\hospital_validation_preprocessed.csv": {
+   "rows": 20318,
+   "changed_asian_to_white": 14717,
+   "before": {
+    "Asian": 15089,
+    "Black": 2860,
+    "Unknown": 1158,
+    "Hispanic": 1029,
+    "Other": 182
+   },
+   "after": {
+    "White": 14717,
+    "Black": 2860,
+    "Unknown": 1158,
+    "Hispanic": 1029,
+    "Asian": 372,
+    "Other": 182
+   }
+  },
+  "preprocessed\\hospital_test_preprocessed.csv": {
+   "rows": 8454,
+   "changed_asian_to_white": 6387,
+   "before": {
+    "Asian": 6456,
+    "Black": 959,
+    "Unknown": 691,
+    "Hispanic": 317,
+    "Other": 31
+   },
+   "after": {
+    "White": 6387,
+    "Black": 959,
+    "Unknown": 691,
+    "Hispanic": 317,
+    "Asian": 69,
+    "Other": 31
+   }
+  },
+  "raw\\mimic\\diabetes_model_ready.csv": {
+   "rows": 73990,
+   "changed_asian_to_white": 0,
+   "note": "MIMIC, unaffected",
+   "after": {
+    "White": 49088,
+    "Unknown": 8810,
+    "Black": 7883,
+    "Other": 3184,
+    "Hispanic": 2783,
+    "Asian": 2242
+   }
+  },
+  "raw\\mimic\\heart_model_ready.csv": {
+   "rows": 73990,
+   "changed_asian_to_white": 0,
+   "note": "MIMIC, unaffected",
+   "after": {
+    "White": 49088,
+    "Unknown": 8810,
+    "Black": 7883,
+    "Other": 3184,
+    "Hispanic": 2783,
+    "Asian": 2242
+   }
+  },
+  "raw\\mimic\\hypertension_model_ready.csv": {
+   "rows": 73990,
+   "changed_asian_to_white": 0,
+   "note": "MIMIC, unaffected",
+   "after": {
+    "White": 49088,
+    "Unknown": 8810,
+    "Black": 7883,
+    "Other": 3184,
+    "Hispanic": 2783,
+    "Asian": 2242
+   }
+  },
+  "raw\\mimic\\respiratory_model_ready.csv": {
+   "rows": 73990,
+   "changed_asian_to_white": 0,
+   "note": "MIMIC, unaffected",
+   "after": {
+    "White": 49088,
+    "Unknown": 8810,
+    "Black": 7883,
+    "Other": 3184,
+    "Hispanic": 2783,
+    "Asian": 2242
+   }
+  },
+  "preprocessed\\hospital_external_preprocessed.csv": {
+   "rows": 73990,
+   "changed_asian_to_white": 0,
+   "note": "MIMIC, unaffected",
+   "after": {
+    "White": 49088,
+    "Unknown": 8810,
+    "Black": 7883,
+    "Other": 3184,
+    "Hispanic": 2783,
+    "Asian": 2242
+   }
+  }
+ }
+}
