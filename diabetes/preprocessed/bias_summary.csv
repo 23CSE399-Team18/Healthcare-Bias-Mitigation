@@ -1,0 +1,9 @@
+bias,detected,statistic,before,after,methods compared,selected method (modern),best traditional (comparison only)
+Duplicate,YES,exact duplicate records (all columns except record ID),3,0,6,Ditto (transformer matcher),GBER (graph-based ER)
+Missing data,YES,share of missing predictor cells,0.1036,0.0000,8,MIP-VAE,MICE
+Outlier,no,rows beyond skew-adjusted extreme fences,0.0073,0.0073,0,—,—
+Data noise,YES,Confident-Learning label-issue rate,0.1002,0.0893,7,Robust loss (GCE),Denoising autoencoder
+Feature scale,YES,max/min predictor SD ratio; max |skewness|,25.1; 1.38,1.0; 0.51,6,PowerTransform (Yeo-Johnson),Min-Max scaler
+Encoding / domain,no,no site/domain identifier in this dataset,n/a,n/a,0,—,—
+Class imbalance,YES,imbalance ratio (majority/minority),6.0666,1.0000,8,TabDDPM,Borderline-SMOTE
+Demographic,YES,min DI of outcome rate; max EOD of baseline model (protected attributes),0.84; 0.173,SPD 0.120; EOD 0.224,6,Adversarial debiasing,Optimal Transport

@@ -1,0 +1,9 @@
+bias,selected modern,modern mean rank,best traditional,traditional mean rank,metrics where modern is better,modern ranks ahead
+Duplicate,Ditto (transformer matcher),2.142857142857143,GBER (graph-based ER),2.357142857142857,4/7,True
+Missing data,MIP-VAE,4.428571428571429,MICE,2.857142857142857,3/7,False
+Outlier,- (bias not detected: nothing applied),,,,,
+Data noise,Robust loss (GCE),1.4166666666666667,Denoising autoencoder,3.3333333333333335,6/6,True
+Feature scale,PowerTransform (Yeo-Johnson),2.5,Min-Max scaler,3.3333333333333335,4/6,True
+Encoding / domain,- (bias not detected: nothing applied),,,,,
+Class imbalance,TabDDPM,3.111111111111111,Borderline-SMOTE,3.0,4/9,False
+Demographic,Adversarial debiasing,2.9375,Optimal Transport,2.875,4/8,False
