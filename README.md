@@ -1,103 +1,126 @@
-# Healthcare bias mitigation — Group 18 (pre-processing, latent and in-processing stages)
+# Healthcare Bias Mitigation
 
-Four diseases, four official datasets, eight data biases, every traditional and modern method from the
-method table compared on the table's metrics, the best **modern** method applied — then one common latent
-space for the four diseases and a cross-hospital ICU cohort, and in-processing methods that train the model
-itself to be fair, calibrated and robust across hospitals.
+**A Multi-Method Approach Across Diverse Clinical Applications**
 
-## Folder layout
+Project scope and methodology for a multi-stage healthcare bias-mitigation study.
 
-```text
-heart/  diabetes/  hypertension/  respiratory/      (same layout for every disease)
-    raw/<disease>_raw.csv                 data BEFORE preprocessing (biases left in)
-    raw/source/                           official source files + cohort extracts
-    <disease>_preprocessing.ipynb         complete 8-bias preprocessing notebook (the code)
-    <disease>_sample10_comparison.ipynb   10 real records followed through every bias step
-    preprocessed/                         <disease>_{train,validation,test}_preprocessed.csv,
-                                          comparison_<bias>.csv (every method x every metric),
-                                          modern_vs_traditional.csv, bias_summary.csv,
-                                          end_to_end_check.csv, pipeline_log.json, sample10_trace.json
-    plots/                                one interactive dashboard per bias + index.html
-    <disease>_inprocessing.ipynb          in-processing notebook (4 biases x 4 methods x 4 metrics, ERM = before)
-    <disease>_inprocessing_sample10.ipynb 10 test records: ERM vs the selected method for every in-processing bias
-    inprocessed/                          comparison_<bias>.csv, test_metrics_<bias>.csv, inprocessing_summary.csv,
-                                          predictions, selection.json, models/
-    plots/inprocessing/                   one dashboard per in-processing bias + index.html
+## Project Scope
 
-hospital/                                 cross-hospital ICU cohort (eICU-CRD hospitals + MIMIC-IV), see hospital/README.md
-    raw/, code/, preprocessed/            prepared by the Codex session; restored and race labels corrected 12 Nov 2026
+The current project phase investigates bias in healthcare prediction through a
+**preprocessing -> latent representation -> in-processing** pipeline. It compares
+methods for data quality, representation learning, predictive fairness,
+calibration and performance across patient groups and hospitals.
 
-latent/
-    latent_alignment.ipynb, latent_alignment.py, latent_dashboard.py    latent code
-    data/combined_latent_<split>.csv      four diseases + the cross-hospital cohort in one common 16-D latent space
-    data/<dataset>_latent_<split>.csv     the same rows per dataset (hospital_latent_external.csv = MIMIC)
-    latent_method_comparison.csv, latent_report.json
-    plots/                                one dashboard per latent metric + index.html
+The current four-dataset scope is:
 
-code/build_raw/      scripts that build <disease>/raw/<disease>_raw.csv from the official files
-code/build_website.py  refreshes the Team-18 website (D:/Team-18/Team-18) from these results
-code/recheck.py      read-only check of every output above + the website -> RECHECK_REPORT.md
-code/inprocessing/   in-processing source (inprocessing_cells.py), dashboard template, make_notebooks.py
-docs/                project report, slides, earlier copies of the method/metric tables
+| Application | Dataset | Prediction target |
+|---|---|---|
+| Heart | CDC BRFSS 2022 | Self-reported history of heart attack or coronary heart disease/angina |
+| Diabetes | CDC NHANES, August 2021-August 2023 | Self-reported doctor-diagnosed diabetes |
+| Hypertension | CDC NHIS 2023 Sample Adult | Self-reported clinician-diagnosed hypertension |
+| Respiratory cohort | PhysioNet eICU-CRD v2.0 | In-hospital mortality among eligible ICU stays after the first 24 hours |
 
-pre_methods_metrics.jpeg, latent methods.png, latent metrics.png, inprocessing.png
-                     the method/metric tables the selections follow
+Each dataset retains its own population, feature definitions and outcome labels.
+Respiratory-cohort mortality is a separate task from disease-diagnosis
+classification; the four targets are not treated as one interchangeable label.
+
+The scope includes eight preprocessing bias categories: missing data, class
+imbalance, outliers, feature-scale differences, demographic differences,
+duplicates, data noise and encoding/domain shift. Latent representations are
+evaluated for information preservation, structure, alignment and domain
+association. In-processing studies demographic and intersectional fairness,
+probability calibration and generalization across hospitals.
+
+Cross-hospital evaluation applies to hospital-identified ICU data. Survey
+benchmarks are evaluated separately and do not establish cross-hospital
+generalization. Outputs include reproducible code, method comparisons and a
+separate interactive dashboard for each bias or latent diagnostic.
+
+This section describes the intended research scope, not a claim that every
+method has been implemented or validated. Post-processing and privacy-preserving
+or on-device learning remain future extensions beyond this phase.
+
+## Methodology
+
+```mermaid
+flowchart LR
+    A[Dataset preparation] --> B[Preprocessing]
+    B --> C[Latent representation]
+    C --> D[In-processing]
+    D --> E[Held-out evaluation]
+    E --> F[Individual bias dashboards]
 ```
 
-## Datasets
+### 1. Dataset preparation and partitioning
 
-| Disease | Source | Target |
-|---|---|---|
-| Heart | CDC BRFSS 2022 | ever told: heart attack or coronary heart disease / angina |
-| Diabetes | CDC NHANES Aug 2021 - Aug 2023 | doctor-diagnosed diabetes |
-| Hypertension | CDC NHIS 2023 Sample Adult | clinician-diagnosed hypertension |
-| Respiratory | PhysioNet eICU-CRD v2.0 | in-hospital death after the first 24 h in ICU |
+Document each dataset's source, cohort eligibility, predictors, outcome and
+available demographic attributes. Define training, validation and test
+partitions before fitting transformations. Keep repeated records from the same
+patient together where patient identifiers are available. For cross-hospital
+experiments, hold out hospitals and check patient overlap between partitions.
 
-## Pre-processing (per disease notebook)
+### 2. Preprocessing and bias assessment
 
-Order: duplicates -> split 70/15/15 -> missing data -> outliers -> data noise -> feature scale ->
-encoding/domain -> class imbalance -> demographic. For every detected bias all traditional and modern methods
-(`docs/pre_methods_metrics.jpeg`) are run and ranked on every metric; the **modern** method with the best mean rank
-is applied, the best traditional method is kept as the comparison (`modern_vs_traditional.csv` shows why).
-Everything is fitted on training rows; methods are scored on training/validation rows; the test split is only
-used for the final end-to-end check.
+Assess the eight specified bias categories and compare applicable traditional
+and modern methods using the project's method/metric table. Fit imputers,
+scalers, encoders and other learned transformations on training data only.
+Restrict resampling to training data. Choose methods using predefined validation
+criteria and report predictive utility alongside bias-related diagnostics.
 
-Feature-scale safeguard (`CollapseGuard` in the feature-scale cell): if the selected scaler turns a varying column
-into a constant (Yeo-Johnson did this to the respiratory `temperature_c_max` in the first run),
-that one column falls back to plain standardisation fitted on the training rows; the notebook prints which columns
-used the fallback. It changes nothing for heart, diabetes and hypertension.
+Preserve record provenance and distinguish verified data errors from legitimate
+clinical variation. An unavailable measure or an unchanged bias signal must not
+be reported as successful mitigation.
 
-## Latent stage
+### 3. Latent representation learning
 
-`latent/latent_alignment.ipynb`: DGCCA, SAINT and MV-DAE learn one shared 16-dimensional space for the four
-diseases and the cross-hospital ICU cohort (a per-dataset PCA is the "before" reference). MIMIC rows of the cohort are only
-encoded (never trained or scored on) so the in-processing cross-hospital check stays external. The methods come from `latent methods.png`; the best
-one is chosen by the metrics in `latent metrics.png`: cross-dataset CKA, Macro-F1, Silhouette, NMI/ARI.
+Compare DGCCA, SAINT and multi-view denoising autoencoder approaches with a PCA
+reference. Learn representations from training data, retain dataset-specific
+targets and evaluate predictive information using validation probes.
 
-## In-processing stage
+Use Macro-F1 for predictive utility, silhouette for representation structure,
+CKA for alignment on justified corresponding observations, and NMI/ARI for
+defined clustering/domain comparisons. Shared dimensionality alone does not
+establish common clinical meaning; unrelated patient records must not be
+treated as paired observations. Document adaptations to the published methods.
 
-`<disease>/<disease>_inprocessing.ipynb` (generated by `code/inprocessing/make_notebooks.py`) trains one small network on
-the latent features with every method of `inprocessing.png`: demographic prediction dependence (FairCare, DANN, GroupDRO,
-Fair-ERM; CMI, PAD, WGER, EOV), intersectional unfairness (FOMO, intersectional debiasing, fairness-constrained optimization,
-GroupDRO-intersectional; HVI, DF-epsilon, MSFV, IWGR), miscalibration (AvUC, CRL, uncertainty-weighted gradient,
-calibration-regularized; UCE, AURC, E-AURC, MMCE) and cross-hospital generalization failure (Fishr, V-REx, EQRM, Fish;
-IEGVD, ERV, UQER, IDGA). Plain training (ERM) is the before. Per bias the method with the best mean rank over its four
-metrics on validation is selected (AUROC within 0.05 of ERM) and reported once on the test split. The cross-hospital bias
-uses the cross-hospital ICU cohort with the disease's recorded-condition label: eICU training hospitals for training, eICU
-validation hospitals for selection, eICU test hospitals + MIMIC-IV (another hospital system) for the final check.
+### 4. In-processing bias mitigation
 
-## Environment
+Evaluate applicable methods from four families:
 
-Python 3.12 virtual environment `Heart_correct/.venv` (left in place so the editor's interpreter keeps working);
-Jupyter kernel **"Python 3.12 (D:\complete venv)"** (`complete-venv`). Run a notebook from the command line with
-`python -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=complete-venv <notebook>`.
+| Bias concern | Method families to investigate |
+|---|---|
+| Demographic prediction dependence | Adversarial fairness, DANN, GroupDRO and fairness-regularized ERM |
+| Intersectional/subgroup unfairness | FOMO, intersectional debiasing, fairness-constrained optimization and intersectional GroupDRO |
+| Predictive miscalibration | AvUC, correctness ranking loss, uncertainty-weighted gradients and calibration-regularized training |
+| Cross-hospital generalization | Fishr, V-REx, EQRM and Fish |
 
-## Publication and project progress
+Compare candidates against a common baseline and state any implementation
+adaptations or data requirements. Select checkpoints, decision thresholds and
+models using validation data; freeze these choices before scoring test or
+external data.
 
-The repository contains the saved implementation and outputs for preprocessing, latent alignment and in-processing. See [publication scope](PUBLICATION.md), [dataset access](DATA_ACCESS.md), and the [website](website/index.html). Run `node code/publication/serve_website.cjs` to view the site locally.
+### 5. Evaluation and visualization
 
-- **Completed artifacts:** cohort preparation scripts, stage notebooks, saved aggregate comparisons, individual bias dashboards and website source are present.
-- **Ongoing:** independent scientific review of method implementations, leakage controls and interpretation of external-hospital results. Publication checks do not certify these claims.
-- **Planned:** recreate a working environment, reproduce training from authorized sources, and document final independently verified results.
+Report predictive performance, subgroup disparities and probability calibration
+together. Metrics include Macro-F1, AUROC, precision-recall measures,
+equalized-odds gaps, Brier score and calibration error where applicable. Report
+group sample sizes and leave undefined or unsupported comparisons unavailable.
 
-Large public files use lossless gzip; run `node code/publication/restore_public_data.cjs` before executing scripts that expect uncompressed files. Restricted ICU records and patient-level derivatives remain local. Published notebooks omit saved outputs; run them locally with authorized data.
+Evaluate hospital-held-out performance only for suitable ICU experiments and
+keep survey results separate. Present comparisons in individual interactive
+bias dashboards with clear populations, denominators, method labels and
+before/after definitions. Report measured trade-offs rather than assuming that
+any method guarantees better fairness or generalization.
+
+### Method References
+
+- [Deep Generalized Canonical Correlation Analysis](https://aclanthology.org/W19-4301/)
+- [SAINT: official implementation](https://github.com/somepago/saint)
+- [Denoising autoencoders: foundational method](https://www.jmlr.org/papers/v11/vincent10a.html)
+- [Domain-Adversarial Training of Neural Networks](https://www.jmlr.org/papers/v17/15-239.html)
+- [Group Distributionally Robust Optimization](https://arxiv.org/abs/1911.08731)
+- [DomainBed: reference domain-generalization implementations](https://github.com/facebookresearch/DomainBed)
+
+These references describe method foundations. Project-specific variants and
+evaluation protocols must be documented separately from claims of exact
+published-method replication.
