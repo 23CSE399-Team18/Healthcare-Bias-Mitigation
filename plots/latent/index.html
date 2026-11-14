@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latent dashboards</title><style>
+:root{--navy:#6D3FD9;--navy2:#E8457C;--bg:#F4F2FF;--card:#FFFFFF;--before:#9DBDFF;--before-line:#5B7CFA;
+--after:#3DD6B0;--after-line:#0E8F80;--text:#1C1745;--muted:#575375;--border:#E7E3F7;--blue-hi:#6D3FD9;--red-hi:#D6336C;
+--shadow:0 1px 3px rgba(28,23,69,.06),0 1px 2px rgba(28,23,69,.08);}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header.topbar{background:linear-gradient(180deg,var(--navy),var(--navy2));color:#fff;padding:18px 28px;text-align:center;box-shadow:var(--shadow)}
+header.topbar h1{margin:0;font-size:22px;letter-spacing:.2px;font-weight:700}header.topbar .sub{margin-top:5px;font-size:12.5px;color:#CFC8EE}
+header.topbar a{color:#DDD3FF}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);padding:16px}
+.side .card{margin-bottom:14px}.side-label{font-size:12.5px;font-weight:700;color:var(--blue-hi);margin:0 0 8px 0}
+select.control{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:13px;color:var(--text)}
+.varlist{max-height:230px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;margin-top:8px}
+.varlist .opt{padding:7px 10px;font-size:12.5px;cursor:pointer;border-bottom:1px solid #F4F2FF}
+.varlist .opt:hover{background:#F8F7FF}.varlist .opt.active{background:var(--blue-hi);color:#fff;font-weight:600}
+.info-title,.legend-title{font-size:13px;font-weight:700;margin:0 0 10px 0}
+.info-row{display:flex;justify-content:space-between;gap:8px;font-size:12.3px;padding:4px 0;border-bottom:1px dashed #F4F2FF}
+.info-row span.k{color:var(--muted)}.info-row b{text-align:right}
+.legend-row{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:3px 0}
+.swatch{width:13px;height:13px;border-radius:3px;display:inline-block;flex:none}
+.panel-title{font-size:14px;font-weight:700;color:var(--blue-hi);margin:0 0 12px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.legend-inline{display:flex;gap:14px;font-size:11.5px;color:var(--muted);align-items:center;font-weight:400}
+.legend-inline .lg{display:flex;align-items:center;gap:5px}
+.grid6{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:1400px){.grid6{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:1100px){.grid6{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}}
+@media (max-width:640px){.grid6{grid-template-columns:1fr}.row2{grid-template-columns:1fr!important}header.topbar{padding:14px 16px}.layout{padding:10px}}
+.chart-box{border:1px solid var(--border);border-radius:8px;padding:8px 8px 4px;background:#FDFCFF;cursor:pointer}
+.chart-box.focus{outline:2px solid var(--blue-hi)}
+.chart-box .ct{font-size:12px;font-weight:700;text-align:center;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-box .cs{font-size:10.5px;color:var(--muted);text-align:center}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.mt{margin-top:16px}svg text{font-family:inherit}
+.corr-wrap{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;overflow-x:auto}
+.mini-title{text-align:center;font-weight:700;font-size:12.5px;margin-bottom:6px}
+table.cmp{border-collapse:collapse;width:100%;font-size:12px}table.cmp th,table.cmp td{border:1px solid var(--border);padding:6px 7px;text-align:right}
+table.cmp th{background:#F8F7FF;text-align:center;font-weight:700}table.cmp td:first-child,table.cmp td.txt{text-align:left}
+table.cmp tr.sel td{background:#EFEAFF;font-weight:700}table.cmp tr.app td:first-child{box-shadow:inset 4px 0 0 var(--after-line)}
+.tbl-wrap{overflow-x:auto}.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:700}
+.badge.yes{background:#FFE8EE;color:var(--red-hi)}.badge.no{background:#E0F7F3;color:#0E8F80}.badge.na{background:#F4F2FF;color:var(--muted)}
+.note{font-size:12px;color:var(--muted);line-height:1.5}.note b{color:var(--text)}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}@media (max-width:1100px){.summary-grid{grid-template-columns:repeat(2,1fr)}}
+.stat{border:1px solid var(--border);border-radius:8px;padding:10px;background:#FDFCFF}.stat .k{font-size:11.5px;color:var(--muted)}.stat .v{font-size:17px;font-weight:700;margin-top:3px}
+#tooltip{position:fixed;pointer-events:none;background:#6D3FD9;color:#fff;font-size:11.5px;padding:5px 8px;border-radius:5px;display:none;z-index:10;max-width:320px}
+footer.note{padding:6px 28px 22px;text-align:center}
+ .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.tile{display:block;text-decoration:none;color:var(--text)}.tile:hover .card{outline:2px solid var(--blue-hi)}.tile h3{margin:0 0 6px 0;font-size:15px;color:var(--blue-hi)}
+.wrap{padding:16px;max-width:1400px;margin:0 auto}</style></head><body>
+<header class="topbar"><h1>Combined latent feature extraction — individual metric dashboards</h1><div class="sub">Five datasets mapped into one 16-dimensional latent space</div></header><div class="wrap">
+<div class="card"><p class="panel-title">Pipeline order and outcome</p><div class='tbl-wrap'><table class='cmp'><thead><tr><th>Method</th><th>CKA (alignment)</th><th>Macro-F1 (preservation)</th><th>Silhouette (structure)</th><th>NMI (domain)</th><th>ARI (domain)</th><th>mean rank</th></tr></thead><tbody><tr><td>PCA (no alignment)</td><td>0.7420</td><td>0.6154</td><td>0.0328</td><td>0.1532</td><td>0.0379</td><td>2.8000</td></tr><tr><td>MV-DAE</td><td>0.6369</td><td>0.6167</td><td>0.1140</td><td>0.0897</td><td>0.0431</td><td>2.2000</td></tr><tr><td>DGCCA</td><td>0.6145</td><td>0.6019</td><td>0.0841</td><td>0.0765</td><td>0.0444</td><td>3.2000</td></tr><tr><td>SAINT</td><td>0.6642</td><td>0.6164</td><td>0.0714</td><td>0.0474</td><td>0.0312</td><td>1.8000</td></tr></tbody></table></div><p class='note'>Selected: <b>SAINT</b>. Files: <code>latent/data/combined_latent_&lt;split&gt;.csv</code> (all five datasets) and <code>latent/data/&lt;dataset&gt;_latent_&lt;split&gt;.csv</code>.</p></div>
+<div class="tiles mt"><a class="tile" href="01_cka_alignment_dashboard.html"><div class="card"><h3>Cross-Dataset Alignment (CKA)</h3><div class="note"><b>SAINT</b>: CKA (alignment): 0.664</div><div class="note" style="margin-top:6px">Before (PCA, no shared space): 0.742</div></div></a><a class="tile" href="02_macro_f1_preservation_dashboard.html"><div class="card"><h3>Clinical Information Preservation (Macro-F1)</h3><div class="note"><b>SAINT</b>: Macro-F1 (preservation): 0.616</div><div class="note" style="margin-top:6px">Before (PCA, no shared space): 0.615</div></div></a><a class="tile" href="03_silhouette_structure_dashboard.html"><div class="card"><h3>Latent Structure (Silhouette Score)</h3><div class="note"><b>SAINT</b>: Silhouette (structure): 0.071</div><div class="note" style="margin-top:6px">Before (PCA, no shared space): 0.033</div></div></a><a class="tile" href="04_nmi_ari_domain_invariance_dashboard.html"><div class="card"><h3>Domain Invariance (NMI and ARI)</h3><div class="note"><b>SAINT</b>: NMI 0.047 / ARI 0.031</div><div class="note" style="margin-top:6px">Before (PCA, no shared space): NMI 0.153 / ARI 0.038</div></div></a></div><p class="note mt">Each tile opens one latent metric. Blue = before (per-dataset PCA), teal = after (latent method).</p></div></body></html>

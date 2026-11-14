@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><title>Respiratory ICU mortality — eICU-CRD v2.0 — pre-processing dashboards</title>
+<style>body{font-family:Segoe UI,Arial,sans-serif;background:#F4F2FF;margin:0;color:#1C1745}header{background:linear-gradient(180deg,#6D3FD9,#E8457C);color:#fff;padding:18px 28px;text-align:center}
+main{padding:20px 28px}table{border-collapse:collapse;background:#fff;width:100%;font-size:13px;margin-bottom:22px}td,th{border:1px solid #E7E3F7;padding:7px 9px;text-align:left}th{background:#F8F7FF}
+td.y{color:#8E1340;font-weight:700}td.n{color:#0A6B60;font-weight:700}a{color:#6D3FD9;font-weight:600}</style></head><body>
+<header><h1 style='margin:0;font-size:22px'>Respiratory ICU mortality — eICU-CRD v2.0 — bias-aware pre-processing</h1><div style='font-size:12.5px;color:#CFC8EE'>train 33,874 rows · validation 4,312 · test 4,308 rows</div></header>
+<main><h3>Bias dashboards (Before vs After)</h3><p style='font-size:13px'>Baseline and candidate methods are compared on every metric; only the best-ranked <b>candidate</b> method is selected and applied.</p>
+<table><tr><th>Bias</th><th>Result</th><th>Detection statistic</th><th>Before</th><th>After</th><th>Methods compared</th><th>Selected (candidate)</th><th>Best baseline (comparison only)</th></tr><tr><td><a href='01_missing_data_bias_dashboard.html'>Missing data</a></td><td class='y'>Detected</td><td>share of missing predictor cells</td><td>0.1588</td><td>0.0000</td><td>8</td><td><b>MIP-VAE</b></td><td>Random Forest</td></tr><tr><td><a href='02_class_imbalance_bias_dashboard.html'>Class imbalance</a></td><td class='y'>Detected</td><td>imbalance ratio (majority/minority)</td><td>6.9556</td><td>1.0000</td><td>8</td><td><b>TabDDPM</b></td><td>SMOTE</td></tr><tr><td><a href='03_outlier_bias_dashboard.html'>Outlier</a></td><td class='y'>Detected</td><td>rows beyond skew-adjusted extreme fences</td><td>0.4410</td><td>0.4268</td><td>6</td><td><b>ECOD</b></td><td>LOF</td></tr><tr><td><a href='04_feature_scale_bias_dashboard.html'>Feature scale</a></td><td class='y'>Detected</td><td>max/min predictor SD ratio; max |skewness|</td><td>15612.8; 31.42</td><td>1.0; 31.42</td><td>6</td><td><b>SNN (SELU)</b></td><td>Quantile transform</td></tr><tr><td><a href='05_demographic_bias_dashboard.html'>Demographic</a></td><td class='y'>Detected</td><td>min DI of outcome rate; max EOD of baseline model (protected attributes)</td><td>0.66; 0.187</td><td>SPD 0.086; EOD 0.068</td><td>6</td><td><b>Fair contrastive learning</b></td><td>Reweighting</td></tr><tr><td><a href='06_duplicate_bias_dashboard.html'>Duplicate</a></td><td class='n'>Not detected</td><td>exact duplicate records (all columns except record ID)</td><td>0</td><td>0</td><td>0</td><td><b>—</b></td><td>—</td></tr><tr><td><a href='07_data_noise_bias_dashboard.html'>Data noise</a></td><td class='y'>Detected</td><td>Confident-Learning label-issue rate; monitor spike rate</td><td>0.0624; spikes 0.0075</td><td>0.0626; spikes 0.0075</td><td>7</td><td><b>labels: Robust loss (GCE); signals: —</b></td><td>labels: Denoising autoencoder; signals: —</td></tr><tr><td><a href='08_encoding_domain_bias_dashboard.html'>Encoding / domain</a></td><td class='y'>Detected</td><td>one-vs-rest domain-classifier AUC; AUROC drop on held-out domains</td><td>0.965; -0.008</td><td>0.584; -0.005</td><td>6</td><td><b>Domain-generalisation transformer</b></td><td>CORAL</td></tr><tr><td><a href='07b_monitor_signal_noise_dashboard.html'>Data noise — monitor signals</a></td><td colspan='6'>Bedside-monitor spike detection and signal denoising (ICU vital-sign series); see the dashboard.</td></tr></table>
+<h3>End-to-end check (same classifier, same test patients)</h3><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>raw data</th>
+      <th>pre-processed data</th>
+      <th>change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AUROC</th>
+      <td>0.8068</td>
+      <td>0.7437</td>
+      <td>-0.0630</td>
+    </tr>
+    <tr>
+      <th>PR-AUC</th>
+      <td>0.4484</td>
+      <td>0.3336</td>
+      <td>-0.1148</td>
+    </tr>
+    <tr>
+      <th>Balanced accuracy</th>
+      <td>0.7302</td>
+      <td>0.6881</td>
+      <td>-0.0421</td>
+    </tr>
+    <tr>
+      <th>Brier</th>
+      <td>0.1030</td>
+      <td>0.1718</td>
+      <td>0.0688</td>
+    </tr>
+    <tr>
+      <th>SPD sex</th>
+      <td>0.0283</td>
+      <td>0.0287</td>
+      <td>0.0004</td>
+    </tr>
+    <tr>
+      <th>EOD sex</th>
+      <td>0.0163</td>
+      <td>0.0419</td>
+      <td>0.0256</td>
+    </tr>
+    <tr>
+      <th>SPD race_ethnicity</th>
+      <td>0.0553</td>
+      <td>0.0864</td>
+      <td>0.0311</td>
+    </tr>
+    <tr>
+      <th>EOD race_ethnicity</th>
+      <td>0.2349</td>
+      <td>0.0678</td>
+      <td>-0.1671</td>
+    </tr>
+    <tr>
+      <th>SPD age_group</th>
+      <td>0.4750</td>
+      <td>0.2985</td>
+      <td>-0.1764</td>
+    </tr>
+    <tr>
+      <th>EOD age_group</th>
+      <td>0.4095</td>
+      <td>0.2730</td>
+      <td>-0.1365</td>
+    </tr>
+  </tbody>
+</table></main></body></html>

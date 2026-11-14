@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><title>Diabetes — CDC NHANES 2021–2023 — pre-processing dashboards</title>
+<style>body{font-family:Segoe UI,Arial,sans-serif;background:#F4F2FF;margin:0;color:#1C1745}header{background:linear-gradient(180deg,#6D3FD9,#E8457C);color:#fff;padding:18px 28px;text-align:center}
+main{padding:20px 28px}table{border-collapse:collapse;background:#fff;width:100%;font-size:13px;margin-bottom:22px}td,th{border:1px solid #E7E3F7;padding:7px 9px;text-align:left}th{background:#F8F7FF}
+td.y{color:#8E1340;font-weight:700}td.n{color:#0A6B60;font-weight:700}a{color:#6D3FD9;font-weight:600}</style></head><body>
+<header><h1 style='margin:0;font-size:22px'>Diabetes — CDC NHANES 2021–2023 — bias-aware pre-processing</h1><div style='font-size:12.5px;color:#CFC8EE'>train 9,112 rows · validation 1,179 · test 1,179 rows</div></header>
+<main><h3>Bias dashboards (Before vs After)</h3><p style='font-size:13px'>Baseline and candidate methods are compared on every metric; only the best-ranked <b>candidate</b> method is selected and applied.</p>
+<table><tr><th>Bias</th><th>Result</th><th>Detection statistic</th><th>Before</th><th>After</th><th>Methods compared</th><th>Selected (candidate)</th><th>Best baseline (comparison only)</th></tr><tr><td><a href='01_missing_data_bias_dashboard.html'>Missing data</a></td><td class='y'>Detected</td><td>share of missing predictor cells</td><td>0.1036</td><td>0.0000</td><td>8</td><td><b>MIP-VAE</b></td><td>MICE</td></tr><tr><td><a href='02_class_imbalance_bias_dashboard.html'>Class imbalance</a></td><td class='y'>Detected</td><td>imbalance ratio (majority/minority)</td><td>6.0666</td><td>1.0000</td><td>8</td><td><b>TabDDPM</b></td><td>Borderline-SMOTE</td></tr><tr><td><a href='03_outlier_bias_dashboard.html'>Outlier</a></td><td class='n'>Not detected</td><td>rows beyond skew-adjusted extreme fences</td><td>0.0073</td><td>0.0073</td><td>0</td><td><b>—</b></td><td>—</td></tr><tr><td><a href='04_feature_scale_bias_dashboard.html'>Feature scale</a></td><td class='y'>Detected</td><td>max/min predictor SD ratio; max |skewness|</td><td>25.1; 1.38</td><td>1.0; 0.51</td><td>6</td><td><b>PowerTransform (Yeo-Johnson)</b></td><td>Min-Max scaler</td></tr><tr><td><a href='05_demographic_bias_dashboard.html'>Demographic</a></td><td class='y'>Detected</td><td>min DI of outcome rate; max EOD of baseline model (protected attributes)</td><td>0.84; 0.173</td><td>SPD 0.120; EOD 0.224</td><td>6</td><td><b>Adversarial debiasing</b></td><td>Optimal Transport</td></tr><tr><td><a href='06_duplicate_bias_dashboard.html'>Duplicate</a></td><td class='y'>Detected</td><td>exact duplicate records (all columns except record ID)</td><td>3</td><td>0</td><td>6</td><td><b>Ditto (transformer matcher)</b></td><td>GBER (graph-based ER)</td></tr><tr><td><a href='07_data_noise_bias_dashboard.html'>Data noise</a></td><td class='y'>Detected</td><td>Confident-Learning label-issue rate</td><td>0.1002</td><td>0.0893</td><td>7</td><td><b>Robust loss (GCE)</b></td><td>Denoising autoencoder</td></tr><tr><td><a href='08_encoding_domain_bias_dashboard.html'>Encoding / domain</a></td><td class='n'>Not detected</td><td>no site/domain identifier in this dataset</td><td>n/a</td><td>n/a</td><td>0</td><td><b>—</b></td><td>—</td></tr></table>
+<h3>End-to-end check (same classifier, same test patients)</h3><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>raw data</th>
+      <th>pre-processed data</th>
+      <th>change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AUROC</th>
+      <td>0.7421</td>
+      <td>0.7409</td>
+      <td>-0.0013</td>
+    </tr>
+    <tr>
+      <th>PR-AUC</th>
+      <td>0.2745</td>
+      <td>0.3084</td>
+      <td>0.0339</td>
+    </tr>
+    <tr>
+      <th>Balanced accuracy</th>
+      <td>0.6723</td>
+      <td>0.6768</td>
+      <td>0.0045</td>
+    </tr>
+    <tr>
+      <th>Brier</th>
+      <td>0.1153</td>
+      <td>0.2085</td>
+      <td>0.0932</td>
+    </tr>
+    <tr>
+      <th>SPD sex</th>
+      <td>0.0128</td>
+      <td>0.0422</td>
+      <td>0.0295</td>
+    </tr>
+    <tr>
+      <th>EOD sex</th>
+      <td>0.0336</td>
+      <td>0.0148</td>
+      <td>-0.0188</td>
+    </tr>
+    <tr>
+      <th>SPD race_ethnicity</th>
+      <td>0.0283</td>
+      <td>0.1196</td>
+      <td>0.0913</td>
+    </tr>
+    <tr>
+      <th>EOD race_ethnicity</th>
+      <td>0.1293</td>
+      <td>0.2243</td>
+      <td>0.0951</td>
+    </tr>
+    <tr>
+      <th>SPD age_group</th>
+      <td>0.6758</td>
+      <td>0.6865</td>
+      <td>0.0108</td>
+    </tr>
+    <tr>
+      <th>EOD age_group</th>
+      <td>0.2677</td>
+      <td>0.2080</td>
+      <td>-0.0597</td>
+    </tr>
+  </tbody>
+</table></main></body></html>
